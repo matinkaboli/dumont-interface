@@ -1,9 +1,9 @@
-import { type ButtonHTMLAttributes, type FC, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const buttonVariants = cva(
-  'font-semibold flex gap-2 items-center disabled:bg-primary-650 disabled:text-neutrals-500',
+  'font-semibold flex gap-2 transition duration-75 ease-in items-center disabled:bg-primary-650 disabled:text-neutrals-500',
   {
     variants: {
       fullWidth: {
