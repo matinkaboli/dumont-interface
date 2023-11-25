@@ -6,7 +6,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-blue-400 text-white',
+        primary: 'bg-neutrals-50 text-black',
         secondary: '',
         warning: '',
         neutral: '',
