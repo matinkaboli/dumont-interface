@@ -17,8 +17,9 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     variant: 'primary',
-    size: 'lg',
-    radius: "lg",
-    label: 'button'
+    size: 'md',
+    radius: "md",
+    children: 'button',
+    fullWidth: true
   },
 };
