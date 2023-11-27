@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -44,7 +44,7 @@ const buttonVariants = cva(
   },
 );
 
-interface ButtonProps
+interface Props
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
@@ -54,7 +54,7 @@ interface ButtonProps
   leftSection?: ReactNode;
 }
 
-const Button: FC<ButtonProps> = ({
+const Button = ({
   variant,
   size,
   radius,
@@ -67,7 +67,7 @@ const Button: FC<ButtonProps> = ({
   className,
   children,
   ...props
-}) => {
+}: Props) => {
   const Comp = asChild ? Slot : 'button';
 
   return (
