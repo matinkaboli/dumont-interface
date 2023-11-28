@@ -1,15 +1,14 @@
-import { Button } from '@/components/core';
-import Icon from '@/components/core/Icon';
+import { Button, Icon } from '@/components/core';
 
 export default function Home() {
   return (
     <main className="">
       Main Page{' '}
-      <Button variant="neutral" leftSection={<Icon name="home-fill" />} rightSection={<span>left</span>}>
+      <Button variant="neutral" leftSection={<Icon name="arrow-left" />} rightSection={<span>left</span>}>
         button hello
       </Button>
 
-      <Icon name="line-chart" />
+      <Icon name="line-chart" color="blue" />
     </main>
   );
 }

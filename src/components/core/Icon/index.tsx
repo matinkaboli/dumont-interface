@@ -1,23 +1,11 @@
-import { cloneElement, ReactElement } from 'react';
-import { SvgProps } from './Icon.types';
-
-import Home from './svgs/Home';
-import LineChart from './svgs/LineChart';
-import HomeFill from './svgs/HomeFill';
-
-const iconMap: Record<string, ReactElement> = {
-  home: <Home />,
-  'home-fill': <HomeFill />,
-  'line-chart': <LineChart />,
-};
-
-type IconName = 'home' | 'line-chart' | 'home-fill';
+import { cloneElement } from 'react';
+import { iconMap, type IconName, type SvgProps } from './iconConfig';
 
 interface Props extends SvgProps {
   name: IconName;
 }
 
-const SvgIcon = ({ name, width, height, color }: Props) => {
+const SvgIcon = ({ name, width, height, viewBox, color, className }: Props) => {
   const selectedIcon = iconMap[name];
 
   if (!selectedIcon) {
@@ -28,8 +16,9 @@ const SvgIcon = ({ name, width, height, color }: Props) => {
   return cloneElement(selectedIcon, {
     width,
     height,
+    viewBox,
     color,
-    className: 'svg-icon',
+    className,
   });
 };
 
