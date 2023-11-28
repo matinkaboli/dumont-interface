@@ -1,6 +1,6 @@
 // Follow these steps to add a new icon:
 // 1. Add a new SVG component in the 'svgs' folder.
-// 2. Make sure to include all necessary SVG props in the component.
+// 2. Make sure to include all necessary SVG props in the component. (Do not forget to add the class name 'path' to a <path> element that has the main color.)
 // 3. Add the icon name to the 'IconName' union type.
 // 4. Finally, add the new SVG component to the 'iconMap' record.
 //    Example: 'new-icon': <NewIconComponent />,
