@@ -1,4 +1,4 @@
-import { Button, Icon } from '@/components/core';
+import { Button, Icon } from '@/components';
 
 export default function Home() {
   return (

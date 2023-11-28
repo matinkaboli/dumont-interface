@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Icon } from '@/components/core';
-import { iconMap } from '@/components/core/Icon/iconConfig';
+import { Icon } from '@/components';
+import { iconMap } from '@/components/Icon/iconConfig';
 
 const meta = {
-  title: 'core/Icon',
+  title: 'Icon',
   component: Icon,
   parameters: {
     layout: 'centered',
@@ -21,6 +21,7 @@ export const Basic: Story = {
     name: 'home',
     width: '24',
     height: '24',
+    viewBox: '0 0 24px 24px',
     color: '#000',
   },
 };
