@@ -4,6 +4,7 @@ function LineChart({ width = '24', height = '24', color = '#000', className, vie
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
       width={width}
       height={height}
       fill="none"
