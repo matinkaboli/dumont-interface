@@ -8,10 +8,7 @@ interface Props extends SvgProps {
 const SvgIcon = ({ name, width, height, viewBox, color, className }: Props) => {
   const selectedIcon = iconMap[name];
 
-  if (!selectedIcon) {
-    console.error(`Icon "${name}" not found`);
-    return null;
-  }
+  if (!selectedIcon) return null;
 
   return cloneElement(selectedIcon, {
     width,
