@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import InputSection from './InputSection';
 
 const inputVariants = cva(
-  'px-4 bg-white border border-neutrals-300 font-medium text-neutrals-800 placeholder:text-neutrals-400 rounded-lg w-full outline-none disabled:bg-neutrals-100',
+  'px-4 bg-white border font-medium rounded-lg w-full outline-none disabled:bg-neutrals-100',
   {
     variants: {
       size: {
@@ -25,6 +25,7 @@ interface Props
   rightSectionPointerEvents?: 'none' | 'auto';
   leftSectionPointerEvents?: 'none' | 'auto';
   error?: string;
+  label?: string;
 }
 
 const Input = ({
@@ -35,27 +36,40 @@ const Input = ({
   leftSection,
   rightSectionPointerEvents = 'none',
   leftSectionPointerEvents = 'none',
+  error,
+  label,
   ...props
 }: Props) => {
   const inputClassName = inputVariants({ size, className });
+  const hasError = Boolean(error);
 
   return (
-    <div className="relative">
-      <InputSection
-        position="left"
-        section={leftSection}
-        className={`pointer-events-${leftSectionPointerEvents}`}
-      />
-      <input
-        type={type}
-        className={`${leftSection ? 'pl-12' : 'pl-4'} ${inputClassName}`}
-        {...props}
-      />
-      <InputSection
-        position="right"
-        section={rightSection}
-        className={`pointer-events-${rightSectionPointerEvents}`}
-      />
+    <div>
+      {label && <label className="font-medium text-white text-sm mb-1">{label}</label>}
+
+      <div className={`relative ${hasError ? '[&_.path]:fill-error-500': '[&_.path]:fill-neutrals-800'}`}>
+        <InputSection
+          position="left"
+          section={leftSection}
+          className={`pointer-events-${leftSectionPointerEvents}`}
+        />
+        <input
+          type={type}
+          className={`${leftSection ? 'pl-12' : 'pl-4'} ${
+            hasError
+              ? 'border-error-500 text-error-500 placeholder:text-error-500'
+              : 'border-neutrals-300 text-neutrals-800 placeholder:text-neutrals-400'
+          } ${inputClassName}`}
+          {...props}
+        />
+        <InputSection
+          position="right"
+          section={rightSection}
+          className={`pointer-events-${rightSectionPointerEvents}`}
+        />
+      </div>
+
+      {hasError && <p className="text-xs text-error-500 font-medium mt-2">{error}</p>}
     </div>
   );
 };

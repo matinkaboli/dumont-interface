@@ -12,6 +12,7 @@ export default function Home() {
       </Button>
 
       <Input
+        label="new label"
         size="sm"
         placeholder="input"
         leftSection={<Icon name="home" />}
