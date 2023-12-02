@@ -42,7 +42,7 @@ export const Icon: Story = {
   },
 };
 
-export const disabled: Story = {
+export const Disabled: Story = {
   args: {
     placeholder: 'input',
     disabled: true,
