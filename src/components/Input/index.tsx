@@ -27,6 +27,7 @@ interface Props
   leftSectionPointerEvents?: 'none' | 'auto';
   error?: string;
   label?: string;
+  description?: string;
 }
 
 const Input = ({
@@ -40,6 +41,7 @@ const Input = ({
   error,
   label,
   disabled,
+  description,
   ...props
 }: Props) => {
   const inputClassName = inputVariants({ size, className });
@@ -47,7 +49,7 @@ const Input = ({
 
   return (
     <div>
-      {label && <label className="font-medium text-white text-sm mb-1">{label}</label>}
+      {label && <label className="font-medium text-white text-sm mb-3 block">{label}</label>}
 
       <div
         className={`relative 
@@ -62,11 +64,13 @@ const Input = ({
         />
         <input
           type={type}
-          className={`${leftSection ? 'pl-12' : 'pl-4'} ${
-            hasError
-              ? 'border-error-500 text-error-500 placeholder:text-error-500'
-              : 'border-neutrals-300 text-neutrals-800 focus:border-neutral-800 placeholder:text-neutrals-400'
-          } ${inputClassName}`}
+          className={`
+          ${leftSection ? 'pl-12' : 'pl-4'}
+           ${rightSection ? 'pr-12' : 'pr-4'} 
+           ${hasError
+               ? 'border-error-500 text-error-500 placeholder:text-error-500'
+               : 'border-neutrals-300 text-neutrals-800 focus:border-neutral-800 placeholder:text-neutrals-400'
+           } ${inputClassName}`}
           disabled={disabled}
           {...props}
         />
@@ -77,7 +81,13 @@ const Input = ({
         />
       </div>
 
-      {hasError && <p className="text-xs text-error-500 font-medium mt-2">{error}</p>}
+      {description && <p className="text-xs text-neutral-500 font-medium mt-2">{description}</p>}
+
+      {hasError && (
+        <p className={`text-xs text-error-500 font-medium ${description ? 'mt-1' : 'mt-2'}`}>
+          {error}
+        </p>
+      )}
     </div>
   );
 };

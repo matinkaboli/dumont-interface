@@ -1,6 +1,12 @@
 import type { StorybookConfig } from '@storybook/nextjs';
+import { addons } from '@storybook/manager-api';
+import { themes } from '@storybook/theming';
 
 const path = require('path');
+
+addons.setConfig({
+  theme: themes.dark,
+});
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
