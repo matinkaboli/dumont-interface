@@ -1,5 +1,6 @@
 import { type InputHTMLAttributes, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { clsx } from 'clsx';
 
 import InputSection from './InputSection';
 
@@ -52,10 +53,11 @@ const Input = ({
       {label && <label className="font-medium text-white text-sm mb-3 block">{label}</label>}
 
       <div
-        className={`relative 
-        ${hasError ? '[&_.path]:fill-error-500' : '[&_.path]:fill-neutrals-800'} 
-        ${disabled && '[&_.path]:opacity-50'}
-        `}
+        className={clsx(
+          'relative',
+          hasError ? '[&_.path]:fill-error-500' : '[&_.path]:fill-neutrals-800',
+          disabled && '[&_.path]:opacity-50',
+        )}
       >
         <InputSection
           position="left"
@@ -64,13 +66,14 @@ const Input = ({
         />
         <input
           type={type}
-          className={`
-          ${leftSection ? 'pl-12' : 'pl-4'}
-           ${rightSection ? 'pr-12' : 'pr-4'} 
-           ${hasError
-               ? 'border-error-500 text-error-500 placeholder:text-error-500'
-               : 'border-neutrals-300 text-neutrals-800 focus:border-neutral-800 placeholder:text-neutrals-400'
-           } ${inputClassName}`}
+          className={clsx(
+            leftSection ? 'pl-12' : 'pl-4',
+            rightSection ? 'pr-12' : 'pr-4',
+            hasError
+              ? 'border-error-500 text-error-500 placeholder:text-error-500'
+              : 'border-neutrals-300 text-neutrals-800 focus:border-neutral-800 placeholder:text-neutrals-400',
+            inputClassName,
+          )}
           disabled={disabled}
           {...props}
         />
@@ -84,7 +87,7 @@ const Input = ({
       {description && <p className="text-xs text-neutral-500 font-medium mt-2">{description}</p>}
 
       {hasError && (
-        <p className={`text-xs text-error-500 font-medium ${description ? 'mt-1' : 'mt-2'}`}>
+        <p className={clsx('text-xs text-error-500 font-medium', description ? 'mt-1' : 'mt-2')}>
           {error}
         </p>
       )}
