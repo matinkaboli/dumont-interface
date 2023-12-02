@@ -1,5 +1,6 @@
 import { type InputHTMLAttributes, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+
 import InputSection from './InputSection';
 
 const inputVariants = cva(
@@ -38,6 +39,7 @@ const Input = ({
   leftSectionPointerEvents = 'none',
   error,
   label,
+  disabled,
   ...props
 }: Props) => {
   const inputClassName = inputVariants({ size, className });
@@ -47,7 +49,12 @@ const Input = ({
     <div>
       {label && <label className="font-medium text-white text-sm mb-1">{label}</label>}
 
-      <div className={`relative ${hasError ? '[&_.path]:fill-error-500': '[&_.path]:fill-neutrals-800'}`}>
+      <div
+        className={`relative 
+        ${hasError ? '[&_.path]:fill-error-500' : '[&_.path]:fill-neutrals-800'} 
+        ${disabled && '[&_.path]:opacity-50'}
+        `}
+      >
         <InputSection
           position="left"
           section={leftSection}
@@ -58,8 +65,9 @@ const Input = ({
           className={`${leftSection ? 'pl-12' : 'pl-4'} ${
             hasError
               ? 'border-error-500 text-error-500 placeholder:text-error-500'
-              : 'border-neutrals-300 text-neutrals-800 placeholder:text-neutrals-400'
+              : 'border-neutrals-300 text-neutrals-800 focus:border-neutral-800 placeholder:text-neutrals-400'
           } ${inputClassName}`}
+          disabled={disabled}
           {...props}
         />
         <InputSection
