@@ -1,14 +1,24 @@
-import { Button, Icon } from '@/components';
+import { Button, Icon, Input } from '@/components';
 
 export default function Home() {
   return (
-    <main className="">
-      Main Page{' '}
-      <Button variant="neutral" leftSection={<Icon name="arrow-left" />} rightSection={<span>left</span>}>
-        button hello
+    <main>
+      <Button
+        variant="neutral"
+        leftSection={<Icon name="arrow-left" />}
+        rightSection={<span>left</span>}
+      >
+        button
       </Button>
 
-      <Icon name="line-chart" color="blue" />
+      <Input
+        label="new label"
+        size="sm"
+        placeholder="input"
+        leftSection={<Icon name="home" />}
+        rightSection={<Icon name="home" className="cursor-pointer" />}
+        rightSectionPointerEvents="auto"
+      />
     </main>
   );
 }
