@@ -34,9 +34,9 @@ const DialogContent = React.forwardRef<React.ElementRef<typeof MotionContent>, D
       <div className="flex justify-center items-center h-[80vh]">
         <MotionContent
           ref={ref}
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 30 }}
+          exit={{ opacity: 0, y: 25 }}
           className={contentVariants({ size, className })}
           {...props}
         >
