@@ -6,6 +6,7 @@ const path = require('path');
 
 addons.setConfig({
   theme: themes.dark,
+  sidebar: { showRoots: false}
 });
 
 const config: StorybookConfig = {
@@ -35,5 +36,20 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
   },
+  typescript: {
+    check: false,
+    checkOptions: {},
+    reactDocgen: "react-docgen-typescript",
+    reactDocgenTypescriptOptions: {
+      shouldExtractLiteralValuesFromEnum: true,
+      propFilter: (prop) => {
+        return prop.parent
+          ? /@radix-ui/.test(prop.parent.fileName) ||
+          !/node_modules/.test(prop.parent.fileName)
+          : true;
+      },
+    },
+  },
+
 };
 export default config;
