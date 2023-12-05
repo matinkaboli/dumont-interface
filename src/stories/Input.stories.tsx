@@ -30,10 +30,6 @@ export function Size() {
   );
 }
 
-Size.story = {
-  name: 'With different size',
-};
-
 export const Icon: Story = {
   args: {
     placeholder: 'input',

@@ -36,7 +36,3 @@ export const Icons = () => (
     ))}
   </div>
 );
-
-Icons.story = {
-  name: 'Icons',
-};

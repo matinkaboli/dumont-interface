@@ -33,10 +33,6 @@ export function Variant() {
   );
 }
 
-Variant.story = {
-  name: 'With different variant',
-};
-
 export function Size() {
   return (
     <div className="flex gap-4">
@@ -53,10 +49,6 @@ export function Size() {
   );
 }
 
-Size.story = {
-  name: 'With different size',
-};
-
 export function BorderRadius() {
   return (
     <div className="flex gap-4">
@@ -66,10 +58,6 @@ export function BorderRadius() {
     </div>
   );
 }
-
-BorderRadius.story = {
-  name: 'With different radius',
-};
 
 export const FullWidth: Story = {
   args: {
