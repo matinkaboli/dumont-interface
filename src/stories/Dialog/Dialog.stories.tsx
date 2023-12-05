@@ -10,7 +10,7 @@ import {
 } from '@/components';
 
 const meta = {
-  title: 'Dialog/Root',
+  title: 'Dialog',
   component: Dialog,
   tags: ['autodocs'],
 } satisfies Meta<typeof Dialog>;
@@ -18,9 +18,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {}
-}
+export const Basic: Story = {
+  render: (args) => (
+    <Dialog {...args} />
+  ),
+};
 
 export const Template: Story = {
   args: {},

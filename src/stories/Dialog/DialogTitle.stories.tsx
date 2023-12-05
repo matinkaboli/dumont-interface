@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Dialog, DialogTitle } from '@/components';
 
-
 const meta = {
   title: 'Dialog/Title',
   component: DialogTitle,
@@ -15,11 +14,10 @@ const meta = {
 export default meta;
 export type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Basic: Story = {
   render: (args) => (
     <Dialog {...args}>
       <DialogTitle>test</DialogTitle>
     </Dialog>
   ),
 };
-
