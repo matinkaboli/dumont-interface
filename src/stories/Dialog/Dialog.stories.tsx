@@ -10,11 +10,8 @@ import {
 } from '@/components';
 
 const meta = {
-  title: 'DialogRoot',
+  title: 'Dialog/Root',
   component: Dialog,
-  parameters: {
-    // layout: 'centered',
-  },
   tags: ['autodocs'],
 } satisfies Meta<typeof Dialog>;
 

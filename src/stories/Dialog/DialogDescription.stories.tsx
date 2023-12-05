@@ -4,7 +4,7 @@ import { Dialog, DialogDescription } from '@/components';
 
 
 const meta = {
-  title: 'DialogDescription',
+  title: 'Dialog/Description',
   component: DialogDescription,
   parameters: {
     layout: 'centered',

@@ -1,13 +1,6 @@
 import type { StorybookConfig } from '@storybook/nextjs';
-import { addons } from '@storybook/manager-api';
-import { themes } from '@storybook/theming';
 
 const path = require('path');
-
-addons.setConfig({
-  theme: themes.dark,
-  sidebar: { showRoots: false}
-});
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -21,6 +14,9 @@ const config: StorybookConfig = {
     name: '@storybook/nextjs',
     options: {},
   },
+  docs: {
+    autodocs: 'tag',
+  },
   webpackFinal: async (config: any) => {
     config.module!.rules!.push({
       test: /\.scss$/,
@@ -33,23 +29,18 @@ const config: StorybookConfig = {
 
     return config;
   },
-  docs: {
-    autodocs: 'tag',
-  },
   typescript: {
     check: false,
     checkOptions: {},
-    reactDocgen: "react-docgen-typescript",
+    reactDocgen: 'react-docgen-typescript',
     reactDocgenTypescriptOptions: {
       shouldExtractLiteralValuesFromEnum: true,
       propFilter: (prop) => {
         return prop.parent
-          ? /@radix-ui/.test(prop.parent.fileName) ||
-          !/node_modules/.test(prop.parent.fileName)
+          ? /@radix-ui/.test(prop.parent.fileName) || !/node_modules/.test(prop.parent.fileName)
           : true;
       },
     },
   },
-
 };
 export default config;

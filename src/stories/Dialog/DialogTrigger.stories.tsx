@@ -4,7 +4,7 @@ import { Dialog, DialogTrigger } from '@/components';
 
 
 const meta = {
-  title: 'DialogTrigger',
+  title: 'Dialog/Trigger',
   component: DialogTrigger,
   parameters: {
     layout: 'centered',
