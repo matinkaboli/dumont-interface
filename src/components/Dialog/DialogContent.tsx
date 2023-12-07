@@ -3,6 +3,8 @@ import { Close, Content, Portal } from '@radix-ui/react-dialog';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { motion } from 'framer-motion';
 
+import { Icon } from '@/components';
+
 import DialogOverlay from './DialogOverlay';
 
 const MotionContent = motion(Content);
@@ -44,7 +46,8 @@ const DialogContent = React.forwardRef<React.ElementRef<typeof MotionContent>, D
 
           {showCloseButton && (
             <Close className="absolute right-4 top-4">
-              x<span className="sr-only">Close</span>
+              <Icon name="xmark" color="#ADADB6" width="20px" height="20px" />
+              <span className="sr-only">Close</span>
             </Close>
           )}
         </MotionContent>
