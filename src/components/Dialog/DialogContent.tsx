@@ -9,7 +9,7 @@ import DialogOverlay from './DialogOverlay';
 
 const MotionContent = motion(Content);
 
-const contentVariants = cva('relative z-50 bg-neutral-600 rounded-xl w-3/4 px-8 pt-8 pb-6', {
+const contentVariants = cva('relative z-50 bg-neutral-700 rounded-xl w-3/4 px-8 pt-8 pb-6', {
   variants: {
     size: {
       sm: 'md:w-[340px]',
