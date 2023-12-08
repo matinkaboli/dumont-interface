@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta } from '@storybook/react';
 
 import { Button, Dialog, DialogDescription, DialogTitle, DialogTrigger } from '@/components';
 
