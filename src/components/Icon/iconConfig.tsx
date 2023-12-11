@@ -18,6 +18,7 @@ import ArrowUp from './svgs/ArrowUp';
 import ArrowLeft from './svgs/ArrowLeft';
 import ArrowRight from './svgs/ArrowRight';
 import ArrowDown from './svgs/ArrowDown';
+import XMark from './svgs/XMark';
 
 export interface SvgProps {
   width?: string;
@@ -39,7 +40,8 @@ export type IconName =
   | 'arrow-up'
   | 'arrow-left'
   | 'arrow-right'
-  | 'arrow-down';
+  | 'arrow-down'
+  | 'xmark';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -54,4 +56,5 @@ export const iconMap: Record<IconName, ReactElement> = {
   'arrow-left': <ArrowLeft />,
   'arrow-right': <ArrowRight />,
   'arrow-down': <ArrowDown />,
+  'xmark': <XMark />
 };

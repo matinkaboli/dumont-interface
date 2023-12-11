@@ -5,20 +5,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'white': '#fff',
-        'black': '#000',
-        'neutrals': {
+        white: '#fff',
+        black: '#000',
+        neutrals: {
           50: '#F2F2F2',
           100: '#EBEAEF',
           200: '#DBDBE2',
           300: '#C4C4CC',
           400: '#ADADB6',
           500: '#75757C',
-          600: '#46464D',
-          700: '#46464D',
+          600: '#3B3A45',
+          700: '#2E2D36',
           800: '#060607',
         },
-        'primary': {
+        primary: {
           50: '#F9F1FF',
           100: '#DAA7FE',
           200: '#A23BEA',
@@ -30,7 +30,7 @@ const config: Config = {
           700: '#260141',
           800: '#130320',
         },
-        'secondary': {
+        secondary: {
           50: '#EDEFFE',
           100: '#B0B8FF',
           200: '#8490FF',
@@ -39,7 +39,7 @@ const config: Config = {
           500: '#3D05B5',
           600: '#1E0258',
         },
-        'warning': {
+        warning: {
           50: '#FFF8EB',
           100: '#FFF0D1',
           200: '#FFE09F',
@@ -51,7 +51,7 @@ const config: Config = {
           800: '#744C01',
           900: '#332100',
         },
-        'error': {
+        error: {
           50: '#FFEBEF',
           100: '#FFD2DC',
           200: '#FDA1B5',
@@ -63,7 +63,7 @@ const config: Config = {
           800: '#72021A',
           900: '#33000B',
         },
-        'success': {
+        success: {
           50: '#EBFFEB',
           100: '#D4FDD3',
           200: '#A6F8A5',
@@ -77,12 +77,12 @@ const config: Config = {
         },
       },
       fontSize: {
-        'xs': ['12px', '18px'],
-        'sm': ['14px', '20px'],
-        'base': ['16px', '24px'],
-        'md': ['18px', '28px'],
-        'lg': ['20px', '30px'],
-        'xl': ['22px', '28px'],
+        xs: ['12px', '18px'],
+        sm: ['14px', '20px'],
+        base: ['16px', '24px'],
+        md: ['18px', '28px'],
+        lg: ['20px', '30px'],
+        xl: ['22px', '28px'],
         '2xl': ['24px', '30px'],
         '3xl': ['32px', '40px'],
         '4xl': ['40px', '48px'],
@@ -90,7 +90,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animate')],
 };
 
 export default config;
