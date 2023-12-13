@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Checkbox } from '@/components';
-import { iconMap } from '@/components/Icon/iconConfig';
 
 const meta = {
   title: 'Checkbox',
@@ -16,17 +15,15 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-
 export const Basic: Story = {
   args: {},
 };
 
 export const Label: Story = {
   args: {
-    label: 'This is a label'
+    label: 'This is a label',
   },
 };
-
 
 export function Size() {
   return (
