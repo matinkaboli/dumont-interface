@@ -2,77 +2,69 @@
 
 import * as React from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import clsx from 'clsx';
 import { cva, VariantProps } from 'class-variance-authority';
+import { motion } from 'framer-motion';
+import { Icon } from '@/components';
+import { clsx } from 'clsx';
 
-const size = {
-  sm: 'h-4 w-4',
-  md: 'h-5 w-5',
-  lg: 'h-6 w-6',
-};
+const rootVariants = cva(
+  'rounded-md border border-neutral-200 data-[state=checked]:bg-success-700 data-[state=checked]:border-success-700 enabled:hover:shadow-checkbox enabled:hover:border-rgba-success-700 disabled:bg-black/[0.05] transition ease-in-out',
+  {
+    variants: {
+      size: {
+        sm: 'h-4 w-4',
+        md: 'h-5 w-5',
+        lg: 'h-6 w-6',
+      },
+    },
+    defaultVariants: { size: 'lg' },
+  },
+);
 
-const rootVariants = cva('', {
+const indicatorVariants = cva('rounded-md', {
   variants: {
-    size,
-    variant: {
-      primary: 'border border-[rgba(0, 127, 103, 0.20)]',
-      secondary: 'border border-neutral-200',
+    size: {
+      sm: 'scale-[0.67]',
+      md: 'scale-[0.83]',
+      lg: 'scale-1',
     },
   },
-  defaultVariants: {
-    size: 'lg',
-    variant: 'primary',
-  },
-});
-
-const indicatorVariants = cva('', {
-  variants: {
-    size: size,
-    variant: {
-      primary: 'bg-success-700',
-      secondary: 'bg-black opacity-50',
-    },
-  },
-  defaultVariants: {
-    size: 'lg',
-    variant: 'primary',
-  },
+  defaultVariants: { size: 'lg' },
 });
 
 interface CheckboxProps
   extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>,
     VariantProps<typeof rootVariants> {
   label?: string;
+  containerClassName?: string;
 }
 
 const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root>, CheckboxProps>(
-  ({ className, size, variant, label, id, ...props }, ref) => (
-    <div className="flex items-center space-x-1">
+  ({ className, size, label, containerClassName, id, ...props }, ref) => (
+    <div className={clsx(containerClassName, 'flex items-center space-x-1')}>
       <CheckboxPrimitive.Root
         id={id}
         ref={ref}
-        className={clsx(
-          'peer shrink-0 rounded-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground',
-          rootVariants({ variant, size, className }),
-        )}
+        className={rootVariants({ size, className })}
         {...props}
       >
         <CheckboxPrimitive.Indicator
-          className={clsx('flex items-center justify-center text-current')}
+          asChild
+          className="flex items-center justify-center text-current border-none"
         >
-          <div
-            className={clsx(
-              'bg-black text-white rounded-sm text-xs absolute',
-              indicatorVariants({ variant, size, className }),
-            )}
+          <motion.div
+            initial={{ opacity: 0, y: 3 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 3 }}
+            className={indicatorVariants({ size })}
           >
-            o
-          </div>
+            <Icon name="tick" />
+          </motion.div>
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
 
       {label && (
-        <label className="text-sm" htmlFor={id}>
+        <label htmlFor={id} className="text-white text-sm">
           {label}
         </label>
       )}
