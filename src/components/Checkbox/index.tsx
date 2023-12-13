@@ -4,8 +4,9 @@ import * as React from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { cva, VariantProps } from 'class-variance-authority';
 import { motion } from 'framer-motion';
-import { Icon } from '@/components';
 import { clsx } from 'clsx';
+
+import { Icon } from '@/components';
 
 const rootVariants = cva(
   'rounded-md border border-neutral-200 data-[state=checked]:bg-success-700 data-[state=checked]:border-success-700 enabled:hover:shadow-checkbox enabled:hover:border-rgba-success-700 disabled:bg-black/[0.05] transition ease-in-out',
@@ -56,9 +57,8 @@ const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root
             initial={{ opacity: 0, y: 3 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 3 }}
-            className={indicatorVariants({ size })}
           >
-            <Icon name="tick" />
+            <Icon name="tick" className={indicatorVariants({ size })} />
           </motion.div>
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
