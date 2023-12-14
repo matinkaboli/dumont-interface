@@ -12,23 +12,15 @@ const rootVariants = cva(
   'rounded-md border border-neutral-200 data-[state=checked]:bg-success-700 data-[state=checked]:border-success-700 enabled:hover:shadow-checkbox enabled:hover:border-rgba-success-700 disabled:bg-black/[0.05] transition ease-in-out',
   {
     variants: {
-      size: {
-        sm: 'h-4 w-4',
-        md: 'h-5 w-5',
-        lg: 'h-6 w-6',
-      },
+      size: { sm: 'h-4 w-4', md: 'h-5 w-5', lg: 'h-6 w-6' },
     },
     defaultVariants: { size: 'lg' },
   },
 );
 
-const indicatorVariants = cva('rounded-md', {
+const indicatorVariants = cva('', {
   variants: {
-    size: {
-      sm: 'scale-[0.67]',
-      md: 'scale-[0.83]',
-      lg: 'scale-1',
-    },
+    size: { sm: 'scale-[0.67]', md: 'scale-[0.83]', lg: 'scale-1' },
   },
   defaultVariants: { size: 'lg' },
 });
@@ -49,10 +41,7 @@ const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root
         className={rootVariants({ size, className })}
         {...props}
       >
-        <CheckboxPrimitive.Indicator
-          asChild
-          className="flex items-center justify-center text-current border-none"
-        >
+        <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current border-none rounded-md">
           <motion.div
             initial={{ opacity: 0, y: 3 }}
             animate={{ opacity: 1, y: 0 }}
