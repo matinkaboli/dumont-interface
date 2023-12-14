@@ -1,10 +1,9 @@
-import ExpDialog from './ExpDialog';
-
+import { Checkbox } from '@/components';
 
 export default function Home() {
   return (
-    <main className="">
-      <ExpDialog />
+    <main className="p-10">
+      <Checkbox containerClassName="mt-4" id="label" label="This is new label" size="lg" />
     </main>
   );
 }

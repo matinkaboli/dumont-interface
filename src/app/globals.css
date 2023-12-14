@@ -2,18 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    @apply bg-black
+}
+
 #storybook-root {
     @apply w-full h-auto flex justify-center
-}
-
-.dialog-content[data-state='open'] {
-    opacity: 1;
-    transition: opacity 500ms;
-    transform: translateY(20px);
-}
-
-.dialog-content[data-state='closed'] {
-    opacity: 0;
-    transition: opacity 500ms;
-    transform: translateY(0px);
 }

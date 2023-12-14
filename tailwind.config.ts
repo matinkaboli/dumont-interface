@@ -75,6 +75,7 @@ const config: Config = {
           800: '#086907',
           900: '#013300',
         },
+        'rgba-success-700': 'rgba(0, 127, 103, 0.20)'
       },
       fontSize: {
         xs: ['12px', '18px'],
@@ -88,6 +89,9 @@ const config: Config = {
         '4xl': ['40px', '48px'],
         '5xl': ['48px', '56px'],
       },
+      boxShadow: {
+        'checkbox': '0px 0px 0px 3px rgba(0, 127, 103, 0.10)',
+      }
     },
   },
   plugins: [require('tailwindcss-animate')],
