@@ -1,8 +1,8 @@
 
 export default function Home() {
   return (
-    <main className="text-white">
+    <div className="text-white">
       Some homePage content
-    </main>
+    </div>
   );
 }

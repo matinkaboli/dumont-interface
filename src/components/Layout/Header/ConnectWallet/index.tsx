@@ -1,4 +1,5 @@
 import { Button } from '@/components';
+
 import ConnectedWallet from './ConnectedWallet';
 import GiftButton from './GiftButton';
 
