@@ -10,6 +10,7 @@ interface Props {
 const Layout = ({ children }: Props) => {
   return (
     <div className="lg:px-0 px-5 pt-10 pb-6">
+      {/*<div className="absolute w-screen h-screen overflow-hidden"><div className="layout"></div></div>*/}
       <div className="lg:w-[840px] w-full mx-auto">
         <Header />
         <main className="pt-10 pb-16">{children}</main>
