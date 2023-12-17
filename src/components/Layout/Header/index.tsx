@@ -5,8 +5,8 @@ import ConnectWallet from './ConnectWallet';
 
 const Header = () => {
   return (
-    <div className="flex justify-between items-center">
-      <div className="flex gap-8 items-center">
+    <div className="flex-between">
+      <div className="flex-center-v gap-8">
         <Link href="/">
           <Image width={32} height={28} src="./images/logo.svg" alt="dumont" />
         </Link>

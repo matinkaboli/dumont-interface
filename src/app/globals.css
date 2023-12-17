@@ -9,3 +9,19 @@ body {
 #storybook-root {
     @apply w-full h-auto flex justify-center
 }
+
+.flex-center {
+    @apply flex items-center justify-center
+}
+
+.flex-center-v {
+    @apply flex items-center
+}
+
+.flex-center-h {
+    @apply flex justify-center
+}
+
+.flex-between {
+    @apply flex items-center justify-between
+}
