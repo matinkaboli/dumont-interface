@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    @apply bg-black
+    @apply bg-gradiant-body min-h-screen
 }
 
 #storybook-root {
@@ -24,13 +24,4 @@ body {
 
 .flex-between {
     @apply flex items-center justify-between
-}
-
-.layout {
-    border-radius: 2955px;
-    width: 2955px;
-    height: 2955px;
-    transform: rotate(-90deg);
-    flex-shrink: 0;
-    background: radial-gradient(43.89% 43.89% at 46.57% 28.72%, rgba(0, 254, 208, 0.40) 0%, rgba(122, 16, 197, 0.40) 26.62%, rgba(17, 4, 20, 0.00) 100%);
 }

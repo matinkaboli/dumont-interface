@@ -77,7 +77,12 @@ const config: Config = {
           800: '#086907',
           900: '#013300',
         },
-        'rgba-success-700': 'rgba(0, 127, 103, 0.20)'
+        'rgba-success-700': 'rgba(0, 127, 103, 0.20)',
+      },
+      backgroundImage: {
+        'gradiant-layout':
+          'radial-gradient(102.76% 214.4% at 50% -78.19%, rgba(122, 16, 197, 0.32) 32.53%, rgba(17, 4, 20, 0.00) 100%)',
+        'gradiant-body': 'linear-gradient(180deg, #050505 0%, #110015 100%)',
       },
       fontSize: {
         xs: ['12px', '18px'],
@@ -92,8 +97,8 @@ const config: Config = {
         '5xl': ['48px', '56px'],
       },
       boxShadow: {
-        'checkbox': '0px 0px 0px 3px rgba(0, 127, 103, 0.10)',
-      }
+        checkbox: '0px 0px 0px 3px rgba(0, 127, 103, 0.10)',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],
