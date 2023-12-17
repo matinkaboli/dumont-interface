@@ -3,7 +3,7 @@ import Round from './Round';
 const Footer = () => {
   return (
     <div className="flex justify-center items-center">
-      <Round />
+      <Round roundTime="2h 20m 12s" />
     </div>
   );
 };
