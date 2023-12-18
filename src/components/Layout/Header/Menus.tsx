@@ -1,8 +1,10 @@
 import Link from 'next/link';
 
+import Routes from '@/constants/routes';
+
 const menues = [
-  { label: 'Activity', href: '/' },
-  { label: 'Tutorial', href: '/' },
+  { label: 'Activity', href: Routes.ACTIVITY },
+  { label: 'Tutorial', href: Routes.TUTORIAL },
 ];
 
 const Menus = () => {
