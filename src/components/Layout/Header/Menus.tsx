@@ -1,14 +1,18 @@
 import Link from 'next/link';
 
+const menues = [
+  { label: 'Activity', href: '/' },
+  { label: 'Tutorial', href: '/' },
+];
+
 const Menus = () => {
   return (
     <ul className="flex-center-v gap-8">
-      <li className="font-medium text-white text-sm">
-        <Link href="/">Activity</Link>
-      </li>
-      <li className="font-medium text-white text-sm">
-        <Link href="/">Tutorial</Link>
-      </li>
+      {menues.map((menu, index) => (
+        <li key={index} className="font-medium text-neutrals-200 hover:text-primary-250 text-sm transition ease-in-out">
+          <Link href={menu.href}>{menu.label}</Link>
+        </li>
+      ))}
     </ul>
   );
 };
