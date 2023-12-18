@@ -3,7 +3,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const buttonVariants = cva(
-  'font-semibold flex gap-2 items-center disabled:bg-primary-650 disabled:text-neutrals-500',
+  'font-semibold flex gap-2 items-center disabled:bg-primary-650 disabled:text-neutral-500',
   {
     variants: {
       fullWidth: {
@@ -18,7 +18,7 @@ const buttonVariants = cva(
         warning:
           'bg-warning-600 text-white [&_.path]:fill-white hover:bg-warning-700 active:bg-warning-800',
         neutral:
-          'bg-neutrals-100 text-neutrals-600 [&_.path]:fill-neutrals-600 hover:bg-neutrals-200 active:bg-neutrals-50',
+          'bg-neutral-100 text-neutral-600 [&_.path]:fill-neutral-600 hover:bg-neutral-200 active:bg-neutral-50',
         link: '',
       },
       size: {

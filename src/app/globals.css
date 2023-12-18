@@ -25,3 +25,7 @@ body {
 .flex-between {
     @apply flex items-center justify-between
 }
+
+.border-primary-gradiant {
+    @apply bg-gradient-to-r from-primary-400 to-primary-800 p-px
+}

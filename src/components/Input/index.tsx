@@ -5,7 +5,7 @@ import { clsx } from 'clsx';
 import InputSection from './InputSection';
 
 const inputVariants = cva(
-  'px-4 bg-white border font-medium rounded-lg w-full outline-none disabled:bg-neutrals-100',
+  'px-4 bg-white border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100',
   {
     variants: {
       size: {
@@ -55,7 +55,7 @@ const Input = ({
       <div
         className={clsx(
           'relative',
-          hasError ? '[&_.path]:fill-error-500' : '[&_.path]:fill-neutrals-800',
+          hasError ? '[&_.path]:fill-error-500' : '[&_.path]:fill-neutral-800',
           disabled && '[&_.path]:opacity-50',
         )}
       >
@@ -71,7 +71,7 @@ const Input = ({
             rightSection ? 'pr-12' : 'pr-4',
             hasError
               ? 'border-error-500 text-error-500 placeholder:text-error-500'
-              : 'border-neutrals-300 text-neutrals-800 focus:border-neutral-800 placeholder:text-neutrals-400',
+              : 'border-neutral-300 text-neutral-800 focus:border-neutral-800 placeholder:text-neutral-400',
             inputClassName,
           )}
           disabled={disabled}
