@@ -16,19 +16,21 @@ const config: Config = {
           500: '#75757C',
           600: '#3B3A45',
           700: '#2E2D36',
-          800: '#060607',
+          750: '#1A1A1A',
+          800: '#111117',
         },
         primary: {
           50: '#F9F1FF',
           100: '#DAA7FE',
           200: '#A23BEA',
+          250: '#EA00FF',
           300: '#7A10C5',
           400: '#570393',
           500: '#3B0065',
           600: '#3F2057',
           650: '#4B405A',
           700: '#260141',
-          800: '#130320',
+          800: '#2D0D4D',
         },
         secondary: {
           50: '#EDEFFE',
@@ -75,7 +77,12 @@ const config: Config = {
           800: '#086907',
           900: '#013300',
         },
-        'rgba-success-700': 'rgba(0, 127, 103, 0.20)'
+        'rgba-success-700': 'rgba(0, 127, 103, 0.20)',
+      },
+      backgroundImage: {
+        'gradiant-layout':
+          'radial-gradient(102.76% 214.4% at 50% -78.19%, rgba(122, 16, 197, 0.32) 32.53%, rgba(17, 4, 20, 0.00) 100%)',
+        'gradiant-body': 'linear-gradient(180deg, #050505 0%, #110015 100%)',
       },
       fontSize: {
         xs: ['12px', '18px'],
@@ -90,8 +97,8 @@ const config: Config = {
         '5xl': ['48px', '56px'],
       },
       boxShadow: {
-        'checkbox': '0px 0px 0px 3px rgba(0, 127, 103, 0.10)',
-      }
+        checkbox: '0px 0px 0px 3px rgba(0, 127, 103, 0.10)',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

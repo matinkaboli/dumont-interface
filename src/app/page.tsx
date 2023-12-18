@@ -1,9 +1,8 @@
-import { Checkbox } from '@/components';
 
 export default function Home() {
   return (
-    <main className="p-10">
-      <Checkbox containerClassName="mt-4" id="label" label="This is new label" size="lg" />
-    </main>
+    <div className="text-white">
+      Some homePage content
+    </div>
   );
 }
