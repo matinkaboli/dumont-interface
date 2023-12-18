@@ -7,7 +7,7 @@ const config: Config = {
       colors: {
         white: '#fff',
         black: '#000',
-        neutrals: {
+        neutral: {
           50: '#F2F2F2',
           100: '#EBEAEF',
           200: '#DBDBE2',
