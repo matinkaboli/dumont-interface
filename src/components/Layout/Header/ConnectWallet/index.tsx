@@ -16,7 +16,7 @@ const ConnectWallet = ({ isConnected }: Props) => {
           <ConnectedWallet />
         </div>
       ) : (
-        <Button variant="primary" size="sm" className="!text-primary-250 !bg-primary-800">
+        <Button variant="primary" size="sm" className="!text-primary-250 !bg-primary-500">
           Connect Wallet
         </Button>
       )}

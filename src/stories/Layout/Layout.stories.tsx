@@ -16,5 +16,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  args: { children: <div className="text-white border border-amber-50 py-5">Some content</div> },
+  args: { children: <div className="text-white">Some content</div> },
 };
