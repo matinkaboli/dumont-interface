@@ -17,7 +17,7 @@ const ConnectWallet = () => {
 
   return (
     <ConnectKitButton.Custom>
-      {({ isConnected, isConnecting, show, hide, truncatedAddress }) => {
+      {({ isConnected, show, truncatedAddress }) => {
         return (
           <div>
             {isConnected ? (
