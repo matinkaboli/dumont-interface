@@ -1,3 +1,5 @@
+'use client';
+
 import { type PropsWithChildren } from 'react';
 import { createConfig, WagmiConfig } from 'wagmi';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';

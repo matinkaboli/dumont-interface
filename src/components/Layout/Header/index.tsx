@@ -17,7 +17,7 @@ const Header = () => {
         <Menus />
       </div>
 
-      <ConnectWallet isConnected />
+      <ConnectWallet />
     </div>
   );
 };
