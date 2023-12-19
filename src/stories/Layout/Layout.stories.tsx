@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Layout } from '@/components';
+import ConnectKit from '@/providers/ConnectKit';
 
 const meta = {
   title: 'Layout',
@@ -9,6 +10,13 @@ const meta = {
     layout: 'centered',
     inspectComponents: [Layout],
   },
+  decorators: [
+    (Story) => (
+      <ConnectKit>
+        <Story />
+      </ConnectKit>
+    ),
+  ],
   tags: ['autodocs'],
 } satisfies Meta<typeof Layout>;
 
