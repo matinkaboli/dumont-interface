@@ -1,6 +1,6 @@
 import type { Meta } from '@storybook/react';
 
-import { Button, Dialog, DialogDescription, DialogTitle, DialogTrigger } from '@/components';
+import { Button, Dialog, DialogDescription, DialogTitle } from '@/components';
 
 import { useArgs } from '@storybook/preview-api';
 
@@ -19,15 +19,14 @@ export const LargeSize = ({ ...args }) => {
   const [{ open }, updateArgs] = useArgs();
   const onOpenChange = () => updateArgs({ open: !open });
   return (
-    <Dialog
-      {...args}
-      size="lg"
-      open={open}
-      onOpenChange={onOpenChange}
-      triggerElement={<Button variant="primary">open</Button>}
-    >
-      <DialogDescription className="h-[200px]">{fakeText}</DialogDescription>
-    </Dialog>
+    <div>
+      <Button variant="primary" onClick={onOpenChange}>
+        open
+      </Button>
+      <Dialog {...args} size="lg" open={open} onOpenChange={onOpenChange}>
+        <DialogDescription className="h-[200px]">{fakeText}</DialogDescription>
+      </Dialog>
+    </div>
   );
 };
 
@@ -35,15 +34,14 @@ export const MediumSize = ({ ...args }) => {
   const [{ open }, updateArgs] = useArgs();
   const onOpenChange = () => updateArgs({ open: !open });
   return (
-    <Dialog
-      {...args}
-      size="md"
-      open={open}
-      onOpenChange={onOpenChange}
-      triggerElement={<Button variant="primary">open</Button>}
-    >
-      <DialogDescription className="min-h-[200px]">{fakeText}</DialogDescription>
-    </Dialog>
+    <div>
+      <Button variant="primary" onClick={onOpenChange}>
+        open
+      </Button>
+      <Dialog {...args} size="md" open={open} onOpenChange={onOpenChange}>
+        <DialogDescription className="min-h-[200px]">{fakeText}</DialogDescription>
+      </Dialog>
+    </div>
   );
 };
 
@@ -51,17 +49,16 @@ export const SmallSize = ({ ...args }) => {
   const [{ open }, updateArgs] = useArgs();
   const onOpenChange = () => updateArgs({ open: !open });
   return (
-    <Dialog
-      {...args}
-      size="sm"
-      open={open}
-      onOpenChange={onOpenChange}
-      triggerElement={<Button variant="primary">open</Button>}
-    >
-      <DialogDescription>
-        Make changes to your profile here. Click save when yore done.
-      </DialogDescription>
-    </Dialog>
+    <div>
+      <Button variant="primary" onClick={onOpenChange}>
+        open
+      </Button>
+      <Dialog {...args} size="sm" open={open} onOpenChange={onOpenChange}>
+        <DialogDescription>
+          Make changes to your profile here. Click save when yore done.
+        </DialogDescription>
+      </Dialog>
+    </div>
   );
 };
 
@@ -69,48 +66,19 @@ export const ShowCloseButton = ({ ...args }) => {
   const [{ open }, updateArgs] = useArgs();
   const onOpenChange = () => updateArgs({ open: !open });
   return (
-    <Dialog
-      {...args}
-      size="md"
-      open={open}
-      onOpenChange={onOpenChange}
-      showCloseButton
-      triggerElement={<Button variant="primary">open</Button>}
-    >
-      <DialogTitle>Edit profile</DialogTitle>
-      <DialogDescription>
-        Make changes to your profile here. Click save when yore done.
-      </DialogDescription>
-      <DialogTrigger asChild>
-        <Button type="submit" className="mt-2">
+    <div>
+      <Button variant="primary" onClick={onOpenChange}>
+        open
+      </Button>
+      <Dialog {...args} size="md" open={open} onOpenChange={onOpenChange} showCloseButton>
+        <DialogTitle>Edit profile</DialogTitle>
+        <DialogDescription>
+          Make changes to your profile here. Click save when yore done.
+        </DialogDescription>
+        <Button type="submit" className="mt-2" onClick={onOpenChange}>
           Save changes
         </Button>
-      </DialogTrigger>
-    </Dialog>
-  );
-};
-
-export const TriggerElement = ({ ...args }) => {
-  const [{ open }, updateArgs] = useArgs();
-  const onOpenChange = () => updateArgs({ open: !open });
-  return (
-    <Dialog
-      {...args}
-      size="md"
-      open={open}
-      onOpenChange={onOpenChange}
-      showCloseButton
-      triggerElement={<div className="bg-white p-1 cursor-pointer">This is new Trigger</div>}
-    >
-      <DialogTitle>Edit profile</DialogTitle>
-      <DialogDescription>
-        Make changes to your profile here. Click save when yore done.
-      </DialogDescription>
-      <DialogTrigger asChild>
-        <Button type="submit" className="mt-2">
-          Save changes
-        </Button>
-      </DialogTrigger>
-    </Dialog>
+      </Dialog>
+    </div>
   );
 };
