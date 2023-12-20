@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import copy from 'copy-to-clipboard';
 
-import { Icon } from '@/components';
+import { Icon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 
 interface Props {
   copyText: string;
@@ -24,9 +24,16 @@ const CopyToClipboard = ({ copyText, buttonText, className }: Props) => {
   };
 
   return (
-    <button type="button" className={className} onClick={onCopyText}>
-      {isCopied ? 'Copied!' : buttonText || <Icon name="copy" />}
-    </button>
+    <TooltipProvider delayDuration={100}>
+      <Tooltip open={isCopied}>
+        <TooltipTrigger>
+          <button type="button" className={className} onClick={onCopyText}>
+            {buttonText || <Icon name="copy" />}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>Copied!</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
