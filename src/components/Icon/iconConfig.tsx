@@ -23,6 +23,7 @@ import Dash from './svgs/Dash';
 import Tick from './svgs/Tick';
 import VolumeLow from './svgs/VolumeLow';
 import GiftFill from './svgs/GiftFill';
+import Copy from './svgs/Copy';
 
 export interface SvgProps {
   width?: string;
@@ -49,7 +50,8 @@ export type IconName =
   | 'dash'
   | 'tick'
   | 'volume-low'
-  | 'gift-fill';
+  | 'gift-fill'
+  | 'copy';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -68,5 +70,6 @@ export const iconMap: Record<IconName, ReactElement> = {
   dash: <Dash />,
   tick: <Tick />,
   'volume-low': <VolumeLow />,
-  'gift-fill': <GiftFill />
+  'gift-fill': <GiftFill />,
+  'copy': <Copy />
 };
