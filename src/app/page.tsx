@@ -1,4 +1,4 @@
-import CopyToClipboard from '@/components/CopyToClipboard';
+import { CopyToClipboard } from '@/components';
 
 export default function Home() {
   return (
