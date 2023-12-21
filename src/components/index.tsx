@@ -4,5 +4,6 @@ export { default as Input } from './Input';
 export { default as Checkbox } from './Checkbox';
 export { default as Layout } from './Layout';
 export { default as CopyToClipboard } from './CopyToClipboard';
+export { default as QRCode } from './QRCode';
 export * from './Dialog';
 export * from './Tooltip';

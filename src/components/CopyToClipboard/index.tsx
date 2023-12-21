@@ -26,7 +26,7 @@ const CopyToClipboard = ({ copyText, buttonText, className }: Props) => {
   return (
     <TooltipProvider delayDuration={100}>
       <Tooltip open={isCopied}>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <button type="button" className={className} onClick={onCopyText}>
             {buttonText || <Icon name="copy" />}
           </button>
