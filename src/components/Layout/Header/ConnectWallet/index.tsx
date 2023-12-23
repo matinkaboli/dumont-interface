@@ -16,8 +16,6 @@ const ConnectWallet = () => {
     token: Contracts.STABLE_COIN,
   });
 
-  console.warn(balance);
-
   return (
     <ConnectKitButton.Custom>
       {({ isConnected, show, truncatedAddress }) => {
