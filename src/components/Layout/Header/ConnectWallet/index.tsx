@@ -4,6 +4,7 @@ import { ConnectKitButton } from 'connectkit';
 import { useAccount, useBalance } from 'wagmi';
 
 import { Button } from '@/components';
+import { Contracts } from '@/constants/contracts';
 
 import ConnectedWallet from './ConnectedWallet';
 import GiftButton from './GiftButton';
@@ -12,8 +13,10 @@ const ConnectWallet = () => {
   const { address } = useAccount();
   const { data: balance } = useBalance({
     address: address,
-    token: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    token: Contracts.STABLE_COIN,
   });
+
+  console.warn(balance);
 
   return (
     <ConnectKitButton.Custom>
