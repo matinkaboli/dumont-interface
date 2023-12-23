@@ -22,9 +22,9 @@ const ConnectedWallet = ({ address, balance }: Props) => {
           onClick={onOpenChange}
         >
           <div className="flex-center-v gap-1 text-white text-sm bg-neutral-800 px-1 h-8 rounded-md">
-            <Image width={20} height={20} src="/images/DAI.svg" alt="" />
+            <Image width={20} height={20} src="/images/USDT.svg" alt="" />
             <span className="font-bold">{balance}</span>
-            <span>DAI</span>
+            <span>USDT</span>
           </div>
           <div className="text-primary-250 text-sm">{address}</div>
         </button>
