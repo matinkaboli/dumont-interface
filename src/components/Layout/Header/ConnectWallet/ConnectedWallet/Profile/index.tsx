@@ -1,5 +1,6 @@
 import { Button, Icon, QRCode } from '@/components';
 import Image from 'next/image';
+import { useDisconnect } from 'wagmi';
 
 import CopyBox from './CopyBox';
 import BalanceList from './BalanceList';
@@ -8,12 +9,18 @@ import LinkButton from './LinkButton';
 interface Props {
   address?: string;
   truncatedAddress?: string;
-  onOpenChange?: () => void;
+  onOpenChange: () => void;
 }
 
 const Profile = ({ address = '', truncatedAddress, onOpenChange }: Props) => {
+  const { disconnect } = useDisconnect({
+    onSuccess() {
+      onOpenChange();
+    },
+  });
+
   return (
-    <div>
+    <>
       <QRCode value={address} size={192} className="mx-auto" />
 
       <div className="flex flex-col gap-6">
@@ -54,13 +61,13 @@ const Profile = ({ address = '', truncatedAddress, onOpenChange }: Props) => {
 
       <Button
         variant="link"
-        className="text-error-400 font-semibold text-base mt-8 mx-auto"
+        className="text-error-400 font-semibold text-base mt-8 mx-auto !px-0"
         rightSection={<Icon name="arrow-right-from-bracket" />}
-        onClick={onOpenChange}
+        onClick={() => disconnect()}
       >
         Logout
       </Button>
-    </div>
+    </>
   );
 };
 
