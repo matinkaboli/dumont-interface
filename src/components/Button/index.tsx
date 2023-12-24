@@ -82,17 +82,21 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
         ref={ref}
         {...props}
       >
-        <div>
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : (
-            <>
-              {rightSection}
-              {children}
-              {leftSection}
-            </>
-          )}
-        </div>
+        {asChild ? (
+          children
+        ) : (
+          <>
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : (
+              <>
+                {rightSection}
+                {children}
+                {leftSection}
+              </>
+            )}
+          </>
+        )}
       </Comp>
     );
   },
