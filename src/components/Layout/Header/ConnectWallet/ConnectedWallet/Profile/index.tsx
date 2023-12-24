@@ -33,7 +33,7 @@ const Profile = ({ address = '', truncatedAddress, onOpenChange }: Props) => {
 
         <div className="flex flex-col gap-2">
           <h6 className="text-sm text-neutral-300 font-semibold">Balance</h6>
-          <BalanceList />
+          <BalanceList address={address} />
 
           <div className="flex gap-2">
             <LinkButton link="/">
