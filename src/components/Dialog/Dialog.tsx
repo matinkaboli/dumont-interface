@@ -1,5 +1,5 @@
 import React from 'react';
-import { Close, Content, Overlay, Portal, Root, Trigger } from '@radix-ui/react-dialog';
+import { Content, Overlay, Portal, Root } from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cva, VariantProps } from 'class-variance-authority';
 
@@ -21,21 +21,20 @@ const contentVariants = cva('fixed z-50 bg-neutral-700 rounded-xl w-3/4 px-8 pt-
 interface DialogProps
   extends React.ComponentPropsWithoutRef<typeof Root>,
     VariantProps<typeof contentVariants> {
+  open: boolean;
+  onOpenChange: () => void;
   className?: string;
   showCloseButton?: boolean;
-  triggerElement?: React.ReactNode;
   ref?: React.Ref<React.ElementRef<typeof Root>>;
 }
 
 const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
-  ({ open, showCloseButton, className, size, triggerElement, children, ...props }, ref) => (
+  ({ open, onOpenChange, showCloseButton, className, size, children, ...props }, ref) => (
     <Root ref={ref} {...props}>
-      <Trigger asChild>{triggerElement}</Trigger>
-
       <AnimatePresence>
         {open ? (
           <Portal forceMount>
-            <Overlay asChild className="fixed inset-0 z-40 bg-black">
+            <Overlay onClick={onOpenChange} asChild className="fixed inset-0 z-40 bg-black">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.5 }}
@@ -43,7 +42,7 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
               ></motion.div>
             </Overlay>
 
-            <div className="flex justify-center items-center h-[80vh]">
+            <div className="flex justify-center items-center h-[80vh] fixed inset-0 z-50">
               <Content asChild className={contentVariants({ size, className })}>
                 <motion.div
                   initial={{ opacity: 0, y: 25 }}
@@ -53,10 +52,10 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
                   {children}
 
                   {showCloseButton && (
-                    <Close className="absolute right-4 top-4">
+                    <div onClick={onOpenChange} className="absolute right-4 top-4 cursor-pointer">
                       <Icon name="xmark" color="#ADADB6" width="20px" height="20px" />
                       <span className="sr-only">Close</span>
-                    </Close>
+                    </div>
                   )}
                 </motion.div>
               </Content>
