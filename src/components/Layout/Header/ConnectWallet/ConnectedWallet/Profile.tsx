@@ -1,4 +1,4 @@
-import { Button, CopyToClipboard, QRCode } from '@/components';
+import { Button, CopyToClipboard, Icon, QRCode } from '@/components';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -50,9 +50,11 @@ const Profile = ({ address = '', truncatedAddress, onOpenChange }: Props) => {
               size="sm"
               radius="lg"
               className="bg-neutral-600 font-bold text-white"
-              rightSection={<Image src="/images/DAI.svg" width={24} height={24} alt="" />}
             >
-             <Link href="/">Buy crypto</Link>
+              <Link href="/">
+                <Icon name="credit-card" />
+                Buy crypto
+              </Link>
             </Button>
             <Button
               asChild
@@ -61,9 +63,11 @@ const Profile = ({ address = '', truncatedAddress, onOpenChange }: Props) => {
               size="sm"
               radius="lg"
               className="bg-neutral-600 font-bold text-white"
-              rightSection={<Image src="/images/DAI.svg" width={24} height={24} alt="" />}
             >
-              <Link href="/">Buy crypto</Link>
+              <Link href="/">
+                <Icon name="swap-coin" />
+                Buy crypto
+              </Link>
             </Button>
           </div>
         </div>

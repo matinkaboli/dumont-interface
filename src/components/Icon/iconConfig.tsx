@@ -24,6 +24,8 @@ import Tick from './svgs/Tick';
 import VolumeLow from './svgs/VolumeLow';
 import GiftFill from './svgs/GiftFill';
 import Copy from './svgs/Copy';
+import CreditCard from './svgs/CreditCard';
+import SwapCoin from './svgs/SwapCoin';
 
 export interface SvgProps {
   width?: string;
@@ -51,7 +53,9 @@ export type IconName =
   | 'tick'
   | 'volume-low'
   | 'gift-fill'
-  | 'copy';
+  | 'copy'
+  | 'credit-card'
+  | 'swap-coin';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -71,5 +75,7 @@ export const iconMap: Record<IconName, ReactElement> = {
   tick: <Tick />,
   'volume-low': <VolumeLow />,
   'gift-fill': <GiftFill />,
-  'copy': <Copy />
+  copy: <Copy />,
+  'credit-card': <CreditCard />,
+  'swap-coin': <SwapCoin />,
 };
