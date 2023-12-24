@@ -77,8 +77,13 @@ const Profile = ({ address = '', truncatedAddress, onOpenChange }: Props) => {
         </div>
       </div>
 
-      <Button className="mt-8 mx-auto" onClick={onOpenChange}>
-        logOut
+      <Button
+        variant="link"
+        className="text-error-400 font-semibold text-base mt-8 mx-auto"
+        onClick={onOpenChange}
+        rightSection={<Icon name="arrow-right-from-bracket" />}
+      >
+        Logout
       </Button>
     </div>
   );
