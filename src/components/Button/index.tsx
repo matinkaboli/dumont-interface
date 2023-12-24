@@ -1,4 +1,4 @@
-import { type ButtonHTMLAttributes, type ReactNode } from 'react';
+import React, { type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -56,38 +56,47 @@ interface Props
   leftSection?: ReactNode;
 }
 
-const Button = ({
-  variant,
-  size,
-  radius,
-  fullWidth = false,
-  asChild = false,
-  isLoading = false,
-  rightSection,
-  leftSection,
-  justify,
-  className,
-  children,
-  ...props
-}: Props) => {
-  const Comp = asChild ? Slot : 'button';
+const Button = React.forwardRef<HTMLButtonElement, Props>(
+  (
+    {
+      variant,
+      size,
+      radius,
+      fullWidth = false,
+      asChild = false,
+      isLoading = false,
+      rightSection,
+      leftSection,
+      justify,
+      className,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const Comp = asChild ? Slot : 'button';
 
-  return (
-    <Comp
-      className={buttonVariants({ variant, size, radius, fullWidth, justify, className })}
-      {...props}
-    >
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <>
-          {rightSection}
-          {children}
-          {leftSection}
-        </>
-      )}
-    </Comp>
-  );
-};
+    return (
+      <Comp
+        className={buttonVariants({ variant, size, radius, fullWidth, justify, className })}
+        ref={ref}
+        {...props}
+      >
+        <div>
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <>
+              {rightSection}
+              {children}
+              {leftSection}
+            </>
+          )}
+        </div>
+      </Comp>
+    );
+  },
+);
+Button.displayName = 'Button';
 
 export default Button;

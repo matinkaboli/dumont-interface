@@ -26,9 +26,9 @@ const CopyToClipboard = ({ copyText, buttonText, className }: Props) => {
   return (
     <TooltipProvider delayDuration={100}>
       <Tooltip open={isCopied}>
-        <TooltipTrigger asChild>
+        <TooltipTrigger className="group" asChild>
           <button type="button" className={className} onClick={onCopyText}>
-            {buttonText || <Icon name="copy" />}
+            {buttonText || <Icon name="copy" className="transition ease-in-out group-hover:[&_.path]:fill-primary-250" />}
           </button>
         </TooltipTrigger>
         <TooltipContent>Copied!</TooltipContent>

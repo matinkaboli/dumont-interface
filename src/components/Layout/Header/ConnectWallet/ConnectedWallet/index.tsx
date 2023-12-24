@@ -2,14 +2,16 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Button, Dialog, DialogDescription } from '@/components';
+import { Dialog } from '@/components';
+import Profile from './Profile';
 
 interface Props {
   address?: string;
+  truncatedAddress?: string;
   balance?: string;
 }
 
-const ConnectedWallet = ({ address, balance }: Props) => {
+const ConnectedWallet = ({ address, truncatedAddress, balance }: Props) => {
   const [open, setOpen] = useState(false);
   const onOpenChange = () => setOpen((prev) => !prev);
 
@@ -26,18 +28,12 @@ const ConnectedWallet = ({ address, balance }: Props) => {
             <span className="font-bold">{balance}</span>
             <span>USDT</span>
           </div>
-          <div className="text-primary-250 text-sm">{address}</div>
+          <div className="text-primary-250 text-sm">{truncatedAddress}</div>
         </button>
       </div>
 
       <Dialog open={open} onOpenChange={onOpenChange} showCloseButton>
-        <DialogDescription>
-          Make changes to your profile here. Click save when yore done.
-        </DialogDescription>
-
-        <Button className="mt-2" onClick={onOpenChange}>
-          Save changes
-        </Button>
+        <Profile address={address} truncatedAddress={truncatedAddress} onOpenChange={onOpenChange} />
       </Dialog>
     </>
   );

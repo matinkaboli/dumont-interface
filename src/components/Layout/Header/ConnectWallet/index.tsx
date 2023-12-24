@@ -24,7 +24,11 @@ const ConnectWallet = () => {
             {isConnected ? (
               <div className="flex gap-2">
                 <GiftButton />
-                <ConnectedWallet address={truncatedAddress} balance={balance?.formatted} />
+                <ConnectedWallet
+                  address={address}
+                  truncatedAddress={truncatedAddress}
+                  balance={balance?.formatted}
+                />
               </div>
             ) : (
               <Button
