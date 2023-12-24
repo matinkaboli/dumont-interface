@@ -27,6 +27,7 @@ import Copy from './svgs/Copy';
 import CreditCard from './svgs/CreditCard';
 import SwapCoin from './svgs/SwapCoin';
 import ArrowRightFromBracket from './svgs/ArrowRightFromBracket';
+import Link from './svgs/Link';
 
 export interface SvgProps {
   width?: string;
@@ -57,7 +58,8 @@ export type IconName =
   | 'copy'
   | 'credit-card'
   | 'swap-coin'
-  | 'arrow-right-from-bracket';
+  | 'arrow-right-from-bracket'
+  | 'link';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -81,4 +83,5 @@ export const iconMap: Record<IconName, ReactElement> = {
   'credit-card': <CreditCard />,
   'swap-coin': <SwapCoin />,
   'arrow-right-from-bracket': <ArrowRightFromBracket />,
+  'link': <Link />,
 };

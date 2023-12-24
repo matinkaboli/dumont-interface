@@ -1,0 +1,26 @@
+import { ReactNode } from 'react';
+import clsx from 'clsx';
+
+import { CopyToClipboard } from '@/components';
+
+interface Props {
+  copyText: string;
+  copyLabel?: string;
+  copyIcon?: ReactNode;
+  className?: string;
+}
+
+const CopyBox = ({ copyText, copyLabel, copyIcon, className }: Props) => {
+  return (
+    <div className={clsx('flex-between bg-neutral-600 px-4 h-10 rounded-lg', className)}>
+      <div className="flex gap-2">
+        {copyIcon}
+        <div className="text-neutral-100 font-medium text-base">{copyLabel}</div>
+      </div>
+
+      <CopyToClipboard copyText={copyText} />
+    </div>
+  );
+};
+
+export default CopyBox;
