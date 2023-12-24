@@ -42,7 +42,7 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
               ></motion.div>
             </Overlay>
 
-            <div className="flex justify-center items-center h-[80vh] fixed inset-0 z-50">
+            <div className="flex justify-center items-center min-h-[80vh] fixed inset-0 z-50">
               <Content asChild className={contentVariants({ size, className })}>
                 <motion.div
                   initial={{ opacity: 0, y: 25 }}
