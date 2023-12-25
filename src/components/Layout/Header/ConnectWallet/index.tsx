@@ -33,7 +33,7 @@ const ConnectWallet = () => {
             {isConnected ? (
               <div className="flex gap-2">
                 <GiftButton />
-                <ConnectedWallet address={address} balance={balance?.formatted} />
+                <ConnectedWallet />
               </div>
             ) : (
               <Button
