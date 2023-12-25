@@ -12,9 +12,9 @@ const BalanceList = ({ address }: Props) => {
     token: Contracts.STABLE_COIN,
   });
 
-  const { data: DAIBalance } = useBalance({
+  const { data: ETHBalance } = useBalance({
     address: address as `0x${string}`,
-    token: Contracts.DAI,
+    token: Contracts.ETH,
   });
 
   return (
@@ -28,10 +28,10 @@ const BalanceList = ({ address }: Props) => {
       </li>
       <li className="px-4 h-10 flex-between">
         <div className="flex gap-2">
-          <Image src="/images/DAI.svg" width={24} height={24} alt="" />
-          <div className="text-neutral-200 text-base font-medium">DAI</div>
+          <Image src="/images/ethereum.svg" width={24} height={24} alt="" />
+          <div className="text-neutral-200 text-base font-medium">ETH</div>
         </div>
-        <div className="text-neutral-50 text-base font-medium">{DAIBalance?.formatted}</div>
+        <div className="text-neutral-50 text-base font-medium">{ETHBalance?.formatted}</div>
       </li>
     </ul>
   );
