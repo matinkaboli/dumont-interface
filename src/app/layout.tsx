@@ -3,6 +3,7 @@ import { type Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Layout from '@/components/Layout';
 import ConnectKit from '@/providers/ConnectKit';
+import Redux from '@/providers/Redux';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -16,9 +17,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ConnectKit>
-          <Layout>{children}</Layout>
-        </ConnectKit>
+        <Redux>
+          <ConnectKit>
+            <Layout>{children}</Layout>
+          </ConnectKit>
+        </Redux>
       </body>
     </html>
   );
