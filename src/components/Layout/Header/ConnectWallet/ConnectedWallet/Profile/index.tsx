@@ -2,17 +2,18 @@ import { Button, Icon, QRCode } from '@/components';
 import Image from 'next/image';
 import { useDisconnect } from 'wagmi';
 
+import truncateString from '@/helpers/truncateString';
+
 import CopyBox from './CopyBox';
 import BalanceList from './BalanceList';
 import LinkButton from './LinkButton';
 
 interface Props {
   address?: string;
-  truncatedAddress?: string;
   onOpenChange: () => void;
 }
 
-const Profile = ({ address = '', truncatedAddress, onOpenChange }: Props) => {
+const Profile = ({ address = '', onOpenChange }: Props) => {
   const { disconnect } = useDisconnect({
     onSuccess() {
       onOpenChange();
@@ -27,7 +28,7 @@ const Profile = ({ address = '', truncatedAddress, onOpenChange }: Props) => {
         <CopyBox
           className="mt-4"
           copyText={address}
-          copyLabel={truncatedAddress}
+          copyLabel={truncateString(address, { leftChars: 8, rightChars: 8 })}
           copyIcon={<Image src="/images/metamask.png" width={24} height={24} alt="MetaMask" />}
         />
 

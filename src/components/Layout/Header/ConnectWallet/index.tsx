@@ -18,17 +18,13 @@ const ConnectWallet = () => {
 
   return (
     <ConnectKitButton.Custom>
-      {({ isConnected, show, truncatedAddress }) => {
+      {({ isConnected, show }) => {
         return (
-          <div>
+          <>
             {isConnected ? (
               <div className="flex gap-2">
                 <GiftButton />
-                <ConnectedWallet
-                  address={address}
-                  truncatedAddress={truncatedAddress}
-                  balance={balance?.formatted}
-                />
+                <ConnectedWallet address={address} balance={balance?.formatted} />
               </div>
             ) : (
               <Button
@@ -40,7 +36,7 @@ const ConnectWallet = () => {
                 Connect Wallet
               </Button>
             )}
-          </div>
+          </>
         );
       }}
     </ConnectKitButton.Custom>

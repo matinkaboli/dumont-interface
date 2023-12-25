@@ -1,13 +1,14 @@
-import React from 'react';
 import Image from 'next/image';
+
+import truncateString from '@/helpers/truncateString';
 
 interface Props {
   balance?: string;
-  truncatedAddress?: string;
+  address?: string;
   onOpenChange: () => void;
 }
 
-const AddressButton = ({ balance, truncatedAddress, onOpenChange }: Props) => {
+const AddressButton = ({ balance, address = '', onOpenChange }: Props) => {
   return (
     <div className="border-primary-gradiant rounded-lg">
       <button
@@ -20,7 +21,7 @@ const AddressButton = ({ balance, truncatedAddress, onOpenChange }: Props) => {
           <span className="font-bold">{balance}</span>
           <span>USDT</span>
         </div>
-        <div className="text-primary-250 text-sm">{truncatedAddress}</div>
+        <div className="text-primary-250 text-sm">{truncateString(address)}</div>
       </button>
     </div>
   );
