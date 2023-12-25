@@ -1,14 +1,16 @@
 import Image from 'next/image';
 
 import truncateString from '@/helpers/truncateString';
+import { useTypedSelector } from '@/hooks/useTypesSelector';
 
 interface Props {
-  balance?: string;
-  address?: string;
   onOpenChange: () => void;
 }
 
-const AddressButton = ({ balance, address = '', onOpenChange }: Props) => {
+const AddressButton = ({ onOpenChange }: Props) => {
+  const address = useTypedSelector((state) => state.account.address) || '';
+  const balance = useTypedSelector((state) => state.account.balance);
+
   return (
     <div className="border-primary-gradiant rounded-lg">
       <button

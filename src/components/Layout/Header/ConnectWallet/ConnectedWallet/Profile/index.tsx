@@ -3,17 +3,18 @@ import Image from 'next/image';
 import { useDisconnect } from 'wagmi';
 
 import truncateString from '@/helpers/truncateString';
+import { useTypedSelector } from '@/hooks/useTypesSelector';
 
 import CopyBox from './CopyBox';
 import BalanceList from './BalanceList';
 import LinkButton from './LinkButton';
 
 interface Props {
-  address?: string;
   onOpenChange: () => void;
 }
 
-const Profile = ({ address = '', onOpenChange }: Props) => {
+const Profile = ({ onOpenChange }: Props) => {
+  const address = useTypedSelector((state) => state.account.address) || '';
   const { disconnect } = useDisconnect({
     onSuccess() {
       onOpenChange();
