@@ -14,6 +14,7 @@ const BalanceList = ({ address }: Props) => {
   const { data: ETHBalance } = useBalance({
     address: address as `0x${string}`,
     token: Contracts.ETH,
+    watch: true,
   });
 
   return (

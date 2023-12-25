@@ -18,6 +18,7 @@ const ConnectWallet = () => {
   const { data: balance } = useBalance({
     address: address,
     token: Contracts.STABLE_COIN,
+    watch: true,
   });
 
   useEffect(() => {
