@@ -12,7 +12,7 @@ const buttonVariants = cva(
       },
       variant: {
         primary:
-          'bg-primary-200 text-white [&_.path]:fill-white hover:bg-primary-400 active:bg-primary-500 active:text-primary-100',
+          'bg-primary-300 text-white [&_.path]:fill-white hover:bg-primary-400 border border-primary-200 hover:border-primary-400 active:border-primary-500 active:bg-primary-500 active:text-primary-100',
         secondary:
           'bg-transparent text-primary-200 border border-primary-200 [&_.path]:fill-primary-200 [&_.path]:hover:fill-primary-100 hover:text-primary-100 hover:border-primary-100 [&_.path]:active:fill-primary-200 active:text-primary-200 active:border-primary-200',
         warning:
