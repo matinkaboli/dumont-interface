@@ -3,7 +3,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const buttonVariants = cva(
-  'font-semibold flex gap-2 items-center disabled:bg-primary-650 disabled:text-neutral-500',
+  'font-semibold flex gap-2 items-center disabled:bg-primary-650 disabled:text-neutral-500 disabled:border-primary-650',
   {
     variants: {
       fullWidth: {
