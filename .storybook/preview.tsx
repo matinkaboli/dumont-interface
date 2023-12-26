@@ -1,6 +1,8 @@
 import type { Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
 
+import Redux from '../src/providers/Redux';
+import ConnectKit from '../src/providers/ConnectKit';
 import '../src/app/globals.css';
 
 const preview: Preview = {
@@ -29,6 +31,15 @@ const preview: Preview = {
       ],
     },
   },
+  decorators: [
+    (Story) => (
+      <Redux>
+        <ConnectKit>
+          <Story />
+        </ConnectKit>
+      </Redux>
+    ),
+  ],
 };
 
 export default preview;

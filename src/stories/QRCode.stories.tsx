@@ -1,20 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Round from '@/components/Layout/Footer/Round';
+import { QRCode } from '@/components';
 
 const meta = {
-  title: 'Layout/Round',
-  component: Round,
+  title: 'QRCode',
+  component: QRCode,
   parameters: {
     layout: 'centered',
-    inspectComponents: [Round],
+    inspectComponents: [QRCode],
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Round>;
+} satisfies Meta<typeof QRCode>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  args: { roundTime: '2h 30m 30s' },
+  args: {
+   value: 'You just scanned a QR code!'
+  },
 };
