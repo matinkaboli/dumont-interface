@@ -7,7 +7,7 @@ interface Props {
   className?: string;
 }
 
-const Card = ({ imgSrc = '/images/demo-card.png', width, className }: Props) => {
+const DemoCard = ({ imgSrc = '/images/demo-card.png', width, className }: Props) => {
   return (
     <div>
       <Image
@@ -22,4 +22,4 @@ const Card = ({ imgSrc = '/images/demo-card.png', width, className }: Props) => 
   );
 };
 
-export default Card;
+export default DemoCard;

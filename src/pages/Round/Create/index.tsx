@@ -1,7 +1,8 @@
 import { Button } from '@/components';
-import Card from './Card';
 
-const CreateRoundHeader = () => {
+import DemoCard from './DemoCard';
+
+const CreateRound = () => {
   return (
     <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center">
       <h1 className="text-2xl text-white font-bold">Let’s start your round</h1>
@@ -11,12 +12,12 @@ const CreateRoundHeader = () => {
       </Button>
 
       <div className="flex justify-center items-end gap-4 mt-10">
-        <Card width={190} className="hidden md:block" />
-        <Card width={222} />
-        <Card width={190} className="hidden md:block" />
+        <DemoCard width={190} className="hidden md:block" />
+        <DemoCard width={222} />
+        <DemoCard width={190} className="hidden md:block" />
       </div>
     </div>
   );
 };
 
-export default CreateRoundHeader;
+export default CreateRound;
