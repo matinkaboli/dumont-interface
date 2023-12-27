@@ -1,7 +1,11 @@
-import React from 'react';
 import Key from './Key';
 
-const keys = [
+export interface KeyType {
+  value?: string;
+  weight?: number;
+}
+
+const keys: KeyType[] = [
   { value: '1', weight: 2 },
   { value: '2', weight: 3.1 },
   { value: '3', weight: 6.4 },
