@@ -19,6 +19,21 @@ const inputVariants = cva(
   },
 );
 
+const labelVariants = cva(
+  'font-medium text-white mb-2 block',
+  {
+    variants: {
+      size: {
+        sm: 'text-xs',
+        md: 'text-sm',
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+    },
+  },
+);
+
 interface Props
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputVariants> {
@@ -50,7 +65,7 @@ const Input = ({
 
   return (
     <div>
-      {label && <label className="font-medium text-white text-sm mb-3 block">{label}</label>}
+      {label && <label className={labelVariants({ size })}>{label}</label>}
 
       <div
         className={clsx(

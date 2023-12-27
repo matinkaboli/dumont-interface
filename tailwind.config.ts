@@ -84,6 +84,8 @@ const config: Config = {
           'radial-gradient(102.76% 214.4% at 50% -78.19%, rgba(122, 16, 197, 0.32) 32.53%, rgba(17, 4, 20, 0.00) 100%)',
         'gradiant-body': 'linear-gradient(180deg, #050505 0%, #110015 100%)',
         'gradiant-box': 'linear-gradient(180deg, #1A1A1A 20.43%, #220A3B 100%)',
+        'gradiant-border-amount':
+          'linear-gradient(135deg, #7A10C5 0.05%, rgba(122, 16, 197, 0.04) 52.13%, #7A10C5 100.05%)',
       },
       fontSize: {
         xs: ['12px', '18px'],

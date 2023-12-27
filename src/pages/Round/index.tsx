@@ -1,5 +1,6 @@
 import CreateRound from './Create';
 import KeyBoard from './KeyBoard';
+import Amount from './Amount';
 
 const Round = () => {
   return (
@@ -10,7 +11,9 @@ const Round = () => {
         <div className="col-span-2">
           <KeyBoard />
         </div>
-        <div className="col-span-1">Amount</div>
+        <div className="col-span-1">
+          <Amount />
+        </div>
       </div>
     </div>
   );
