@@ -27,7 +27,7 @@ const KeyBoard = () => {
       {keys.map((key) => (
         <Key key={key.value} value={key.value} weight={key.weight} />
       ))}
-      <Key isSkip />
+      <Key isSkip className="col-span-2" />
     </div>
   );
 };

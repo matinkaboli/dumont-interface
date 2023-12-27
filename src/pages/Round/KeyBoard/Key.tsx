@@ -7,10 +7,10 @@ interface Props extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'value'>, 
 }
 
 const btnStyle =
-  'h-[84px] flex justify-center items-center gap-0.5 bg-neutral-750 hover:bg-neutral-700 border border-neutral-700 rounded-lg transition ease-in-out';
+  'sm:h-[84px] h-[65px] w-full flex justify-center items-center gap-0.5 bg-neutral-750 hover:bg-neutral-700 border border-neutral-700 rounded-lg transition ease-in-out';
 
 const Key = memo(({ value, weight, className, isSkip = false, ...props }: Props) => {
-  const dynamicStyles = isSkip ? 'w-[217px] text-md text-white font-bold' : 'flex-col w-[104px]';
+  const dynamicStyles = isSkip ? 'text-md text-white font-bold' : 'flex-col';
 
   return (
     <button type="button" className={clsx(dynamicStyles, btnStyle, className)} {...props}>
