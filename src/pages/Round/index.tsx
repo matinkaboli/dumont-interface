@@ -1,9 +1,17 @@
 import CreateRound from './Create';
+import KeyBoard from './KeyBoard';
 
 const Round = () => {
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <CreateRound />
+
+      <div className="grid grid-cols-3 gap-4">
+        <div className="col-span-2">
+          <KeyBoard />
+        </div>
+        <div className="col-span-1">Amount</div>
+      </div>
     </div>
   );
 };
