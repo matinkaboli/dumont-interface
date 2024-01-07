@@ -4,7 +4,7 @@ import Amount from './Amount';
 
 const Round = () => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 md:pb-0 pb-12 relative">
       <CreateRound />
 
       <div className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4">
