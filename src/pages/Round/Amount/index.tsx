@@ -17,11 +17,10 @@ const inputProps = {
 const mobileInputProps = {
   size: 'md' as any,
   placeholder: 'Enter amount',
-  className: '!bg-neutral-700 !border-neutral-700 !text-white !font-bold',
   rightSection: (
     <div className="flex gap-1.5 items-center">
       <Image src="/images/USDT.svg" width={32} height={32} alt="" />
-      <span className="text-base font-medium">USDT</span>
+      <span className="text-base font-medium text-neutral-800">USDT</span>
     </div>
   ),
 };
@@ -57,7 +56,7 @@ const Amount = () => {
             <button
               type="button"
               onClick={handleToggle}
-              className="bg-neutral-700 h-12 w-12 rounded-lg"
+              className="bg-neutral-800 border border-neutral-600 h-12 w-12 rounded-lg"
             >
               <motion.span
                 className="block"
@@ -78,7 +77,7 @@ const Amount = () => {
           <AmountInfo
             odd={6.6}
             total={220}
-            className="bg-neutral-700 rounded-lg px-4 py-2 gap-2"
+            className="bg-neutral-750 border border-neutral-600 rounded-lg px-4 py-2 gap-2"
             labelClassName="text-neutral-400"
             valueClassName="text-neutral-200"
           />
