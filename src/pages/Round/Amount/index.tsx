@@ -1,5 +1,10 @@
-import { Button, Icon, Input } from '@/components';
+'use client';
+
 import Image from 'next/image';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+
+import { Button, Icon, Input } from '@/components';
 
 import AmountInfo from './Info';
 
@@ -22,6 +27,9 @@ const mobileInputProps = {
 };
 
 const Amount = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleToggle = () => setIsOpen(!isOpen);
+
   return (
     <>
       {/* Desktop View */}
@@ -30,7 +38,6 @@ const Amount = () => {
           <div>
             <Input {...inputProps} />
 
-            {/*info section*/}
             <AmountInfo odd={6.6} total={220} className="gap-3 mt-4" />
           </div>
 
@@ -47,24 +54,41 @@ const Amount = () => {
             <Input {...mobileInputProps} />
           </div>
           <div className="flex-none">
-            <button type="button" className="bg-neutral-700 h-12 w-12 rounded-lg">
-              <Icon name="angle-down" color="white" width="28" height="28" className="mx-auto" />
+            <button
+              type="button"
+              onClick={handleToggle}
+              className="bg-neutral-700 h-12 w-12 rounded-lg"
+            >
+              <motion.span
+                className="block"
+                animate={{ rotate: isOpen ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Icon name="angle-down" color="white" width="28" height="28" className="mx-auto" />
+              </motion.span>
             </button>
           </div>
         </div>
 
-        {/*info section*/}
-        <AmountInfo
-          odd={6.6}
-          total={220}
-          className="bg-neutral-700 rounded-lg px-4 py-1 gap-2"
-          labelClassName="text-neutral-400"
-          valueClassName="text-neutral-200"
-        />
+        <motion.div
+          className="overflow-hidden"
+          initial={{ height: 0 }}
+          animate={{ height: isOpen ? 'auto' : '0' }}
+        >
+          <AmountInfo
+            odd={6.6}
+            total={220}
+            className="bg-neutral-700 rounded-lg px-4 py-2 gap-2"
+            labelClassName="text-neutral-400"
+            valueClassName="text-neutral-200"
+          />
+        </motion.div>
 
-        <Button fullWidth size="lg" radius="lg" className="!font-semibold absolute right-0 left-0 -bottom-8">
-          Connect Wallet
-        </Button>
+        <div className="bg-neutral-750 px-5 pt-6 pb-8 fixed bottom-0 right-0 left-0 rounded-t-2xl">
+          <Button fullWidth size="lg" radius="lg" className="!font-semibold">
+            Connect Wallet
+          </Button>
+        </div>
       </div>
     </>
   );
