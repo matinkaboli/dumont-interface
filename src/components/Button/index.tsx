@@ -46,7 +46,7 @@ const buttonVariants = cva(
   },
 );
 
-interface Props
+export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
@@ -56,7 +56,7 @@ interface Props
   leftSection?: ReactNode;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, Props>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       variant,

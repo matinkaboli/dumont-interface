@@ -4,9 +4,10 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
-import { Button, Icon, Input } from '@/components';
+import { Icon, Input } from '@/components';
 
 import AmountInfo from './Info';
+import BetButton from './BetButton';
 
 const inputProps = {
   size: 'sm' as any,
@@ -40,9 +41,7 @@ const Amount = () => {
             <AmountInfo odd={6.6} total={220} className="gap-3 mt-4" />
           </div>
 
-          <Button fullWidth size="md" radius="lg" className="!font-semibold">
-            Connect Wallet
-          </Button>
+          <BetButton size="md">Connect Wallet</BetButton>
         </div>
       </div>
 
@@ -84,9 +83,7 @@ const Amount = () => {
         </motion.div>
 
         <div className="bg-neutral-750 px-5 pt-6 pb-8 fixed bottom-0 right-0 left-0 rounded-t-2xl">
-          <Button fullWidth size="lg" radius="lg" className="!font-semibold">
-            Connect Wallet
-          </Button>
+          <BetButton size="lg">Connect Wallet</BetButton>
         </div>
       </div>
     </>

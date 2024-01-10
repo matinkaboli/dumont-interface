@@ -86,6 +86,7 @@ const config: Config = {
         'gradiant-box': 'linear-gradient(180deg, #1A1A1A 20.43%, #220A3B 100%)',
         'gradiant-border-amount':
           'linear-gradient(135deg, #7A10C5 0.05%, rgba(122, 16, 197, 0.04) 52.13%, #7A10C5 100.05%)',
+        'gradiant-glow': 'radial-gradient(#C472FF, #7A10C5 80%)',
       },
       fontSize: {
         xs: ['12px', '18px'],
