@@ -15,8 +15,8 @@ export default meta;
 export type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
-  render: (args) => (
-    <Dialog {...args} ref={undefined}>
+  render: () => (
+    <Dialog open onOpenChange={function (): void {}}>
       <DialogDescription>test</DialogDescription>
     </Dialog>
   ),
