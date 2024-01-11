@@ -52,8 +52,8 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
                   {children}
 
                   {showCloseButton && (
-                    <div onClick={onOpenChange} className="absolute right-4 top-4 cursor-pointer">
-                      <Icon name="xmark" color="#ADADB6" width="20px" height="20px" />
+                    <div onClick={onOpenChange} className="absolute right-3.5 top-3.5 cursor-pointer">
+                      <Icon name="xmark" color="#75757C"/>
                       <span className="sr-only">Close</span>
                     </div>
                   )}
