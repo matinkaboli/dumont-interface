@@ -3,11 +3,21 @@ import { useDispatch } from 'react-redux';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { Button, DialogDescription, DialogTitle } from '@/components';
 
+import LoadingMessage from '@/pages/_components/LoadingMessage';
+
 const Confirm = () => {
   const dispatch = useDispatch();
   const onConfirm = () => {
     dispatch(closeDialog());
-    dispatch(openDialog({ content: <div>waiting!!!</div> }));
+
+    dispatch(
+      openDialog({
+        dialogProps: { showCloseButton: false, disableEvents: true },
+        content: (
+          <LoadingMessage title="Waiting to creating round" desc="This may take few seconds" />
+        ),
+      }),
+    );
   };
 
   return (
