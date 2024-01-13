@@ -29,7 +29,7 @@ interface DialogProps
 }
 
 const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
-  ({ open, onOpenChange, showCloseButton, className, size, children, ...props }, ref) => (
+  ({ open, onOpenChange, showCloseButton = true, className, size, children, ...props }, ref) => (
     <Root ref={ref} {...props}>
       <AnimatePresence>
         {open ? (
@@ -52,8 +52,11 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
                   {children}
 
                   {showCloseButton && (
-                    <div onClick={onOpenChange} className="absolute right-3.5 top-3.5 cursor-pointer">
-                      <Icon name="xmark" color="#75757C"/>
+                    <div
+                      onClick={onOpenChange}
+                      className="absolute right-3.5 top-3.5 cursor-pointer"
+                    >
+                      <Icon name="xmark" color="#75757C" />
                       <span className="sr-only">Close</span>
                     </div>
                   )}

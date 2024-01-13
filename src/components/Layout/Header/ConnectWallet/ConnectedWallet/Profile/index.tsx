@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useDisconnect } from 'wagmi';
 
 import truncateString from '@/helpers/truncateString';
-import { useTypedSelector } from '@/hooks/useTypesSelector';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import CopyBox from './CopyBox';
 import BalanceList from './BalanceList';
