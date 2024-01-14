@@ -5,6 +5,17 @@ import Routes from '@/constants/routes';
 
 import Menus from './Menus';
 import ConnectWallet from './ConnectWallet';
+import ResponsiveMenu from './ResponsiveMenu';
+
+export interface Menu {
+  label: string;
+  href: string;
+}
+
+const menus: Menu[] = [
+  { label: 'Activity', href: Routes.ACTIVITY },
+  { label: 'Tutorial', href: Routes.TUTORIAL },
+];
 
 const Header = () => {
   return (
@@ -14,10 +25,12 @@ const Header = () => {
           <Image width={32} height={28} src="./images/logo.svg" alt="dumont" />
         </Link>
 
-        <Menus />
+        <Menus menuItems={menus} />
       </div>
 
       <ConnectWallet />
+
+      <ResponsiveMenu menuItems={menus} />
     </div>
   );
 };
