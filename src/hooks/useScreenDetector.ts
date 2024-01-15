@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
 
 export const useScreenDetector = () => {
-  const [width, setWidth] = useState(window.innerWidth);
+  const isClient = typeof window === 'object';
+  const [width, setWidth] = useState(isClient ? window.innerWidth : 0);
 
   const handleWindowSizeChange = () => {
-    setWidth(window.innerWidth);
+    setWidth(isClient ? window.innerWidth : 0);
   };
 
   useEffect(() => {
-    window.addEventListener('resize', handleWindowSizeChange);
+    if (isClient) {
+      window.addEventListener('resize', handleWindowSizeChange);
 
-    return () => {
-      window.removeEventListener('resize', handleWindowSizeChange);
-    };
-  }, []);
+      return () => {
+        window.removeEventListener('resize', handleWindowSizeChange);
+      };
+    }
+  }, [isClient]);
 
   const isMobile = width <= 768;
   const isTablet = width <= 1024;
