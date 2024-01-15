@@ -27,7 +27,7 @@ const Profile = ({ onOpenChange }: Props) => {
 
       <div className="flex flex-col gap-6">
         <CopyBox
-          className="mt-4"
+          className="border-neutral-600 mt-4"
           copyText={address}
           copyLabel={truncateString(address, { leftChars: 8, rightChars: 8 })}
           copyIcon={<Image src="/images/metamask.png" width={24} height={24} alt="MetaMask" />}
@@ -53,7 +53,7 @@ const Profile = ({ onOpenChange }: Props) => {
         <div className="flex flex-col gap-2">
           <h6 className="text-sm text-neutral-300 font-semibold">Invite Link</h6>
           <CopyBox
-            className="border border-neutral-500"
+            className="border-neutral-500"
             copyText="https://dumm.io/2341"
             copyLabel="https://dumm.io/2341"
             copyIcon={<Icon name="link" />}
@@ -62,8 +62,10 @@ const Profile = ({ onOpenChange }: Props) => {
       </div>
 
       <Button
+        fullWidth
         variant="link"
-        className="text-error-400 font-semibold text-base mt-8 mx-auto !px-0"
+        radius="lg"
+        className="text-error-400 font-semibold text-base mt-8 mx-auto !px-0 hover:bg-neutral-600"
         rightSection={<Icon name="arrow-right-from-bracket" />}
         onClick={() => disconnect()}
       >
