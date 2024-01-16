@@ -10,14 +10,16 @@ const Confirm = () => {
   const onConfirm = () => {
     dispatch(closeDialog());
 
-    dispatch(
-      openDialog({
-        dialogProps: { showCloseButton: false, disableEvents: true },
-        content: (
-          <LoadingMessage title="Waiting to creating round" desc="This may take few seconds" />
-        ),
-      }),
-    );
+    setTimeout(() => {
+      dispatch(
+        openDialog({
+          dialogProps: { showCloseButton: false, disableEvents: true },
+          content: (
+            <LoadingMessage title="Waiting to creating round" desc="This may take few seconds" />
+          ),
+        }),
+      );
+    }, 150);
   };
 
   return (
