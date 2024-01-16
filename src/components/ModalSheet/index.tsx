@@ -10,7 +10,7 @@ interface ModalSheetProps extends React.ComponentPropsWithoutRef<typeof Sheet> {
 }
 
 const ModalSheet = React.forwardRef<React.ElementRef<typeof Sheet>, ModalSheetProps>(
-  ({ isOpen, onClose, children, disableDrag = true, height = 390, ...props }, ref) => {
+  ({ isOpen, onClose, children, disableDrag = true, height = 250, ...props }, ref) => {
     const { isMobile } = useScreenDetector();
 
     return (
