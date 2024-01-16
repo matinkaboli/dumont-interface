@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import truncateString from '@/helpers/truncateString';
-import { useTypedSelector } from '@/hooks/useTypesSelector';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 interface Props {
   onOpenChange: () => void;

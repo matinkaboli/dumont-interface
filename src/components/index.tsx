@@ -5,5 +5,7 @@ export { default as Checkbox } from './Checkbox';
 export { default as Layout } from './Layout';
 export { default as CopyToClipboard } from './CopyToClipboard';
 export { default as QRCode } from './QRCode';
+export { default as Loading } from './Loading';
+export { default as ModalSheet } from './ModalSheet';
 export * from './Dialog';
 export * from './Tooltip';

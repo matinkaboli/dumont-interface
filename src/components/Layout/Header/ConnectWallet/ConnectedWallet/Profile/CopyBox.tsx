@@ -12,7 +12,7 @@ interface Props {
 
 const CopyBox = ({ copyText, copyLabel, copyIcon, className }: Props) => {
   return (
-    <div className={clsx('flex-between bg-neutral-600 px-4 h-10 rounded-lg', className)}>
+    <div className={clsx('flex-between bg-neutral-600 px-4 h-10 rounded-lg border hover:border-primary-200 transition ease-in-out', className)}>
       <div className="flex gap-2">
         {copyIcon}
         <div className="text-neutral-100 font-medium text-base">{copyLabel}</div>

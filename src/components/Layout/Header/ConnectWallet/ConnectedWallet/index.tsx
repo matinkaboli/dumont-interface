@@ -1,25 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { Dialog } from '@/components';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 
 import Profile from './Profile';
 import AddressButton from './AddressButton';
 
 const ConnectedWallet = () => {
-  const [open, setOpen] = useState(false);
-  const onOpenChange = () => setOpen((prev) => !prev);
+  const dispatch = useDispatch();
 
-  return (
-    <>
-      <AddressButton onOpenChange={onOpenChange} />
+  const onCloseDialog = () => dispatch(closeDialog());
 
-      <Dialog open={open} onOpenChange={onOpenChange} showCloseButton>
-        <Profile onOpenChange={onOpenChange} />
-      </Dialog>
-    </>
-  );
+  const onOpenDialog = () =>
+    dispatch(
+      openDialog({
+        content: <Profile onOpenChange={onCloseDialog} />,
+      }),
+    );
+
+  return <AddressButton onOpenChange={onOpenDialog} />;
 };
 
 export default ConnectedWallet;

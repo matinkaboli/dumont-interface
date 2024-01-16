@@ -5,6 +5,7 @@ import Layout from '@/components/Layout';
 import ConnectKit from '@/providers/ConnectKit';
 import Redux from '@/providers/Redux';
 import './globals.css';
+import DialogRoot from './DialogRoot';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,7 +20,10 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body className={inter.className}>
         <Redux>
           <ConnectKit>
-            <Layout>{children}</Layout>
+            <Layout>
+              {children}
+              <DialogRoot />
+            </Layout>
           </ConnectKit>
         </Redux>
       </body>

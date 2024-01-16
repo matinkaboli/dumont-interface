@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useBalance } from 'wagmi';
 
 import { Contracts } from '@/constants/contracts';
-import { useTypedSelector } from '@/hooks/useTypesSelector';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 interface Props {
   address?: string;

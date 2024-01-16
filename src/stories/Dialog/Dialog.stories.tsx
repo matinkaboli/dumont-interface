@@ -62,6 +62,23 @@ export const SmallSize = ({ ...args }) => {
   );
 };
 
+export const DisableEvents = ({ ...args }) => {
+  const [{ open }, updateArgs] = useArgs();
+  const onOpenChange = () => updateArgs({ open: !open });
+  return (
+    <div>
+      <Button variant="primary" onClick={onOpenChange}>
+        open
+      </Button>
+      <Dialog {...args} disableEvents size="sm" open={open} onOpenChange={onOpenChange}>
+        <DialogDescription>
+          Make changes to your profile here. Click save when yore done.
+        </DialogDescription>
+      </Dialog>
+    </div>
+  );
+};
+
 export const ShowCloseButton = ({ ...args }) => {
   const [{ open }, updateArgs] = useArgs();
   const onOpenChange = () => updateArgs({ open: !open });

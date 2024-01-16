@@ -6,7 +6,7 @@ const DialogTitle = React.forwardRef<
   React.ElementRef<typeof Title>,
   React.ComponentPropsWithoutRef<typeof Title>
 >(({ className, ...props }, ref) => (
-  <Title ref={ref} className={clsx('text-white text-2xl font-bold', className)} {...props} />
+  <Title ref={ref} className={clsx('text-white text-xl font-bold', className)} {...props} />
 ));
 DialogTitle.displayName = Title.displayName;
 

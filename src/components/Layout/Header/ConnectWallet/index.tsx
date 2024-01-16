@@ -38,10 +38,11 @@ const ConnectWallet = () => {
               </div>
             ) : (
               <Button
-                variant="primary"
+                variant="link"
                 size="sm"
+                radius="lg"
                 onClick={show}
-                className="!text-primary-250 !bg-primary-500"
+                className="text-primary-250 bg-primary-500 hover:bg-primary-400 !font-bold"
               >
                 Connect Wallet
               </Button>
