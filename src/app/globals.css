@@ -29,3 +29,19 @@ body {
 .border-primary-gradiant {
     @apply bg-gradient-to-r from-primary-400 to-primary-800 p-px
 }
+
+.swiper-slide {
+    display: flex;
+    background: #eee;
+    align-items: center;
+    justify-content: center;
+    transition: all 300ms linear;
+    transform: scale(calc(190 / 212)) !important;
+
+    &.swiper-slide-active {
+        transform: scale(1) !important;
+        background: #fc0
+    }
+}
+
+

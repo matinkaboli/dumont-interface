@@ -1,9 +1,8 @@
-'use client';
-
 import DemoCard from './DemoCard';
 import ConfirmRound from './ConfirmRound';
 
 const CreateRound = () => {
+
   return (
     <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center">
       <h1 className="text-2xl text-white font-bold">Let’s start your round</h1>
