@@ -17,12 +17,6 @@ interface Props {
   slides: string[];
 }
 
-const breakpoints = {
-  768: {
-    slidesPerView: 3,
-  },
-};
-
 const Slider = ({ isLoading = false, slides }: Props) => {
   const swiperRef = useRef<SwiperType>();
   const [activeIndex, setActiveIndex] = useState<number>(0);
