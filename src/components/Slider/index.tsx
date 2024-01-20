@@ -18,13 +18,8 @@ interface Props {
 }
 
 const breakpoints = {
-  640: {
-    slidesPerView: 1,
-    spaceBetween: 15,
-  },
   768: {
     slidesPerView: 3,
-    spaceBetween: 15,
   },
 };
 
@@ -46,11 +41,13 @@ const Slider = ({ isLoading = false, slides }: Props) => {
       </NavButton>
       <Swiper
         centeredSlides
+        slidesPerView={2}
+        spaceBetween={10}
         speed={800}
         onActiveIndexChange={onActiveIndexChange}
         onBeforeInit={onBeforeInit}
         modules={[Navigation]}
-        breakpoints={breakpoints}
+        breakpoints={{ 768: { slidesPerView: 3 } }}
       >
         {slides.map((slide, index) => {
           const isActive = activeIndex === index;
@@ -58,7 +55,7 @@ const Slider = ({ isLoading = false, slides }: Props) => {
             <SwiperSlide
               key={index}
               className={clsx(
-                isActive ? '!scale-100' : '!scale-[calc(190/212)]',
+                isActive ? '!scale-100' : '!scale-[calc(190/210)]',
                 'transition-all duration-300 ease-linear transform rounded-2xl',
               )}
             >
@@ -69,7 +66,7 @@ const Slider = ({ isLoading = false, slides }: Props) => {
                   <div
                     className={clsx(
                       isActive ? 'bg-primary-300' : '',
-                      'text-center p-1 font-bold text-base text-white w-[106px] h-[106px] rounded-full mb-[-75px] mx-auto',
+                      'text-center p-1 font-bold text-base text-white w-28 h-28 rounded-full -mb-20 mx-auto',
                     )}
                   >
                     {isActive && index}
@@ -78,7 +75,7 @@ const Slider = ({ isLoading = false, slides }: Props) => {
                   <div
                     className={clsx(
                       isActive && 'bg-gradiant-slide p-1',
-                      'w-[202px] h-[269px] rounded-2xl flex items-center justify-center mx-auto',
+                      'md:w-52 w-48 h-auto rounded-2xl flex items-center justify-center mx-auto',
                     )}
                   >
                     <Image

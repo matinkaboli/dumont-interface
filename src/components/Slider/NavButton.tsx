@@ -11,7 +11,7 @@ const NavButton = ({
       {...props}
       type={type}
       style={{ minWidth: '40px' }}
-      className={clsx('w-10 h-10 rounded-full flex-center border border-neutral-600', className)}
+      className={clsx(' w-10 h-10 rounded-full md:flex hidden items-center justify-center border border-neutral-600', className)}
     />
   );
 };

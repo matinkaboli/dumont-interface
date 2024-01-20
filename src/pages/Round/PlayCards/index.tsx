@@ -22,7 +22,7 @@ const PlayCards = () => {
   }, []);
 
   return (
-    <div className="bg-neutral-750 min-h-[360px] px-7 pt-4 pb-5 rounded-lg">
+    <div className="md:bg-neutral-750 bg-transparent min-h-[360px] md:mx-0 -mx-5 md:px-7 px-0 pt-4 pb-5 rounded-lg">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
