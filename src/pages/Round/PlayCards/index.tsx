@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Slider from '@/components/Slider';
 
+const imgSrc = '/images/full-card.png';
+const imgShowSrc = '/images/card-show.png';
+
+const slides = [imgSrc, imgSrc, imgSrc, imgSrc, imgSrc, imgSrc, imgSrc, imgShowSrc];
+
+
 const PlayCards = () => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,7 +29,7 @@ const PlayCards = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 1 }}
       >
-        <Slider isLoading={isLoading} />
+        <Slider isLoading={isLoading} slides={slides} />
       </motion.div>
     </div>
   );

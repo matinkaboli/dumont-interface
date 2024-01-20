@@ -4,7 +4,7 @@ import { useState } from 'react';
 import CreateRound from './Create';
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
-import PlayCards from '@/pages/Round/PlayCards';
+import PlayCards from './PlayCards';
 
 const Round = () => {
   const [isConfirmed, setConfirmed] = useState(true);
