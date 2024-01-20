@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper';
-import Skeleton from 'react-loading-skeleton';
 import { motion } from 'framer-motion';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -9,8 +8,7 @@ import 'swiper/css/navigation';
 // import required modules
 import { Navigation } from 'swiper/modules';
 import Image from 'next/image';
-import 'react-loading-skeleton/dist/skeleton.css';
-import { Icon } from '@/components';
+import { Icon, Skeleton } from '@/components';
 
 const imgSrc = '/images/full-card.png';
 const imgShowSrc = '/images/card-show.png';
