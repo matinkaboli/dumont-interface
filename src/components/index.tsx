@@ -10,3 +10,4 @@ export { default as ModalSheet } from './ModalSheet';
 export { default as Skeleton } from './Skeleton';
 export * from './Dialog';
 export * from './Tooltip';
+export * from './Carousel';
