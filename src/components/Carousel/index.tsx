@@ -2,13 +2,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 import { useRef } from 'react';
-import { Swiper, SwiperProps, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperProps } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper';
 import { Navigation } from 'swiper/modules';
 
 import NavButton from './NavButton';
-
-const CarouselItem = SwiperSlide;
+import CarouselItem from './CarouselItem';
 
 interface Props extends Omit<Omit<SwiperProps, 'onBeforeInit'>, 'modules'> {}
 
@@ -17,8 +16,9 @@ const Carousel = ({
   centeredSlides = true,
   slidesPerView = 2,
   spaceBetween = 10,
-  speed = 500,
+  speed = 600,
   breakpoints = { 768: { slidesPerView: 3 } },
+  ...props
 }: Props) => {
   const swiperRef = useRef<SwiperType>();
 
@@ -39,6 +39,7 @@ const Carousel = ({
         onBeforeInit={onBeforeInit}
         modules={[Navigation]}
         breakpoints={breakpoints}
+        {...props}
       >
         {children}
       </Swiper>
@@ -47,6 +48,6 @@ const Carousel = ({
   );
 };
 
-Carousel.displayName = SwiperSlide.displayName;
+Carousel.displayName = Swiper.displayName;
 
 export { Carousel, CarouselItem };
