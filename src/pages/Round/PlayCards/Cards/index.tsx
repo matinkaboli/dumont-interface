@@ -22,7 +22,7 @@ const Cards = () => {
   }, []);
 
   return (
-    <Carousel>
+    <Carousel allowSlideNext={!isLoading} allowSlidePrev={!isLoading}  >
       {slides.map((slide, index) => {
         return (
           <CarouselItem key={index}>

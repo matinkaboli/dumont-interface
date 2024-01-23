@@ -19,7 +19,7 @@ const Card = ({ isActive, isLoading, index, slide }: Props) => {
       )}
     >
       {isLoading ? (
-        <Skeleton width={220} height={319} className="mx-auto" />
+        <Skeleton width={208} height={304} className="mx-auto" />
       ) : (
         <div className="fade-in animate-in duration-1000">
           <div
@@ -34,7 +34,7 @@ const Card = ({ isActive, isLoading, index, slide }: Props) => {
           <div
             className={clsx(
               isActive && 'bg-gradiant-slide p-1',
-              'md:w-52 w-48 h-auto rounded-2xl flex items-center justify-center mx-auto',
+              'md:w-52 w-48 md:h-[298px] h-auto rounded-2xl flex items-center justify-center mx-auto',
             )}
           >
             <Image
