@@ -5,9 +5,8 @@ import { Carousel, CarouselItem } from '@/components';
 import Card from './Card';
 
 const imgSrc = '/images/full-card.png';
-const imgShowSrc = '/images/card-show.png';
 
-const slides = [imgSrc, imgSrc, imgSrc, imgSrc, imgSrc, imgSrc, imgSrc, imgShowSrc];
+const slides = Array.from({ length: 8 }, () => imgSrc);
 
 const Cards = () => {
   const [isLoading, setIsLoading] = useState(true);

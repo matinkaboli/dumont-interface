@@ -4,23 +4,20 @@ import clsx from 'clsx';
 import { Icon } from '@/components';
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  dir: 'left' | 'right'
+  dir: 'left' | 'right';
 }
 
-const NavButton = ({
-  type = 'button',
-  className,
-  dir,
-  ...props
-}: Props) => {
+const NavButton = ({ type = 'button', className, dir, ...props }: Props) => {
   return (
     <button
       {...props}
       type={type}
-      style={{ minWidth: '40px' }}
-      className={clsx('w-10 h-10 rounded-full md:flex hidden items-center justify-center border border-neutral-600', className)}
+      className={clsx(
+        'min-w-[40px] w-10 h-10 rounded-full md:flex hidden items-center justify-center border border-neutral-600 disabled:bg-neutral-700',
+        className,
+      )}
     >
-      <Icon name={`angle-${dir}`} color='#DBDBE2' />
+      <Icon name={`angle-${dir}`} color="#DBDBE2" />
     </button>
   );
 };
