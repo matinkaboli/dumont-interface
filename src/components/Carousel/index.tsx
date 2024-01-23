@@ -15,11 +15,11 @@ const Carousel = ({
   slidesPerView = 2,
   spaceBetween = 10,
   speed = 600,
-  breakpoints = { 768: { slidesPerView: 3 } },
+  breakpoints = { 600: { slidesPerView: 3 } },
   ...props
 }: Props) => {
   return (
-    <div className="flex items-center gap-7 pt-6">
+    <div className="flex items-center lg:gap-7 md:gap-2 gap-0 pt-6">
       <NavButton className="prev" dir="left" />
       <Swiper
         navigation={{

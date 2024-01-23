@@ -13,7 +13,7 @@ const NavButton = ({ type = 'button', className, dir, ...props }: Props) => {
       {...props}
       type={type}
       className={clsx(
-        'min-w-[40px] w-10 h-10 rounded-full md:flex hidden items-center justify-center border border-neutral-600 disabled:bg-neutral-700',
+        'min-w-[40px] w-10 h-10 rounded-full md:flex hidden items-center justify-center border border-neutral-600 disabled:bg-neutral-700 [&_.path]:disabled:fill-neutral-500',
         className,
       )}
     >

@@ -4,7 +4,7 @@ import Cards from './Cards';
 
 const PlayCards = () => {
   return (
-    <div className="md:bg-neutral-750 bg-transparent min-h-[382px] md:mx-0 -mx-5 md:px-7 px-0 pt-4 pb-5 rounded-lg">
+    <div className="sm:bg-neutral-750 bg-transparent min-h-[382px] sm:mx-0 -mx-5 lg:px-7 md:px-2 px-0 pt-4 pb-5 rounded-lg">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
