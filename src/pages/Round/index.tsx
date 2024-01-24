@@ -1,11 +1,16 @@
+'use client';
+import { useState } from 'react';
+
 import CreateRound from './Create';
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
+import PlayCards from './PlayCards';
 
 const Round = () => {
+  const [isConfirmed, setConfirmed] = useState(true);
   return (
     <div className="flex flex-col gap-4">
-      <CreateRound />
+      {isConfirmed ? <PlayCards /> : <CreateRound />}
 
       <div className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4">
         <div className="col-span-2 md:order-1 order-2">

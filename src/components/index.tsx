@@ -7,5 +7,7 @@ export { default as CopyToClipboard } from './CopyToClipboard';
 export { default as QRCode } from './QRCode';
 export { default as Loading } from './Loading';
 export { default as ModalSheet } from './ModalSheet';
+export { default as Skeleton } from './Skeleton';
 export * from './Dialog';
 export * from './Tooltip';
+export * from './Carousel';
