@@ -18,7 +18,7 @@ const cardSkeletonHeight = 'md:!h-[290px] !h-[265px]'; // The skeleton height sh
 const parentTransitionClass = 'transition-all duration-300 ease-linear transform';
 const fadeAndAnimateClass = 'fade-in animate-in duration-1000';
 
-const Card = ({ isActive, isLoading, index, slide }: Props) => {
+const Slide = ({ isActive, isLoading, index, slide }: Props) => {
   const scaleClass = isActive ? 'scale-100' : 'scale-[calc(190/210)]';
   const circleStyle = {
     width: `${circleSize}px`,
@@ -77,4 +77,4 @@ const Card = ({ isActive, isLoading, index, slide }: Props) => {
     </div>
   );
 };
-export default Card;
+export default Slide;
