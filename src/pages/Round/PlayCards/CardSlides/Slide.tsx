@@ -13,7 +13,7 @@ interface Props {
 const circleSize = 112;
 const cardWidthClass = 'md:!w-52 !w-48';
 const cardHeight = 'md:h-[298px] h-[265px]';
-const cardSkeletonHeight = 'md:!h-[290px] !h-[265px]'; // The skeleton height should be 8 pixels less than the card height due to padding.
+const cardSkeletonHeight = 'md:!h-[290px] !h-[257px]'; // The skeleton height should be 8 pixels less than the card height due to padding.
 
 const parentTransitionClass = 'transition-all duration-300 ease-linear transform';
 const fadeAndAnimateClass = 'fade-in animate-in duration-1000';

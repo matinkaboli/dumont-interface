@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 
 const variants = {
@@ -24,7 +24,7 @@ const variants = {
 interface Props {
   cards: string[];
   onLoading: () => void;
-  setShowSlider: Dispatch<SetStateAction<boolean>>
+  setShowSlider: Dispatch<SetStateAction<boolean>>;
 }
 
 const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
@@ -36,7 +36,7 @@ const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
 
     await controls.start('final');
 
-    setShowSlider(true)
+    setShowSlider(true);
 
     onLoading();
   };
@@ -47,11 +47,11 @@ const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
   }, []);
 
   return (
-    <div className="relative min-h-[265px] mx-auto">
+    <div className="relative md:min-h-[330px] min-h-[297px] mx-auto">
       <motion.div
         variants={variants}
         animate={controls}
-        className="absolute left-0 right-0 mx-auto w-[200px]"
+        className="absolute left-0 right-0 top-5 mx-auto w-52"
       >
         {cards.map((card, i) => (
           <motion.div
@@ -60,7 +60,7 @@ const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
             variants={variants}
             initial="hidden"
             animate={controls}
-            className="absolute h-[265px] w-[190px] rounded-2xl"
+            className="absolute md:w-[208px] w-[192px] md:h-[298px] h-[265px] rounded-2xl"
           >
             <div
               className="w-full h-full bg-cover bg-center rounded-2xl"
