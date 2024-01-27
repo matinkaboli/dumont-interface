@@ -1,5 +1,8 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
+import clsx from 'clsx';
+
+import { cardSizeStyles } from '../.';
 
 const variants = {
   hidden: () => ({ scale: 1.5, y: -1000, rotate: 0 }),
@@ -47,11 +50,11 @@ const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
   }, []);
 
   return (
-    <div className="relative md:min-h-[330px] min-h-[297px] mx-auto">
+    <div className="relative mx-auto">
       <motion.div
         variants={variants}
         animate={controls}
-        className="absolute left-0 right-0 top-5 mx-auto w-52"
+        className="absolute left-0 right-0 top-6 mx-auto w-52"
       >
         {cards.map((card, i) => (
           <motion.div
@@ -60,7 +63,11 @@ const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
             variants={variants}
             initial="hidden"
             animate={controls}
-            className="absolute md:w-[208px] w-[192px] md:h-[298px] h-[265px] rounded-2xl"
+            className={clsx(
+              'absolute rounded-2xl',
+              cardSizeStyles.height.fakeCard,
+              cardSizeStyles.width.fakeCard,
+            )}
           >
             <div
               className="w-full h-full bg-cover bg-center rounded-2xl"

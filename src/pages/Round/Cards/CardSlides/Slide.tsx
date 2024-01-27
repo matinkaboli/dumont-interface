@@ -3,6 +3,8 @@ import Image from 'next/image';
 
 import { Skeleton } from '@/components';
 
+import { cardSizeStyles } from '../.';
+
 interface Props {
   isActive: boolean;
   isLoading: boolean;
@@ -11,12 +13,6 @@ interface Props {
 }
 
 const circleSize = 112;
-const cardWidthClass = 'md:!w-52 !w-48';
-const cardHeight = 'md:h-[298px] h-[265px]';
-const cardSkeletonHeight = 'md:!h-[290px] !h-[257px]'; // The skeleton height should be 8 pixels less than the card height due to padding.
-
-const parentTransitionClass = 'transition-all duration-300 ease-linear transform';
-const fadeAndAnimateClass = 'fade-in animate-in duration-1000';
 
 const Slide = ({ isActive, isLoading, index, slide }: Props) => {
   const scaleClass = isActive ? 'scale-100' : 'scale-[calc(190/210)]';
@@ -26,7 +22,7 @@ const Slide = ({ isActive, isLoading, index, slide }: Props) => {
   };
 
   return (
-    <div className={clsx(scaleClass, parentTransitionClass)}>
+    <div className={clsx(scaleClass, 'transition-all duration-300 ease-linear transform')}>
       {isLoading ? (
         <div className="text-center">
           <Skeleton
@@ -41,11 +37,11 @@ const Slide = ({ isActive, isLoading, index, slide }: Props) => {
             width={0}
             height={0}
             borderRadius={16}
-            className={clsx(cardWidthClass, cardSkeletonHeight)}
+            className={clsx(cardSizeStyles.width.skeleton, cardSizeStyles.height.skeleton)}
           />
         </div>
       ) : (
-        <div className={fadeAndAnimateClass}>
+        <div className='fade-in animate-in duration-1000'>
           <div
             style={circleStyle}
             className={clsx(
@@ -58,8 +54,8 @@ const Slide = ({ isActive, isLoading, index, slide }: Props) => {
 
           <div
             className={clsx(
-              cardWidthClass,
-              cardHeight,
+              cardSizeStyles.width.card,
+              cardSizeStyles.height.card,
               isActive && 'bg-gradiant-slide p-1',
               'rounded-2xl flex items-center justify-center mx-auto',
             )}
