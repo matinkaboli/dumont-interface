@@ -13,11 +13,20 @@ export const cardSizeStyles = {
     card: 'md:w-52 w-48',
     skeleton: 'md:!w-52 !w-48',
     fakeCard: 'md:w-[200px] w-[184px]',
-  }
+  },
+};
+
+export interface SlideSrc {
+  id: number;
+  src: string;
 }
 
-const imgSrc = '/images/full-card.png';
-const slides = Array.from({ length: 8 }, () => imgSrc);
+const imgSrc = '/images/card.png';
+const cards = Array.from({ length: 8 }, (_, index) => ({
+  id: index + 1,
+  src: imgSrc,
+}));
+const slides = [{ id: 10, src: '/images/card-placeholder.png' }, ...cards];
 
 const PlayCards = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,7 +45,7 @@ const PlayCards = () => {
           <CardSlides isLoading={isLoading} slides={slides} />
         </div>
       ) : (
-        <CardShuffling cards={slides} onLoading={onLoading} setShowSlider={setShowSlider} />
+        <CardShuffling cards={cards} onLoading={onLoading} setShowSlider={setShowSlider} />
       )}
     </div>
   );

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import clsx from 'clsx';
 
-import { cardSizeStyles } from '../.';
+import { cardSizeStyles, SlideSrc } from '../.';
 
 const variants = {
   hidden: () => ({ scale: 1.5, y: -1000, rotate: 0 }),
@@ -25,7 +25,7 @@ const variants = {
 };
 
 interface Props {
-  cards: string[];
+  cards: SlideSrc[];
   onLoading: () => void;
   setShowSlider: Dispatch<SetStateAction<boolean>>;
 }
@@ -58,7 +58,7 @@ const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
       >
         {cards.map((card, i) => (
           <motion.div
-            key={i}
+            key={card.id}
             custom={i}
             variants={variants}
             initial="hidden"
@@ -71,7 +71,7 @@ const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
           >
             <div
               className="w-full h-full bg-cover bg-center rounded-2xl"
-              style={{ backgroundImage: `url("${card}")` }}
+              style={{ backgroundImage: `url("${card.src}")` }}
             />
           </motion.div>
         ))}
