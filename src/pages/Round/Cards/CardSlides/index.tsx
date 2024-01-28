@@ -6,16 +6,13 @@ import { SlideSrc } from '../.';
 
 interface Props {
   slides: SlideSrc[];
-  isLoading: boolean;
 }
 
-const CardSlides = ({ slides, isLoading }: Props) => {
+const CardSlides = ({ slides }: Props) => {
   const [activeIndex, setActiveIndex] = useState<null | number>(null);
 
   return (
     <Carousel
-      allowSlideNext={!isLoading}
-      allowSlidePrev={!isLoading}
       centeredSlidesBounds={activeIndex === null}
       onActiveIndexChange={(s) => setActiveIndex(s.activeIndex)}
     >
@@ -23,7 +20,7 @@ const CardSlides = ({ slides, isLoading }: Props) => {
         return (
           <CarouselItem key={index}>
             {({ isActive }) => (
-              <Slide isActive={isActive} isLoading={isLoading} index={slide.id} slide={slide.src} />
+              <Slide isActive={isActive} index={slide.id} slide={slide.src} />
             )}
           </CarouselItem>
         );

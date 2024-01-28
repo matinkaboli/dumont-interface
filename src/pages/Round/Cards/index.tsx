@@ -6,12 +6,10 @@ import CardShuffling from './CardShuffling';
 export const cardSizeStyles = {
   height: {
     card: 'md:h-[298px] h-[265px]',
-    skeleton: 'md:!h-[290px] !h-[257px]', // The skeleton height should be 8 pixels less than the card height due to padding.
-    fakeCard: 'md:h-[290px] h-[257px]', // Same as skeleton.
+    fakeCard: 'md:h-[290px] h-[257px]', // The fakeCard height should be 8 pixels less than the card height due to padding.
   },
   width: {
     card: 'md:w-52 w-48',
-    skeleton: 'md:!w-52 !w-48',
     fakeCard: 'md:w-[200px] w-[184px]',
   },
 };
@@ -22,30 +20,23 @@ export interface SlideSrc {
 }
 
 const imgSrc = '/images/card.png';
-const cards = Array.from({ length: 8 }, (_, index) => ({
+const cards = Array.from({ length: 18 }, (_, index) => ({
   id: index + 1,
   src: imgSrc,
 }));
 const slides = [{ id: 10, src: '/images/card-placeholder.png' }, ...cards];
 
 const PlayCards = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [showSlider, setShowSlider] = useState(false);
-
-  const onLoading = () => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  };
 
   return (
     <div className="md:min-h-[366px] min-h-[333px] overflow-hidden sm:bg-neutral-750 bg-transparent sm:mx-0 -mx-5 lg:px-7 md:px-2 px-0 pt-4 pb-5 rounded-lg">
       {showSlider ? (
         <div className="fade-in animate-in duration-1000">
-          <CardSlides isLoading={isLoading} slides={slides} />
+          <CardSlides slides={slides} />
         </div>
       ) : (
-        <CardShuffling cards={cards} onLoading={onLoading} setShowSlider={setShowSlider} />
+        <CardShuffling cards={cards} setShowSlider={setShowSlider} />
       )}
     </div>
   );

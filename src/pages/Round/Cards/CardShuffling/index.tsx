@@ -8,7 +8,7 @@ const variants = {
   hidden: () => ({ scale: 1.5, y: -1000, rotate: 0 }),
   visible: (i: number) => ({
     scale: 1,
-    y: i * 4,
+    y: i * 1.5,
     transition: { delay: i * 0.1, duration: 1 },
     rotate: -10 + Math.random() * 20,
   }),
@@ -26,11 +26,10 @@ const variants = {
 
 interface Props {
   cards: SlideSrc[];
-  onLoading: () => void;
   setShowSlider: Dispatch<SetStateAction<boolean>>;
 }
 
-const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
+const CardShuffling = ({ cards, setShowSlider }: Props) => {
   const controls = useAnimationControls();
   const startAnimation = async () => {
     await controls.start('visible');
@@ -41,7 +40,6 @@ const CardShuffling = ({ cards, onLoading, setShowSlider }: Props) => {
 
     setShowSlider(true);
 
-    onLoading();
   };
 
   useEffect(() => {
