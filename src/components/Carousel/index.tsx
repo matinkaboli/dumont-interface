@@ -19,7 +19,7 @@ const Carousel = ({
   ...props
 }: Props) => {
   return (
-    <div className="flex items-center lg:gap-7 md:gap-2 gap-0 pt-6">
+    <div className="flex items-center lg:gap-7 md:gap-2 gap-0">
       <NavButton className="prev" dir="left" />
       <Swiper
         navigation={{

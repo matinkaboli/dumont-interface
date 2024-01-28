@@ -28,7 +28,7 @@ const Header = () => {
         <Menus menuItems={menus} />
       </div>
 
-      <ConnectWallet />
+      <div className="min-h-[40px]"><ConnectWallet /></div>
 
       <ResponsiveMenu menuItems={menus} />
     </div>
