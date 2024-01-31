@@ -1,21 +1,21 @@
 import Image from 'next/image';
-import clsx from 'clsx';
 
 interface Props {
   imgSrc?: string;
   width: number;
+  height: number;
   className?: string;
 }
 
-const DemoCard = ({ imgSrc = '/images/demo-card.png', width, className }: Props) => {
+const DemoCard = ({ imgSrc = '/images/demo-card.png', width, height, className }: Props) => {
   return (
     <div>
       <Image
         src={imgSrc}
         width={width}
         height={0}
-        style={{ width: `${width}px` }}
-        className={clsx('h-auto', className)}
+        className={className}
+        style={{ width: `${width}px`, height: `${height}px` }}
         alt=""
       />
     </div>

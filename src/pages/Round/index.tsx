@@ -8,7 +8,7 @@ import Amount from './Amount';
 import Cards from './Cards';
 
 const Round = () => {
-  const [isConfirmed, setConfirmed] = useState(true);
+  const [isConfirmed, setConfirmed] = useState(false);
   return (
     <div className="flex flex-col gap-4">
       {isConfirmed ? <Cards /> : <CreateRound />}

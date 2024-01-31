@@ -11,9 +11,9 @@ const CreateRound = () => {
       <ConfirmRound />
 
       <div className="flex justify-center items-end gap-4 mt-10">
-        <DemoCard width={190} className="hidden md:block" />
-        <DemoCard width={222} />
-        <DemoCard width={190} className="hidden md:block" />
+        <DemoCard width={190} height={163} className="hidden md:block" />
+        <DemoCard width={212} height={178} />
+        <DemoCard width={190} height={163} className="hidden md:block" />
       </div>
     </div>
   );
