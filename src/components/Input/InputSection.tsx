@@ -7,7 +7,7 @@ interface Props {
 }
 
 const InputSection = ({ position, section, className }: Props) => {
-  const positionClassName = position === 'right' ? 'right-0 pr-4' : 'left-0 pl-4';
+  const positionClassName = position === 'right' ? 'right-0 pr-3' : 'left-0 pl-3';
 
   if (!section) return null;
 

@@ -5,7 +5,7 @@ import { clsx } from 'clsx';
 import InputSection from './InputSection';
 
 const inputVariants = cva(
-  'px-4 bg-white border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100',
+  'px-2 bg-white border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100',
   {
     variants: {
       size: {
@@ -82,8 +82,8 @@ const Input = ({
         <input
           type={type}
           className={clsx(
-            leftSection ? 'pl-12' : 'pl-4',
-            rightSection ? 'pr-12' : 'pr-4',
+            leftSection ? 'pl-11' : 'pl-3',
+            rightSection ? 'pr-11' : 'pr-3',
             hasError
               ? 'border-error-500 text-error-500 placeholder:text-error-500'
               : 'border-neutral-300 text-neutral-800 focus:border-neutral-800 placeholder:text-neutral-400',
