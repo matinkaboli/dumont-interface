@@ -4,13 +4,16 @@ import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { Button, DialogDescription, DialogTitle } from '@/components';
 
 import LoadingMessage from '@/pages/_components/LoadingMessage';
+import { confirmRound } from '@/redux/features/createRoundSlice';
+import delayedPromise from '@/helpers/delayedPromise';
 
 const Confirm = () => {
   const dispatch = useDispatch();
+
   const onConfirm = () => {
     dispatch(closeDialog());
 
-    setTimeout(() => {
+    const openLoadingDialog = delayedPromise(() => {
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
@@ -19,7 +22,13 @@ const Confirm = () => {
           ),
         }),
       );
-    }, 150);
+    }, 300);
+
+    const delayedCloseDialog = delayedPromise(() => dispatch(closeDialog()), 2000);
+
+    Promise.all([openLoadingDialog, delayedCloseDialog]).then(() => {
+      dispatch(confirmRound());
+    });
   };
 
   return (

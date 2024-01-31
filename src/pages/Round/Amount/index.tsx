@@ -41,7 +41,7 @@ const Amount = () => {
             <AmountInfo odd={6.6} total={220} className="gap-3 mt-4" />
           </div>
 
-          <BetButton size="md">Connect Wallet</BetButton>
+          <BetButton size="md" />
         </div>
       </div>
 
@@ -83,7 +83,7 @@ const Amount = () => {
         </motion.div>
 
         <div className="bg-neutral-750 px-5 pt-6 pb-8 fixed bottom-0 right-0 left-0 rounded-t-2xl">
-          <BetButton size="lg">Connect Wallet</BetButton>
+          <BetButton size="lg" />
         </div>
       </div>
     </>

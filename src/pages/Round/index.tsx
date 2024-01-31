@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import CreateRound from './Create';
 import KeyBoard from './KeyBoard';
@@ -8,7 +8,8 @@ import Amount from './Amount';
 import Cards from './Cards';
 
 const Round = () => {
-  const [isConfirmed, setConfirmed] = useState(false);
+  const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
+
   return (
     <div className="flex flex-col gap-4">
       {isConfirmed ? <Cards /> : <CreateRound />}
