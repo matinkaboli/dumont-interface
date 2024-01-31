@@ -18,11 +18,11 @@ const AmountInfo = ({
   return (
     <ul className={clsx('flex flex-col', className)}>
       <li className="text-sm font-medium flex-between">
-        <span className={labelClassName}>Odd</span>
+        <span className={labelClassName}>Total odds</span>
         <span className={valueClassName}>x{odd}</span>
       </li>
       <li className="text-sm font-medium flex-between">
-        <span className={labelClassName}>Total</span>
+        <span className={labelClassName}>Possible payout</span>
         <span className={valueClassName}>${total}</span>
       </li>
     </ul>
