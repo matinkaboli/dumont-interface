@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import { useRouter } from "next/navigation";
 
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { Button, DialogDescription, DialogTitle } from '@/components';
@@ -9,6 +10,7 @@ import delayedPromise from '@/helpers/delayedPromise';
 
 const Confirm = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const onConfirm = () => {
     dispatch(closeDialog());
@@ -28,6 +30,7 @@ const Confirm = () => {
 
     Promise.all([openLoadingDialog, delayedCloseDialog]).then(() => {
       dispatch(confirmRound());
+      router.push('/?id=34');
     });
   };
 
