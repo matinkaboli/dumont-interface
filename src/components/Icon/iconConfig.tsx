@@ -29,6 +29,7 @@ import SwapCoin from './svgs/SwapCoin';
 import ArrowRightFromBracket from './svgs/ArrowRightFromBracket';
 import Link from './svgs/Link';
 import EllipsisVertical from './svgs/EllipsisVertical';
+import CaretUp from './svgs/CaretUp';
 
 export interface SvgProps {
   width?: string;
@@ -61,7 +62,8 @@ export type IconName =
   | 'swap-coin'
   | 'arrow-right-from-bracket'
   | 'link'
-  | 'ellipsis-vertical';
+  | 'ellipsis-vertical'
+  | 'caret-up';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -87,4 +89,5 @@ export const iconMap: Record<IconName, ReactElement> = {
   'arrow-right-from-bracket': <ArrowRightFromBracket />,
   link: <Link />,
   'ellipsis-vertical': <EllipsisVertical />,
+  'caret-up': <CaretUp />
 };
