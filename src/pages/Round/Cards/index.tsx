@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import clsx from 'clsx';
 
 import CardSlides from './CardSlides';
 import CardShuffling from './CardShuffling';
@@ -26,11 +27,16 @@ const cards = Array.from({ length: 18 }, (_, index) => ({
 }));
 const slides = [{ id: 10, src: '/images/card-placeholder.png' }, ...cards];
 
-const PlayCards = () => {
+const PlayCards = ({ className = '' }: { className?: string }) => {
   const [showSlider, setShowSlider] = useState(false);
 
   return (
-    <div className="md:min-h-[366px] min-h-[333px] overflow-hidden sm:bg-neutral-750 bg-transparent sm:mx-0 -mx-5 lg:px-7 md:px-2 px-0 pt-4 pb-5 rounded-lg">
+    <div
+      className={clsx(
+        'overflow-hidden sm:bg-neutral-750 bg-transparent sm:mx-0 -mx-5 lg:px-7 md:px-2 px-0 pt-4 pb-5 rounded-lg',
+        className,
+      )}
+    >
       {showSlider ? (
         <div className="fade-in animate-in duration-1000">
           <CardSlides slides={slides} />
