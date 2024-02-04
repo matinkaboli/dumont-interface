@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 import { Icon } from '@/components';
 import ModalSheet from '@/components/ModalSheet';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import { Menu } from '.';
-import Link from 'next/link';
 
 interface Props {
   menuItems: Menu[];
@@ -14,7 +15,10 @@ interface Props {
 
 const ResponsiveMenu = ({ menuItems }: Props) => {
   const [isOpen, setOpen] = useState(false);
+  const address = useTypedSelector((state) => state.account.address);
   const onToggleMenu = () => setOpen((prev) => !prev);
+
+  if (!address) return null;
 
   return (
     <div className="md:hidden block">

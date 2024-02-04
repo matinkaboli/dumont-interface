@@ -23,7 +23,7 @@ const mobileInputProps = {
   rightSectionPointerEvents: 'auto' as any,
   rightSection: (
     <div className="flex gap-3 items-center">
-      <span className="text-base font-medium text-neutral-400">USDT</span>
+      <span className="text-sm font-medium text-neutral-400">USDT</span>
       <MaxButton />
     </div>
   ),
