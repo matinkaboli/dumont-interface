@@ -8,20 +8,23 @@ import { Icon, Input } from '@/components';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
+import MaxButton from './MaxButton';
 
 const inputProps = {
   size: 'sm' as any,
   placeholder: 'Enter amount',
+  className: 'mt-2',
   rightSection: <Image src="/images/USDT.svg" width={24} height={24} alt="" />,
 };
 
 const mobileInputProps = {
   size: 'md' as any,
-  placeholder: 'Enter amount',
+  placeholder: 'USDT amount',
+  rightSectionPointerEvents: 'auto' as any,
   rightSection: (
-    <div className="flex gap-1.5 items-center">
-      <Image src="/images/USDT.svg" width={32} height={32} alt="" />
-      <span className="text-base font-medium text-neutral-800">USDT</span>
+    <div className="flex gap-3 items-center">
+      <span className="text-base font-medium text-neutral-400">USDT</span>
+      <MaxButton />
     </div>
   ),
 };
@@ -36,12 +39,19 @@ const Amount = () => {
       <div className="md:block hidden bg-gradiant-border-amount bg-origin-border border border-transparent rounded-lg w-full h-full">
         <div className="flex flex-col justify-between bg-primary-800 px-4 py-6 rounded-lg w-full h-full">
           <div>
+            <div className="flex justify-between">
+              <div className="font-medium text-xs">Amount</div>
+              <MaxButton>
+                <Icon name="caret-up" />
+              </MaxButton>
+            </div>
+
             <Input {...inputProps} />
 
             <AmountInfo odd={6.6} total={220} className="gap-3 mt-4" />
           </div>
 
-          <BetButton size="md">Connect Wallet</BetButton>
+          <BetButton size="md" />
         </div>
       </div>
 
@@ -83,7 +93,7 @@ const Amount = () => {
         </motion.div>
 
         <div className="bg-neutral-750 px-5 pt-6 pb-8 fixed bottom-0 right-0 left-0 rounded-t-2xl">
-          <BetButton size="lg">Connect Wallet</BetButton>
+          <BetButton size="lg" />
         </div>
       </div>
     </>
