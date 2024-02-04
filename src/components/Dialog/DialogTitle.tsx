@@ -1,13 +1,18 @@
 import React from 'react';
-import { Title } from '@radix-ui/react-dialog';
 import clsx from 'clsx';
 
-const DialogTitle = React.forwardRef<
-  React.ElementRef<typeof Title>,
-  React.ComponentPropsWithoutRef<typeof Title>
->(({ className, ...props }, ref) => (
-  <Title ref={ref} className={clsx('text-white text-xl font-bold', className)} {...props} />
-));
-DialogTitle.displayName = Title.displayName;
+interface Props {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const DialogTitle = React.forwardRef<HTMLHeadingElement, Props>(
+  ({ className, children, ...props }, ref) => (
+    <h2 ref={ref} className={clsx('text-white text-xl font-bold', className)} {...props}>
+      {children}
+    </h2>
+  ),
+);
+DialogTitle.displayName = 'DialogTitle';
 
 export default DialogTitle;
