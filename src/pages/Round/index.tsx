@@ -1,5 +1,7 @@
 'use client';
 
+import { useAccount } from 'wagmi';
+
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { useScreenDetector } from '@/hooks/useScreenDetector';
 
@@ -11,17 +13,19 @@ const sectionHeight = 'md:min-h-[366px] min-h-[333px]';
 
 const Round = () => {
   const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
-  const address = useTypedSelector((state) => state.account.address);
+  const { isConnected, isConnecting } = useAccount();
   const { isMobile } = useScreenDetector();
+
+  if (isConnecting) return null;
 
   return (
     <div className="flex flex-col gap-4">
-      {!address || isConfirmed ? (
+      {!isConnected || isConfirmed ? (
         <Cards className={sectionHeight} />
       ) : (
         <CreateRound className={sectionHeight} />
       )}
-      {address && !isConfirmed && isMobile ? null : <Board />}
+      {isConnected && !isConfirmed && isMobile ? null : <Board />}
     </div>
   );
 };
