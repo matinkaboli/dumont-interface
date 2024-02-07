@@ -20,11 +20,13 @@ const Round = () => {
         <CreateRound className={sectionHeight} />
       )}
 
-      {isConnected && !isConfirmed ? (
+      {isConnected && !isConfirmed && (
         <div className="md:block hidden">
           <Board />
         </div>
-      ) : null}
+      )}
+
+      {((isConnected && isConfirmed) || !isConnected) && <Board />}
     </div>
   );
 };
