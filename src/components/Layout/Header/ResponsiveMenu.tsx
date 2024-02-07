@@ -15,7 +15,7 @@ interface Props {
 
 const ResponsiveMenu = ({ menuItems }: Props) => {
   const [isOpen, setOpen] = useState(false);
-  const address = useTypedSelector((state) => state.account.address);
+  const { address } = useTypedSelector((state) => state.account.profile);
   const onToggleMenu = () => setOpen((prev) => !prev);
 
   if (!address) return null;

@@ -14,7 +14,7 @@ interface Props {
 }
 
 const Profile = ({ onOpenChange }: Props) => {
-  const address = useTypedSelector((state) => state.account.address) || '';
+  const { address } = useTypedSelector((state) => state.account.profile);
   const { disconnect } = useDisconnect({
     onSuccess() {
       onOpenChange();
@@ -23,13 +23,13 @@ const Profile = ({ onOpenChange }: Props) => {
 
   return (
     <>
-      <QRCode value={address} size={192} className="mx-auto" />
+      <QRCode value={address || ''} size={192} className="mx-auto" />
 
       <div className="flex flex-col gap-6">
         <CopyBox
           className="border-neutral-600 mt-4"
-          copyText={address}
-          copyLabel={truncateString(address, { leftChars: 8, rightChars: 8 })}
+          copyText={address || ''}
+          copyLabel={truncateString(address || '', { leftChars: 8, rightChars: 8 })}
           copyIcon={<Image src="/images/metamask.png" width={24} height={24} alt="MetaMask" />}
         />
 

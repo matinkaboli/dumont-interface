@@ -1,12 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface AccountState {
-  address?: string;
+interface Account {
+  address: `0x${string}` | undefined;
+  isConnected: boolean;
+  isConnecting: boolean;
+}
+
+interface InitialState {
+  profile: Account;
   balance?: string;
 }
 
-const initialState: AccountState = {
-  address: undefined,
+const initialState: InitialState = {
+  profile: { address: undefined, isConnected: false, isConnecting: false },
   balance: undefined,
 };
 
@@ -14,8 +20,8 @@ const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    setAccount: (state, action: PayloadAction<string | undefined>) => {
-      state.address = action.payload;
+    setAccount: (state, action: PayloadAction<Account>) => {
+      state.profile = action.payload;
     },
     setBalance: (state, action: PayloadAction<string | undefined>) => {
       state.balance = action.payload;

@@ -40,7 +40,7 @@ const Amount = () => {
         <div className="flex flex-col justify-between bg-primary-800 px-4 py-6 rounded-lg w-full h-full">
           <div>
             <div className="flex justify-between">
-              <div className="font-medium text-xs">Amount</div>
+              <div className="font-medium text-xs text-white">Amount</div>
               <MaxButton>
                 <Icon name="caret-up" />
               </MaxButton>
@@ -48,7 +48,13 @@ const Amount = () => {
 
             <Input {...inputProps} />
 
-            <AmountInfo odd={6.6} total={220} className="gap-3 mt-4" />
+            <AmountInfo
+              odd={6.6}
+              total={220}
+              className="gap-3 mt-4"
+              labelClassName="text-white"
+              valueClassName="text-white opacity-50"
+            />
           </div>
 
           <BetButton size="md" />

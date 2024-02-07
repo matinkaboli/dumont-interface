@@ -14,7 +14,7 @@ import GiftButton from './GiftButton';
 
 const ConnectWallet = () => {
   const dispatch = useDispatch();
-  const { address } = useAccount();
+  const { address, isConnected, isConnecting } = useAccount();
   const { data: balance } = useBalance({
     address: address,
     token: Contracts.STABLE_COIN,
@@ -22,7 +22,7 @@ const ConnectWallet = () => {
   });
 
   useEffect(() => {
-    dispatch(setAccount(address));
+    dispatch(setAccount({ address, isConnected, isConnecting }));
     dispatch(setBalance(balance?.formatted));
   }, [dispatch, address, balance]);
 
