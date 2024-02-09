@@ -10,7 +10,7 @@ interface ModalSheetProps extends React.ComponentPropsWithoutRef<typeof Sheet> {
 }
 
 const ModalSheet = React.forwardRef<React.ElementRef<typeof Sheet>, ModalSheetProps>(
-  ({ isOpen, onClose, children, disableDrag = true, height = 250, ...props }, ref) => {
+  ({ isOpen, onClose, children, disableDrag = true, ...props }, ref) => {
     const { isMobile } = useScreenDetector();
 
     return (
@@ -19,10 +19,9 @@ const ModalSheet = React.forwardRef<React.ElementRef<typeof Sheet>, ModalSheetPr
         isOpen={isMobile ? isOpen : false}
         onClose={onClose}
         disableDrag={disableDrag}
-        snapPoints={[height, 0]}
         {...props}
       >
-        <Sheet.Container className="!bg-neutral-700 !rounded-se-3xl !rounded-ss-3xl pt-3.5 px-6 pb-16">
+        <Sheet.Container className="!h-auto !bg-neutral-700 !rounded-se-3xl !rounded-ss-3xl pt-3.5 px-6 pb-16">
           <Sheet.Header>
             <div className="h-[5px] w-[77px] bg-neutral-500 rounded-full mx-auto"></div>
           </Sheet.Header>

@@ -13,7 +13,9 @@ const CardSlides = ({ slides }: Props) => {
 
   return (
     <Carousel
-      centeredSlidesBounds={activeIndex < 2}
+      initialSlide={1}
+      allowSlidePrev={activeIndex > 1}
+      prevELClassName={activeIndex === 1 ? '!bg-neutral-700 [&_.path]:!fill-neutral-500': ''}
       onActiveIndexChange={(s) => setActiveIndex(s.activeIndex)}
     >
       {slides.map((slide, index) => {

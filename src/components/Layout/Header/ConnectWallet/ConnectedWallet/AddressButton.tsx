@@ -8,7 +8,7 @@ interface Props {
 }
 
 const AddressButton = ({ onOpenChange }: Props) => {
-  const address = useTypedSelector((state) => state.account.address) || '';
+  const { address } = useTypedSelector((state) => state.account.profile);
   const balance = useTypedSelector((state) => state.account.balance);
 
   return (
@@ -23,7 +23,7 @@ const AddressButton = ({ onOpenChange }: Props) => {
           <span className="font-bold">{balance}</span>
           <span>USDT</span>
         </div>
-        <div className="text-primary-250 text-sm">{truncateString(address)}</div>
+        <div className="text-primary-250 text-sm">{truncateString(address || '')}</div>
       </button>
     </div>
   );

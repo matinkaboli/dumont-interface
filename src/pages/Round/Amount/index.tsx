@@ -13,7 +13,6 @@ import MaxButton from './MaxButton';
 const inputProps = {
   size: 'sm' as any,
   placeholder: 'Enter amount',
-  className: 'mt-2',
   rightSection: <Image src="/images/USDT.svg" width={24} height={24} alt="" />,
 };
 
@@ -23,7 +22,7 @@ const mobileInputProps = {
   rightSectionPointerEvents: 'auto' as any,
   rightSection: (
     <div className="flex gap-3 items-center">
-      <span className="text-base font-medium text-neutral-400">USDT</span>
+      <span className="text-sm font-medium text-neutral-400">USDT</span>
       <MaxButton />
     </div>
   ),
@@ -39,8 +38,8 @@ const Amount = () => {
       <div className="md:block hidden bg-gradiant-border-amount bg-origin-border border border-transparent rounded-lg w-full h-full">
         <div className="flex flex-col justify-between bg-primary-800 px-4 py-6 rounded-lg w-full h-full">
           <div>
-            <div className="flex justify-between">
-              <div className="font-medium text-xs">Amount</div>
+            <div className="flex justify-between mb-2">
+              <div className="font-medium text-xs text-white">Amount</div>
               <MaxButton>
                 <Icon name="caret-up" />
               </MaxButton>
@@ -48,7 +47,13 @@ const Amount = () => {
 
             <Input {...inputProps} />
 
-            <AmountInfo odd={6.6} total={220} className="gap-3 mt-4" />
+            <AmountInfo
+              odd={6.6}
+              total={220}
+              className="gap-3 mt-4"
+              labelClassName="text-white"
+              valueClassName="text-white opacity-50"
+            />
           </div>
 
           <BetButton size="md" />

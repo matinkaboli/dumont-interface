@@ -1,13 +1,18 @@
 import React from 'react';
-import { Description } from '@radix-ui/react-dialog';
 import clsx from 'clsx';
 
-const DialogDescription = React.forwardRef<
-  React.ElementRef<typeof Description>,
-  React.ComponentPropsWithoutRef<typeof Description>
->(({ className, ...props }, ref) => (
-  <Description ref={ref} className={clsx('text-neutral-200 text-sm', className)} {...props} />
-));
-DialogDescription.displayName = Description.displayName;
+interface Props {
+  className?: string;
+  children: React.ReactNode;
+}
+
+const DialogDescription = React.forwardRef<HTMLHeadingElement, Props>(
+  ({ className, children, ...props }, ref) => (
+    <p ref={ref} className={clsx('text-neutral-200 text-sm', className)} {...props}>
+      {children}
+    </p>
+  ),
+);
+DialogDescription.displayName = 'DialogDescription';
 
 export default DialogDescription;

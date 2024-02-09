@@ -3,38 +3,32 @@
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import CreateRound from './Create';
-import KeyBoard from './KeyBoard';
-import Amount from './Amount';
 import Cards from './Cards';
+import Board from './Board';
 
 const sectionHeight = 'md:min-h-[366px] min-h-[333px]';
 
 const Round = () => {
   const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
-  const address = useTypedSelector((state) => state.account.address);
+  const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
+
+  if (isConnecting) return <div className="text-center text-white mt-16">Loading...</div>;
 
   return (
     <div className="flex flex-col gap-4">
-      {address && (
-        <>
-          {isConfirmed ? (
-            <Cards className={sectionHeight} />
-          ) : (
-            <CreateRound className={sectionHeight} />
-          )}
-        </>
+      {!isConnected || isConfirmed ? (
+        <Cards className={sectionHeight} />
+      ) : (
+        <CreateRound className={sectionHeight} />
       )}
 
-      {!address && <Cards className={sectionHeight} />}
+      {isConnected && !isConfirmed && (
+        <div className="md:block hidden">
+          <Board />
+        </div>
+      )}
 
-      <div className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4">
-        <div className="col-span-2 md:order-1 order-2">
-          <KeyBoard />
-        </div>
-        <div className="col-span-1 md:order-2 order-1">
-          <Amount />
-        </div>
-      </div>
+      {((isConnected && isConfirmed) || !isConnected) && <Board />}
     </div>
   );
 };

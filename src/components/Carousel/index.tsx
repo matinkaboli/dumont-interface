@@ -1,13 +1,19 @@
+'use client';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
 
 import { Swiper, SwiperProps } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
+import clsx from 'clsx';
 
 import NavButton from './NavButton';
 import CarouselItem from './CarouselItem';
 
-interface Props extends Pick<SwiperProps, Exclude<keyof SwiperProps, 'modules' | 'navigation'>> {}
+interface Props extends Pick<SwiperProps, Exclude<keyof SwiperProps, 'modules' | 'navigation'>> {
+  prevELClassName?: string;
+  nextELClassName?: string;
+}
 
 const Carousel = ({
   children,
@@ -16,11 +22,13 @@ const Carousel = ({
   spaceBetween = 10,
   speed = 600,
   breakpoints = { 600: { slidesPerView: 3 } },
+  prevELClassName = '',
+  nextELClassName = '',
   ...props
 }: Props) => {
   return (
     <div className="flex items-center lg:gap-7 md:gap-2 gap-0">
-      <NavButton className="prev" dir="left" />
+      <NavButton className={clsx('prev', prevELClassName)} dir="left" />
       <Swiper
         navigation={{
           prevEl: '.prev',
@@ -36,7 +44,7 @@ const Carousel = ({
       >
         {children}
       </Swiper>
-      <NavButton className="next" dir="right" />
+      <NavButton className={clsx('next', nextELClassName)} dir="right" />
     </div>
   );
 };
