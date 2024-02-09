@@ -13,7 +13,6 @@ import MaxButton from './MaxButton';
 const inputProps = {
   size: 'sm' as any,
   placeholder: 'Enter amount',
-  className: 'mt-2',
   rightSection: <Image src="/images/USDT.svg" width={24} height={24} alt="" />,
 };
 
@@ -39,7 +38,7 @@ const Amount = () => {
       <div className="md:block hidden bg-gradiant-border-amount bg-origin-border border border-transparent rounded-lg w-full h-full">
         <div className="flex flex-col justify-between bg-primary-800 px-4 py-6 rounded-lg w-full h-full">
           <div>
-            <div className="flex justify-between">
+            <div className="flex justify-between mb-2">
               <div className="font-medium text-xs text-white">Amount</div>
               <MaxButton>
                 <Icon name="caret-up" />
