@@ -10,7 +10,9 @@ const sectionHeight = 'md:min-h-[366px] min-h-[333px]';
 
 const Round = () => {
   const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
-  const { isConnected } = useTypedSelector((state) => state.account.profile);
+  const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
+
+  if (isConnecting) return <div className="text-center text-white mt-16">Loading...</div>;
 
   return (
     <div className="flex flex-col gap-4">

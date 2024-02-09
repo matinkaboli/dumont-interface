@@ -12,7 +12,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  profile: { address: undefined, isConnected: false, isConnecting: false },
+  profile: { address: undefined, isConnected: false, isConnecting: true },
   balance: undefined,
 };
 
