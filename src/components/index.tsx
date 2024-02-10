@@ -11,3 +11,4 @@ export { default as Skeleton } from './Skeleton';
 export * from './Dialog';
 export * from './Tooltip';
 export * from './Carousel';
+export * from './Table';
