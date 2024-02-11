@@ -6,7 +6,7 @@ const statusVariant = cva('flex items-center gap-1', {
     variant: {
       success: 'text-success-500',
       error: 'text-error-500',
-      warning: '',
+      warning: 'text-warning-500',
     },
   },
 });
@@ -16,7 +16,7 @@ const circleVariant = cva('w-1 h-1 rounded-full', {
     variant: {
       success: 'bg-success-500',
       error: 'bg-error-500',
-      warning: '',
+      warning: 'bg-warning-500',
     },
   },
 });
