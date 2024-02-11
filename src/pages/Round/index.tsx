@@ -6,6 +6,7 @@ import CreateRound from './Create';
 import Cards from './Cards';
 import Board from './Board';
 import ActivityTable from './ActivityTable';
+import Discarded from './Discarded';
 
 const sectionHeight = 'md:min-h-[366px] min-h-[333px]';
 
@@ -32,6 +33,8 @@ const Round = () => {
       {((isConnected && isConfirmed) || !isConnected) && <Board />}
 
       <ActivityTable />
+
+      <Discarded />
     </div>
   );
 };
