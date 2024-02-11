@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
@@ -14,7 +14,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={clsx('[&>tr]:first:!border-b-0', className)} {...props} />
+  <thead ref={ref} className={clsx('[&>tr]:!border-b-0', className)} {...props} />
 ));
 TableHeader.displayName = 'TableHeader';
 
