@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-    @apply h-full w-full
-}
-
 body {
     @apply bg-gradiant-body min-h-screen
 }
