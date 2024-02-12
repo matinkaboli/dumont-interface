@@ -22,9 +22,12 @@ const ConnectWallet = () => {
   });
 
   useEffect(() => {
-    dispatch(setAccount({ address, isConnected, isConnecting }));
     dispatch(setBalance(balance?.formatted));
-  }, [dispatch, address, balance]);
+  }, [dispatch, balance]);
+
+  useEffect(() => {
+    dispatch(setAccount({ address, isConnected, isConnecting }));
+  }, [dispatch, isConnecting]);
 
   return (
     <ConnectKitButton.Custom>

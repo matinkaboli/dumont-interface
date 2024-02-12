@@ -5,7 +5,7 @@ const Discarded = () => {
     <div className="md:bg-neutral-750 bg-transparent rounded-lg md:p-6 p-0">
       <h3 className="text-sm text-neutral-300">
         Here you can view the cards that have been <b>discarded</b> from the game, arranged in
-        <span className="text-white">numerical order.</span>
+        <span className="text-white"> numerical order.</span>
       </h3>
 
       <div className="flex flex-wrap md:gap-4 gap-3 mt-6">
