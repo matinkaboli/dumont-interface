@@ -3,9 +3,9 @@ import Round from './Round';
 
 const Footer = ({ className }: { className?: string }) => {
   return (
-    <div className={clsx('md:flex hidden justify-center items-center', className)}>
+    <footer className={clsx('md:flex hidden justify-center items-center', className)}>
       <Round roundTime="2h 20m 12s" />
-    </div>
+    </footer>
   );
 };
 
