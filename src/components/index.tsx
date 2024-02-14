@@ -13,3 +13,4 @@ export * from './Dialog';
 export * from './Tooltip';
 export * from './Carousel';
 export * from './Table';
+export * from './Tabs';
