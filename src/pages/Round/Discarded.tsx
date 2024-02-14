@@ -15,7 +15,7 @@ const Discarded = () => {
             src="/images/card-show.png"
             width={99}
             height={0}
-            className="md:w-[99px] w-[105px] h-auto rounded-lg"
+            className="md:w-[99px] sm:w-[105px] w-[30%] h-auto rounded-lg"
             alt=""
           />
         ))}
