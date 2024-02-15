@@ -97,7 +97,7 @@ const Amount = () => {
           />
         </motion.div>
 
-        <div className="bg-neutral-750 px-5 pt-6 pb-8 fixed bottom-0 right-0 left-0 rounded-t-2xl">
+        <div className="bg-neutral-750 px-5 pt-6 pb-8 fixed -bottom-px right-0 left-0 rounded-t-2xl z-10">
           <BetButton size="lg" />
         </div>
       </div>

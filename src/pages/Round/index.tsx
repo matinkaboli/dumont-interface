@@ -31,8 +31,7 @@ const Round = () => {
 
       {((isConnected && isConfirmed) || !isConnected) && <Board />}
 
-
-      <ActivityTab className="mt-16" />
+      {isConnected && isConfirmed && <ActivityTab className="md:mt-16 mt-14" />}
     </div>
   );
 };
