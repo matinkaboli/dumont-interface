@@ -14,7 +14,7 @@ const Discarded = () => {
             key={item}
             src="/images/card-show.png"
             width={99}
-            height={0}
+            height={138}
             className="md:w-[99px] sm:w-[105px] w-[30%] h-auto rounded-lg"
             alt=""
           />

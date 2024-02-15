@@ -1,13 +1,11 @@
 'use client';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
 
 import CreateRound from './Create';
 import Cards from './Cards';
 import Board from './Board';
-import ActivityTable from './ActivityTable';
-import Discarded from './Discarded';
+import ActivityTab from './ActivityTab';
 
 const sectionHeight = 'md:min-h-[366px] min-h-[333px]';
 
@@ -33,18 +31,8 @@ const Round = () => {
 
       {((isConnected && isConfirmed) || !isConnected) && <Board />}
 
-      <Tabs defaultValue="account" className="w-[400px] text-white">
-        <TabsList>
-          <TabsTrigger value="account">Account</TabsTrigger>
-          <TabsTrigger value="password">Password</TabsTrigger>
-        </TabsList>
-        <TabsContent value="account">Make changes to your account here.</TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
-      </Tabs>
 
-      <ActivityTable />
-
-      <Discarded />
+      <ActivityTab className="mt-16" />
     </div>
   );
 };

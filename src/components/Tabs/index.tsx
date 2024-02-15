@@ -26,13 +26,13 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={clsx(
-      'relative text-md text-neutral-300 transition ease-in duration-200 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:font-medium data-[state=active]:text-primary-250 [&_.border-active]:data-[state=active]:bg-primary-250',
+      'text-md text-neutral-300 transition ease-in duration-200 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-primary-250 [&_.border-active]:data-[state=active]:bg-primary-250',
       className,
     )}
     {...props}
   >
     {children}
-    <div className="absolute w-full h-0.5 bg-transparent border-active -bottom-1.5 rounded-3xl transition ease-in duration-200" />
+    <div className="h-0.5 bg-transparent border-active mt-1.5 rounded-3xl transition ease-in duration-200" />
   </TabsPrimitive.Trigger>
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
@@ -44,8 +44,8 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content ref={ref} className={clsx('mt-6', className)} {...props}>
     <motion.div
       initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
+      exit={{ opacity: 0, y: 10, transition: { duration: 0.4 } }}
     >
       {children}
     </motion.div>

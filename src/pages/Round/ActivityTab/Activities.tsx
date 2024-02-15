@@ -54,7 +54,7 @@ const columns = [
   }),
 ];
 
-const ActivityTable = () => {
+const Activities = () => {
   const table = useReactTable({
     data: activities,
     columns,
@@ -89,4 +89,4 @@ const ActivityTable = () => {
   );
 };
 
-export default ActivityTable;
+export default Activities;
