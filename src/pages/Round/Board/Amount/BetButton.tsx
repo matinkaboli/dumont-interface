@@ -1,14 +1,19 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { ConnectKitButton } from 'connectkit';
 
 import { Button } from '@/components';
 import { ButtonProps } from '@/components/Button';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { openDialog } from '@/redux/features/dialogSlice';
+
+import ConfirmBet from './confirmation/ConfirmBet';
 
 const buttonStyle =
   "relative bg-primary-300 text-white cursor-pointer disabled:cursor-auto overflow-hidden !font-semibold after:content-[''] after:absolute after:w-28 after:h-28 after:rounded-full after:top-[calc(var(--y,0)*1px-50px)] after:left-[calc(var(--x,0)*1px-50px)] after:transition-opacity after:duration-200 after:opacity-0 hover:after:opacity-50";
 
 const BetButton = ({ size }: ButtonProps) => {
+  const dispatch = useDispatch();
   const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -21,13 +26,24 @@ const BetButton = ({ size }: ButtonProps) => {
     }
   };
 
-  const buttonProps = useMemo<ButtonProps>(() => ({
-    fullWidth: true,
-    variant: 'link',
-    radius: 'lg',
-    size: size,
-    onMouseMove: handleMouseMove,
-  }), [size, handleMouseMove]);
+  const buttonProps = useMemo<ButtonProps>(
+    () => ({
+      fullWidth: true,
+      variant: 'link',
+      radius: 'lg',
+      size: size,
+      onMouseMove: handleMouseMove,
+    }),
+    [size, handleMouseMove],
+  );
+
+  const onOpenModal = () => {
+    dispatch(
+      openDialog({
+        content: <ConfirmBet />,
+      }),
+    );
+  };
 
   return (
     <ConnectKitButton.Custom>
@@ -40,6 +56,7 @@ const BetButton = ({ size }: ButtonProps) => {
                 ref={buttonRef}
                 disabled={!isConfirmed}
                 className={`${buttonStyle} ${isConfirmed && 'after:bg-gradiant-glow'}`}
+                onClick={onOpenModal}
               >
                 <span className="relative z-10">Bet</span>
               </Button>
