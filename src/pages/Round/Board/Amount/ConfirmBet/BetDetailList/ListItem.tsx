@@ -1,4 +1,4 @@
-import { BetInfo } from '.';
+import { BetInfo } from './index';
 
 const ListItem = ({ label, value }: BetInfo) => {
   return (

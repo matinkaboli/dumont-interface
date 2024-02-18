@@ -7,7 +7,7 @@ import { ButtonProps } from '@/components/Button';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { openDialog } from '@/redux/features/dialogSlice';
 
-import ConfirmBet from './confirmation/ConfirmBet';
+import ConfirmBet from './ConfirmBet';
 
 const buttonStyle =
   "relative bg-primary-300 text-white cursor-pointer disabled:cursor-auto overflow-hidden !font-semibold after:content-[''] after:absolute after:w-28 after:h-28 after:rounded-full after:top-[calc(var(--y,0)*1px-50px)] after:left-[calc(var(--x,0)*1px-50px)] after:transition-opacity after:duration-200 after:opacity-0 hover:after:opacity-50";
