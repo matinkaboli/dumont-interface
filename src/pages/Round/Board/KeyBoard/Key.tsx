@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, memo } from 'react';
 import clsx from 'clsx';
-import { KeyType } from '.';
+import { KeyType } from './index';
 
 interface Props extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'value'>, KeyType {
   isSkip?: boolean;
