@@ -7,7 +7,8 @@ import LoadingMessage from '@/pages/_components/LoadingMessage';
 
 import SelectedKey from './SelectedKey';
 import BetDetailList from './BetDetailList';
-import ResultMessage from './ResultMessage';
+import ResultMessage from './ConfirmProcess/ResultMessage';
+import VerificationOperation from './ConfirmProcess/VerificationOperation';
 
 const betDetails = [
   { label: 'Amount', value: '125 DAI' },
@@ -32,19 +33,32 @@ const ConfirmBet = () => {
           ),
         }),
       );
-    }, 300);
+    }, 500);
 
-    const delayedCloseDialog = delayedPromise(() => dispatch(closeDialog()), 2000);
-
-    Promise.all([openLoadingDialog, delayedCloseDialog]).then(() => {
+    const openVerificationDialog = delayedPromise(() => {
       dispatch(
         openDialog({
-          content: (
-            <ResultMessage status="success" />
-          ),
+          dialogProps: { showCloseButton: false, disableEvents: true },
+          content: <VerificationOperation />,
         }),
       );
-    });
+    }, 3000);
+
+    const onOpenResult = delayedPromise(() => {
+      dispatch(
+        openDialog({
+          content: <ResultMessage status="success" />,
+        }),
+      );
+    }, 5500);
+
+    Promise.all([
+      openLoadingDialog, //500ms
+      delayedPromise(() => dispatch(closeDialog()), 1500),
+      openVerificationDialog, //3000ms
+      delayedPromise(() => dispatch(closeDialog()), 4000),
+      onOpenResult, //5500ms
+    ]).then(() => {});
   };
 
   return (

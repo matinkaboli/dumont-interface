@@ -1,45 +1,37 @@
-import React from 'react';
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components';
 import { closeDialog } from '@/redux/features/dialogSlice';
 
+const successMessage = {
+  title: 'You won! 🎉',
+  content: (
+    <p className="text-white text-md">
+      Enjoy your <b className="text-success-400">$2,080 win</b> <b>in your wallet</b>
+    </p>
+  ),
+  buttonText: 'Got it',
+};
+
+const failureMessage = {
+  title: 'No luck this time 💔',
+  content: (
+    <p className="text-sm text-neutral-200 px-0 md:px-5">
+      You didn’t win this one, but you still got
+      <span className="text-success-400"> +1,200</span> $MONT in rewards.
+    </p>
+  ),
+  buttonText: 'Try the next',
+};
+
 interface Props {
   status: 'success' | 'failure';
 }
 
-interface Message {
-  title: string;
-  content: React.ReactNode;
-  buttonText: string;
-}
-
 const ResultMessage = ({ status }: Props) => {
+  const message = status === 'success' ? successMessage : failureMessage;
   const dispatch = useDispatch();
-
-  const message: Message =
-    status === 'success'
-      ? {
-          title: 'You won! 🎉',
-          content: (
-            <p className="text-white text-md">
-              Enjoy your <b className="text-success-400">$2,080 win</b> <b>in your wallet</b>
-            </p>
-          ),
-          buttonText: 'Got it',
-        }
-      : {
-          title: 'No luck this time 💔',
-          content: (
-            <p className="text-sm text-neutral-200 px-0 md:px-5">
-              You didn’t win this one, but you still got
-              <span className="text-success-400"> +1,200</span> $MONT in rewards.
-            </p>
-          ),
-          buttonText: 'Try the next',
-        };
-
   const onCloseDialog = () => dispatch(closeDialog());
 
   return (
