@@ -34,7 +34,7 @@ const labelVariants = cva(
   },
 );
 
-interface Props
+export interface Props
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputVariants> {
   rightSection?: ReactNode;

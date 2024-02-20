@@ -12,7 +12,7 @@ import ConfirmBet from './ConfirmBet';
 const buttonStyle =
   "relative bg-primary-300 text-white cursor-pointer disabled:cursor-auto overflow-hidden !font-semibold after:content-[''] after:absolute after:w-28 after:h-28 after:rounded-full after:top-[calc(var(--y,0)*1px-50px)] after:left-[calc(var(--x,0)*1px-50px)] after:transition-opacity after:duration-200 after:opacity-0 hover:after:opacity-50";
 
-const BetButton = ({ size }: ButtonProps) => {
+const BetButton = ({ size, disabled }: ButtonProps) => {
   const dispatch = useDispatch();
   const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -53,8 +53,9 @@ const BetButton = ({ size }: ButtonProps) => {
             {isConnected ? (
               <Button
                 {...buttonProps}
+                type="submit"
                 ref={buttonRef}
-                disabled={!isConfirmed}
+                disabled={!isConfirmed || disabled}
                 className={`${buttonStyle} ${isConfirmed && 'after:bg-gradiant-glow'}`}
                 onClick={onOpenModal}
               >

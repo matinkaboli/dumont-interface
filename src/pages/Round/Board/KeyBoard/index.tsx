@@ -1,7 +1,11 @@
+import { UseFormSetValue } from 'react-hook-form';
+import { useState } from 'react';
+
 import Key from './Key';
+import { AmountForm } from '../.';
 
 export interface KeyType {
-  value?: string;
+  value: string;
   weight?: number;
 }
 
@@ -21,13 +25,32 @@ const keys: KeyType[] = [
   { value: 'K', weight: 3.4 },
 ];
 
-const KeyBoard = () => {
+const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<AmountForm> }) => {
+  const [values, setValues] = useState<string[]>([]);
+
+  const handleClick = (value: string) => {
+    const index = values.indexOf(value);
+    if (index !== -1) {
+      setValues((prevValues) => prevValues.filter((item) => item !== value));
+    } else {
+      setValues((prevValues) => [...prevValues, value]);
+    }
+
+    setValue('keys', values);
+  };
+
   return (
     <div className="grid grid-cols-5 gap-2">
       {keys.map((key) => (
-        <Key key={key.value} value={key.value} weight={key.weight} />
+        <Key
+          key={key.value}
+          value={key.value}
+          weight={key.weight}
+          className={values.includes(key.value) ? '!border-primary-250' : ''}
+          onClick={() => handleClick(key.value)}
+        />
       ))}
-      <Key isSkip className="col-span-2" />
+      <Key isSkip value="" className="col-span-2" />
     </div>
   );
 };
