@@ -18,7 +18,7 @@ const contentVariants = cva('fixed z-50 bg-neutral-700 rounded-xl w-3/4 px-6 py-
   },
 });
 
-interface DialogProps
+export interface DialogProps
   extends React.ComponentPropsWithoutRef<typeof Root>,
     VariantProps<typeof contentVariants> {
   open: boolean;

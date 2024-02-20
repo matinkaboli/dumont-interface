@@ -12,7 +12,8 @@ const store = configureStore({
     createRound: CreateRoundReducer,
     bet: betReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  // TODO: Check serializableCheck to ensure there are no problems (content type in modal)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
