@@ -1,12 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BetData, initialBetData } from '@/pages/Round/Board';
+import { BetData } from '@/pages/Round/Board';
 
 interface InitialState {
   betData: BetData;
 }
 
 const initialState: InitialState = {
-  betData: initialBetData,
+  betData: {
+    amount: '',
+    keys: [],
+  },
 };
 
 const betSlice = createSlice({
@@ -17,7 +20,7 @@ const betSlice = createSlice({
       state.betData = action.payload;
     },
     clearBetData(state) {
-      state.betData = initialBetData;
+      state.betData = initialState.betData;
     },
   },
 });
