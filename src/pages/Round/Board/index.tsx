@@ -1,29 +1,35 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+
+import {setBetData} from '@/redux/features/betSlice'
 
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
 
-export interface AmountForm {
+export interface BetData {
   amount: string;
   keys: string[];
 }
 
+export const initialBetData = {
+  amount: '',
+  keys: [],
+};
+
 const Board = () => {
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
     setValue,
     formState: { isDirty, isValid },
-  } = useForm<AmountForm>({
+  } = useForm<BetData>({
     mode: 'onChange',
-    defaultValues: {
-      amount: '',
-      keys: [],
-    },
+    defaultValues: initialBetData,
   });
 
-  const onSubmit: SubmitHandler<AmountForm> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<BetData> = (data) => {
+    dispatch(setBetData(data));
   };
 
   return (

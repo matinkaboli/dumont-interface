@@ -4,20 +4,23 @@ import { Button } from '@/components';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import delayedPromise from '@/helpers/delayedPromise';
 import LoadingMessage from '@/pages/_components/LoadingMessage';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import SelectedKey from './SelectedKey';
 import BetDetailList from './BetDetailList';
 import ResultMessage from './ConfirmProcess/ResultMessage';
 import VerificationOperation from './ConfirmProcess/VerificationOperation';
 
-const betDetails = [
-  { label: 'Amount', value: '125 DAI' },
-  { label: 'Overall odds', value: 'x3.4' },
-  { label: 'Possible payout', value: '$220' },
-];
-
 const ConfirmBet = () => {
   const dispatch = useDispatch();
+  const { keys, amount } = useTypedSelector((state) => state.bet.betData);
+
+  const betDetails = [
+    { label: 'Amount', value: `${amount} USDT` },
+    { label: 'Overall odds', value: 'x3.4' },
+    { label: 'Possible payout', value: '$220' },
+  ];
+
   const onConfirm = () => {
     dispatch(closeDialog());
 
@@ -66,8 +69,9 @@ const ConfirmBet = () => {
       <h3 className="text-md text-white font-medium">Confirm your bet</h3>
       <h6 className="text-base text-white font-medium mt-6">Selection</h6>
       <div className="flex gap-2 mt-4">
-        <SelectedKey>7</SelectedKey>
-        <SelectedKey>K</SelectedKey>
+        {keys.map((key) => (
+          <SelectedKey key={key}>{key}</SelectedKey>
+        ))}
       </div>
 
       <BetDetailList className="mt-4 mb-10" items={betDetails} />

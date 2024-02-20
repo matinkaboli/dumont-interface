@@ -11,7 +11,7 @@ import { Props as InputProps } from '@/components/Input';
 import AmountInfo from './Info';
 import BetButton from './BetButton';
 import MaxButton from './MaxButton';
-import {AmountForm} from '../.'
+import {BetData} from '../.'
 
 const inputProps: InputProps = {
   size: 'sm',
@@ -32,7 +32,7 @@ const mobileInputProps: InputProps = {
 };
 
 interface Props {
-  control: Control<AmountForm>;
+  control: Control<BetData>;
   disabledButton: boolean;
 }
 

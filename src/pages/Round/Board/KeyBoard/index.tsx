@@ -1,8 +1,8 @@
 import { UseFormSetValue } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Key from './Key';
-import { AmountForm } from '../.';
+import { BetData } from '../.';
 
 export interface KeyType {
   value: string;
@@ -25,7 +25,7 @@ const keys: KeyType[] = [
   { value: 'K', weight: 3.4 },
 ];
 
-const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<AmountForm> }) => {
+const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
   const onClickKey = (value: string) => {
@@ -35,9 +35,11 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<AmountForm> }) => {
     } else {
       setSelectedKeys((prevValues) => [...prevValues, value]);
     }
-
-    setValue('keys', selectedKeys);
   };
+
+  useEffect(() => {
+    setValue('keys', selectedKeys);
+  }, [selectedKeys]);
 
   const onResetSelectedKeys = () => {
     setSelectedKeys([]);
