@@ -6,7 +6,7 @@ import { AmountForm } from '../.';
 
 export interface KeyType {
   value: string;
-  weight?: number;
+  weight: number;
 }
 
 const keys: KeyType[] = [
@@ -26,17 +26,22 @@ const keys: KeyType[] = [
 ];
 
 const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<AmountForm> }) => {
-  const [values, setValues] = useState<string[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
-  const handleClick = (value: string) => {
-    const index = values.indexOf(value);
+  const onClickKey = (value: string) => {
+    const index = selectedKeys.indexOf(value);
     if (index !== -1) {
-      setValues((prevValues) => prevValues.filter((item) => item !== value));
+      setSelectedKeys((prevValues) => prevValues.filter((item) => item !== value));
     } else {
-      setValues((prevValues) => [...prevValues, value]);
+      setSelectedKeys((prevValues) => [...prevValues, value]);
     }
 
-    setValue('keys', values);
+    setValue('keys', selectedKeys);
+  };
+
+  const onResetSelectedKeys = () => {
+    setSelectedKeys([]);
+    setValue('keys', []);
   };
 
   return (
@@ -46,11 +51,11 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<AmountForm> }) => {
           key={key.value}
           value={key.value}
           weight={key.weight}
-          className={values.includes(key.value) ? '!border-primary-250' : ''}
-          onClick={() => handleClick(key.value)}
+          className={selectedKeys.includes(key.value) ? '!border-primary-250' : ''}
+          onClick={() => onClickKey(key.value)}
         />
       ))}
-      <Key isSkip value="" className="col-span-2" />
+      <Key isSkip onClick={onResetSelectedKeys} className="col-span-2" />
     </div>
   );
 };
