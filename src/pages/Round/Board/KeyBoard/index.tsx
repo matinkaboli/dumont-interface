@@ -1,6 +1,8 @@
 import { UseFormSetValue } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 
+import { swiperRef } from '@/components/Carousel';
+
 import Key from './Key';
 import { BetData } from '../.';
 
@@ -41,9 +43,9 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
     setValue('keys', selectedKeys);
   }, [selectedKeys]);
 
-  const onResetSelectedKeys = () => {
-    setSelectedKeys([]);
-    setValue('keys', []);
+  const onSlideNext = () => {
+    // @ts-ignore
+    swiperRef?.current?.slideNext();
   };
 
   return (
@@ -57,7 +59,7 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
           onClick={() => onClickKey(key.value)}
         />
       ))}
-      <Key isSkip onClick={onResetSelectedKeys} className="col-span-2" />
+      <Key isSkip onClick={onSlideNext} className="col-span-2" />
     </div>
   );
 };
