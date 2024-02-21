@@ -59,11 +59,11 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
           key={key.value}
           value={key.value}
           weight={key.weight}
-          className={selectedKeys.includes(key.value) ? '!border-primary-250' : ''}
+          isSelected={selectedKeys.includes(key.value)}
           onClick={() => onClickKey(key.value)}
         />
       ))}
-      <Key isSkip onClick={onSlideNext} className="col-span-2" />
+      <Key isSkip onClick={onSlideNext} />
     </div>
   );
 };

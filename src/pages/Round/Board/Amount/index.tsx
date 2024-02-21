@@ -45,7 +45,7 @@ const Amount = ({ control, disabledButton }: Props) => {
   return (
     <>
       {/* Desktop View */}
-      <div className="md:block hidden bg-gradiant-border-amount bg-origin-border border border-transparent rounded-lg w-full h-full">
+      <div className="md:block hidden bg-gradiant-border bg-primary-800 bg-origin-border border border-transparent rounded-lg w-full h-full">
         <div className="flex flex-col justify-between bg-primary-800 px-4 py-6 rounded-lg w-full h-full">
           <div>
             <div className="flex justify-between mb-2">
