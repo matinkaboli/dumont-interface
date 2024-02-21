@@ -2,6 +2,7 @@ import { UseFormSetValue } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 
 import { swiperRef } from '@/components/Carousel';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import Key from './Key';
 import { BetData } from '../.';
@@ -28,6 +29,7 @@ const keys: KeyType[] = [
 ];
 
 const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
+  const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
   const onClickKey = (value: string) => {
@@ -44,8 +46,10 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
   }, [selectedKeys]);
 
   const onSlideNext = () => {
-    // @ts-ignore
-    swiperRef?.current?.slideNext();
+    if (isConfirmed && swiperRef?.current) {
+      // @ts-ignore
+      swiperRef.current.slideNext();
+    }
   };
 
   return (
