@@ -1,6 +1,6 @@
 'use client';
 
-import { Controller, Control } from 'react-hook-form';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -11,15 +11,17 @@ import { Props as InputProps } from '@/components/Input';
 import AmountInfo from './Info';
 import BetButton from './BetButton';
 import MaxButton from './MaxButton';
-import {BetData} from '../.'
+import { BetData } from '../.';
 
 const inputProps: InputProps = {
+  name: 'amount',
   size: 'sm',
   placeholder: 'Enter amount',
   rightSection: <Image src="/images/USDT.svg" width={24} height={24} alt="" />,
 };
 
 const mobileInputProps: InputProps = {
+  name: 'amount',
   size: 'md',
   placeholder: 'USDT amount',
   rightSectionPointerEvents: 'auto',
@@ -34,11 +36,15 @@ const mobileInputProps: InputProps = {
 interface Props {
   control: Control<BetData>;
   disabledButton: boolean;
+  inputErrors?: FieldErrors<BetData>;
 }
 
-const inputValidation = { required: true, pattern: /^\d+$/ };
+const inputValidation = {
+  required: 'This is required.',
+  pattern: { value: /^\d+$/, message: 'This input is number only.' },
+};
 
-const Amount = ({ control, disabledButton }: Props) => {
+const Amount = ({ control, disabledButton, inputErrors }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleToggle = () => setIsOpen(!isOpen);
 
@@ -59,7 +65,7 @@ const Amount = ({ control, disabledButton }: Props) => {
               name="amount"
               control={control}
               rules={inputValidation}
-              render={({ field }) => <Input {...inputProps} {...field} />}
+              render={({ field }) => <Input errors={inputErrors} {...inputProps} {...field} />}
             />
 
             <AmountInfo
@@ -83,7 +89,9 @@ const Amount = ({ control, disabledButton }: Props) => {
               name="amount"
               control={control}
               rules={inputValidation}
-              render={({ field }) => <Input {...mobileInputProps} {...field} />}
+              render={({ field }) => (
+                <Input errors={inputErrors} {...mobileInputProps} {...field} />
+              )}
             />
           </div>
           <div className="flex-none">

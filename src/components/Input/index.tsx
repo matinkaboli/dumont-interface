@@ -1,8 +1,11 @@
 import React, { type InputHTMLAttributes, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { ErrorMessage } from '@hookform/error-message';
+import { FieldErrors } from 'react-hook-form';
 import { clsx } from 'clsx';
 
 import InputSection from './InputSection';
+import isEmpty from '@/hooks/isEmpty';
 
 const inputVariants = cva(
   'px-2 bg-white border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100',
@@ -38,9 +41,10 @@ export interface Props
   leftSection?: ReactNode;
   rightSectionPointerEvents?: 'none' | 'auto';
   leftSectionPointerEvents?: 'none' | 'auto';
-  error?: string;
   label?: string;
   description?: string;
+  name: string;
+  errors?: FieldErrors<any>;
 }
 
 const Input = React.forwardRef<HTMLInputElement, Props>(
@@ -53,16 +57,16 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
       leftSection,
       rightSectionPointerEvents = 'none',
       leftSectionPointerEvents = 'none',
-      error,
       label,
       disabled,
       description,
+      name,
+      errors,
       ...props
     },
     ref,
   ) => {
     const inputClassName = inputVariants({ size, className });
-    const hasError = Boolean(error);
 
     return (
       <div>
@@ -71,7 +75,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
         <div
           className={clsx(
             'relative',
-            hasError ? '[&_.path]:fill-error-500' : '[&_.path]:fill-neutral-800',
+            isEmpty(errors) ? '[&_.path]:fill-neutral-800' : '[&_.path]:fill-error-500',
             disabled && '[&_.path]:opacity-50',
           )}
         >
@@ -86,9 +90,9 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
             className={clsx(
               leftSection ? 'pl-11' : 'pl-3',
               rightSection ? 'pr-11' : 'pr-3',
-              hasError
-                ? 'border-error-500 text-error-500 placeholder:text-error-500'
-                : 'border-neutral-300 text-neutral-800 focus:border-neutral-800 placeholder:text-neutral-400',
+              isEmpty(errors)
+                ? 'border-neutral-300 text-neutral-800 focus:border-neutral-800 placeholder:text-neutral-400'
+                : 'border-error-500 text-error-500 placeholder:text-error-500',
               inputClassName,
             )}
             disabled={disabled}
@@ -103,11 +107,17 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
 
         {description && <p className="text-xs text-neutral-500 font-medium mt-2">{description}</p>}
 
-        {hasError && (
-          <p className={clsx('text-xs text-error-500 font-medium', description ? 'mt-1' : 'mt-2')}>
-            {error}
-          </p>
-        )}
+        <ErrorMessage
+          errors={errors}
+          name={name}
+          render={({ message }) => (
+            <p
+              className={clsx('text-xs text-error-500 font-medium', description ? 'mt-1' : 'mt-2')}
+            >
+              {message}
+            </p>
+          )}
+        />
       </div>
     );
   },

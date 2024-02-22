@@ -17,7 +17,7 @@ const Board = () => {
     control,
     handleSubmit,
     setValue,
-    formState: { isDirty, isValid },
+    formState: { isDirty, isValid, errors },
   } = useForm<BetData>({
     mode: 'onChange',
     defaultValues: {
@@ -39,7 +39,7 @@ const Board = () => {
         <KeyBoard setValue={setValue} />
       </div>
       <div className="col-span-1 md:order-2 order-1">
-        <Amount control={control} disabledButton={!isValid || !isDirty} />
+        <Amount inputErrors={errors} control={control} disabledButton={!isValid || !isDirty} />
       </div>
     </form>
   );
