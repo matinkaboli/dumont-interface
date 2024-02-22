@@ -4,8 +4,9 @@ import { ErrorMessage } from '@hookform/error-message';
 import { FieldErrors } from 'react-hook-form';
 import { clsx } from 'clsx';
 
-import InputSection from './InputSection';
 import isEmpty from '@/hooks/isEmpty';
+
+import InputSection from './InputSection';
 
 const inputVariants = cva(
   'px-2 bg-white border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100',
@@ -61,7 +62,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
       disabled,
       description,
       name,
-      errors,
+      errors = {},
       ...props
     },
     ref,
@@ -107,17 +108,22 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
 
         {description && <p className="text-xs text-neutral-500 font-medium mt-2">{description}</p>}
 
-        <ErrorMessage
-          errors={errors}
-          name={name}
-          render={({ message }) => (
-            <p
-              className={clsx('text-xs text-error-500 font-medium', description ? 'mt-1' : 'mt-2')}
-            >
-              {message}
-            </p>
-          )}
-        />
+        {!isEmpty(errors) && (
+          <ErrorMessage
+            errors={errors}
+            name={name}
+            render={({ message }) => (
+              <p
+                className={clsx(
+                  'text-xs text-error-500 font-medium',
+                  description ? 'mt-1' : 'mt-2',
+                )}
+              >
+                {message}
+              </p>
+            )}
+          />
+        )}
       </div>
     );
   },

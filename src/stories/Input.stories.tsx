@@ -17,6 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
+    name: 'input',
     placeholder: 'input',
   },
 };
@@ -24,14 +25,15 @@ export const Basic: Story = {
 export function Size() {
   return (
     <div className="flex flex-col gap-4">
-      <Input placeholder="sm input" size="sm" />
-      <Input placeholder="md input" size="md" />
+      <Input name="input1" placeholder="sm input" size="sm" />
+      <Input name="input2" placeholder="md input" size="md" />
     </div>
   );
 }
 
 export const Icon: Story = {
   args: {
+    name: 'input',
     placeholder: 'input',
     leftSection: <SvgIcon name="home" />,
     rightSection: <SvgIcon name="home" />,
@@ -40,6 +42,7 @@ export const Icon: Story = {
 
 export const Disabled: Story = {
   args: {
+    name: 'input',
     placeholder: 'input',
     disabled: true,
   },
@@ -47,6 +50,7 @@ export const Disabled: Story = {
 
 export const Description: Story = {
   args: {
+    name: 'input',
     placeholder: 'input',
     description: 'This is description',
   },
@@ -54,7 +58,8 @@ export const Description: Story = {
 
 export const Error: Story = {
   args: {
+    name: 'input',
     placeholder: 'input',
-    error: 'This is error',
+    errors: { input: { type: 'required', message: 'You should enter valid input!' } },
   },
 };
