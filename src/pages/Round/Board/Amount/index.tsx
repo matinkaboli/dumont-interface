@@ -40,7 +40,7 @@ interface Props {
 }
 
 const inputValidation = {
-  required: 'This is required.',
+  required: 'Bet amount is required.',
   pattern: { value: /^\d+$/, message: 'This input is number only.' },
 };
 
