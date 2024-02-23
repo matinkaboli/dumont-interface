@@ -23,11 +23,14 @@ export interface SlideSrc {
 }
 
 const imgSrc = '/images/card.png';
-const cards = Array.from({ length: 18 }, (_, index) => ({
-  id: index + 1,
-  src: imgSrc,
-}));
-const slides = [{ id: 10, src: '/images/card-placeholder.png' }, ...cards];
+const generateCard = (id: number, src: string) => ({ id, src });
+
+const cards = Array.from({ length: 18 }, (_, index) => generateCard(index + 1, imgSrc));
+
+const slides = [
+  { id: 53, src: '/images/card-placeholder.png' },
+  ...Array.from({ length: 52 }, (_, index) => generateCard(index + 1, imgSrc)),
+];
 
 const PlayCards = ({ className = '' }: { className?: string }) => {
   const [showSlider, setShowSlider] = useState(false);
