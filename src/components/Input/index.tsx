@@ -4,7 +4,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import { FieldErrors } from 'react-hook-form';
 import { clsx } from 'clsx';
 
-import isEmpty from '@/hooks/isEmpty';
+import isEmpty from '@/helpers/isEmpty';
 
 import InputSection from './InputSection';
 
