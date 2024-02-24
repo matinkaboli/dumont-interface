@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { ConnectKitButton } from 'connectkit';
 
-import { Button } from '@/components';
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 import { ButtonProps } from '@/components/Button';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { openDialog } from '@/redux/features/dialogSlice';
@@ -51,16 +51,31 @@ const BetButton = ({ size, disabled }: ButtonProps) => {
         return (
           <div>
             {isConnected ? (
-              <Button
-                {...buttonProps}
-                type="submit"
-                ref={buttonRef}
-                disabled={!isConfirmed || disabled}
-                className={`${buttonStyle} ${isConfirmed && 'after:bg-gradiant-glow'}`}
-                onClick={onOpenModal}
-              >
-                <span className="relative z-10">Bet</span>
-              </Button>
+              <>
+                {isConfirmed ? (
+                  <Button
+                    {...buttonProps}
+                    type="submit"
+                    ref={buttonRef}
+                    disabled={disabled}
+                    className={`${buttonStyle} ${disabled ? '' : 'after:bg-gradiant-glow'}`}
+                    onClick={onOpenModal}
+                  >
+                    <span className="relative z-10">Bet</span>
+                  </Button>
+                ) : (
+                  <TooltipProvider delayDuration={100}>
+                    <Tooltip>
+                      <TooltipTrigger className="w-full">
+                        <Button {...buttonProps} disabled>
+                          Bet
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>No game created yet.</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+              </>
             ) : (
               <Button
                 {...buttonProps}
