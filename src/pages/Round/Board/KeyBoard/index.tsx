@@ -1,8 +1,15 @@
+import { UseFormSetValue } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+
+import { swiperRef } from '@/components/Carousel';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+
 import Key from './Key';
+import { BetData } from '../.';
 
 export interface KeyType {
-  value?: string;
-  weight?: number;
+  value: string;
+  weight: number;
 }
 
 const keys: KeyType[] = [
@@ -21,13 +28,42 @@ const keys: KeyType[] = [
   { value: 'K', weight: 3.4 },
 ];
 
-const KeyBoard = () => {
+const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
+  const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+
+  const onClickKey = (value: string) => {
+    const index = selectedKeys.indexOf(value);
+    if (index !== -1) {
+      setSelectedKeys((prevValues) => prevValues.filter((item) => item !== value));
+    } else {
+      setSelectedKeys((prevValues) => [...prevValues, value]);
+    }
+  };
+
+  useEffect(() => {
+    setValue('keys', selectedKeys);
+  }, [selectedKeys]);
+
+  const onSlideNext = () => {
+    if (isConfirmed && swiperRef?.current) {
+      // @ts-ignore
+      swiperRef.current.slideNext();
+    }
+  };
+
   return (
     <div className="grid grid-cols-5 gap-2">
       {keys.map((key) => (
-        <Key key={key.value} value={key.value} weight={key.weight} />
+        <Key
+          key={key.value}
+          value={key.value}
+          weight={key.weight}
+          isSelected={selectedKeys.includes(key.value)}
+          onClick={() => onClickKey(key.value)}
+        />
       ))}
-      <Key isSkip className="col-span-2" />
+      <Key isSkip onClick={onSlideNext} />
     </div>
   );
 };

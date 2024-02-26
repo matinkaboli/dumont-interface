@@ -3,7 +3,8 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-import { Swiper, SwiperProps } from 'swiper/react';
+import { createRef, RefObject } from 'react';
+import { Swiper, SwiperProps, SwiperRef } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import clsx from 'clsx';
 
@@ -14,6 +15,8 @@ interface Props extends Pick<SwiperProps, Exclude<keyof SwiperProps, 'modules' |
   prevELClassName?: string;
   nextELClassName?: string;
 }
+
+export const swiperRef: RefObject<SwiperRef> | null = createRef();
 
 const Carousel = ({
   children,
@@ -30,6 +33,11 @@ const Carousel = ({
     <div className="flex items-center lg:gap-7 md:gap-2 gap-0">
       <NavButton className={clsx('prev', prevELClassName)} dir="left" />
       <Swiper
+        ref={swiperRef}
+        onSwiper={(swiper) => {
+          // @ts-ignore
+          swiperRef.current = swiper;
+        }}
         navigation={{
           prevEl: '.prev',
           nextEl: '.next',

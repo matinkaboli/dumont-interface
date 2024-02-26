@@ -1,25 +1,30 @@
 'use client';
 
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { Icon, Input } from '@/components';
+import { Props as InputProps } from '@/components/Input';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
 import MaxButton from './MaxButton';
+import { BetData } from '../.';
 
-const inputProps = {
-  size: 'sm' as any,
+const inputProps: InputProps = {
+  name: 'amount',
+  size: 'sm',
   placeholder: 'Enter amount',
   rightSection: <Image src="/images/USDT.svg" width={24} height={24} alt="" />,
 };
 
-const mobileInputProps = {
-  size: 'md' as any,
+const mobileInputProps: InputProps = {
+  name: 'amount',
+  size: 'md',
   placeholder: 'USDT amount',
-  rightSectionPointerEvents: 'auto' as any,
+  rightSectionPointerEvents: 'auto',
   rightSection: (
     <div className="flex gap-3 items-center">
       <span className="text-sm font-medium text-neutral-400">USDT</span>
@@ -28,14 +33,25 @@ const mobileInputProps = {
   ),
 };
 
-const Amount = () => {
+interface Props {
+  control: Control<BetData>;
+  disabledButton: boolean;
+  inputErrors?: FieldErrors<BetData>;
+}
+
+const inputValidation = {
+  required: 'Bet amount is required.',
+  pattern: { value: /^\d+$/, message: 'This input is number only.' },
+};
+
+const Amount = ({ control, disabledButton, inputErrors }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleToggle = () => setIsOpen(!isOpen);
 
   return (
     <>
       {/* Desktop View */}
-      <div className="md:block hidden bg-gradiant-border-amount bg-origin-border border border-transparent rounded-lg w-full h-full">
+      <div className="md:block hidden bg-gradiant-border bg-primary-800 bg-origin-border border border-transparent rounded-lg w-full h-full">
         <div className="flex flex-col justify-between bg-primary-800 px-4 py-6 rounded-lg w-full h-full">
           <div>
             <div className="flex justify-between mb-2">
@@ -45,7 +61,12 @@ const Amount = () => {
               </MaxButton>
             </div>
 
-            <Input {...inputProps} />
+            <Controller
+              name="amount"
+              control={control}
+              rules={inputValidation}
+              render={({ field }) => <Input errors={inputErrors} {...inputProps} {...field} />}
+            />
 
             <AmountInfo
               odd={6.6}
@@ -56,7 +77,7 @@ const Amount = () => {
             />
           </div>
 
-          <BetButton size="md" />
+          <BetButton size="md" disabled={disabledButton} />
         </div>
       </div>
 
@@ -64,7 +85,14 @@ const Amount = () => {
       <div className="md:hidden flex flex-col gap-2">
         <div className="flex items-end gap-2">
           <div className="grow">
-            <Input {...mobileInputProps} />
+            <Controller
+              name="amount"
+              control={control}
+              rules={inputValidation}
+              render={({ field }) => (
+                <Input errors={inputErrors} {...mobileInputProps} {...field} />
+              )}
+            />
           </div>
           <div className="flex-none">
             <button
@@ -98,7 +126,7 @@ const Amount = () => {
         </motion.div>
 
         <div className="bg-neutral-750 px-5 pt-6 pb-8 fixed -bottom-px right-0 left-0 rounded-t-2xl z-10">
-          <BetButton size="lg" />
+          <BetButton size="lg" disabled={disabledButton} />
         </div>
       </div>
     </>
