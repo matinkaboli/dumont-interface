@@ -1,7 +1,7 @@
-import { Button, Icon, QRCode } from '@/components';
 import Image from 'next/image';
 import { useDisconnect } from 'wagmi';
 
+import { Button, Icon, QRCode } from '@/components';
 import truncateString from '@/helpers/truncateString';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
@@ -25,9 +25,8 @@ const Profile = ({ onOpenChange }: Props) => {
     <>
       <QRCode value={address || ''} size={192} className="mx-auto" />
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 mt-4">
         <CopyBox
-          className="border-neutral-600 mt-4"
           copyText={address || ''}
           copyLabel={truncateString(address || '', { leftChars: 8, rightChars: 8 })}
           copyIcon={<Image src="/images/metamask.png" width={24} height={24} alt="MetaMask" />}
@@ -53,7 +52,6 @@ const Profile = ({ onOpenChange }: Props) => {
         <div className="flex flex-col gap-2">
           <h6 className="text-sm text-neutral-300 font-semibold">Invite Link</h6>
           <CopyBox
-            className="border-neutral-500"
             copyText="https://dumm.io/2341"
             copyLabel="https://dumm.io/2341"
             copyIcon={<Icon name="link" />}

@@ -1,0 +1,23 @@
+import { ReactNode } from 'react';
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
+
+interface Props {
+  children: ReactNode;
+  isCopied: boolean;
+}
+
+const CopiedTooltip = ({ children, isCopied }: Props) => {
+  return (
+    <TooltipProvider delayDuration={100}>
+      <Tooltip open={isCopied}>
+        <TooltipTrigger className="group" asChild>
+          {children}
+        </TooltipTrigger>
+        <TooltipContent>Copied!</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
+
+export default CopiedTooltip;
