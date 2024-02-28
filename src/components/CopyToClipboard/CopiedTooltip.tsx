@@ -11,10 +11,8 @@ const CopiedTooltip = ({ children, isCopied }: Props) => {
   return (
     <TooltipProvider delayDuration={100}>
       <Tooltip open={isCopied}>
-        <TooltipTrigger asChild>
-          {children}
-        </TooltipTrigger>
-        <TooltipContent>Copied!</TooltipContent>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipContent bgColor="#75757C">Copied!</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
