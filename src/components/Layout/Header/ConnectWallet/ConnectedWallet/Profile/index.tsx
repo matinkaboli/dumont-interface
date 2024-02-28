@@ -34,7 +34,7 @@ const Profile = ({ onOpenChange }: Props) => {
 
         <div className="flex flex-col gap-2">
           <h6 className="text-sm text-neutral-300 font-semibold">Balance</h6>
-          <BalanceList address={address} />
+          <BalanceList />
 
           <div className="flex gap-2">
             <LinkButton link="/">
@@ -67,7 +67,7 @@ const Profile = ({ onOpenChange }: Props) => {
         rightSection={<Icon name="arrow-right-from-bracket" />}
         onClick={() => disconnect()}
       >
-        Logout
+        Disconnect
       </Button>
     </>
   );
