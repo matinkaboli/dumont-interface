@@ -13,8 +13,8 @@ export interface Menu {
 }
 
 const menus: Menu[] = [
-  { label: 'Activity', href: Routes.ACTIVITY },
   { label: 'Tutorial', href: Routes.TUTORIAL },
+  { label: 'New round', href: Routes.CREATE_ROUND },
 ];
 
 const Header = () => {

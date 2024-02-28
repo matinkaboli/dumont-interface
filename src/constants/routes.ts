@@ -1,7 +1,7 @@
 const Routes = {
   HOME: '/',
-  ACTIVITY: '/activity',
   TUTORIAL: '/tutorial',
+  CREATE_ROUND: '/',
 };
 
 export default Routes;
