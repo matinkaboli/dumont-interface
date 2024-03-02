@@ -32,7 +32,7 @@ const TabsTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <div className="h-0.5 bg-transparent border-active mt-1.5 rounded-3xl transition ease-in duration-200" />
+    <div className="h-0.5 bg-neutral-800 border-active mt-1.5 rounded-3xl transition ease-in duration-200" />
   </TabsPrimitive.Trigger>
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;

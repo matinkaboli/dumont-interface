@@ -10,16 +10,17 @@ interface Props {
   className?: string;
 }
 
+const parentClassName =
+  'bg-neutral-600 px-4 h-10 rounded-lg border border-neutral-600 hover:border-primary-250 transition ease-in-out';
+
 const CopyBox = ({ copyText, copyLabel, copyIcon, className }: Props) => {
   return (
-    <div className={clsx('flex-between bg-neutral-600 px-4 h-10 rounded-lg border hover:border-primary-200 transition ease-in-out', className)}>
-      <div className="flex gap-2">
+    <CopyToClipboard copyText={copyText} className={clsx(parentClassName, className)}>
+      <span className="flex gap-2">
         {copyIcon}
-        <div className="text-neutral-100 font-medium text-base">{copyLabel}</div>
-      </div>
-
-      <CopyToClipboard copyText={copyText} />
-    </div>
+        <span className="text-neutral-100 font-medium text-base">{copyLabel}</span>
+      </span>
+    </CopyToClipboard>
   );
 };
 

@@ -21,10 +21,19 @@ export const Basic: Story = {
   },
 };
 
-export const ButtonText: Story = {
+export const ButtonWithIcon: Story = {
   args: {
     copyText: 'copy text',
-    buttonText: 'copy button',
+    copyLabel: 'copy button',
     className: 'text-white text-sm bg-primary-500 py-1 px-2 rounded',
-  },
+  }
+};
+
+export const ButtonWithoutIcon: Story = {
+  args: {
+    showIcon: false,
+    copyText: 'copy text',
+    copyLabel: 'copy button',
+    className: 'text-white text-sm bg-primary-500 py-1 px-2 rounded',
+  }
 };

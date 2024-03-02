@@ -27,6 +27,6 @@ body {
 }
 
 .border-primary-gradiant {
-    @apply bg-gradient-to-r from-primary-400 to-primary-800 p-px
+    @apply bg-gradient-to-r from-primary-400 to-primary-800 p-px hover:from-[#9A25EC] hover:to-[#7612BD63] transition ease-linear duration-500
 }
 

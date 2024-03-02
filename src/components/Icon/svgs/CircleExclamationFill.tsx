@@ -1,11 +1,11 @@
 import { SvgProps } from '../iconConfig';
 
-function AngleRight({
-  width = '24',
-  height = '24',
-  color = '#000',
+function CircleExclamationFill({
+  width = '16',
+  height = '16',
+  color = '#75757C',
   className,
-  viewBox = '0 0 24 24',
+  viewBox = '0 0 16 16',
 }: SvgProps) {
   return (
     <svg
@@ -20,11 +20,11 @@ function AngleRight({
         fill={color}
         className="path"
         fillRule="evenodd"
-        d="M8.227 19.773a.774.774 0 010-1.095L14.905 12 8.227 5.322a.774.774 0 111.095-1.095l7.225 7.226a.774.774 0 010 1.094l-7.225 7.226a.774.774 0 01-1.095 0z"
+        d="M8 1.667a6.333 6.333 0 100 12.666A6.333 6.333 0 008 1.666zm.567 9.687V7.13H7.433v4.225h1.134zm.1-5.894a.667.667 0 11-1.334 0v-.007a.667.667 0 011.333 0v.007z"
         clipRule="evenodd"
       ></path>
     </svg>
   );
 }
 
-export default AngleRight;
+export default CircleExclamationFill;

@@ -16,7 +16,7 @@ const LinkButton = ({ children, link }: Props) => {
       variant="link"
       size="sm"
       radius="lg"
-      className="bg-neutral-600 font-bold text-white"
+      className="bg-neutral-600 hover:bg-primary-400 font-bold text-white"
     >
       <Link href={link} target="_blank">
         {children}

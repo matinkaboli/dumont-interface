@@ -34,7 +34,7 @@ const Key = memo(
           {...props}
         >
           {isSkip ? (
-            <>Skip {`->`}</>
+            <>Reveal {`->`}</>
           ) : (
             <>
               <span className="text-2xl font-bold text-white">{value}</span>

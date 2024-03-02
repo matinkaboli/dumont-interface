@@ -1,17 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import copy from 'copy-to-clipboard';
+import clsx from 'clsx';
 
-import { Icon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
+import { Icon } from '@/components';
+
+import CopiedTooltip from './CopiedTooltip';
 
 interface Props {
   copyText: string;
-  buttonText?: string;
+  copyLabel?: string;
   className?: string;
+  children?: ReactNode;
+  showIcon?: boolean;
 }
 
-const CopyToClipboard = ({ copyText, buttonText, className }: Props) => {
+const CopyToClipboard = ({ copyText, showIcon = true, copyLabel, children, className }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const onCopyText = () => {
@@ -24,16 +29,27 @@ const CopyToClipboard = ({ copyText, buttonText, className }: Props) => {
   };
 
   return (
-    <TooltipProvider delayDuration={100}>
-      <Tooltip open={isCopied}>
-        <TooltipTrigger className="group" asChild>
+    <>
+      {showIcon ? (
+        <button type="button" className={clsx('flex-between group', className)} onClick={onCopyText}>
+          {children || copyLabel}
+          <CopiedTooltip isCopied={isCopied}>
+            <div>
+              <Icon
+                name={isCopied ? 'check' : 'copy'}
+                className="transition ease-in-out group-hover:[&_.path]:fill-primary-250"
+              />
+            </div>
+          </CopiedTooltip>
+        </button>
+      ) : (
+        <CopiedTooltip isCopied={isCopied}>
           <button type="button" className={className} onClick={onCopyText}>
-            {buttonText || <Icon name="copy" className="transition ease-in-out group-hover:[&_.path]:fill-primary-250" />}
+            {children || copyLabel}
           </button>
-        </TooltipTrigger>
-        <TooltipContent>Copied!</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        </CopiedTooltip>
+      )}
+    </>
   );
 };
 
