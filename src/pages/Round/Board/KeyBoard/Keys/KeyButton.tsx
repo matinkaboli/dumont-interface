@@ -1,25 +1,22 @@
-import { ReactNode } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 import clsx from 'clsx';
 
-interface Props {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   isSelected?: boolean;
-  className?: string;
-  buttonClassName?: string;
-  children: ReactNode;
-  onClick?: () => void;
+  borderClassName?: string;
 }
 
-const KeyLayout = ({
+const KeyButton = ({
   isSelected = false,
   className,
-  buttonClassName,
-  onClick,
+  borderClassName,
   children,
+  ...props
 }: Props) => {
   return (
     <div
       className={clsx(
-        className,
+        borderClassName,
         'border border-transparent',
         isSelected && 'bg-gradiant-border bg-primary-800 bg-origin-border rounded-lg',
       )}
@@ -27,11 +24,11 @@ const KeyLayout = ({
       <button
         type="button"
         className={clsx(
-          buttonClassName,
+          className,
           isSelected ? 'bg-primary-800 !text-primary-250' : 'bg-neutral-750 hover:bg-neutral-700',
           'sm:h-[84px] h-[65px] w-full flex justify-center items-center gap-0.5 border border-neutral-700 rounded-lg transition ease-in-out',
         )}
-        onClick={onClick}
+        {...props}
       >
         {children}
       </button>
@@ -39,4 +36,4 @@ const KeyLayout = ({
   );
 };
 
-export default KeyLayout;
+export default KeyButton;

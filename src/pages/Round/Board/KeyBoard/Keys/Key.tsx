@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import KeyLayout from './KeyLayout';
+import KeyButton from './KeyButton';
 import { KeyType } from '../.';
 
 export interface KeyProps extends Partial<KeyType> {
@@ -9,12 +9,17 @@ export interface KeyProps extends Partial<KeyType> {
   onClick?: () => void;
 }
 
-const Key = memo(({ value, weight, className, isSelected = false, ...props }: KeyProps) => {
+const Key = memo(({ value, weight, className, isSelected = false, onClick }: KeyProps) => {
   return (
-    <KeyLayout isSelected={isSelected} className={className} buttonClassName="flex-col" {...props}>
+    <KeyButton
+      isSelected={isSelected}
+      className="flex-col"
+      borderClassName={className}
+      onClick={onClick}
+    >
       <span className="text-2xl font-bold text-white">{value}</span>
       <span className="text-sm text-neutral-400">x{weight}</span>
-    </KeyLayout>
+    </KeyButton>
   );
 });
 Key.displayName = 'Key';
