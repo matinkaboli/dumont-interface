@@ -18,7 +18,7 @@ const RevealKey = ({ className }: { className?: string }) => {
 
   return (
     <KeyButton
-      className="flex flex-col gap-0.5"
+      className="flex flex-col gap-0.5 disabled:bg-neutral-800 disabled:border-neutral-750 [&>div]:disabled:text-neutral-500"
       borderClassName={clsx('col-span-2', className)}
       onClick={onOpenDialog}
     >
