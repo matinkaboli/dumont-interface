@@ -4,15 +4,14 @@ import { useDispatch } from 'react-redux';
 import { openDialog } from '@/redux/features/dialogSlice';
 
 import KeyButton from '../KeyButton';
-// import ConfirmReveal from './ConfirmReveal';
-import RevealedCard from './RevealedCard';
+import ConfirmReveal from './ConfirmReveal';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch();
   const onOpenDialog = () => {
     dispatch(
       openDialog({
-        content: <RevealedCard />,
+        content: <ConfirmReveal />,
       }),
     );
   };

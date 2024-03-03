@@ -1,12 +1,21 @@
 import { useDispatch } from 'react-redux';
 
 import { Button, DialogTitle, Icon } from '@/components';
-import { closeDialog } from '@/redux/features/dialogSlice';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
+
+import RevealedCard from './RevealedCard';
 
 const ConfirmReveal = () => {
   const dispatch = useDispatch();
 
   const onCloseDialog = () => dispatch(closeDialog());
+
+  const onShowResult = () => {
+    onCloseDialog();
+    new Promise((resolve) => setTimeout(resolve, 300)).then(() => {
+      dispatch(openDialog({ content: <RevealedCard /> }));
+    });
+  };
 
   return (
     <>
@@ -22,7 +31,7 @@ const ConfirmReveal = () => {
         <Button fullWidth variant="secondary" radius="lg" onClick={onCloseDialog}>
           Cancel
         </Button>
-        <Button fullWidth variant="primary" radius="lg">
+        <Button fullWidth variant="primary" radius="lg" onClick={onShowResult}>
           Reveal
         </Button>
       </div>

@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 
@@ -7,7 +6,6 @@ import { closeDialog } from '@/redux/features/dialogSlice';
 
 const RevealedCard = () => {
   const dispatch = useDispatch();
-
   const onCloseDialog = () => dispatch(closeDialog());
 
   return (
