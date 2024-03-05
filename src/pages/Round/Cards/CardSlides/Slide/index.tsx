@@ -1,7 +1,9 @@
 import clsx from 'clsx';
-import Image from 'next/image';
 
-import { cardSizeStyles } from '../.';
+import FlipImage from './FlipImage';
+import { cardSizeStyles } from '../../.';
+
+const circleSize = 112;
 
 interface Props {
   isActive: boolean;
@@ -9,24 +11,24 @@ interface Props {
   slide: string;
 }
 
-const circleSize = 112;
-
 const Slide = ({ isActive, index, slide }: Props) => {
-  const scaleClass = isActive ? 'scale-100' : 'scale-[calc(190/210)]';
-  const circleStyle = {
-    width: `${circleSize}px`,
-    height: `${circleSize}px`,
-  };
-
   return (
-    <div className={clsx(scaleClass, 'transition-all duration-300 ease-linear transform')}>
+    <div
+      className={clsx(
+        isActive ? 'scale-100' : 'scale-[calc(190/210)]',
+        'transition-all duration-300 ease-linear transform',
+      )}
+    >
       <div className="fade-in animate-in duration-1000">
         <div
-          style={circleStyle}
           className={clsx(
             isActive ? 'bg-primary-300' : '',
             'text-center p-1 font-bold text-base text-white rounded-full -mb-20 mx-auto',
           )}
+          style={{
+            width: `${circleSize}px`,
+            height: `${circleSize}px`,
+          }}
         >
           {isActive && index}
         </div>
@@ -39,13 +41,7 @@ const Slide = ({ isActive, index, slide }: Props) => {
             'rounded-2xl flex items-center justify-center mx-auto',
           )}
         >
-          <Image
-            width={200}
-            height={0}
-            src={slide}
-            className="mx-auto w-full h-full rounded-2xl"
-            alt=""
-          />
+          <FlipImage frontSrc={slide} backSrc="/images/card-show.png" />
         </div>
       </div>
     </div>
