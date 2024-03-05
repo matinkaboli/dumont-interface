@@ -4,6 +4,7 @@ import accountReducer from './features/accountSlice';
 import dialogReducer from './features/dialogSlice';
 import CreateRoundReducer from './features/createRoundSlice';
 import betReducer from './features/betSlice';
+import revealReducer from './features/revealSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     dialog: dialogReducer,
     createRound: CreateRoundReducer,
     bet: betReducer,
+    reveal: revealReducer,
   },
   // TODO: Check serializableCheck to ensure there are no problems (content type in modal)
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
