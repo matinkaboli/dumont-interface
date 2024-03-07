@@ -1,27 +1,38 @@
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import { Carousel, CarouselItem } from '@/components';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { setActiveCardIndex } from '@/redux/features/cardsSlice';
+import { Card } from '@/types';
 
 import Slide from './Slide';
-import { SlideSrc } from '../.';
 
 interface Props {
-  slides: SlideSrc[];
+  slides: Card[];
 }
 
 const CardSlides = ({ slides }: Props) => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const dispatch = useDispatch();
+  const { activeCardIndex } = useTypedSelector((state) => state.cards);
 
   return (
     <Carousel
       initialSlide={1}
-      allowSlidePrev={activeIndex > 1}
-      prevELClassName={activeIndex === 1 ? '!bg-neutral-700 [&_.path]:!fill-neutral-500': ''}
-      onActiveIndexChange={(s) => setActiveIndex(s.activeIndex)}
+      allowSlidePrev={activeCardIndex > 1}
+      prevELClassName={activeCardIndex === 1 ? '!bg-neutral-700 [&_.path]:!fill-neutral-500' : ''}
+      onActiveIndexChange={(s) => dispatch(setActiveCardIndex(s.activeIndex))}
     >
       {slides.map((slide, index) => {
         return (
           <CarouselItem key={index}>
-            {({ isActive }) => <Slide isActive={isActive} index={slide.id} slide={slide.src} />}
+            {({ isActive }) => (
+              <Slide
+                index={slide.id}
+                slide={slide.src}
+                isRevealed={slide.isRevealed}
+                isActive={isActive}
+              />
+            )}
           </CarouselItem>
         );
       })}

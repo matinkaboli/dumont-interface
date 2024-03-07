@@ -8,7 +8,7 @@ import KeyButton from '../KeyButton';
 import ConfirmReveal from './ConfirmReveal';
 
 const RevealKey = ({ className }: { className?: string }) => {
-  const { revealCount } = useTypedSelector((state) => state.reveal);
+  const { revealCount } = useTypedSelector((state) => state.cards);
   const dispatch = useDispatch();
   const onOpenDialog = () => {
     dispatch(

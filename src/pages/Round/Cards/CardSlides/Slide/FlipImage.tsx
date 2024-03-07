@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
@@ -16,15 +15,10 @@ const spring = {
 interface Props {
   backSrc: string;
   frontSrc: string;
+  isRevealed?: boolean;
 }
 
-const FlipImage = ({ frontSrc, backSrc }: Props) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  const handleClick = () => {
-    setIsFlipped((prevState) => !prevState);
-  };
-
+const FlipImage = ({ frontSrc, backSrc, isRevealed }: Props) => {
   return (
     <div
       className="w-full h-full"
@@ -32,12 +26,11 @@ const FlipImage = ({ frontSrc, backSrc }: Props) => {
         perspective: '1200px',
         transformStyle: 'preserve-3d',
       }}
-      onClick={handleClick}
     >
       <motion.div
-        animate={{ rotateY: isFlipped ? -180 : 0 }}
+        animate={{ rotateY: isRevealed ? -180 : 0 }}
         transition={spring}
-        className={clsx(imgParentClassnames, isFlipped ? 'z-0' : 'z-10')}
+        className={clsx(imgParentClassnames, isRevealed ? 'z-0' : 'z-10')}
       >
         <Image
           width={imgWidth}
@@ -49,9 +42,9 @@ const FlipImage = ({ frontSrc, backSrc }: Props) => {
       </motion.div>
       <motion.div
         initial={{ rotateY: 180 }}
-        animate={{ rotateY: isFlipped ? 0 : 180 }}
+        animate={{ rotateY: isRevealed ? 0 : 180 }}
         transition={spring}
-        className={clsx(imgParentClassnames, isFlipped ? 'z-10' : 'z-0')}
+        className={clsx(imgParentClassnames, isRevealed ? 'z-10' : 'z-0')}
       >
         <Image width={imgWidth} height={imgHeight} src={backSrc} className={imgClassNames} alt="" />
       </motion.div>

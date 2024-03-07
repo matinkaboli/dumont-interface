@@ -9,9 +9,10 @@ interface Props {
   isActive: boolean;
   index: number;
   slide: string;
+  isRevealed?: boolean;
 }
 
-const Slide = ({ isActive, index, slide }: Props) => {
+const Slide = ({ isActive, index, slide, isRevealed = false }: Props) => {
   return (
     <div
       className={clsx(
@@ -41,7 +42,7 @@ const Slide = ({ isActive, index, slide }: Props) => {
             'rounded-2xl flex items-center justify-center mx-auto',
           )}
         >
-          <FlipImage frontSrc={slide} backSrc="/images/card-show.png" />
+          <FlipImage frontSrc={slide} backSrc="/images/card-show.png" isRevealed={isRevealed} />
         </div>
       </div>
     </div>

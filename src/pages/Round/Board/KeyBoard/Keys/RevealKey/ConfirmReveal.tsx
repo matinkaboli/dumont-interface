@@ -2,13 +2,13 @@ import { useDispatch } from 'react-redux';
 
 import { Button, DialogTitle, Icon } from '@/components';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import {incrementRevealCount} from '@/redux/features/revealSlice';
+import {incrementRevealCount} from '@/redux/features/cardsSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import RevealedCard from './RevealedCard';
 
 const ConfirmReveal = () => {
-  const { revealCount } = useTypedSelector((state) => state.reveal);
+  const { revealCount } = useTypedSelector((state) => state.cards);
   const dispatch = useDispatch();
 
   const onCloseDialog = () => dispatch(closeDialog());

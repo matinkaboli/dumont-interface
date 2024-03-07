@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import {Card} from '@/types';
+
 import CardSlides from './CardSlides';
 import CardShuffling from './CardShuffling';
 
@@ -17,23 +20,14 @@ export const cardSizeStyles = {
   },
 };
 
-export interface SlideSrc {
-  id: number;
-  src: string;
-}
-
-const imgSrc = '/images/card.png';
-const generateCard = (id: number, src: string) => ({ id, src });
-
-const cards = Array.from({ length: 18 }, (_, index) => generateCard(index + 1, imgSrc));
-
-const slides = [
-  { id: 53, src: '/images/card-placeholder.png' },
-  ...Array.from({ length: 52 }, (_, index) => generateCard(index + 1, imgSrc)),
-];
+const demoCards = Array.from({ length: 18 }, (_, index) => ({
+  id: index + 1,
+  src: '/images/card.png',
+}));
 
 const PlayCards = ({ className = '' }: { className?: string }) => {
   const [showSlider, setShowSlider] = useState(false);
+  const { cards } = useTypedSelector((state) => state.cards);
 
   return (
     <div
@@ -44,10 +38,10 @@ const PlayCards = ({ className = '' }: { className?: string }) => {
     >
       {showSlider ? (
         <div className="fade-in animate-in duration-1000">
-          <CardSlides slides={slides} />
+          <CardSlides slides={cards} />
         </div>
       ) : (
-        <CardShuffling cards={cards} setShowSlider={setShowSlider} />
+        <CardShuffling cards={demoCards} setShowSlider={setShowSlider} />
       )}
     </div>
   );
