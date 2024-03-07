@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Card } from '@/types';
 
-const cards = [
+const cards: Card[] = [
   { id: 53, src: '/images/card-placeholder.png' },
   ...Array.from({ length: 52 }, (_, index) => ({
     id: index + 1,

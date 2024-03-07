@@ -4,7 +4,6 @@ import { useState } from 'react';
 import clsx from 'clsx';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import {Card} from '@/types';
 
 import CardSlides from './CardSlides';
 import CardShuffling from './CardShuffling';
