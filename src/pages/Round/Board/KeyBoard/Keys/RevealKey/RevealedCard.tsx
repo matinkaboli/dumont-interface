@@ -5,6 +5,7 @@ import { Button, DialogDescription, DialogTitle } from '@/components';
 import { closeDialog } from '@/redux/features/dialogSlice';
 import { setCards } from '@/redux/features/cardsSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { swiperRef } from  '@/components/Carousel';
 
 const RevealedCard = () => {
   const dispatch = useDispatch();
@@ -19,9 +20,16 @@ const RevealedCard = () => {
     });
     dispatch(setCards(updatedCards));
   };
+
   const onCloseDialog = () => {
     dispatch(closeDialog());
-    updateCardByIndex(activeCardIndex, '/images/card-show.png', true);
+
+    // @ts-ignore
+    swiperRef?.current?.slideNext();
+
+    setTimeout(() => {
+      updateCardByIndex(activeCardIndex, '/images/card-show.png', true);
+    }, 200)
   };
 
   return (

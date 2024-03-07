@@ -8,13 +8,14 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import RevealedCard from './RevealedCard';
 
 const ConfirmReveal = () => {
-  const { revealCount } = useTypedSelector((state) => state.cards);
   const dispatch = useDispatch();
+  const { revealCount } = useTypedSelector((state) => state.cards);
 
   const onCloseDialog = () => dispatch(closeDialog());
 
   const onShowResult = () => {
     onCloseDialog();
+
     new Promise((resolve) => setTimeout(resolve, 300)).then(() => {
       dispatch(openDialog({ content: <RevealedCard /> }));
       dispatch(incrementRevealCount());
