@@ -2,10 +2,12 @@ import { useDispatch } from 'react-redux';
 
 import { Button, DialogTitle, Icon } from '@/components';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import {incrementRevealCount} from '@/redux/features/cardsSlice';
+import { incrementRevealCount } from '@/redux/features/cardsSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import RevealedCard from './RevealedCard';
+import delayedPromise from '@/helpers/delayedPromise';
+import LoadingMessage from '@/pages/_components/LoadingMessage';
 
 const ConfirmReveal = () => {
   const dispatch = useDispatch();
@@ -13,13 +15,25 @@ const ConfirmReveal = () => {
 
   const onCloseDialog = () => dispatch(closeDialog());
 
-  const onShowResult = () => {
+  const onShowResult = async () => {
     onCloseDialog();
 
-    new Promise((resolve) => setTimeout(resolve, 300)).then(() => {
-      dispatch(openDialog({ content: <RevealedCard /> }));
-      dispatch(incrementRevealCount());
-    });
+    await delayedPromise(() =>
+      dispatch(openDialog({
+        dialogProps: { showCloseButton: false, disableEvents: true },
+        content: (
+          <LoadingMessage
+            title="Waiting for the network"
+            desc="This may take a few seconds"
+          />
+        ),
+      })), 300);
+
+    await delayedPromise(() => onCloseDialog(), 1000);
+
+    await delayedPromise(() => dispatch(openDialog({ content: <RevealedCard /> })), 300);
+
+    dispatch(incrementRevealCount());
   };
 
   return (
