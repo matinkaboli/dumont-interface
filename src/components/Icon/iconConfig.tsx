@@ -33,6 +33,7 @@ import CaretUp from './svgs/CaretUp';
 import Check from './svgs/Check';
 import CircleExclamationFill from './svgs/CircleExclamationFill';
 import GiftRainbow from './svgs/GiftRainbow';
+import EyeRainbow from './svgs/EyeRainbow';
 
 export interface SvgProps {
   width?: string;
@@ -69,7 +70,8 @@ export type IconName =
   | 'caret-up'
   | 'check'
   | 'circle-exclamation-fill'
-  | 'gift-rainbow';
+  | 'gift-rainbow'
+  | 'eye-rainbow';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -99,4 +101,5 @@ export const iconMap: Record<IconName, ReactElement> = {
   check: <Check />,
   'circle-exclamation-fill': <CircleExclamationFill />,
   'gift-rainbow': <GiftRainbow />,
+  'eye-rainbow': <EyeRainbow />,
 };

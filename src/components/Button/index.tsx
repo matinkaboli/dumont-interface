@@ -14,7 +14,7 @@ const buttonVariants = cva(
         primary:
           'bg-primary-300 text-white [&_.path]:fill-white hover:bg-primary-400 border border-primary-200 hover:border-primary-400 active:border-primary-500 active:bg-primary-500 active:text-primary-100',
         secondary:
-          'bg-transparent text-primary-200 border border-primary-200 [&_.path]:fill-primary-200 [&_.path]:hover:fill-primary-100 hover:text-primary-100 hover:border-primary-100 [&_.path]:active:fill-primary-200 active:text-primary-200 active:border-primary-200',
+          'bg-transparent text-primary-100 border border-primary-100 [&_.path]:fill-primary-100 [&_.path]:hover:fill-primary-200 hover:text-primary-200 hover:border-primary-200 [&_.path]:active:fill-primary-400 active:text-primary-400 active:border-primary-400',
         warning:
           'bg-warning-600 text-white [&_.path]:fill-white hover:bg-warning-700 active:bg-warning-800',
         neutral:

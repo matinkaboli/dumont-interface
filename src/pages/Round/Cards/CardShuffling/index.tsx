@@ -2,7 +2,9 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import clsx from 'clsx';
 
-import { cardSizeStyles, SlideSrc } from '../.';
+import { Card } from '@/types';
+
+import { cardSizeStyles } from '../.';
 
 const variants = {
   hidden: () => ({ scale: 1.5, y: -1000, rotate: 0 }),
@@ -25,7 +27,7 @@ const variants = {
 };
 
 interface Props {
-  cards: SlideSrc[];
+  cards: Card[];
   setShowSlider: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -39,7 +41,6 @@ const CardShuffling = ({ cards, setShowSlider }: Props) => {
     await controls.start('final');
 
     setShowSlider(true);
-
   };
 
   useEffect(() => {
