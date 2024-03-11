@@ -34,8 +34,10 @@ import Check from './svgs/Check';
 import CircleExclamationFill from './svgs/CircleExclamationFill';
 import GiftRainbow from './svgs/GiftRainbow';
 import EyeRainbow from './svgs/EyeRainbow';
-import GameObjectsRainbow from '@/components/Icon/svgs/GameObjectsRainbow';
-import ArrowUpRight from '@/components/Icon/svgs/ArrowUpRight';
+import GameObjectsRainbow from './svgs/GameObjectsRainbow';
+import ArrowUpRight from './svgs/ArrowUpRight';
+import CheckCircle from './svgs/CheckCircle';
+import CheckCircleFill from './svgs/CheckCircleFill';
 
 export interface SvgProps {
   width?: string;
@@ -75,7 +77,9 @@ export type IconName =
   | 'gift-rainbow'
   | 'eye-rainbow'
   | 'game-objects-rainbow'
-  | 'arrow-up-right';
+  | 'arrow-up-right'
+  | 'check-circle'
+  | 'check-circle-fill';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -107,5 +111,7 @@ export const iconMap: Record<IconName, ReactElement> = {
   'gift-rainbow': <GiftRainbow />,
   'eye-rainbow': <EyeRainbow />,
   'game-objects-rainbow': <GameObjectsRainbow />,
-  'arrow-up-right': <ArrowUpRight />
+  'arrow-up-right': <ArrowUpRight />,
+  'check-circle': <CheckCircle />,
+  'check-circle-fill': <CheckCircleFill />,
 };

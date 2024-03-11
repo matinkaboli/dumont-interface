@@ -3,8 +3,7 @@ import { useRouter } from 'next/navigation';
 
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { Button, DialogDescription, DialogIcon, DialogTitle, Icon } from '@/components';
-
-import LoadingMessage from '@/pages/_components/LoadingMessage';
+import LongLoadingContent from '@/pages/_components/Dialog/LongLoadingContent';
 import { confirmRound } from '@/redux/features/createRoundSlice';
 import delayedPromise from '@/helpers/delayedPromise';
 
@@ -12,23 +11,19 @@ const Confirm = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const onConfirm = () => {
+  const onConfirm = async () => {
     dispatch(closeDialog());
 
-    const openLoadingDialog = delayedPromise(() => {
+    await delayedPromise(() => {
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
-          content: (
-            <LoadingMessage title="Waiting to creating round" desc="This may take few seconds" />
-          ),
+          content: <LongLoadingContent />,
         }),
       );
     }, 300);
 
-    const delayedCloseDialog = delayedPromise(() => dispatch(closeDialog()), 2000);
-
-    Promise.all([openLoadingDialog, delayedCloseDialog]).then(() => {
+    await delayedPromise(() => dispatch(closeDialog()), 12000).then(() => {
       dispatch(confirmRound());
       router.push('/?id=34');
     });

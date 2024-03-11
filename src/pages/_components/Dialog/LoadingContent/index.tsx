@@ -5,7 +5,7 @@ interface Props {
   desc: string;
 }
 
-const LoadingMessage = ({ title, desc }: Props) => {
+const LoadingContent = ({ title, desc }: Props) => {
   return (
     <div className="text-center py-2">
       <Loading />
@@ -15,4 +15,4 @@ const LoadingMessage = ({ title, desc }: Props) => {
   );
 };
 
-export default LoadingMessage;
+export default LoadingContent;
