@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import CardDeck from '@/pages/_components/CardDeck';
@@ -9,12 +9,11 @@ import Board from '@/pages/_components/Board';
 import ActivityTab from './ActivityTab';
 
 const CreateRound = () => {
-  const router = useRouter();
   const { isConfirmed } = useTypedSelector((state) => state.createRound);
   const { isConnected } = useTypedSelector((state) => state.account.profile);
 
   if (!isConnected || !isConfirmed) {
-    router.push('/');
+    redirect('/');
   }
 
   return (
