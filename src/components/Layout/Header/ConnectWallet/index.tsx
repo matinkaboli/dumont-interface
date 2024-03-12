@@ -27,7 +27,7 @@ const ConnectWallet = () => {
 
   useEffect(() => {
     dispatch(setAccount({ address, isConnected, isConnecting }));
-  }, [dispatch, isConnecting]);
+  }, [dispatch, isConnecting, isConnected]);
 
   return (
     <ConnectKitButton.Custom>
