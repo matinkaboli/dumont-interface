@@ -90,7 +90,7 @@ const Activities = () => {
 
   return (
     <>
-      {activities?.length === 0 ? (
+      {!activities?.length ? (
         <EmptyDataMessage message="No activity yet" />
       ) : (
         <Table>

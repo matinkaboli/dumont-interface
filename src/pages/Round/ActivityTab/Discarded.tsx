@@ -9,7 +9,7 @@ const images: string[] = [];
 const Discarded = () => {
   return (
     <>
-      {images?.length === 0 ? (
+      {!images?.length ? (
         <EmptyDataMessage message="Nothing discarded" />
       ) : (
         <div className="md:bg-neutral-750 bg-transparent rounded-lg md:p-6 p-0">
