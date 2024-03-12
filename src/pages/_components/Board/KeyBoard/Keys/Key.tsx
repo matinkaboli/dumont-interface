@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 import KeyButton from './KeyButton';
-import { KeyType } from '../.';
+import { KeyType } from '../index';
 
 export interface KeyProps extends Partial<KeyType> {
   isSelected?: boolean;

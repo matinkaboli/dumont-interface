@@ -1,11 +1,5 @@
-import React from 'react';
+import Round from '@/pages/Round';
 
-const Page = () => {
-  return (
-    <div>
-      new page
-    </div>
-  );
-};
-
-export default Page;
+export default function RoundPage() {
+  return <Round />;
+}

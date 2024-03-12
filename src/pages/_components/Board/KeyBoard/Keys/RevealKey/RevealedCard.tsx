@@ -5,7 +5,7 @@ import { Button, DialogDescription, DialogTitle } from '@/components';
 import { closeDialog } from '@/redux/features/dialogSlice';
 import { setCards } from '@/redux/features/cardsSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { swiperRef } from  '@/components/Carousel';
+import { swiperRef } from '@/components/Carousel';
 
 const RevealedCard = () => {
   const dispatch = useDispatch();

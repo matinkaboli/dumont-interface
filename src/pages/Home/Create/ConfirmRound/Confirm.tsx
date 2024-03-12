@@ -25,7 +25,7 @@ const Confirm = () => {
 
     await delayedPromise(() => dispatch(closeDialog()), 12000).then(() => {
       dispatch(confirmRound());
-      router.push('/?id=34');
+      router.push('/34');
     });
   };
 

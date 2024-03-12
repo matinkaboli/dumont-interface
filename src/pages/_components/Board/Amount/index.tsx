@@ -11,7 +11,7 @@ import { Props as InputProps } from '@/components/Input';
 import AmountInfo from './Info';
 import BetButton from './BetButton';
 import MaxButton from './MaxButton';
-import { BetData } from '../.';
+import { BetData } from '../index';
 
 const inputProps: InputProps = {
   name: 'amount',

@@ -31,7 +31,7 @@ const PlayCards = ({ className = '' }: { className?: string }) => {
   return (
     <div
       className={clsx(
-        'overflow-hidden sm:bg-neutral-750 bg-transparent sm:mx-0 -mx-5 lg:px-7 md:px-2 px-0 pt-4 pb-5 rounded-lg',
+        'overflow-hidden sm:bg-neutral-750 bg-transparent sm:mx-0 -mx-5 lg:px-7 md:px-2 px-0 pt-4 pb-5 rounded-lg card-deck-height',
         className,
       )}
     >

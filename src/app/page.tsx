@@ -1,5 +1,5 @@
-import Round from '@/pages/Round';
+import Home from '@/pages/Home';
 
-export default function Home() {
-  return <Round />
+export default function HomePage() {
+  return <Home />;
 }

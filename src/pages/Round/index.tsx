@@ -1,39 +1,29 @@
 'use client';
 
-import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { useRouter } from 'next/navigation';
 
-import CreateRound from './Create';
-import Cards from './Cards';
-import Board from './Board';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import CardDeck from '@/pages/_components/CardDeck';
+import Board from '@/pages/_components/Board';
+
 import ActivityTab from './ActivityTab';
 
-const sectionHeight = 'md:min-h-[366px] min-h-[333px]';
+const CreateRound = () => {
+  const router = useRouter();
+  const { isConfirmed } = useTypedSelector((state) => state.createRound);
+  const { isConnected } = useTypedSelector((state) => state.account.profile);
 
-const Round = () => {
-  const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
-  const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
-
-  if (isConnecting) return <div className="text-center text-white mt-16">Loading...</div>;
+  if (!isConnected || !isConfirmed) {
+    router.push('/');
+  }
 
   return (
     <div className="flex flex-col gap-4">
-      {!isConnected || isConfirmed ? (
-        <Cards className={sectionHeight} />
-      ) : (
-        <CreateRound className={sectionHeight} />
-      )}
-
-      {isConnected && !isConfirmed && (
-        <div className="md:block hidden">
-          <Board />
-        </div>
-      )}
-
-      {((isConnected && isConfirmed) || !isConnected) && <Board />}
-
-      {isConnected && isConfirmed && <ActivityTab className="md:mt-16 mt-14" />}
+      <CardDeck />
+      <Board />
+      <ActivityTab className="md:mt-16 mt-14" />
     </div>
   );
 };
 
-export default Round;
+export default CreateRound;
