@@ -9,11 +9,11 @@ import { DialogTitle, Icon } from '@/components';
 const moveSize = 40;
 
 const items = [
-  'Sending your transaction',
-  'Confirming your transaction...',
-  'Waiting for operator action',
-  'Sending the cards data',
-  'Confirming the cards data',
+  'Sending transaction',
+  'Confirming transaction',
+  'Pending operator’s action',
+  'Confirming cards data',
+  'Finalizing round creation',
 ];
 
 function LongLoadingContent() {
@@ -26,7 +26,7 @@ function LongLoadingContent() {
       } else {
         setActiveIndex((prevIndex) => prevIndex + 1);
       }
-    }, 3000);
+    }, 2800);
 
     return () => clearInterval(interval);
   }, [activeIndex]);
