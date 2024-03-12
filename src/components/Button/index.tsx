@@ -90,9 +90,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               <div>Loading...</div>
             ) : (
               <>
-                {rightSection}
-                {children}
                 {leftSection}
+                {children}
+                {rightSection}
               </>
             )}
           </>

@@ -106,6 +106,8 @@ const config: Config = {
           'linear-gradient(135deg, #7A10C5 0.05%, rgba(122, 16, 197, 0.04) 52.13%, #7A10C5 100.05%)',
         'gradiant-glow': 'radial-gradient(#C472FF, #7A10C5 80%)',
         'gradiant-slide': 'linear-gradient(180deg, #7A10C5 0%, #DD04F1 100%)',
+        'gradiant-inside-horiz':
+          'linear-gradient(180deg, #2E2D36, transparent 30%, transparent 70%, #2E2D36)',
       },
       fontSize: {
         xs: ['12px', '18px'],

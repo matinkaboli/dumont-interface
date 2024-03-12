@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import LoadingMessage from '@/pages/_components/LoadingMessage';
+import LoadingContent from '@/pages/_components/Dialog/LoadingContent';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import SelectedKey from './SelectedKey';
@@ -54,7 +54,7 @@ const ConfirmBet = () => {
         action: openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
-            <LoadingMessage
+            <LoadingContent
               title="Sign the transaction"
               desc="Sign this transaction in your wallet"
             />

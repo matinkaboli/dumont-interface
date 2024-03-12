@@ -4,10 +4,10 @@ import { Button, DialogTitle, Icon } from '@/components';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { incrementRevealCount } from '@/redux/features/cardsSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import delayedPromise from '@/helpers/delayedPromise';
+import LoadingContent from '@/pages/_components/Dialog/LoadingContent';
 
 import RevealedCard from './RevealedCard';
-import delayedPromise from '@/helpers/delayedPromise';
-import LoadingMessage from '@/pages/_components/LoadingMessage';
 
 const ConfirmReveal = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const ConfirmReveal = () => {
       dispatch(openDialog({
         dialogProps: { showCloseButton: false, disableEvents: true },
         content: (
-          <LoadingMessage
+          <LoadingContent
             title="Waiting for the network"
             desc="This may take a few seconds"
           />

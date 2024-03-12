@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import { Card } from '@/types';
 
-import { cardSizeStyles } from '../.';
+import { cardSizeStyles } from '../index';
 
 const variants = {
   hidden: () => ({ scale: 1.5, y: -1000, rotate: 0 }),

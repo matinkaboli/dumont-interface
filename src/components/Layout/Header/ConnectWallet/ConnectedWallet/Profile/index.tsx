@@ -64,7 +64,7 @@ const Profile = ({ onOpenChange }: Props) => {
         variant="link"
         radius="lg"
         className="text-error-400 font-semibold text-base mt-8 mx-auto !px-0 hover:bg-neutral-600"
-        rightSection={<Icon name="arrow-right-from-bracket" />}
+        leftSection={<Icon name="arrow-right-from-bracket" />}
         onClick={() => disconnect()}
       >
         Disconnect
