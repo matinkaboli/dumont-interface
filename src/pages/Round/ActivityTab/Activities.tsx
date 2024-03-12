@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   createColumnHelper,
   flexRender,
@@ -15,7 +16,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components';
-import Link from 'next/link';
+
+import EmptyDataMessage from './EmptyDataMessage';
 
 interface Activity {
   date: string;
@@ -26,14 +28,17 @@ interface Activity {
   status: 'verifying' | 'verified' | 'claim';
 }
 
-const activities: Activity[] = [
-  { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verifying' },
-  { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'lost', status: 'verified' },
-  { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'claim' },
-  { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verified' },
-  { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'lost', status: 'verified' },
-  { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verified' },
-];
+// fake data
+// const activities: Activity[] = [
+//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verifying' },
+//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'lost', status: 'verified' },
+//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'claim' },
+//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verified' },
+//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'lost', status: 'verified' },
+//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verified' },
+// ];
+
+const activities: Activity[] = [];
 
 const columnHelper = createColumnHelper<Activity>();
 
@@ -84,30 +89,36 @@ const Activities = () => {
   });
 
   return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id} className="uppercase text-neutral-400">
-                {flexRender(header.column.columnDef.header, header.getContext())}
-              </TableHead>
+    <>
+      {!activities?.length ? (
+        <EmptyDataMessage message="No activity yet" />
+      ) : (
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="uppercase text-neutral-400">
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
+              </TableRow>
             ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id} className="text-neutral-200">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="text-neutral-200">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
             ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+          </TableBody>
+        </Table>
+      )}
+    </>
   );
 };
 
