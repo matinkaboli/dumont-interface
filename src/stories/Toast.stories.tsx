@@ -48,8 +48,8 @@ export function ContentVariant() {
   return (
     <div className="flex-center gap-2">
       <Button onClick={() => notify({ variant: 'neutral' })}>Neutral</Button>
-      <Button onClick={() => notify({ variant: 'success' })}>Success</Button>
-      <Button onClick={() => notify({ variant: 'error' })}>Error</Button>
+      <Button variant="secondary" onClick={() => notify({ variant: 'success' })}>Success</Button>
+      <Button variant="warning" onClick={() => notify({ variant: 'error' })}>Error</Button>
       <Toast />
     </div>
   );
