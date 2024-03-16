@@ -6,8 +6,8 @@ const headerVariants = cva('text-sm font-bold', {
   variants: {
     variant: {
       neutral: 'text-white',
-      success: 'text-error-500',
-      error: 'text-success-500',
+      success: 'text-success-500',
+      error: 'text-error-500',
     },
   },
   defaultVariants: {
@@ -15,13 +15,13 @@ const headerVariants = cva('text-sm font-bold', {
   },
 });
 
-interface Props extends VariantProps<typeof headerVariants> {
+export interface ToastContentProps extends VariantProps<typeof headerVariants> {
   className?: string;
   title?: string;
   description?: string;
 }
 
-const ToastContent = React.forwardRef<HTMLDivElement, Props>(
+const ToastContent = React.forwardRef<HTMLDivElement, ToastContentProps>(
   ({ className, variant, title, description, ...props }, ref) => (
     <div ref={ref} className={clsx('flex flex-col gap-1', className)} {...props}>
       <h6 className={headerVariants({ variant })}>{title}</h6>
