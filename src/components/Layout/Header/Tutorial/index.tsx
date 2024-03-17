@@ -6,6 +6,8 @@ import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import delayedPromise from '@/helpers/delayedPromise';
 
+import TutorialContent from './TutorialContent';
+
 const Tutorial = () => {
   const dispatch = useDispatch();
   const { open } = useTypedSelector((state) => state.dialog);
@@ -13,7 +15,7 @@ const Tutorial = () => {
     if (open) dispatch(closeDialog());
 
     await delayedPromise(
-      () => dispatch(openDialog({ content: <div>hhdiuhiu</div> })),
+      () => dispatch(openDialog({ content: <TutorialContent />, dialogProps: { size: 'lg' } })),
       open ? 200 : 0,
     );
   };
