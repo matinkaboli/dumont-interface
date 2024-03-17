@@ -1,43 +1,43 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
+import { useDispatch } from 'react-redux';
 
 import { Icon } from '@/components';
-import ModalSheet from '@/components/ModalSheet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { openDialog } from '@/redux/features/dialogSlice';
 
-import { Menu } from '.';
+import Tutorial from './Tutorial';
+import { newRoundMenu } from '.';
 
-interface Props {
-  menuItems: Menu[];
-}
+const menuClassNames = 'text-white text-md';
 
-const ResponsiveMenu = ({ menuItems }: Props) => {
-  const [isOpen, setOpen] = useState(false);
+const ResponsiveMenu = () => {
+  const dispatch = useDispatch();
   const { address } = useTypedSelector((state) => state.account.profile);
-  const onToggleMenu = () => setOpen((prev) => !prev);
+
+  const onOpenMenu = () =>
+    dispatch(
+      openDialog({
+        content: (
+          <ul className="flex flex-col gap-6">
+            <li className={menuClassNames}>
+              <Tutorial />
+            </li>
+            <li className={menuClassNames}>
+              <Link href={newRoundMenu.href}>{newRoundMenu.label}</Link>
+            </li>
+          </ul>
+        ),
+      }),
+    );
 
   if (!address) return null;
 
   return (
-    <div className="md:hidden block">
-      <button onClick={onToggleMenu}>
-        <Icon name="ellipsis-vertical" />
-      </button>
-      <ModalSheet isOpen={isOpen} onClose={onToggleMenu}>
-        <ul className="flex flex-col gap-6">
-          {menuItems.map((menu) => (
-            <li key={menu.label} className="text-white text-md">
-              <Link href={menu.href}>{menu.label}</Link>
-            </li>
-          ))}
-          <li className="text-white text-md">
-            <Link href="/">New Round</Link>
-          </li>
-        </ul>
-      </ModalSheet>
-    </div>
+    <button type="button" className="md:hidden block" onClick={onOpenMenu}>
+      <Icon name="ellipsis-vertical" />
+    </button>
   );
 };
 
