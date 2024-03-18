@@ -7,15 +7,7 @@ import Menus from './Menus';
 import ConnectWallet from './ConnectWallet';
 import ResponsiveMenu from './ResponsiveMenu';
 
-export interface Menu {
-  label: string;
-  href: string;
-}
-
-const menus: Menu[] = [
-  { label: 'Tutorial', href: Routes.TUTORIAL },
-  { label: 'New round', href: Routes.CREATE_ROUND },
-];
+export const newRoundMenu = { label: 'New round', href: Routes.CREATE_ROUND };
 
 const Header = () => {
   return (
@@ -25,12 +17,14 @@ const Header = () => {
           <Image width={32} height={28} src="./images/logo.svg" alt="dumont" />
         </Link>
 
-        <Menus menuItems={menus} />
+        <Menus />
       </div>
 
-      <div className="min-h-[40px]"><ConnectWallet /></div>
+      <div className="min-h-[40px]">
+        <ConnectWallet />
+      </div>
 
-      <ResponsiveMenu menuItems={menus} />
+      <ResponsiveMenu />
     </div>
   );
 };
