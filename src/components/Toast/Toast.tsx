@@ -19,7 +19,7 @@ interface Props extends Omit<ToastContainerProps, 'closeButton'> {}
 
 const Toast = ({ theme = 'dark', bodyClassName, toastClassName, ...props }: Props) => {
   const CloseButton = ({ closeToast }: any) => (
-    <button className="p-0 h-fit w-fit" onClick={closeToast}>
+    <button className="p-0 h-fit w-fit absolute top-2 right-2" onClick={closeToast}>
       <Icon name="xmark" width="16" height="16" color="#75757C" />
     </button>
   );
