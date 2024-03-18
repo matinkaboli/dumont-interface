@@ -7,8 +7,12 @@ const TutorialContent = () => {
   return (
     <div className="flex flex-col gap-8">
       <DialogTitle>Gameplay Tutorial</DialogTitle>
-      <div className="rounded-xl overflow-hidden">
-        <ReactPlayer width="100%" height="136px" url="https://www.youtube.com/watch?v=lKUw8NB53M8" />
+      <div className="w-full min-h-[136px] overflow-hidden rounded-xl">
+        <ReactPlayer
+          width="100%"
+          height="136px"
+          url="https://www.youtube.com/watch?v=lKUw8NB53M8"
+        />
       </div>
       <div className="flex flex-col gap-6">
         <DialogDescription>
