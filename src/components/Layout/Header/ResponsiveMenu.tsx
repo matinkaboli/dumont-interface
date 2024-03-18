@@ -1,11 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Icon } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { openDialog } from '@/redux/features/dialogSlice';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
+import { useScreenDetector } from '@/hooks/useScreenDetector';
 
 import Tutorial from './Tutorial';
 import { newRoundMenu } from '.';
@@ -15,6 +17,13 @@ const menuClassNames = 'text-white text-md';
 const ResponsiveMenu = () => {
   const dispatch = useDispatch();
   const { address } = useTypedSelector((state) => state.account.profile);
+  const { isMobile } = useScreenDetector();
+
+  useEffect(() => {
+    if (!isMobile) {
+      dispatch(closeDialog());
+    }
+  }, [isMobile]);
 
   const onOpenMenu = () =>
     dispatch(
