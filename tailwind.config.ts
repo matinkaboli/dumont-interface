@@ -124,6 +124,9 @@ const config: Config = {
       boxShadow: {
         checkbox: '0px 0px 0px 3px rgba(0, 127, 103, 0.10)',
       },
+      transitionProperty: {
+        'height': 'height'
+      }
     },
   },
   plugins: [require('tailwindcss-animate'), backfaceVisibility],
