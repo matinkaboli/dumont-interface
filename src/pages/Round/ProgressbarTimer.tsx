@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 
 const circleSize = 12;
 
@@ -36,6 +37,8 @@ const circleVariants = {
 };
 
 const ProgressbarTimer = () => {
+  const CustomTooltipTrigger = motion(TooltipTrigger);
+
   return (
     <div className="relative">
       <div className="h-0.5 rounded-xl w-full bg-neutral-500 overflow-hidden">
@@ -48,18 +51,28 @@ const ProgressbarTimer = () => {
         />
       </div>
 
-      <motion.div
-        variants={circleVariants}
-        initial="enter"
-        animate="animate"
-        exit="enter"
-        className="absolute h-full rounded-full bg-primary-250"
-        style={{
-          width: circleSize,
-          height: circleSize,
-          top: -(circleSize / 2),
-        }}
-      />
+      <TooltipProvider delayDuration={100}>
+        <Tooltip>
+          <CustomTooltipTrigger
+            variants={circleVariants}
+            initial="enter"
+            animate="animate"
+            exit="enter"
+            className="absolute h-full rounded-full bg-primary-250 cursor-pointer"
+            style={{
+              width: circleSize,
+              height: circleSize,
+              top: -(circleSize / 2),
+            }}
+          />
+
+          <TooltipContent className="text-sm font-medium flex items-center gap-1">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary-250" />
+            <span className="text-primary-250">2h 20m 12s</span>
+            <span className="text-neutral-300">has left</span>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 };
