@@ -37,7 +37,7 @@ const CreateRound = () => {
 
   return (
     <>
-      <ProgressbarTimer />
+      <div className="px-1.5"><ProgressbarTimer /></div>
 
       <div className="flex flex-col gap-4">
         <CardDeck />
