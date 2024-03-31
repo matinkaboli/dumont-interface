@@ -1,27 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 
 const circleSize = 12;
+// const defaultTimerSeconds = 12 * 60 * 60; // 12 hours in seconds
+const defaultTimerSeconds = 30;
 
 const transition = {
-  duration: 30,
+  duration: defaultTimerSeconds,
   delay: 0.5,
-  ease: 'easeInOut',
 };
 
 const progressVariants = {
-  enter: {
-    width: '100%',
-    transition: {
-      delay: 0,
-      duration: 0,
-    },
-  },
+  enter: { width: '100%' },
   animate: {
     width: 0,
     transition,
@@ -29,12 +24,6 @@ const progressVariants = {
 };
 
 const circleVariants = {
-  enter: {
-    transition: {
-      delay: 0,
-      duration: 0,
-    },
-  },
   animate: {
     right: 0, // Start position
     left: 0, // End position
@@ -42,11 +31,43 @@ const circleVariants = {
   },
 };
 
+const formatTime = (time: number) => {
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor((time % 3600) / 60);
+  const seconds = time % 60;
+
+  let timeString = '';
+
+  if (hours > 0) timeString += `${hours}h `;
+
+  if (minutes > 0 || hours > 0) timeString += `${minutes}m `;
+
+  if (seconds > 0 || (hours === 0 && minutes === 0)) timeString += `${seconds}s `;
+
+  return timeString.trim() || 'There is no time';
+};
+
 const ProgressbarTimer = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(defaultTimerSeconds);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemainingTime((prevTime) => prevTime - 1);
+    }, 1000);
+
+    if (remainingTime <= -1) {
+      clearInterval(timer);
+      console.log('Timer expired!');
+    }
+
+    return () => clearInterval(timer);
+  }, [remainingTime]);
 
   const showTooltip = () => setIsHovered(true);
   const hideTooltip = () => setIsHovered(false);
+
+  const formattedTime = useMemo(() => formatTime(remainingTime), [remainingTime]);
 
   return (
     <div className="relative cursor-pointer" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
@@ -68,9 +89,7 @@ const ProgressbarTimer = () => {
           <TooltipTrigger asChild>
             <motion.div
               variants={circleVariants}
-              initial="enter"
               animate="animate"
-              exit="enter"
               className="absolute right-0 h-full rounded-full bg-primary-250"
               style={{
                 width: circleSize,
@@ -82,7 +101,9 @@ const ProgressbarTimer = () => {
 
           <TooltipContent className="text-sm font-medium flex items-center gap-1">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary-250" />
-            <span className="text-primary-250">2h 20m 12s</span>
+            <span className={remainingTime <= -1 ? 'text-neutral-300' : 'text-primary-250'}>
+              {formattedTime}
+            </span>
             <span className="text-neutral-300">has left</span>
           </TooltipContent>
         </Tooltip>
