@@ -10,6 +10,7 @@ import Board from '@/pages/_components/Board';
 import { Toast, ToastContent } from '@/components';
 
 import ActivityTab from './ActivityTab';
+import ProgressbarTimer from './ProgressbarTimer';
 
 const CreateRound = () => {
   const { isConfirmed } = useTypedSelector((state) => state.createRound);
@@ -35,12 +36,16 @@ const CreateRound = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <CardDeck />
-      <Board />
-      <ActivityTab className="md:mt-16 mt-14" />
-      <Toast />
-    </div>
+    <>
+      <div className="px-1.5"><ProgressbarTimer /></div>
+
+      <div className="flex flex-col gap-4">
+        <CardDeck />
+        <Board />
+        <ActivityTab className="md:mt-16 mt-14" />
+        <Toast />
+      </div>
+    </>
   );
 };
 
