@@ -9,7 +9,7 @@ interface Props {
 
 const Container = ({ children, className }: Props) => {
   return (
-    <div className={clsx('px-40', className)}>
+    <div className={clsx('md:px-40 px-4', className)}>
       {children}
     </div>
   );

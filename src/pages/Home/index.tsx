@@ -1,9 +1,9 @@
-import { Layout } from '@/components';
+import { Layout, Container } from '@/components';
 
 const Home = () => {
   return (
     <Layout>
-      Home page
+      <Container>Home page</Container>
     </Layout>
   );
 };
