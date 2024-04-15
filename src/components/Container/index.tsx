@@ -4,14 +4,15 @@ import clsx from 'clsx';
 
 interface Props {
   children: ReactNode,
-  className?: string
+  className?: string,
+  tag?: keyof JSX.IntrinsicElements;
 }
 
-const Container = ({ children, className }: Props) => {
+const Container = ({ children, className, tag: Tag = 'div' }: Props) => {
   return (
-    <div className={clsx('md:px-40 px-4', className)}>
+    <Tag className={clsx('lg:px-40 md:px-20 px-4', className)}>
       {children}
-    </div>
+    </Tag>
   );
 };
 

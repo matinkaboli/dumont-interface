@@ -8,7 +8,8 @@
 import { ReactElement } from 'react';
 import XMark from './svgs/XMark';
 import Twitter from './svgs/Twitter';
-import Telegram from './svgs/Telegram';
+import Telegram from './svgs/AngleRight';
+import AngleRight from './svgs/AngleRight';
 
 export interface SvgProps {
   width?: string;
@@ -22,11 +23,13 @@ export interface SvgProps {
 export type IconName =
   | 'xmark'
   | 'telegram'
-  | 'twitter';
+  | 'twitter'
+  | 'angle-right';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
   xmark: <XMark />,
   telegram: <Telegram />,
   twitter: <Twitter />,
+  'angle-right': <AngleRight />
 };
