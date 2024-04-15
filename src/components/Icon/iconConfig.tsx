@@ -8,7 +8,7 @@
 import { ReactElement } from 'react';
 import XMark from './svgs/XMark';
 import Twitter from './svgs/Twitter';
-import Telegram from './svgs/AngleRight';
+import Telegram from './svgs/Telegram';
 import AngleRight from './svgs/AngleRight';
 
 export interface SvgProps {

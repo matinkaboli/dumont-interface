@@ -11,7 +11,7 @@ function ToggleButton({ isOpen, toggleMenu }: Props) {
   return (
     <button
       type='button'
-      className='relative pointer z-10 w-[30px] h-[30px]'
+      className='relative pointer z-20 w-[30px] h-[30px]'
       onClick={toggleMenu}
     >
       <span className={clsx(' mb-[5.4px]', lineClass, isOpen && 'transform translate-y-[4px] rotate-45')} />

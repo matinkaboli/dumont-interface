@@ -63,7 +63,7 @@ const MobileNavbar = () => {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='fixed left-0 top-0 w-full h-screen origin-top bg-neutral-800 text-white px-6 pt-12 pb-8'
+            className='fixed z-10 left-0 top-0 w-full h-screen origin-top bg-neutral-800 text-white px-6 pt-12 pb-8'
           >
             <motion.div
               variants={containerVariants}
@@ -72,16 +72,14 @@ const MobileNavbar = () => {
               exit='initial'
               className='flex flex-col h-full gap-14 mt-28'
             >
-              {navLinks.map((link, index) => {
-                return (
-                  <div key={link.id} className='overflow-hidden'>
-                    <NavLink
-                      title={link.title}
-                      href={link.href}
-                    />
-                  </div>
-                );
-              })}
+              {navLinks.map((link) => (
+                <div key={link.id} className='overflow-hidden'>
+                  <NavLink
+                    title={link.title}
+                    href={link.href}
+                  />
+                </div>),
+              )}
 
               <MotionedButton
                 radius='lg'
