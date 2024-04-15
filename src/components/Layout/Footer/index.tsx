@@ -10,7 +10,7 @@ const Footer = () => {
       <div className='flex items-center justify-between border-t border-neutral-700 py-6'>
         <div className='text-primary-100 text-sm font-medium'>© 2024 Dumont. All rights reserved.</div>
 
-        <div className='flex gap-6'>
+        <div className='flex items-center gap-6'>
           <Link href='/'><Icon name='twitter' /></Link>
           <Link href='/'><Icon name='telegram' /></Link>
         </div>
