@@ -97,8 +97,9 @@ const config: Config = {
       },
       backgroundImage: {
         'gradiant-primary-top': 'radial-gradient(102.43% 214.4% at 50% -78.19%, rgba(122, 16, 197, 0.32) 32.53%, rgba(17, 4, 20, 0) 100%)',
-      }
-    }
+        'gradiant-text': 'linear-gradient(257.92deg, #FFFFFF 0.05%, #FAFF00 3.77%, #FF5BCF 70.15%, #5100FE 95.87%, #52008C 125.93%)',
+      },
+    },
   },
   plugins: [],
 };
