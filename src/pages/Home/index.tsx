@@ -1,9 +1,12 @@
+import Link from 'next/link';
+
 import { Container, Icon, Layout } from '@/components';
 
 import PlayButton from '@/pages/_components/PlayButton';
+
 import ProveCard from './ProveCard';
 import GradiantBadge from './GradiantBadge';
-import Link from 'next/link';
+import FoldedCorners from './FoldedCorners';
 
 const Home = () => {
   return (
@@ -53,7 +56,9 @@ const Home = () => {
       </Container>
 
       <div className='px-4'>
-        <div className='test pt-16'>
+        <div className='bg-gradiant-neon-pink relative pt-16'>
+          <FoldedCorners />
+
           <div className='flex flex-col gap-4 text-center w-full max-w-[670px] mx-auto px-4'>
             <GradiantBadge variant='secondary' icon='game-object' label='Unique gameplay' className='mx-auto' />
             <h3 className='font-bold md:text-4xl text-3xl text-white'>Guess the card and secure a win</h3>

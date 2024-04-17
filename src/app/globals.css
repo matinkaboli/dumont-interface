@@ -18,10 +18,3 @@ body {
     @apply md:text-md text-base text-neutral-300
 }
 
-.test {
-
-    /* Gradient/#2 */
-    background: linear-gradient(180deg, #5C019E 0%, #5B01F5 66.67%, #FE7AB1 80.73%, #FFFFFF 96.87%);
-
-}
-
