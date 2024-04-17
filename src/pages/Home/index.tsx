@@ -1,7 +1,9 @@
 import { Container, Icon, Layout } from '@/components';
 
 import PlayButton from '@/pages/_components/PlayButton';
-import ProveCard from '@/pages/Home/ProveCard';
+import ProveCard from './ProveCard';
+import GradiantBadge from './GradiantBadge';
+import Link from 'next/link';
 
 const Home = () => {
   return (
@@ -9,13 +11,13 @@ const Home = () => {
       <Container>
         <div className='grid md:grid-cols-2 grid-cols-1 items-center gap-14 md:pt-28 pt-12 md:pb-40 pb-6'>
           <div>
-            <h1 className='font-bold md:text-5xl text-4xl text-white tracking-tight'>
+            <h1 className='title tracking-tight'>
               A
               <span className='bg-gradiant-header-text text-transparent bg-clip-text'> Provably Fair </span>
               <br className='md:block hidden' />
               Gambling System
             </h1>
-            <p className='md:text-md text-base text-neutral-300 mt-4'>
+            <p className='description-text mt-4'>
               Dumont is a blockchain-based card game that guarantees immutable outcomes and permissionless payout for
               players.
             </p>
@@ -27,13 +29,10 @@ const Home = () => {
         </div>
 
         <div className='pt-20 md:pb-40 pb-24'>
-          <div className='flex flex-col items-center gap-4 text-center'>
-            <div
-              className='border border-neutral-600 rounded-full px-2 h-6 flex items-center mx-auto gap-1.5 font-medium text-xs bg-gradiant-label-text text-transparent bg-clip-text'>
-              <Icon name='globe' />Powered by blockchain
-            </div>
-            <h2 className='font-bold text-white md:text-5xl text-4xl'>Proven by Cryptography</h2>
-            <p className='md:text-md text-base text-neutral-300'>
+          <div className='flex flex-col gap-4 text-center'>
+            <GradiantBadge icon='globe' label='Powered by blockchain' className='mx-auto' />
+            <h2 className='title'>Proven by Cryptography</h2>
+            <p className='description-text'>
               We utilize blockchain technology to offer what next-generation gamblers deserve.
             </p>
           </div>
@@ -52,6 +51,26 @@ const Home = () => {
           </div>
         </div>
       </Container>
+
+      <div className='px-4'>
+        <div className='test pt-16'>
+          <div className='flex flex-col gap-4 text-center w-full max-w-[670px] mx-auto px-4'>
+            <GradiantBadge variant='secondary' icon='game-object' label='Unique gameplay' className='mx-auto' />
+            <h3 className='font-bold md:text-4xl text-3xl text-white'>Guess the card and secure a win</h3>
+            <p className='description-text'>
+              We’ve designed an engaging game with a dedicated user interface that offers an exciting experience to
+              players.
+            </p>
+            <Link href='/' className="flex items-center gap-2 mx-auto text-primary-250 font-bold text-sm">
+              Learn more
+              <Icon name="arrow-right" />
+            </Link>
+          </div>
+
+          <div
+            className='bg-primary-800 w-full max-w-[843px] md:h-[487px] h-[295px] mx-auto md:mt-20 mt-12 md:rounded-xl rounded-t-lg rounded-b-none'></div>
+        </div>
+      </div>
     </Layout>
   );
 };

@@ -11,6 +11,8 @@ import Twitter from './svgs/Twitter';
 import Telegram from './svgs/Telegram';
 import AngleRight from './svgs/AngleRight';
 import Globe from './svgs/Globe';
+import GameObject from './svgs/GameObject';
+import ArrowRight from './svgs/ArrowRight';
 
 export interface SvgProps {
   width?: string;
@@ -26,7 +28,9 @@ export type IconName =
   | 'telegram'
   | 'twitter'
   | 'angle-right'
-  | 'globe';
+  | 'globe'
+  | 'game-object'
+  | 'arrow-right';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -35,4 +39,6 @@ export const iconMap: Record<IconName, ReactElement> = {
   twitter: <Twitter />,
   'angle-right': <AngleRight />,
   globe: <Globe />,
+  'game-object': <GameObject />,
+  'arrow-right': <ArrowRight />,
 };
