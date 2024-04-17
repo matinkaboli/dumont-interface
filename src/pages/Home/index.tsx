@@ -1,12 +1,13 @@
-import Link from 'next/link';
+import Image from 'next/image';
 
-import { Container, Icon, Layout } from '@/components';
+import { Container, Layout } from '@/components';
 
 import PlayButton from '@/pages/_components/PlayButton';
 
 import ProveCard from './ProveCard';
 import GradiantBadge from './GradiantBadge';
 import FoldedCorners from './FoldedCorners';
+import FollowLink from './FollowLink';
 
 const Home = () => {
   return (
@@ -66,16 +67,65 @@ const Home = () => {
               We’ve designed an engaging game with a dedicated user interface that offers an exciting experience to
               players.
             </p>
-            <Link href='/' className="flex items-center gap-2 mx-auto text-primary-250 font-bold text-sm">
-              Learn more
-              <Icon name="arrow-right" />
-            </Link>
+            <FollowLink href='/' label='Learn more' className='font-bold text-sm mx-auto' />
           </div>
 
           <div
             className='bg-primary-800 w-full max-w-[843px] md:h-[487px] h-[295px] mx-auto md:mt-20 mt-12 md:rounded-xl rounded-t-lg rounded-b-none'></div>
         </div>
       </div>
+
+      <Container>
+        <div className='grid md:grid-cols-2 grid-cols-1 items-center md:gap-2 gap-14 md:py-48 py-16'>
+          <div>
+            <GradiantBadge icon='circle-dollar' label='True randomness' className='w-fit' />
+            <h3 className='title mt-6'>Immutable outcomes</h3>
+            <div className='mt-2 md:text-2xl text-lg text-neutral-300'>No possibility of operator cheating</div>
+            <p className='description-text mt-6'>We designed an innovative cryptography mechanism that proves game
+              results are random and safe against manipulation.</p>
+            <FollowLink
+              href='/'
+              label='How it works'
+              className='font-semibold text-base md:mt-14 mt-8'
+            />
+          </div>
+          <div>
+            <Image
+              height='0'
+              width='0'
+              sizes='100vw'
+              src='/images/immutable.png'
+              className='w-full max-w-[454px] h-auto md:ml-auto md:mr-0 mx-auto'
+              alt='dumont'
+            />
+          </div>
+        </div>
+
+
+        <div className='grid md:grid-cols-2 grid-cols-1 items-center xl:gap-0 lg:gap-4 gap-14 md:py-48 py-16'>
+          <div className="md:order-1 order-2">
+            <Image
+              height='0'
+              width='0'
+              sizes='100vw'
+              src='/images/Permissionless.png'
+              className='w-full max-w-[400px] h-auto md:mx-0 mx-auto'
+              alt='dumont'
+            />
+          </div>
+          <div className="md:order-2 order-1">
+            <GradiantBadge icon='circle-dollar' label='immediate payouts' className='w-fit' />
+            <h3 className='title mt-6'>Permissionless payouts</h3>
+            <div className='mt-2 md:text-2xl text-lg text-neutral-300'>No need for operator permission</div>
+            <p className='description-text mt-6'>
+              Your winning amounts are immediately and automatically sent to your address by the blockchain-based smart contract.
+            </p>
+            <div className="bg-gradiant-blur backdrop-blur-xl shadow-xl rounded-full flex items-center gap-1 h-10 px-3 text-base text-neutral-300 w-fit mt-6">
+              <b>$10,230,000</b> bet settled so far
+            </div>
+          </div>
+        </div>
+      </Container>
     </Layout>
   );
 };
