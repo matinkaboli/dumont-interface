@@ -8,6 +8,8 @@ import ProveCard from './ProveCard';
 import GradiantBadge from './GradiantBadge';
 import FoldedCorners from './FoldedCorners';
 import FollowLink from './FollowLink';
+import Button from '../../components/Button';
+import BlurBadge from '@/pages/Home/BlurBadge';
 
 const Home = () => {
   return (
@@ -76,7 +78,7 @@ const Home = () => {
       </div>
 
       <Container>
-        <div className='grid md:grid-cols-2 grid-cols-1 items-center md:gap-2 gap-14 md:py-48 py-16'>
+        <div className='grid md:grid-cols-2 grid-cols-1 items-center md:gap-0 gap-14 md:py-48 py-16'>
           <div>
             <GradiantBadge icon='circle-dollar' label='True randomness' className='w-fit' />
             <h3 className='title mt-6'>Immutable outcomes</h3>
@@ -86,7 +88,7 @@ const Home = () => {
             <FollowLink
               href='/'
               label='How it works'
-              className='font-semibold text-base md:mt-14 mt-8'
+              className='font-semibold text-base mx-auto md:mt-14 mt-8'
             />
           </div>
           <div>
@@ -120,10 +122,7 @@ const Home = () => {
               Your winning amounts are immediately and automatically sent to your address by the blockchain-based smart
               contract.
             </p>
-            <div
-              className='bg-gradiant-blur backdrop-blur-xl shadow-xl rounded-full flex items-center gap-1 h-10 px-3 text-base text-neutral-300 w-fit mt-6'>
-              <b>$10,230,000</b> bet settled so far
-            </div>
+            <BlurBadge className='mt-6'><b>$10,230,000</b> bet settled so far</BlurBadge>
           </div>
         </div>
       </Container>
@@ -148,6 +147,43 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <Container>
+        <div className='grid md:grid-cols-2 grid-cols-1 items-center justify-items-end lg:gap-0 gap-16 md:py-56 py-36'>
+          <div>
+            <GradiantBadge icon='circle-dollar' label='MONT token' className='w-fit' />
+            <h3 className='title mt-6'>Tap to the house benefit</h3>
+            <div className='mt-2 md:text-2xl text-lg text-neutral-300'>Get your share of the game revenue</div>
+            <p className='description-text mt-6'>
+              Thanks to our burning mechanism, everyone can benefit from the system’s revenue by purchasing and holding
+              $MONT.
+            </p>
+            <div className='flex items-center md:mt-10 mt-8 gap-10'>
+              <Button
+                variant='link'
+                size='md'
+                radius='lg'
+                className='bg-primary-500 hover:bg-primary-400 transition duration-75 ease-in-out text-primary-250 font-bold'>
+                Buy $MONT
+              </Button>
+              <FollowLink
+                href='/'
+                label='How it works'
+                className='font-semibold text-base'
+              />
+            </div>
+          </div>
+
+          <div className="max-w-[456px] w-full">
+            <div className='w-full h-[132px] bg-primary-800 rounded-xl' />
+            <div className='flex flex-col gap-2 mt-8'>
+              <div className='text-lg text-neutral-400'>Total Amount Burned</div>
+              <h4 className='lg:text-5xl text-4xl text-primary-250 font-bold'>120,930 MONT</h4>
+              <BlurBadge>From <b>$15,000</b> of collected fees</BlurBadge>
+            </div>
+          </div>
+        </div>
+      </Container>
     </Layout>
   );
 };

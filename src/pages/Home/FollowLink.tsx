@@ -11,7 +11,7 @@ interface Props {
 
 const FollowLink = ({ href, label, className }: Props) => {
   return (
-    <Link href={href} className={clsx('flex items-center gap-2 mx-auto text-primary-250', className)}>
+    <Link href={href} className={clsx('flex items-center gap-2 text-primary-250', className)}>
       {label}
       <Icon name='arrow-right' />
     </Link>
