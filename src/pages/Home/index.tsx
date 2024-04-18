@@ -174,12 +174,64 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="max-w-[456px] w-full">
+          <div className='max-w-[456px] w-full'>
             <div className='w-full h-[132px] bg-primary-800 rounded-xl' />
             <div className='flex flex-col gap-2 mt-8'>
               <div className='text-lg text-neutral-400'>Total Amount Burned</div>
               <h4 className='lg:text-5xl text-4xl text-primary-250 font-bold'>120,930 MONT</h4>
               <BlurBadge>From <b>$15,000</b> of collected fees</BlurBadge>
+            </div>
+          </div>
+        </div>
+
+
+        <div className='rounded-3xl lg:px-24 px-4 lg:py-20 py-12 bg-gradiant-dark relative'>
+          <div className='grid md:grid-cols-2 grid-cols-1 items-center justify-items-end'>
+            <div>
+              <GradiantBadge icon='circle-dollar' label='MONT rewards' className='w-fit' />
+              <h3 className='title mt-6'>Play and get rewards</h3>
+              <div className='mt-2 md:text-2xl text-lg text-neutral-300'>Get free $MONT from playing</div>
+
+              <div className='flex border-t border-b border-neutral-700 mt-8'>
+                <div className='py-4 pr-8 border-r border-neutral-700'>
+                  <div className='text-xl font-bold text-primary-250'>20,00,000 MONT</div>
+                  <div className='text-sm text-neutral-400 font-medium'>Total Reward Distributed</div>
+                </div>
+                <div className='py-4 px-8'>
+                  <div className='text-xl font-bold text-primary-250'>2,320</div>
+                  <div className='text-sm text-neutral-400 font-medium'>Recipient Users</div>
+                </div>
+              </div>
+
+              <p className='description-text mt-8'>
+                A significant portion of $MONT supply is allocated for player
+                You can get your share by playing in the game or inviting your friends.
+              </p>
+
+              <FollowLink
+                href='/'
+                label='Learn more'
+                className='font-semibold text-base mt-9'
+              />
+            </div>
+            <div className='md:mt-0 -mt-16'>
+              <Image
+                width='0'
+                height='0'
+                sizes='100vw'
+                className='w-auto h-full md:max-h-[500px] max-h-[250px] absolute right-0 bottom-0'
+                src='/images/bg-circle.png'
+                alt=''
+              />
+
+              <Image
+                width='0'
+                height='0'
+                sizes='100vw'
+                className='w-full max-w-[290px] h-auto relative'
+                src='/images/rewards.png'
+                alt=''
+              />
             </div>
           </div>
         </div>
