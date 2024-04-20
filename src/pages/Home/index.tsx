@@ -233,6 +233,27 @@ const Home = () => {
             />
           </div>
         </div>
+
+        <div className="grid md:grid-cols-3 grid-cols-1 xl:gap-7 gap-6 gap- md:py-28 py-12 mt-10">
+          <div className="flex items-start gap-2">
+            <Image width="18" height="30" src="/images/gradiant-bullet-points.svg" alt="" />
+            <div className="text-white md:text-md text-base">
+              There is no need to trust in operators, just fairness of neutral code.
+            </div>
+          </div>
+          <div className="flex items-start gap-2">
+            <Image width="18" height="30" src="/images/gradiant-bullet-points.svg" alt="" />
+            <div className="text-white md:text-md text-base">
+              Check the system liquidity anytime to ensure bets are settleable.
+            </div>
+          </div>
+          <div className="flex items-start gap-2">
+            <Image width="18" height="30" src="/images/gradiant-bullet-points.svg" alt="" />
+            <div className="text-white md:text-md text-base">
+              Easily verify all system activities, like players bets, cashflows, etc.
+            </div>
+          </div>
+        </div>
       </Container>
     </Layout>
   );
