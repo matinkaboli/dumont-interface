@@ -1,15 +1,15 @@
 import Image from 'next/image';
 
-import { Container, Layout } from '@/components';
+import { Container, Layout, Button } from '@/components';
 
 import PlayButton from '@/pages/_components/PlayButton';
+import CTASection from '@/pages/_components/CTASection';
 
 import ProveCard from './ProveCard';
 import GradiantBadge from './GradiantBadge';
 import FoldedCorners from './FoldedCorners';
 import FollowLink from './FollowLink';
-import Button from '../../components/Button';
-import BlurBadge from '@/pages/Home/BlurBadge';
+import BlurBadge from './BlurBadge';
 
 const Home = () => {
   return (
@@ -254,6 +254,8 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        <CTASection />
       </Container>
     </Layout>
   );

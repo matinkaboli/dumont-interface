@@ -94,6 +94,7 @@ const config: Config = {
         '3xl': ['32px', '40px'],
         '4xl': ['40px', '48px'],
         '5xl': ['48px', '56px'],
+        '6xl': ['64px', '64px'],
       },
       backgroundImage: {
         'gradiant-primary-top': 'radial-gradient(102.43% 214.4% at 50% -78.19%, rgba(122, 16, 197, 0.32) 32.53%, rgba(17, 4, 20, 0) 100%)',
