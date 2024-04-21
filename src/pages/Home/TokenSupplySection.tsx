@@ -1,4 +1,4 @@
-import { Button } from '@/components';
+import { Button, Typography } from '@/components';
 
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
@@ -9,12 +9,12 @@ const TokenSupplySection = () => {
     <div className='grid md:grid-cols-2 grid-cols-1 items-center lg:gap-0 gap-16 md:py-56 py-36'>
       <div>
         <GradiantBadge icon='circle-dollar' label='MONT token' className='w-fit' />
-        <h3 className='title mt-6'>Tap to the house benefit</h3>
-        <div className='mt-2 md:text-2xl text-lg text-neutral-300'>Get your share of the game revenue</div>
-        <p className='description-text mt-6'>
+        <Typography tag='h2' variant='title1' className='mt-6'>Tap to the house benefit</Typography>
+        <Typography variant='subTitle2' className='mt-2'>Get your share of the game revenue</Typography>
+        <Typography tag='p' variant='body1' className='mt-6'>
           Thanks to our burning mechanism, everyone can benefit from the system’s revenue by purchasing and holding
           $MONT.
-        </p>
+        </Typography>
         <div className='flex items-center md:mt-10 mt-8 gap-10'>
           <Button
             variant='link'

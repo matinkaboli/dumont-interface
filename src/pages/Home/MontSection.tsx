@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { Typography } from '@/components';
+
 import FoldedCorners from './_components/FoldedCorners';
 
 const MontSection = () => {
@@ -18,8 +20,8 @@ const MontSection = () => {
 
         <div className='flex flex-col items-center text-center gap-4'>
           <Image width={104} height={104} src='/images/mont.svg' alt='mont' />
-          <h3 className='title'>$MONT</h3>
-          <h6 className='md:text-3xl text-xl text-white font-bold'>Democratizing the house benefit</h6>
+          <Typography tag='h3' variant='title1'>$MONT</Typography>
+          <Typography tag='h6' variant='title4'>Democratizing the house benefit</Typography>
         </div>
       </div>
     </div>

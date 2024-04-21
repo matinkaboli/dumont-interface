@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
+import { Typography } from '@/components';
 
 const RewardsSection = () => {
   return (
@@ -9,8 +10,10 @@ const RewardsSection = () => {
       className='relative bg-gradiant-dark grid md:grid-cols-2 grid-cols-1 items-center sm:rounded-3xl rounded-none xl:px-24 lg:px-8 px-4 xl:py-20 py-12 sm:mx-0 -mx-4'>
       <div>
         <GradiantBadge icon='circle-dollar' label='MONT rewards' className='w-fit' />
-        <h3 className='title mt-6 sm:whitespace-nowrap whitespace-normal'>Play and get rewards</h3>
-        <div className='mt-2 md:text-2xl text-lg text-neutral-300'>Get free $MONT from playing</div>
+        <Typography tag='h3' variant='title1' className='mt-6 sm:whitespace-nowrap whitespace-normal'>
+          Play and get rewards
+        </Typography>
+        <Typography variant='subTitle2' className='mt-2'>Get free $MONT from playing</Typography>
 
         <div className='flex border-t border-b border-neutral-700 mt-8'>
           <div className='py-4 md:pr-8 pr-4 border-r border-neutral-700'>
@@ -23,10 +26,10 @@ const RewardsSection = () => {
           </div>
         </div>
 
-        <p className='description-text mt-8'>
+        <Typography tag='p' variant='body1' className='mt-8'>
           A significant portion of $MONT supply is allocated for player
           You can get your share by playing in the game or inviting your friends.
-        </p>
+        </Typography>
 
         <FollowLink
           href='/'

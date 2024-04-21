@@ -1,15 +1,18 @@
+import { Typography } from '@/components';
+
 import GradiantBadge from './_components/GradiantBadge';
 import ProveCard from './_components/ProveCard';
+
 
 const BlockchainSection = () => {
   return (
     <div className='pt-20 md:pb-40 pb-24'>
       <div className='flex flex-col gap-4 text-center'>
         <GradiantBadge icon='globe' label='Powered by blockchain' className='mx-auto' />
-        <h2 className='title'>Proven by Cryptography</h2>
-        <p className='description-text'>
+        <Typography tag='h2' variant='title2'>Proven by Cryptography</Typography>
+        <Typography tag='p' variant='body1'>
           We utilize blockchain technology to offer what next-generation gamblers deserve.
-        </p>
+        </Typography>
       </div>
 
       <div className='grid md:grid-cols-2 grid-cols-1 gap-6 md:pt-24 pt-14'>

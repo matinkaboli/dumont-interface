@@ -10,11 +10,3 @@ body {
     @apply bg-neutral-800
 }
 
-.title {
-    @apply font-bold md:text-5xl text-4xl text-white
-}
-
-.description-text {
-    @apply md:text-md text-base text-neutral-300
-}
-

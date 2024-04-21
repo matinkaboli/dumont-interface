@@ -1,3 +1,5 @@
+import { Typography } from '@/components';
+
 import FoldedCorners from './_components/FoldedCorners';
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
@@ -10,11 +12,11 @@ const PreviewSection = () => {
 
         <div className='flex flex-col gap-4 text-center w-full max-w-[670px] mx-auto px-4'>
           <GradiantBadge variant='secondary' icon='game-object' label='Unique gameplay' className='mx-auto' />
-          <h3 className='font-bold md:text-4xl text-3xl text-white'>Guess the card and secure a win</h3>
-          <p className='description-text'>
+          <Typography tag="h3" variant="title3">Guess the card and secure a win</Typography>
+          <Typography tag="p" variant="body1">
             We’ve designed an engaging game with a dedicated user interface that offers an exciting experience to
             players.
-          </p>
+          </Typography>
           <FollowLink href='/' label='Learn more' className='font-bold text-sm mx-auto' />
         </div>
 
