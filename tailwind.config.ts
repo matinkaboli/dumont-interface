@@ -94,11 +94,20 @@ const config: Config = {
         '3xl': ['32px', '40px'],
         '4xl': ['40px', '48px'],
         '5xl': ['48px', '56px'],
+        '6xl': ['64px', '64px'],
       },
       backgroundImage: {
         'gradiant-primary-top': 'radial-gradient(102.43% 214.4% at 50% -78.19%, rgba(122, 16, 197, 0.32) 32.53%, rgba(17, 4, 20, 0) 100%)',
+        'gradiant-header-text': 'linear-gradient(257.92deg, #FFFFFF 0.05%, #FAFF00 3.77%, #FF5BCF 70.15%, #5100FE 95.87%, #52008C 125.93%)',
+        'gradiant-label-text': 'linear-gradient(257.92deg, #FFFFFF 15.05%, #FAFF00 37.32%, #FF5BCF 80.45%, #5100FE 109.9%, #52008C 148.64%)',
+        'gradiant-blur': 'linear-gradient(247.35deg, rgba(250, 0, 255, 0.17) 1.52%, rgba(255, 255, 255, 0) 101.92%)',
+        'gradiant-neon-pink': 'linear-gradient(180deg, #5C019E 0%, #5B01F5 66.67%, #FE7AB1 80.73%, #FFFFFF 96.87%)',
+        'gradiant-dark': 'linear-gradient(180deg, #1D162C 0%, #111117 100%)'
+      },
+      boxShadow: {
+        'xl': 'inset -2px -2px 100px rgba(255, 255, 255, 0.1), inset 2px 2px 100px rgba(66, 66, 66, 0.1)',
       }
-    }
+    },
   },
   plugins: [],
 };

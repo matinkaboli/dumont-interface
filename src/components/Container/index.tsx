@@ -10,7 +10,7 @@ interface Props {
 
 const Container = ({ children, className, tag: Tag = 'div' }: Props) => {
   return (
-    <Tag className={clsx('lg:px-40 md:px-20 px-4', className)}>
+    <Tag className={clsx('xl:px-40 lg:px-32 md:px-10 px-4', className)}>
       {children}
     </Tag>
   );

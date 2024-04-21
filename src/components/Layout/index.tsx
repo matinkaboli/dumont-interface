@@ -8,7 +8,7 @@ const bgGradiantClassName = 'absolute left-0 right-0 bg-gradiant-primary-top blu
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
-    <>
+    <div className="relative">
       <div className={clsx('top-0', bgGradiantClassName)} />
       <div className={clsx('bottom-0', bgGradiantClassName)} />
 
@@ -17,7 +17,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         {children}
         <Footer />
       </div>
-    </>
+    </div>
   );
 };
 

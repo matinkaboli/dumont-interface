@@ -10,6 +10,10 @@ import XMark from './svgs/XMark';
 import Twitter from './svgs/Twitter';
 import Telegram from './svgs/Telegram';
 import AngleRight from './svgs/AngleRight';
+import Globe from './svgs/Globe';
+import GameObject from './svgs/GameObject';
+import ArrowRight from './svgs/ArrowRight';
+import CircleDollar from './svgs/CircleDollar';
 
 export interface SvgProps {
   width?: string;
@@ -24,12 +28,20 @@ export type IconName =
   | 'xmark'
   | 'telegram'
   | 'twitter'
-  | 'angle-right';
+  | 'angle-right'
+  | 'globe'
+  | 'game-object'
+  | 'arrow-right'
+  | 'circle-dollar';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
   xmark: <XMark />,
   telegram: <Telegram />,
   twitter: <Twitter />,
-  'angle-right': <AngleRight />
+  'angle-right': <AngleRight />,
+  globe: <Globe />,
+  'game-object': <GameObject />,
+  'arrow-right': <ArrowRight />,
+  'circle-dollar': <CircleDollar />,
 };
