@@ -14,6 +14,7 @@ import Globe from './svgs/Globe';
 import GameObject from './svgs/GameObject';
 import ArrowRight from './svgs/ArrowRight';
 import CircleDollar from './svgs/CircleDollar';
+import AngleDown from './svgs/AngleDown';
 
 export interface SvgProps {
   width?: string;
@@ -32,7 +33,8 @@ export type IconName =
   | 'globe'
   | 'game-object'
   | 'arrow-right'
-  | 'circle-dollar';
+  | 'circle-dollar'
+  | 'angle-down';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -44,4 +46,5 @@ export const iconMap: Record<IconName, ReactElement> = {
   'game-object': <GameObject />,
   'arrow-right': <ArrowRight />,
   'circle-dollar': <CircleDollar />,
+  'angle-down': <AngleDown />,
 };
