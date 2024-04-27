@@ -1,4 +1,4 @@
-import { Typography } from '@/components';
+import { LottiePlayer, Typography } from '@/components';
 
 import PlayButton from '@/pages/_components/PlayButton';
 
@@ -20,7 +20,14 @@ const HeaderSection = () => {
         <PlayButton className='mt-12' />
       </div>
       <div>
-        <div className='max-w-[455px] w-full h-[455px] bg-primary-800 md:ml-auto ml-0 rounded-lg' />
+        <LottiePlayer
+          width='455px'
+          height='455px'
+          src='/lottie/header.lottie'
+          className='ml-auto'
+          autoplay
+          loop
+        />
       </div>
     </div>
   );
