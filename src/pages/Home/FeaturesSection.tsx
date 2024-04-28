@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Typography } from '@/components';
+import { Typography, FadeInUp } from '@/components';
 
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
@@ -10,7 +10,7 @@ const FeaturesSection = () => {
   return (
     <>
       <div className='grid md:grid-cols-2 grid-cols-1 items-center md:gap-0 gap-14 md:py-48 py-16'>
-        <div>
+        <FadeInUp>
           <GradiantBadge icon='circle-dollar' label='True randomness' className='w-fit' />
           <Typography tag='h3' variant='title2' className='mt-6'>Immutable outcomes</Typography>
           <Typography variant='subTitle1' className='mt-2'>
@@ -25,8 +25,8 @@ const FeaturesSection = () => {
             label='How it works'
             className='font-semibold text-base mx-auto md:mt-14 mt-8'
           />
-        </div>
-        <div>
+        </FadeInUp>
+        <FadeInUp>
           <Image
             height='0'
             width='0'
@@ -35,11 +35,11 @@ const FeaturesSection = () => {
             className='w-full max-w-[454px] h-auto md:ml-auto md:mr-0 mx-auto'
             alt='dumont'
           />
-        </div>
+        </FadeInUp>
       </div>
 
       <div className='grid md:grid-cols-2 grid-cols-1 items-center xl:gap-0 lg:gap-4 gap-14 md:py-48 py-16'>
-        <div className='md:order-1 order-2'>
+        <FadeInUp className='md:order-1 order-2'>
           <Image
             height='0'
             width='0'
@@ -48,8 +48,8 @@ const FeaturesSection = () => {
             className='w-full max-w-[400px] h-auto md:mx-0 mx-auto'
             alt='dumont'
           />
-        </div>
-        <div className='md:order-2 order-1'>
+        </FadeInUp>
+        <FadeInUp className='md:order-2 order-1'>
           <GradiantBadge icon='circle-dollar' label='immediate payouts' className='w-fit' />
           <Typography tag='h3' variant='title2' className='mt-6'>Permissionless payouts</Typography>
           <Typography variant='subTitle1' className='mt-2'>No need for operator permission</Typography>
@@ -58,7 +58,7 @@ const FeaturesSection = () => {
             contract.
           </Typography>
           <BlurBadge className='mt-6'><b>$10,230,000</b> bet settled so far</BlurBadge>
-        </div>
+        </FadeInUp>
       </div>
     </>
   );

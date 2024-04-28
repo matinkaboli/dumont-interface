@@ -1,4 +1,4 @@
-import { Typography } from '@/components';
+import { FadeInUp, Typography } from '@/components';
 
 import FoldedCorners from './_components/FoldedCorners';
 import GradiantBadge from './_components/GradiantBadge';
@@ -11,13 +11,21 @@ const PreviewSection = () => {
         <FoldedCorners />
 
         <div className='flex flex-col gap-4 text-center w-full max-w-[670px] mx-auto px-4'>
-          <GradiantBadge variant='secondary' icon='game-object' label='Unique gameplay' className='mx-auto' />
-          <Typography tag="h3" variant="title3">Guess the card and secure a win</Typography>
-          <Typography tag="p" variant="body1">
-            We’ve designed an engaging game with a dedicated user interface that offers an exciting experience to
-            players.
-          </Typography>
-          <FollowLink href='/' label='Learn more' className='font-bold text-sm mx-auto' />
+          <FadeInUp className='w-fit mx-auto'>
+            <GradiantBadge variant='secondary' icon='game-object' label='Unique gameplay' />
+          </FadeInUp>
+          <FadeInUp className='w-fit mx-auto'>
+            <Typography tag='h3' variant='title3'>Guess the card and secure a win</Typography>
+          </FadeInUp>
+          <FadeInUp className='w-fit mx-auto'>
+            <Typography tag='p' variant='body1'>
+              We’ve designed an engaging game with a dedicated user interface that offers an exciting experience to
+              players.
+            </Typography>
+          </FadeInUp>
+          <FadeInUp className='w-fit mx-auto'>
+            <FollowLink href='/' label='Learn more' className='font-bold text-sm' />
+          </FadeInUp>
         </div>
 
         <div

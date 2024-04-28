@@ -1,12 +1,12 @@
 import Image from 'next/image';
 
-import { Typography } from '@/components';
+import { Typography, FadeInUp } from '@/components';
 
 import FoldedCorners from './_components/FoldedCorners';
 
 const MontSection = () => {
   return (
-    <div className='px-4'>
+    <FadeInUp className='px-4'>
       <div className='bg-gradiant-neon-pink relative pt-8 pb-14 px-4'>
         <Image
           width='0'
@@ -24,7 +24,7 @@ const MontSection = () => {
           <Typography tag='h6' variant='title4'>Democratizing the house benefit</Typography>
         </div>
       </div>
-    </div>
+    </FadeInUp>
   );
 };
 
