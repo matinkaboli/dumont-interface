@@ -1,17 +1,16 @@
-import clsx from 'clsx';
+import './styles.css';
 
-import { Button, Icon } from '@/components';
-
+import { Icon } from '@/components';
 
 const PlayButton = ({ className = '' }: { className?: string }) => {
   return (
-    <Button
-      size='md'
-      radius='lg'
-      rightSection={<Icon name='angle-right' />}
-      className={clsx('font-semibold', className)}>
-      Start playing
-    </Button>
+    <div className={className}>
+      <div className='btn-glow' />
+      <a href='/' className='btn-gradiant'>
+        Start Playing
+        <Icon name='angle-right' color='white' />
+      </a>
+    </div>
   );
 };
 

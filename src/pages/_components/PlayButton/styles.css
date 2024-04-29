@@ -1,0 +1,57 @@
+:root {
+    --bg-x: 0
+}
+
+.btn-gradiant, .btn-glow {
+    @apply absolute overflow-hidden z-0 h-full w-full rounded-lg text-white flex gap-2 justify-center items-center font-semibold;
+    max-height: 49px;
+    max-width: 179px;
+}
+
+.btn-gradiant:before, .btn-glow:before {
+    @apply content-[''] bg-no-repeat absolute;
+    width: 99999px;
+    height: 99999px;
+    top: 50%;
+    left: 50%;
+    background-position: 0 0;
+    transform: translate(-50%, -50%) rotate(0deg);
+    z-index: -2;
+}
+
+.btn-gradiant:hover:before {
+    background-image: conic-gradient(rgba(0, 0, 0, 0), #DAA7FE, rgba(0, 0, 0, 0) 10%);
+    animation: glow 5s linear infinite;
+}
+
+.btn-glow {
+    filter: blur(25px);
+}
+
+.btn-gradiant:after {
+    @apply content-[''] absolute top-px left-px border border-primary-200 rounded-lg;
+    z-index: -1;
+    width: calc(100% - 3px);
+    height: calc(100% - 3px);
+    background: linear-gradient(90deg, #AC5AE6, #4D0283 51%, #AC5AE6) var(--bg-x, 0) / 200%;
+    transition: 0.5s;
+}
+
+
+.btn-gradiant:hover:after {
+    --bg-x: 100%;
+    transition: 0.5s;
+}
+
+
+@keyframes glow {
+    100% {
+        transform: translate(-50%, -50%) rotate(1turn);
+    }
+}
+
+
+
+
+
+
