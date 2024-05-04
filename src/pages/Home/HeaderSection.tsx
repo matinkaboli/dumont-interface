@@ -1,9 +1,33 @@
-import { LottiePlayer, Typography } from '@/components';
+'use client';
 
+import { useEffect, useRef, useState } from 'react';
+import { PlayerEvents } from '@dotlottie/react-player';
+
+import { LottiePlayer, Typography } from '@/components';
 import PlayButton from '@/pages/_components/PlayButton';
+import { useLoadingStore } from '@/stores/loadingStore';
 
 
 const HeaderSection = () => {
+  const lottieRef = useRef<any>();
+  const [autoplay, setAutoplay] = useState(false);
+  const isLoading = useLoadingStore((state) => state.isLoading);
+  const setLoading = useLoadingStore((state) => state.setLoading);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAutoplay(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (autoplay && !isLoading) {
+      lottieRef?.current?.play();
+    }
+  }, [autoplay, isLoading]);
+
   return (
     <div className='grid md:grid-cols-2 grid-cols-1 items-center gap-14 md:pt-28 pt-12 md:pb-40 pb-6'>
       <div>
@@ -21,12 +45,18 @@ const HeaderSection = () => {
       </div>
       <div>
         <LottiePlayer
+          lottieRef={lottieRef}
+          loop
           width='455px'
           height='455px'
           src='/lottie/header.lottie'
-          className='ml-auto'
-          autoplay
-          loop
+          background='/images/bg-circle.png'
+          className="ml-auto"
+          onEvent={(event: PlayerEvents) => {
+            if (event === PlayerEvents.Ready) {
+              setLoading(false);
+            }
+          }}
         />
       </div>
     </div>
