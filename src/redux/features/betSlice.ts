@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BetData } from '@/pages/Round/Board';
+import { BetData } from '@/pages/_components/Board';
 
 interface InitialState {
   betData: BetData;

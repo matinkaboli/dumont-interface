@@ -14,10 +14,10 @@ const meta = {
 export default meta;
 export type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
-  render: () => (
+export function Basic() {
+  return (
     <Dialog open onOpenChange={function (): void {}}>
       <DialogDescription>test</DialogDescription>
     </Dialog>
-  ),
-};
+  );
+}
