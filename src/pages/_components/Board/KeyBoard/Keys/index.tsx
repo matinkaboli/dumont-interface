@@ -1,2 +1,0 @@
-export { default as Key } from './Key';
-export { default as RevealKey } from './RevealKey';

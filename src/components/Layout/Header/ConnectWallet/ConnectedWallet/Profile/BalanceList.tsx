@@ -1,6 +1,6 @@
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import InfoTooltip from '@/pages/_components/InfoTooltip';
+import InfoTooltip from '@/views/_components/InfoTooltip';
 
 const BalanceList = () => {
   const USDTBalance = useTypedSelector((state) => state.account.balance);

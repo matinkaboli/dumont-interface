@@ -1,8 +1,8 @@
 'use client';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import Board from '@/pages/_components/Board';
-import CardDeck from '@/pages/_components/CardDeck';
+import Board from '@/views/_components/Board';
+import CardDeck from '@/views/_components/CardDeck';
 
 import CreateRound from './Create';
 

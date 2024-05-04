@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import CardDeck from '@/pages/_components/CardDeck';
-import Board from '@/pages/_components/Board';
+import CardDeck from '@/views/_components/CardDeck';
+import Board from '@/views/_components/Board';
 import { Toast, ToastContent } from '@/components';
 
 import ActivityTab from './ActivityTab';

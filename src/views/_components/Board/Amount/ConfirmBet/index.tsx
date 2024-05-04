@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import LoadingContent from '@/pages/_components/Dialog/LoadingContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import SelectedKey from './SelectedKey';

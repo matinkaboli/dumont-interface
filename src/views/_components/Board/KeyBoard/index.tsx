@@ -1,7 +1,8 @@
 import { UseFormSetValue } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 
-import { Key, RevealKey } from './Keys';
+import Key from './Keys/Key';
+import RevealKey from './Keys/RevealKey';
 import { BetData } from '../index';
 
 export interface KeyType {

@@ -5,7 +5,7 @@ import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { incrementRevealCount } from '@/redux/features/cardsSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import delayedPromise from '@/helpers/delayedPromise';
-import LoadingContent from '@/pages/_components/Dialog/LoadingContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import RevealedCard from './RevealedCard';
 

@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { Button, DialogDescription, DialogIcon, DialogTitle, Icon } from '@/components';
-import LongLoadingContent from '@/pages/_components/Dialog/LongLoadingContent';
+import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 import { confirmRound } from '@/redux/features/createRoundSlice';
 import delayedPromise from '@/helpers/delayedPromise';
 
