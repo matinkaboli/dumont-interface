@@ -10,23 +10,23 @@ import { useLoadingStore } from '@/stores/loadingStore';
 
 const HeaderSection = () => {
   const lottieRef = useRef<any>();
-  const [autoplay, setAutoplay] = useState(false);
+  const [play, setPlay] = useState(false);
   const isLoading = useLoadingStore((state) => state.isLoading);
   const setLoading = useLoadingStore((state) => state.setLoading);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setAutoplay(true);
-    }, 1000);
+      setPlay(true);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (autoplay && !isLoading) {
+    if (play && !isLoading) {
       lottieRef?.current?.play();
     }
-  }, [autoplay, isLoading]);
+  }, [play, isLoading]);
 
   return (
     <div className='grid md:grid-cols-2 grid-cols-1 items-center gap-14 md:pt-28 pt-12 md:pb-40 pb-6'>

@@ -7,3 +7,4 @@ export { default as Accordion } from './Accordion';
 export { default as LottiePlayer } from './LottiePlayer';
 export { default as FadeInUp } from './FadeInUp';
 export { default as Loading } from './Loading';
+export { default as ProgressBar } from './ProgressBar';
