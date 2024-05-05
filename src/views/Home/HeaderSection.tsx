@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { PlayerEvents } from '@dotlottie/react-player';
 
 import { LottiePlayer, Typography } from '@/components';
-import PlayButton from '@/pages/_components/PlayButton';
+import PlayButton from '@/views/_components/PlayButton';
 import { useLoadingStore } from '@/stores/loadingStore';
 
 

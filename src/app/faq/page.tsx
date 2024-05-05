@@ -1,4 +1,4 @@
-import FAQ from '@/pages/FAQ';
+import FAQ from '@/views/FAQ';
 
 export default function FaqPage() {
   return <FAQ />;

@@ -1,7 +1,7 @@
 import { Container, Layout } from '@/components';
 
-import CTASection from '@/pages/_components/CTASection';
-import LoadingScreen from '@/pages/_components/LoadingScreen';
+import CTASection from '@/views/_components/CTASection';
+import LoadingScreen from '@/views/_components/LoadingScreen';
 
 import HeaderSection from './HeaderSection';
 import BlockchainSection from './BlockchainSection';
