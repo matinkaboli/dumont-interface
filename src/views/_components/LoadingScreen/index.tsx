@@ -23,22 +23,13 @@ const LoadingScreen = () => {
 
   useEffect(() => {
     if (isLoading) {
+      setPercent(40);
       document.body.style.overflow = 'hidden';
     } else {
+      setPercent(100);
       document.body.style.overflow = 'visible';
     }
   }, [isLoading]);
-
-  useEffect(() => {
-    if (isLoading) {
-      setPercent(100);
-    } else {
-      if (percent === 40) {
-        const timeout = setTimeout(() => setPercent(70), 1000);
-        return () => clearTimeout(timeout);
-      }
-    }
-  }, [isLoading, percent]);
 
   return (
     <motion.div

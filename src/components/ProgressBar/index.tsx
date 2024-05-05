@@ -17,7 +17,7 @@ interface Props {
 const ProgressBar = (
   {
     percents,
-    duration = 3,
+    duration = 2,
     delay = 0,
     barWidth = 300,
     barHeight = 4,
