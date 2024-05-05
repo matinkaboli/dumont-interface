@@ -23,7 +23,7 @@ const FeaturesSection = () => {
           <FollowLink
             href='/'
             label='How it works'
-            className='font-semibold text-base mx-auto md:mt-14 mt-8'
+            className='font-semibold text-base md:mt-14 mt-8'
           />
         </FadeInUp>
         <FadeInUp>
