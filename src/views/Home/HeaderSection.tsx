@@ -5,14 +5,13 @@ import { PlayerEvents } from '@dotlottie/react-player';
 
 import { LottiePlayer, Typography } from '@/components';
 import PlayButton from '@/views/_components/PlayButton';
-import { useLoadingStore } from '@/stores/loadingStore';
+import { useLoading } from '@/hooks/useLoading';
 
 
 const HeaderSection = () => {
   const lottieRef = useRef<any>();
   const [play, setPlay] = useState(false);
-  const isLoading = useLoadingStore((state) => state.isLoading);
-  const setLoading = useLoadingStore((state) => state.setLoading);
+  const {isLoading, setLoading} = useLoading();
 
   useEffect(() => {
     const timer = setTimeout(() => {

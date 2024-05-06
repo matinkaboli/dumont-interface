@@ -2,10 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-
-import { useLoadingStore } from '@/stores/loadingStore';
 import Loading from '@/components/Loading';
 import ProgressBar from '@/components/ProgressBar';
+import { useLoading } from '@/hooks/useLoading';
 
 const overlayVariants = {
   enter: { y: '0%' },
@@ -18,7 +17,7 @@ const overlayVariants = {
 
 
 const LoadingScreen = () => {
-  const isLoading = useLoadingStore((state) => state.isLoading);
+  const { isLoading } = useLoading();
   const [percent, setPercent] = useState(40);
 
   useEffect(() => {
