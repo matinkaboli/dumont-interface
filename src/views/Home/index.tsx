@@ -1,6 +1,7 @@
 import { Container, Layout } from '@/components';
 
-import CTASection from '@/pages/_components/CTASection';
+import CTASection from '@/views/_components/CTASection';
+import LoadingScreen from '@/views/_components/LoadingScreen';
 
 import HeaderSection from './HeaderSection';
 import BlockchainSection from './BlockchainSection';
@@ -14,9 +15,10 @@ import BulletPontSection from './BulletPontSection';
 const Home = () => {
   return (
     <Layout>
-      <Container>
-       <HeaderSection />
+      <LoadingScreen />
 
+      <Container>
+        <HeaderSection />
         <BlockchainSection />
       </Container>
 
@@ -30,11 +32,8 @@ const Home = () => {
 
       <Container>
         <TokenSupplySection />
-
         <RewardsSection />
-
         <BulletPontSection />
-
         <CTASection />
       </Container>
     </Layout>

@@ -11,8 +11,8 @@ const Footer = () => {
         <div className='text-primary-100 text-sm font-medium'>© 2024 Dumont. All rights reserved.</div>
 
         <div className='flex items-center gap-6'>
-          <Link href='/'><Icon name='twitter' /></Link>
-          <Link href='/'><Icon name='telegram' /></Link>
+          <Link href='/'><Icon name='twitter' className="[&>path]:hover:fill-primary-250" /></Link>
+          <Link href='/'><Icon name='telegram' className="[&>path]:hover:fill-primary-250" /></Link>
         </div>
       </div>
     </Container>

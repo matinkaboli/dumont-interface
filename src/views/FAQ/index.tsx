@@ -1,6 +1,6 @@
 import { Accordion, Container, Layout, Typography } from '@/components';
 
-import CTASection from '@/pages/_components/CTASection';
+import CTASection from '@/views/_components/CTASection';
 
 const data = [
   {
