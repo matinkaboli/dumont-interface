@@ -51,7 +51,8 @@ const HeaderSection = () => {
           height='455px'
           src='/lottie/header.lottie'
           background='/images/bg-circle.png'
-          className="ml-auto"
+          className='md:ml-auto md:mr-0 mx-auto md:mt-0 mt-14'
+          style={{ width: '100%', height: '100%', maxWidth: '445px', maxHeight: '445px' }}
           onEvent={(event: PlayerEvents) => {
             if (event === PlayerEvents.Ready) {
               setLoading(false);
