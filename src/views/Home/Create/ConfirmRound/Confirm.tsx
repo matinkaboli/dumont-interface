@@ -1,7 +1,9 @@
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { AppDispatch } from '@/redux/store';
 
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
+import { postGame } from '@/redux/features/gameSlice';
 import { Button, DialogDescription, DialogIcon, DialogTitle, Icon } from '@/components';
 import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
@@ -9,10 +11,22 @@ import { confirmRound } from '@/redux/features/createRoundSlice';
 import delayedPromise from '@/helpers/delayedPromise';
 
 const Confirm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   const onConfirm = async () => {
+    dispatch(closeDialog());
+
+    dispatch(postGame({ id: 34 }));
+
+    await delayedPromise(() => {
+      dispatch(
+        openDialog({
+          dialogProps: { showCloseButton: false, disableEvents: true },
+          content: <LongLoadingContent />,
+        }),
+      );
+    }, 300);
     dispatch(
       openDialog({
         dialogProps: { showCloseButton: false, disableEvents: true },
