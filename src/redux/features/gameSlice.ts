@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import makeApiUrl from '@/helpers/makeApiUrl';
 
 interface State {
@@ -8,14 +8,13 @@ interface State {
   data: any;
 }
 
-// Define initial state
 const initialState: State = {
   loading: false,
   error: null,
   data: null,
 };
 
-const postGame = createAsyncThunk('api/postData', async (requestData: any, {rejectWithValue}) => {
+export const postGame = createAsyncThunk('api/postData', async (requestData: any, {rejectWithValue}) => {
   try {
     const url = makeApiUrl('games');
     const response = await axios.post(url, requestData);
@@ -46,8 +45,5 @@ const gameSlice = createSlice({
       });
   },
 });
-
-
-export { postGame };
 
 export default gameSlice.reducer;

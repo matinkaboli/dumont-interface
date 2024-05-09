@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
+import axios from 'axios';
 
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 import InfoTooltip from '@/views/_components/InfoTooltip';
 import makeApiUrl from '@/helpers/makeApiUrl';
 
@@ -14,8 +15,8 @@ const BalanceList = () => {
   const fetchSettling = async () => {
     const fetchUrl = makeApiUrl(`players/${address}`);
     try {
-      const response = await fetch(fetchUrl);
-      const jsonData = await response.json();
+      const response = await axios.get(fetchUrl);
+      const jsonData = response.data;
       setSettling(jsonData?.result?.settling ?? 0);
     } catch (error) {
       setSettling(0);
