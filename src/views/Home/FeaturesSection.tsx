@@ -44,7 +44,7 @@ const FeaturesSection = () => {
             height='0'
             width='0'
             sizes='100vw'
-            src='/images/Permissionless.png'
+            src='/images/permissionless.png'
             className='w-full max-w-[400px] h-auto md:mx-0 mx-auto'
             alt='dumont'
           />
