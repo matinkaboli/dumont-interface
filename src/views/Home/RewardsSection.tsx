@@ -1,8 +1,12 @@
+'use client';
+
 import Image from 'next/image';
+import { Parallax } from 'react-scroll-parallax';
+
+import { Typography } from '@/components';
 
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
-import { Typography } from '@/components';
 
 const RewardsSection = () => {
   return (
@@ -37,27 +41,64 @@ const RewardsSection = () => {
           className='font-semibold text-base mt-9'
         />
       </div>
+
       <div className='md:mt-0 -mt-10'>
         <Image
           width='0'
           height='0'
           sizes='100vw'
-          className='w-auto lg:h-[420px] md:h-96 h-56 absolute right-0 bottom-0'
+          className='w-auto xl:h-[500px] md:h-96 h-56 absolute right-0 bottom-0 md:block hidden'
           src='/images/bg-circle.png'
           alt=''
         />
 
-        <Image
-          width='0'
-          height='0'
-          sizes='100vw'
-          className='lg:w-72 md:w-60 w-44 h-auto relative ml-auto'
-          src='/images/rewards.png'
-          alt=''
-        />
+        <div className='min-h-[292px] md:hidden block'>
+          <Image
+            src='/images/rewards-mobile.png'
+            className='absolute right-0 bottom-0'
+            width={292}
+            height={366}
+            alt=''
+          />
+        </div>
+
+        <div className='w-[290px] h-[353px] relative ml-auto md:block hidden'>
+          <Image
+            src='/images/fade-coin-top.png'
+            className='absolute top-0 right-20'
+            width={81}
+            height={97}
+            alt=''
+          />
+
+          <Image
+            src='/images/fade-coin-bottom.png'
+            className='absolute bottom-0 right-3'
+            width={73}
+            height={97}
+            alt=''
+          />
+
+          <div className='absolute bottom-5 left-0'>
+            <Parallax translateY={[-20, 20]} speed={5}>
+              <Image src='/images/wrapped-gift.png' width={162} height={176} alt='' />
+            </Parallax>
+          </div>
+
+          <div className='absolute top-5 right-0'>
+            <Parallax translateY={[0, 30]} speed={-5}>
+              <Image src='/images/opened-gift.png' width={163} height={182} alt='' />
+            </Parallax>
+          </div>
+
+          <div className='absolute top-8 left-2'>
+            <Parallax translateY={[-30, 10]}>
+              <Image src='/images/rotated-coin.png' width={120} height={120} alt='' />
+            </Parallax>
+          </div>
+        </div>
       </div>
     </div>
-
   );
 };
 
