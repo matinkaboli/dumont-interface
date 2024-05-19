@@ -29,7 +29,7 @@ const PreviewSection = () => {
         </div>
 
         <div
-          className='bg-primary-800 w-full max-w-[843px] md:h-[487px] h-[295px] mx-auto md:mt-20 mt-12 md:rounded-xl rounded-t-lg rounded-b-none' />
+          className='bg-primary-800 w-full max-w-[843px] md:h-[487px] h-[295px] mx-auto md:mt-20 mt-12 md:rounded-t-xl rounded-t-lg rounded-b-none' />
       </div>
     </div>
   );
