@@ -10,3 +10,11 @@ body {
     @apply bg-neutral-800
 }
 
+:root {
+    --vh: 100%;
+}
+
+.h-screen-optimized {
+    height: calc(var(--vh, 1vh) * 100);
+}
+

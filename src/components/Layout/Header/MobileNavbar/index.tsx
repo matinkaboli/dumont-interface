@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useLenis } from '@studio-freight/react-lenis';
 
 import Button from '@/components/Button';
 import Icon from '@/components/Icon';
@@ -48,9 +49,38 @@ const containerVariants = {
 };
 
 const MobileNavbar = () => {
+  const lenis = useLenis();
   const [open, setOpen] = useState(false);
   const MotionedButton = motion(Button);
+
   const toggleMenu = () => setOpen((prev) => !prev);
+
+  useEffect(() => {
+    const setVh = () => {
+      // First we get the viewport height, and we multiply it by 1% to get a value for a vh unit
+      let vh = window.innerHeight * 0.01;
+      // Then we set the value in the --vh custom property to the root of the document
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    setVh();
+
+    window.addEventListener('resize', setVh);
+
+    return () => {
+      window.removeEventListener('resize', setVh);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+      lenis?.stop();
+    } else {
+      document.body.style.overflow = 'visible';
+      lenis?.start();
+    }
+  }, [open]);
 
   return (
     <>
@@ -63,14 +93,14 @@ const MobileNavbar = () => {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='fixed z-10 left-0 top-0 w-full h-screen origin-top bg-neutral-800 text-white px-6 pt-12 pb-8'
+            className='fixed z-10 inset-0 w-full h-screen-optimized origin-top bg-neutral-800 text-white px-6 pt-12 pb-8'
           >
             <motion.div
               variants={containerVariants}
               initial='initial'
               animate='open'
               exit='initial'
-              className='flex flex-col h-full gap-14 mt-28'
+              className='flex flex-col h-full gap-14 pt-28 pb-8'
             >
               {navLinks.map((link) => (
                 <div key={link.id} className='overflow-hidden'>
