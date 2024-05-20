@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Loading from '@/components/Loading';
 import ProgressBar from '@/components/ProgressBar';
 import { useLoading } from '@/hooks/useLoading';
+import { useLenis } from '@studio-freight/react-lenis';
 
 const overlayVariants = {
   enter: { y: '0%' },
@@ -17,6 +18,7 @@ const overlayVariants = {
 
 
 const LoadingScreen = () => {
+  const lenis = useLenis();
   const { isLoading } = useLoading();
   const [percent, setPercent] = useState(40);
 
@@ -24,9 +26,11 @@ const LoadingScreen = () => {
     if (isLoading) {
       setPercent(40);
       document.body.style.overflow = 'hidden';
+      lenis?.stop();
     } else {
       setPercent(100);
       document.body.style.overflow = 'visible';
+      lenis?.start();
     }
   }, [isLoading]);
 
