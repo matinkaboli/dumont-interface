@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLenis } from '@studio-freight/react-lenis';
 
 import Button from '@/components/Button';
 import Icon from '@/components/Icon';
+import { useMobileNav } from '@/contexts/MobileNavContext';
 
 import NavLink from './NavLink';
 import ToggleButton from './ToggleButton';
@@ -50,10 +51,8 @@ const containerVariants = {
 
 const MobileNavbar = () => {
   const lenis = useLenis();
-  const [open, setOpen] = useState(false);
+  const { isNavOpen, toggleNav } = useMobileNav();
   const MotionedButton = motion(Button);
-
-  const toggleMenu = () => setOpen((prev) => !prev);
 
   useEffect(() => {
     const setVh = () => {
@@ -73,21 +72,21 @@ const MobileNavbar = () => {
   }, []);
 
   useEffect(() => {
-    if (open) {
+    if (isNavOpen) {
       document.body.style.overflow = 'hidden';
       lenis?.stop();
     } else {
       document.body.style.overflow = 'visible';
       lenis?.start();
     }
-  }, [open]);
+  }, [isNavOpen]);
 
   return (
     <>
-      <ToggleButton isOpen={open} toggleMenu={toggleMenu} />
+      <ToggleButton isOpen={isNavOpen} toggleMenu={toggleNav} />
 
       <AnimatePresence>
-        {open && (
+        {isNavOpen && (
           <motion.div
             variants={menuVariants}
             initial='initial'

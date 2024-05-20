@@ -2,16 +2,19 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { PlayerEvents } from '@dotlottie/react-player';
+import clsx from 'clsx';
 
 import { LottiePlayer, Typography } from '@/components';
 import PlayButton from '@/views/_components/PlayButton';
 import { useLoading } from '@/hooks/useLoading';
+import { useMobileNav } from '@/contexts/MobileNavContext';
 
 
 const HeaderSection = () => {
   const lottieRef = useRef<any>();
   const [play, setPlay] = useState(false);
-  const {isLoading, setLoading} = useLoading();
+  const { isLoading, setLoading } = useLoading();
+  const { isNavOpen } = useMobileNav();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,7 +53,7 @@ const HeaderSection = () => {
           height='455px'
           src='/lottie/header.lottie'
           background='/images/bg-circle.png'
-          className='md:ml-auto md:mr-0 mx-auto md:mt-0 mt-14'
+          className={clsx('md:ml-auto md:mr-0 mx-auto md:mt-0 mt-14', isNavOpen ? 'invisible' : 'visible')}
           style={{ width: '100%', height: '100%', maxWidth: '445px', maxHeight: '445px' }}
           onEvent={(event: PlayerEvents) => {
             if (event === PlayerEvents.Ready) {
