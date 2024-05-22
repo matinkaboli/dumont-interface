@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config) => {
-    config.externals.push("pino-pretty");
+    config.externals.push('pino-pretty');
     return config;
   },
-}
+};
 
-module.exports = nextConfig
+process.on('unhandledRejection', (error) => {
+  console.log('unhandledRejection', error);
+});
+
+module.exports = nextConfig;
