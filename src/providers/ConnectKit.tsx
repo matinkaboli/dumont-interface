@@ -19,7 +19,7 @@ const config = createConfig(
 const ConnectKit = ({ children }: PropsWithChildren) => {
   return (
     <WagmiConfig config={config}>
-      <ConnectKitProvider>{children}</ConnectKitProvider>
+      <ConnectKitProvider theme="midnight">{children}</ConnectKitProvider>
     </WagmiConfig>
   );
 };

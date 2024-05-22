@@ -25,7 +25,7 @@ const CopyToClipboard = ({ copyText, showIcon = true, copyLabel, children, class
 
     setTimeout(() => {
       setIsCopied(false);
-    }, 2000);
+    }, 1000);
   };
 
   return (

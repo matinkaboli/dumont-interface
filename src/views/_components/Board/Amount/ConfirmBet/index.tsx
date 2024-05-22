@@ -2,14 +2,16 @@ import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components';
-import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
+import { openDialog } from '@/redux/features/dialogSlice';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 
 import SelectedKey from './SelectedKey';
 import BetDetailList from './BetDetailList';
 import ResultMessage from './ConfirmProcess/ResultMessage';
 import VerificationOperation from './ConfirmProcess/VerificationOperation';
+
 
 const sortKeys = (keys: string[]): string[] => {
   return [...keys].sort((a: string, b: string) => {
@@ -42,8 +44,6 @@ const ConfirmBet = () => {
   ];
 
   const onConfirm = () => {
-    dispatch(closeDialog());
-
     const delayedDispatch = (action: any, delay: number) =>
       setTimeout(() => {
         dispatch(action);
@@ -54,24 +54,37 @@ const ConfirmBet = () => {
         action: openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
-            <LoadingContent
-              title="Sign the transaction"
-              desc="Sign this transaction in your wallet"
-            />
+            <AnimatedDialogContent key="loading">
+              <LoadingContent
+                title="Sign the transaction"
+                desc="Sign this transaction in your wallet"
+              />
+            </AnimatedDialogContent>
           ),
         }),
         delay: 500,
       },
-      { action: closeDialog(), delay: 1500 },
       {
         action: openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
-          content: <VerificationOperation />,
+          content: (
+            <AnimatedDialogContent key="verification">
+              <VerificationOperation />
+            </AnimatedDialogContent>
+          ),
         }),
         delay: 3000,
       },
-      { action: closeDialog(), delay: 4000 },
-      { action: openDialog({ content: <ResultMessage status="success" /> }), delay: 5500 },
+      {
+        action: openDialog({
+          content: (
+            <AnimatedDialogContent key="result">
+              <ResultMessage status="success" />
+            </AnimatedDialogContent>
+          ),
+        }),
+        delay: 5500,
+      },
     ];
 
     dialogs.forEach(({ action, delay }) => delayedDispatch(action, delay));

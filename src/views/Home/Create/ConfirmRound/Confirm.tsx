@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { Button, DialogDescription, DialogIcon, DialogTitle, Icon } from '@/components';
 import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
+import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import { confirmRound } from '@/redux/features/createRoundSlice';
 import delayedPromise from '@/helpers/delayedPromise';
 
@@ -12,16 +13,16 @@ const Confirm = () => {
   const router = useRouter();
 
   const onConfirm = async () => {
-    dispatch(closeDialog());
-
-    await delayedPromise(() => {
-      dispatch(
-        openDialog({
-          dialogProps: { showCloseButton: false, disableEvents: true },
-          content: <LongLoadingContent />,
-        }),
-      );
-    }, 300);
+    dispatch(
+      openDialog({
+        dialogProps: { showCloseButton: false, disableEvents: true },
+        content: (
+          <AnimatedDialogContent>
+            <LongLoadingContent />
+          </AnimatedDialogContent>
+        ),
+      }),
+    );
 
     await delayedPromise(() => dispatch(closeDialog()), 12000).then(() => {
       dispatch(confirmRound());
