@@ -6,6 +6,7 @@ import { incrementRevealCount } from '@/redux/features/cardsSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import delayedPromise from '@/helpers/delayedPromise';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
+import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 
 import RevealedCard from './RevealedCard';
 
@@ -16,22 +17,30 @@ const ConfirmReveal = () => {
   const onCloseDialog = () => dispatch(closeDialog());
 
   const onShowResult = async () => {
-    onCloseDialog();
-
-    await delayedPromise(() =>
-      dispatch(openDialog({
+    dispatch(
+      openDialog({
         dialogProps: { showCloseButton: false, disableEvents: true },
         content: (
-          <LoadingContent
-            title="Waiting for the network"
-            desc="This may take a few seconds"
-          />
+          <AnimatedDialogContent key="loading">
+            <LoadingContent title="Waiting for the network" desc="This may take a few seconds" />
+          </AnimatedDialogContent>
         ),
-      })), 300);
+      }),
+    );
 
-    await delayedPromise(() => onCloseDialog(), 1000);
-
-    await delayedPromise(() => dispatch(openDialog({ content: <RevealedCard /> })), 300);
+    await delayedPromise(
+      () =>
+        dispatch(
+          openDialog({
+            content: (
+              <AnimatedDialogContent key="reveal">
+                <RevealedCard />
+              </AnimatedDialogContent>
+            ),
+          }),
+        ),
+      3000,
+    );
 
     dispatch(incrementRevealCount());
   };
