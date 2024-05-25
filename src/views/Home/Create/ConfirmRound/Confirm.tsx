@@ -15,18 +15,8 @@ const Confirm = () => {
   const router = useRouter();
 
   const onConfirm = async () => {
-    dispatch(closeDialog());
-
     dispatch(postGame({ id: 34 }));
 
-    await delayedPromise(() => {
-      dispatch(
-        openDialog({
-          dialogProps: { showCloseButton: false, disableEvents: true },
-          content: <LongLoadingContent />,
-        }),
-      );
-    }, 300);
     dispatch(
       openDialog({
         dialogProps: { showCloseButton: false, disableEvents: true },
