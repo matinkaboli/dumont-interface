@@ -1,7 +1,8 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
-import { setBetData } from '@/redux/features/betSlice';
+import { postGuessedCard, setBetData } from '@/redux/features/betSlice';
+import { AppDispatch } from '@/redux/store';
 
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
@@ -12,7 +13,7 @@ export interface BetData {
 }
 
 const Board = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const {
     control,
     handleSubmit,
@@ -27,7 +28,16 @@ const Board = () => {
   });
 
   const onSubmit: SubmitHandler<BetData> = (data) => {
+    const id = '32';
+    const cardId = '10';
     dispatch(setBetData(data));
+    dispatch(
+      postGuessedCard({
+        id,
+        cardId,
+        body: { tx: '0xe53c674cd5edd0e0f54921fa8bdf0debd972efae758e2d29dd17ff4598410136' },
+      }),
+    );
   };
 
   return (
