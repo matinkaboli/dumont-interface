@@ -18,7 +18,7 @@ import ProgressbarTimer from './ProgressbarTimer';
 const CreateRound = () => {
   const params = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { isConfirmed } = useTypedSelector((state) => state.createRound);
+  const { isCreated } = useTypedSelector((state) => state.game);
   const { isConnected } = useTypedSelector((state) => state.account.profile);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const CreateRound = () => {
     };
   }, []);
 
-  if (!isConnected || !isConfirmed) {
+  if (!isConnected || !isCreated) {
     redirect('/');
   }
 

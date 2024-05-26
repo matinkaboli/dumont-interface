@@ -6,7 +6,7 @@ import makeApiUrl from '@/helpers/makeApiUrl';
 interface State {
   loading: boolean;
   error: string | null;
-  isSaved: boolean;
+  isCreated: boolean;
   data: any;
 }
 
@@ -40,7 +40,7 @@ const gameSlice = createSlice({
   initialState: {
     loading: false,
     error: null,
-    isSaved: false,
+    isCreated: false,
     data: null,
   } as State,
   reducers: {},
@@ -48,17 +48,17 @@ const gameSlice = createSlice({
     builder
       .addCase(postGame.pending, (state) => {
         state.loading = true;
-        state.isSaved = false;
+        state.isCreated = false;
         state.error = null;
       })
       .addCase(postGame.fulfilled, (state, action) => {
         state.loading = false;
-        state.isSaved = true;
+        state.isCreated = true;
         state.data = action.payload;
       })
       .addCase(postGame.rejected, (state, action) => {
         state.loading = false;
-        state.isSaved = false;
+        state.isCreated = false;
         state.error = action.payload as string;
       });
     builder

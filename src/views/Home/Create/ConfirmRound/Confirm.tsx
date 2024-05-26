@@ -1,13 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import { AppDispatch } from '@/redux/store';
 
+import { AppDispatch } from '@/redux/store';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { postGame } from '@/redux/features/gameSlice';
 import { Button, DialogDescription, DialogIcon, DialogTitle, Icon } from '@/components';
 import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import { confirmRound } from '@/redux/features/createRoundSlice';
 import delayedPromise from '@/helpers/delayedPromise';
 
 const Confirm = () => {
@@ -29,7 +28,6 @@ const Confirm = () => {
     );
 
     await delayedPromise(() => dispatch(closeDialog()), 12000).then(() => {
-      dispatch(confirmRound());
       router.push('/34');
     });
   };
