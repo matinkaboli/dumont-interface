@@ -27,7 +27,7 @@ export const postGuessedCard = createAsyncThunk<
   { rejectValue: string }
 >('api/saveGuessedCard', async ({ id, cardId, body }, { rejectWithValue }) => {
   try {
-    const url = makeApiUrl(`/games/${id}/cards/${cardId}`);
+    const url = makeApiUrl(`games/${id}/cards/${cardId}`);
     const response = await axios.post(url, body);
     return response.data.result;
   } catch (error) {
