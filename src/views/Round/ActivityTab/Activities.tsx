@@ -93,7 +93,7 @@ const Activities = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const fetchData = async (id: string) => {
+  const fetchActivities = async (id: string) => {
     try {
       const url = makeApiUrl(`games/${id}/activities`);
       const response = await axios.get(url);
@@ -104,7 +104,7 @@ const Activities = () => {
   };
 
   useEffect(() => {
-    fetchData('32');
+    fetchActivities('32');
   }, []);
 
   return (

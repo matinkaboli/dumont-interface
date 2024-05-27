@@ -1,15 +1,32 @@
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import axios from 'axios';
+
+import makeApiUrl from '@/helpers/makeApiUrl';
+import getCardInfo from '@/helpers/getCardInfo';
+
 
 import EmptyDataMessage from './EmptyDataMessage';
 
-// fake data
-// const images = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
-const images: string[] = [];
-
 const Discarded = () => {
+  const [discarded, setDiscarded] = useState<number[]>([]);
+  const fetchDiscarded = async (id: string) => {
+    try {
+      const url = makeApiUrl(`games/${id}/cards`);
+      const response = await axios.get(url);
+      setDiscarded(response.data?.result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchDiscarded('34');
+  }, []);
+
   return (
     <>
-      {!images?.length ? (
+      {!discarded?.length ? (
         <EmptyDataMessage message="Nothing discarded" />
       ) : (
         <div className="md:bg-neutral-750 bg-transparent rounded-lg md:p-6 p-0">
@@ -19,10 +36,10 @@ const Discarded = () => {
           </h3>
 
           <div className="flex flex-wrap md:gap-4 gap-3 mt-6">
-            {images.map((item) => (
+            {discarded.map((discardedNumber) => (
               <Image
-                key={item}
-                src="/images/card-show.png"
+                key={discardedNumber}
+                src={`/images/cards/${getCardInfo(discardedNumber)}.png`}
                 width={99}
                 height={138}
                 className="md:w-[99px] sm:w-[105px] w-[30%] h-auto rounded-lg"
