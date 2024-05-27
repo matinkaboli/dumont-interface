@@ -1,4 +1,8 @@
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import {
   createColumnHelper,
   flexRender,
@@ -16,47 +20,47 @@ import {
   TableHeader,
   TableRow,
 } from '@/components';
+import makeApiUrl from '@/helpers/makeApiUrl';
 
 import EmptyDataMessage from './EmptyDataMessage';
 
 interface Activity {
-  date: string;
-  amount: number;
-  odds: number;
-  total: number;
-  result: 'won' | 'lost';
-  status: 'verifying' | 'verified' | 'claim';
+  cardIndex: number;
+  status: 'verifying' | 'verified' | 'claimable';
+  guessDate: string;
+  revealDate: string;
+  result: {
+    isPlayerWinner: boolean;
+    betAmount: string;
+    montAmount: string;
+    rate: string;
+  };
 }
 
-// fake data
-// const activities: Activity[] = [
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verifying' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'lost', status: 'verified' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'claim' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verified' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'lost', status: 'verified' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verified' },
-// ];
-
-const activities: Activity[] = [];
+dayjs.extend(relativeTime);
 
 const columnHelper = createColumnHelper<Activity>();
 
 const columns = [
-  columnHelper.accessor('date', {}),
-  columnHelper.accessor('amount', {
+  columnHelper.accessor('guessDate', {
+    header: 'date',
+    cell: (info) => dayjs(info.getValue()).fromNow()
+  }),
+  columnHelper.accessor('result.betAmount', {
+    header: 'amount',
     cell: (info) => `$${info.getValue()}`,
   }),
-  columnHelper.accessor('odds', {
-    cell: (info) => `x${info.renderValue()}`,
-  }),
-  columnHelper.accessor('total', {
-    cell: (info) => `$${info.getValue()}`,
-  }),
-  columnHelper.accessor('result', {
+  // columnHelper.accessor('odds', {
+  //   cell: (info) => `x${info.renderValue()}`,
+  // }),
+  // columnHelper.accessor('total', {
+  //   cell: (info) => `$${info.getValue()}`,
+  // }),
+  columnHelper.accessor('result.isPlayerWinner', {
+    header: 'result',
     cell: (info) => (
-      <Status className="capitalize" variant={info.getValue() === 'won' ? 'success' : 'error'}>
-        {info.getValue()}
+      <Status className="capitalize" variant={info.getValue() ? 'success' : 'error'}>
+        {info.getValue() ? 'won': 'lost'}
       </Status>
     ),
   }),
@@ -66,7 +70,7 @@ const columns = [
 
       const generateValue = () => {
         if (value === 'verifying') return `${value}...`;
-        if (value === 'claim')
+        if (value === 'claimable')
           return (
             <Link href="/" className="flex items-center gap-0.5 text-primary-250">
               {value}
@@ -82,11 +86,26 @@ const columns = [
 ];
 
 const Activities = () => {
+  const [activities, setActivities] = useState([]);
   const table = useReactTable({
     data: activities,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const fetchData = async (id: string) => {
+    try {
+      const url = makeApiUrl(`games/${id}/activities`);
+      const response = await axios.get(url);
+      setActivities(response.data?.result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData('32');
+  }, []);
 
   return (
     <>
