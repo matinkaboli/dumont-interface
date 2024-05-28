@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 // import BN from 'bn.js';
@@ -22,6 +20,7 @@ import {
   TableRow,
 } from '@/components';
 import makeApiUrl from '@/helpers/makeApiUrl';
+import useAxiosGet from '@/hooks/useAxiosGet';
 
 import EmptyDataMessage from './EmptyDataMessage';
 
@@ -45,7 +44,7 @@ const columnHelper = createColumnHelper<Activity>();
 const columns = [
   columnHelper.accessor('guessDate', {
     header: 'date',
-    cell: (info) => dayjs(info.getValue()).fromNow()
+    cell: (info) => dayjs(info.getValue()).fromNow(),
   }),
   columnHelper.accessor('result.betAmount', {
     header: 'amount',
@@ -61,14 +60,14 @@ const columns = [
       const rate = info.getValue().rate;
       const amount = info.getValue().betAmount;
       // const total = new BN(rate).times(amount);
-      return `$${amount}`
+      return `$${amount}`;
     },
   }),
   columnHelper.accessor('result.isPlayerWinner', {
     header: 'result',
     cell: (info) => (
       <Status className="capitalize" variant={info.getValue() ? 'success' : 'error'}>
-        {info.getValue() ? 'won': 'lost'}
+        {info.getValue() ? 'won' : 'lost'}
       </Status>
     ),
   }),
@@ -94,56 +93,49 @@ const columns = [
 ];
 
 const Activities = () => {
-  const [activities, setActivities] = useState([]);
+  const url = makeApiUrl(`games/32/activities`);
+  const { data: activities, loading } = useAxiosGet<Activity[]>(url);
   const table = useReactTable({
-    data: activities,
+    data: activities || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const fetchActivities = async (id: string) => {
-    try {
-      const url = makeApiUrl(`games/${id}/activities`);
-      const response = await axios.get(url);
-      setActivities(response.data?.result);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchActivities('32');
-  }, []);
-
   return (
     <>
-      {!activities?.length ? (
-        <EmptyDataMessage message="No activity yet" />
+      {loading ? (
+        <div className="text-white">Loading...</div>
       ) : (
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="uppercase text-neutral-400">
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
+        <>
+          {activities?.length === 0 ? (
+            <EmptyDataMessage message="No activity yet" />
+          ) : (
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id} className="uppercase text-neutral-400">
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="text-neutral-200">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="text-neutral-200">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+              </TableBody>
+            </Table>
+          )}
+        </>
       )}
     </>
   );

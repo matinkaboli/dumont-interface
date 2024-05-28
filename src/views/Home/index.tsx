@@ -5,7 +5,6 @@ import Board from '@/views/_components/Board';
 import CardDeck from '@/views/_components/CardDeck';
 
 import CreateRound from './Create';
-import ActivityTab from '@/views/Round/ActivityTab';
 
 const Home = () => {
   const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
@@ -19,8 +18,6 @@ const Home = () => {
       <div className={isConnected ? 'md:block hidden' : ''}>
         <Board />
       </div>
-
-      <ActivityTab />
     </div>
   );
 };
