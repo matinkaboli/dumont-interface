@@ -3,6 +3,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+// import BN from 'bn.js';
 import {
   createColumnHelper,
   flexRender,
@@ -50,12 +51,19 @@ const columns = [
     header: 'amount',
     cell: (info) => `$${info.getValue()}`,
   }),
-  // columnHelper.accessor('odds', {
-  //   cell: (info) => `x${info.renderValue()}`,
-  // }),
-  // columnHelper.accessor('total', {
-  //   cell: (info) => `$${info.getValue()}`,
-  // }),
+  columnHelper.accessor('result.rate', {
+    header: 'odd',
+    cell: (info) => `x${info.renderValue()}`,
+  }),
+  columnHelper.accessor('result', {
+    header: 'total',
+    cell: (info) => {
+      const rate = info.getValue().rate;
+      const amount = info.getValue().betAmount;
+      // const total = new BN(rate).times(amount);
+      return `$${amount}`
+    },
+  }),
   columnHelper.accessor('result.isPlayerWinner', {
     header: 'result',
     cell: (info) => (

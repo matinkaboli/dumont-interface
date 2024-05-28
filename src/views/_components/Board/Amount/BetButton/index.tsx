@@ -52,7 +52,7 @@ const BetButton = ({ size, disabled }: ButtonProps) => {
                 ) : (
                   <TooltipProvider delayDuration={100}>
                     <Tooltip>
-                      <TooltipTrigger className="w-full">
+                      <TooltipTrigger className="w-full" asChild>
                         <Button
                           {...buttonProps}
                           disabled={disabled}

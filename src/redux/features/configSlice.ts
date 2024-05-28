@@ -29,8 +29,9 @@ export const getConfig = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const url = makeApiUrl('details');
-      const response = await axios.get(url);
-      return response.data.result as Details;
+      // const response = await axios.get(url);
+      // return response.data.result as Details;
+      return null
     } catch (error) {
       const axiosError = error as AxiosError;
       return rejectWithValue(axiosError.message);
