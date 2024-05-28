@@ -20,6 +20,7 @@ const CreateRound = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isCreated } = useTypedSelector((state) => state.game);
   const { isConnected } = useTypedSelector((state) => state.account.profile);
+  const { data: game } = useTypedSelector((state) => state.game);
 
   useEffect(() => {
     const id = params.id as string;
@@ -46,7 +47,7 @@ const CreateRound = () => {
   return (
     <>
       <div className="px-1.5">
-        <ProgressbarTimer />
+        {game ? <ProgressbarTimer duration={+game.duration} /> : null}
       </div>
 
       <div className="flex flex-col gap-4">

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-// import BN from 'bn.js';
+import BN from 'bignumber.js';
 import {
   createColumnHelper,
   flexRender,
@@ -59,8 +59,8 @@ const columns = [
     cell: (info) => {
       const rate = info.getValue().rate;
       const amount = info.getValue().betAmount;
-      // const total = new BN(rate).times(amount);
-      return `$${amount}`;
+      const total = new BN(rate).times(amount);
+      return `$${total}`;
     },
   }),
   columnHelper.accessor('result.isPlayerWinner', {

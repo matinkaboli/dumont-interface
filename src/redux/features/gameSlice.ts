@@ -3,11 +3,38 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import makeApiUrl from '@/helpers/makeApiUrl';
 
+interface Card {
+  revealed: number;
+  hash: string;
+  isLeaked: boolean;
+  guessedNumbers: any[];
+  status: string;
+  _id: string;
+}
+
+interface Data {
+  _id: string;
+  id: string;
+  address: string;
+  revealer: string;
+  player: string;
+  duration: string;
+  claimableAfter: string;
+  maxFreeReveals: string;
+  gameCreationFee: string;
+  gameCreatedAt: string;
+  cards: Card[];
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+  leakedCount: number;
+}
+
 interface State {
   loading: boolean;
   error: string | null;
   isCreated: boolean;
-  data: any;
+  data: Data | null;
 }
 
 export const postGame = createAsyncThunk(

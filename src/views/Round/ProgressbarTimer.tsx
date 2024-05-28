@@ -7,29 +7,6 @@ import clsx from 'clsx';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 
 const circleSize = 12;
-// const defaultTimerSeconds = 12 * 60 * 60; // 12 hours in seconds
-const defaultTimerSeconds = 30;
-
-const transition = {
-  duration: defaultTimerSeconds,
-  delay: 0.5,
-};
-
-const progressVariants = {
-  enter: { width: '100%' },
-  animate: {
-    width: 0,
-    transition,
-  },
-};
-
-const circleVariants = {
-  animate: {
-    right: 0, // Start position
-    left: 0, // End position
-    transition,
-  },
-};
 
 const formatTime = (time: number) => {
   const hours = Math.floor(time / 3600);
@@ -47,9 +24,9 @@ const formatTime = (time: number) => {
   return timeString.trim() || 'There is no time';
 };
 
-const ProgressbarTimer = () => {
+const ProgressbarTimer = ({ duration }: { duration: number }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(defaultTimerSeconds);
+  const [remainingTime, setRemainingTime] = useState(duration);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -68,6 +45,21 @@ const ProgressbarTimer = () => {
   const hideTooltip = () => setIsHovered(false);
 
   const formattedTime = useMemo(() => formatTime(remainingTime), [remainingTime]);
+
+  const transition = { duration, delay: 0.5 };
+
+  const progressVariants = {
+    enter: { width: '100%' },
+    animate: { width: 0, transition },
+  };
+
+  const circleVariants = {
+    animate: {
+      right: 0, // Start position
+      left: 0, // End position
+      transition,
+    },
+  };
 
   return (
     <div className="relative cursor-pointer" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
