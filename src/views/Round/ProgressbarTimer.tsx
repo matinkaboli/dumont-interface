@@ -46,29 +46,13 @@ const ProgressbarTimer = ({ duration }: { duration: number }) => {
 
   const formattedTime = useMemo(() => formatTime(remainingTime), [remainingTime]);
 
-  const transition = { duration, delay: 0.5 };
-
-  const progressVariants = {
-    enter: { width: '100%' },
-    animate: { width: 0, transition },
-  };
-
-  const circleVariants = {
-    animate: {
-      right: 0, // Start position
-      left: 0, // End position
-      transition,
-    },
-  };
-
   return (
     <div className="relative cursor-pointer" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
       <div className="h-0.5 rounded-xl w-full bg-neutral-500 overflow-hidden">
         <motion.div
-          variants={progressVariants}
-          initial="enter"
-          animate="animate"
-          exit="enter"
+          initial={{ width: '100%' }}
+          animate={{ width: '0%' }}
+          transition={{ duration }}
           className={clsx(
             'absolute top-0 left-0 w-full rounded-xl bg-primary-300 transition-height ease-in-out duration-150',
             isHovered ? 'h-[3px]' : 'h-0.5',
@@ -80,9 +64,10 @@ const ProgressbarTimer = ({ duration }: { duration: number }) => {
         <Tooltip open={isHovered}>
           <TooltipTrigger asChild>
             <motion.div
-              variants={circleVariants}
-              animate="animate"
-              className="absolute right-0 h-full rounded-full bg-primary-250"
+              initial={{ right: '0%' }}
+              animate={{ right: '100%' }}
+              transition={{ duration }}
+              className="absolute h-full rounded-full bg-primary-250 -mr-3"
               style={{
                 width: circleSize,
                 height: circleSize,
