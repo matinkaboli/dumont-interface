@@ -18,9 +18,8 @@ import ProgressbarTimer from './ProgressbarTimer';
 const CreateRound = () => {
   const params = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { isCreated } = useTypedSelector((state) => state.game);
-  const { isConnected } = useTypedSelector((state) => state.account.profile);
-  const { data: game } = useTypedSelector((state) => state.game);
+  const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
+  const { data: game, loading } = useTypedSelector((state) => state.game);
 
   useEffect(() => {
     const id = params.id as string;
@@ -40,22 +39,30 @@ const CreateRound = () => {
     };
   }, []);
 
-  if (!isConnected || !isCreated) {
+  if (isConnecting || loading) return <div className="text-white">Loading...</div>;
+
+  if (!isConnected) {
     redirect('/');
   }
 
   return (
     <>
-      <div className="px-1.5">
-        {game ? <ProgressbarTimer duration={+game.duration} /> : null}
-      </div>
+      {game?.id ? (
+        <>
+          <div className="px-1.5">
+            {game ? <ProgressbarTimer duration={+game.duration} /> : null}
+          </div>
 
-      <div className="flex flex-col gap-4">
-        <CardDeck />
-        <Board />
-        <ActivityTab className="md:mt-16 mt-14" />
-        <Toast />
-      </div>
+          <div className="flex flex-col gap-4">
+            <CardDeck />
+            <Board />
+            <ActivityTab className="md:mt-16 mt-14" />
+            <Toast />
+          </div>
+        </>
+      ) : (
+        <div className="text-white">There is no game with this id</div>
+      )}
     </>
   );
 };
