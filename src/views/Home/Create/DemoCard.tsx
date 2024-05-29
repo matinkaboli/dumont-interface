@@ -11,9 +11,11 @@ const DemoCard = ({ imgSrc = '/images/demo-card.png', width, height, className }
   return (
     <div>
       <Image
+        priority
         src={imgSrc}
-        width={width}
+        width={0}
         height={0}
+        sizes="100vw"
         className={className}
         style={{ width: `${width}px`, height: `${height}px` }}
         alt=""
