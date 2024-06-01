@@ -26,7 +26,7 @@ const demoCards = Array.from({ length: 18 }, (_, index) => ({
 
 const PlayCards = ({ className = '' }: { className?: string }) => {
   const [showSlider, setShowSlider] = useState(false);
-  const { cards } = useTypedSelector((state) => state.cards);
+  const { data: game } = useTypedSelector((state) => state.game);
 
   return (
     <div
@@ -37,7 +37,7 @@ const PlayCards = ({ className = '' }: { className?: string }) => {
     >
       {showSlider ? (
         <div className="fade-in animate-in duration-1000">
-          <CardSlides slides={cards} />
+          <CardSlides slides={game?.cards} />
         </div>
       ) : (
         <CardShuffling cards={demoCards} setShowSlider={setShowSlider} />

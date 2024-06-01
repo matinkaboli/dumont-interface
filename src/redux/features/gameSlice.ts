@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import makeApiUrl from '@/helpers/makeApiUrl';
 
-interface Card {
+export interface Card {
   revealed: number;
   hash: string;
   isLeaked: boolean;

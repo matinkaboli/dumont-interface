@@ -12,7 +12,7 @@ import ConfirmBet from '../ConfirmBet';
 
 const BetButton = ({ size, disabled }: ButtonProps) => {
   const dispatch = useDispatch();
-  const { isCreated } = useTypedSelector((state) => state.game);
+  const { isCreated, data: game } = useTypedSelector((state) => state.game);
 
   const buttonProps: ButtonProps = {
     fullWidth: true,
@@ -36,7 +36,7 @@ const BetButton = ({ size, disabled }: ButtonProps) => {
           <div className="relative w-full h-12">
             {isConnected ? (
               <>
-                {isCreated ? (
+                {isCreated || game?.id ? (
                   <>
                     <div className="btn-glow" />
                     <Button

@@ -10,7 +10,7 @@ import ConfirmReveal from './ConfirmReveal';
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch();
   const { revealCount, activeCardIndex, cards } = useTypedSelector((state) => state.cards);
-  const { isCreated } = useTypedSelector((state) => state.game);
+  const { data: game } = useTypedSelector((state) => state.game);
 
   const onOpenDialog = () => {
     dispatch(
@@ -25,7 +25,7 @@ const RevealKey = ({ className }: { className?: string }) => {
       className="flex flex-col gap-0.5 disabled:bg-neutral-800 disabled:border-neutral-750 [&>div]:disabled:text-neutral-500"
       borderClassName={clsx('col-span-2', className)}
       onClick={onOpenDialog}
-      disabled={!isCreated || cards[activeCardIndex]?.isRevealed || revealCount === 3 }
+      disabled={!game?.id || cards[activeCardIndex]?.isRevealed || revealCount === 3}
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>
       <div className="text-neutral-500 text-sm">{revealCount} / 3 remaining</div>
