@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import makeApiUrl from '@/helpers/makeApiUrl';
 
@@ -12,7 +12,7 @@ export interface Card {
   _id: string;
 }
 
-interface Data {
+interface GameData {
   _id: string;
   id: string;
   address: string;
@@ -34,10 +34,12 @@ interface State {
   loading: boolean;
   error: string | null;
   isCreated: boolean;
-  data: Data | null;
+  data: GameData | null;
+  leakedCount: number;
+  activeCardIndex: number;
 }
 
-export const postGame = createAsyncThunk(
+export const postGame = createAsyncThunk<GameData, Record<string, any>>(
   'api/postGame',
   async (requestData: any, { rejectWithValue }) => {
     try {
@@ -51,26 +53,42 @@ export const postGame = createAsyncThunk(
   },
 );
 
-export const getGame = createAsyncThunk('api/getGame', async (id: string, { rejectWithValue }) => {
-  try {
-    const url = makeApiUrl(`games/${id}`);
-    const response = await axios.get(url);
-    return response.data.result;
-  } catch (error) {
-    const axiosError = error as AxiosError;
-    return rejectWithValue(axiosError.message);
-  }
-});
+export const getGame = createAsyncThunk<GameData, string>(
+  'api/getGame',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const url = makeApiUrl(`games/${id}`);
+      const response = await axios.get(url);
+      return response.data.result;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      return rejectWithValue(axiosError.message);
+    }
+  },
+);
+
+const initialState: State = {
+  loading: false,
+  error: null,
+  isCreated: false,
+  data: null,
+  leakedCount: 3,
+  activeCardIndex: 0,
+};
 
 const gameSlice = createSlice({
   name: 'game',
-  initialState: {
-    loading: false,
-    error: null,
-    isCreated: false,
-    data: null,
-  } as State,
-  reducers: {},
+  initialState,
+  reducers: {
+    decrementLeakedCount: (state) => {
+      if (state.leakedCount > 0) {
+        state.leakedCount -= 1;
+      }
+    },
+    setActiveCardIndex(state, action: PayloadAction<number>) {
+      state.activeCardIndex = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(postGame.pending, (state) => {
@@ -93,9 +111,10 @@ const gameSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(getGame.fulfilled, (state, action) => {
+      .addCase(getGame.fulfilled, (state, action: PayloadAction<GameData>) => {
         state.loading = false;
         state.data = action.payload;
+        state.leakedCount = action.payload.leakedCount;
       })
       .addCase(getGame.rejected, (state, action) => {
         state.loading = false;
@@ -104,4 +123,5 @@ const gameSlice = createSlice({
   },
 });
 
+export const { decrementLeakedCount, setActiveCardIndex } = gameSlice.actions;
 export default gameSlice.reducer;

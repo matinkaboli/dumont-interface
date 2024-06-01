@@ -15,8 +15,7 @@ export interface BetData {
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data: game } = useTypedSelector((state) => state.game);
-  const { activeCardIndex } = useTypedSelector((state) => state.cards);
+  const { data: game, activeCardIndex } = useTypedSelector((state) => state.game);
   const {
     control,
     handleSubmit,

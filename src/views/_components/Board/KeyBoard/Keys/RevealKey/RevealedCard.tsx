@@ -3,25 +3,23 @@ import { useDispatch } from 'react-redux';
 
 import { Button, DialogDescription, DialogTitle } from '@/components';
 import { closeDialog } from '@/redux/features/dialogSlice';
-import { setCards } from '@/redux/features/cardsSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { swiperRef } from '@/components/Carousel';
 import getCardInfo from '@/helpers/getCardInfo';
 
 const RevealedCard = () => {
   const dispatch = useDispatch();
-  const { activeCardIndex, cards } = useTypedSelector((state) => state.cards);
   const { guessedResult } = useTypedSelector((state) => state.bet);
 
-  const updateCardByIndex = (index: number, revealedSrc: string, isRevealed: boolean) => {
-    const updatedCards = cards.map((card, i) => {
-      if (i === index) {
-        return { ...card, revealedSrc, isRevealed };
-      }
-      return card;
-    });
-    dispatch(setCards(updatedCards));
-  };
+  // const updateCardByIndex = (index: number, revealedSrc: string, isRevealed: boolean) => {
+  //   const updatedCards = cards.map((card, i) => {
+  //     if (i === index) {
+  //       return { ...card, revealedSrc, isRevealed };
+  //     }
+  //     return card;
+  //   });
+  //   dispatch(setCards(updatedCards));
+  // };
 
   const onCloseDialog = () => {
     dispatch(closeDialog());
@@ -29,9 +27,10 @@ const RevealedCard = () => {
     // @ts-ignore
     swiperRef?.current?.slideNext();
 
-    setTimeout(() => {
-      updateCardByIndex(activeCardIndex, '/images/card-show.png', true);
-    }, 200);
+    // check for flip background card image
+    // setTimeout(() => {
+    //   updateCardByIndex(activeCardIndex, '/images/card-show.png', true);
+    // }, 200);
   };
 
   return (

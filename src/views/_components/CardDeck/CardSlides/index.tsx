@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 
 import { Carousel, CarouselItem } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { setActiveCardIndex } from '@/redux/features/cardsSlice';
+import { setActiveCardIndex } from '@/redux/features/gameSlice';
 import { Card } from '@/redux/features/gameSlice';
 
 import Slide from './Slide';
@@ -13,7 +13,7 @@ interface Props {
 
 const CardSlides = ({ slides = [] }: Props) => {
   const dispatch = useDispatch();
-  const { activeCardIndex } = useTypedSelector((state) => state.cards);
+  const { activeCardIndex } = useTypedSelector((state) => state.game);
 
   return (
     <Carousel
