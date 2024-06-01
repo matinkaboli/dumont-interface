@@ -4,9 +4,19 @@ import axios, { AxiosError } from 'axios';
 import { BetData } from '@/views/_components/Board';
 import makeApiUrl from '@/helpers/makeApiUrl';
 
+interface Result {
+  cardNumber: number;
+  status: string;
+  result: {
+    isPlayerWinner: boolean;
+    usdtAmount: string;
+    montAmount: string;
+  };
+}
+
 interface InitialState {
   betData: BetData;
-  guessedResult: any;
+  guessedResult: Result | null;
   loading: boolean;
   error: string | null;
 }

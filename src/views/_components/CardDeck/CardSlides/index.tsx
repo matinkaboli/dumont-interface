@@ -4,7 +4,6 @@ import { Carousel, CarouselItem } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { setActiveCardIndex } from '@/redux/features/cardsSlice';
 import { Card } from '@/redux/features/gameSlice';
-import getCardInfo from '@/helpers/getCardInfo';
 
 import Slide from './Slide';
 

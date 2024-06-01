@@ -7,16 +7,28 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import delayedPromise from '@/helpers/delayedPromise';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
+import { postGuessedCard } from '@/redux/features/betSlice';
+import { AppDispatch } from '@/redux/store';
 
 import RevealedCard from './RevealedCard';
 
 const ConfirmReveal = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { revealCount } = useTypedSelector((state) => state.cards);
+  const { activeCardIndex } = useTypedSelector((state) => state.cards);
+  const { data: game } = useTypedSelector((state) => state.game);
 
   const onCloseDialog = () => dispatch(closeDialog());
 
   const onShowResult = async () => {
+    dispatch(
+      postGuessedCard({
+        id: game!.id,
+        cardId: game!.cards[activeCardIndex - 1]._id,
+        body: { tx: '0xe53c674cd5edd0e0f54921fa8bdf0debd972efae758e2d29dd17ff4598410136' },
+      }),
+    );
+
     dispatch(
       openDialog({
         dialogProps: { showCloseButton: false, disableEvents: true },

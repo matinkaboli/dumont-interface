@@ -6,6 +6,7 @@ import { AppDispatch } from '@/redux/store';
 
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 export interface BetData {
   amount: string;
@@ -14,6 +15,8 @@ export interface BetData {
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { data: game } = useTypedSelector((state) => state.game);
+  const { activeCardIndex } = useTypedSelector((state) => state.cards);
   const {
     control,
     handleSubmit,
@@ -28,13 +31,12 @@ const Board = () => {
   });
 
   const onSubmit: SubmitHandler<BetData> = (data) => {
-    const id = '32';
-    const cardId = '10';
     dispatch(setBetData(data));
+
     dispatch(
       postGuessedCard({
-        id,
-        cardId,
+        id: game!.id,
+        cardId: game!.cards[activeCardIndex - 1]._id,
         body: { tx: '0xe53c674cd5edd0e0f54921fa8bdf0debd972efae758e2d29dd17ff4598410136' },
       }),
     );

@@ -6,10 +6,12 @@ import { closeDialog } from '@/redux/features/dialogSlice';
 import { setCards } from '@/redux/features/cardsSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { swiperRef } from '@/components/Carousel';
+import getCardInfo from '@/helpers/getCardInfo';
 
 const RevealedCard = () => {
   const dispatch = useDispatch();
   const { activeCardIndex, cards } = useTypedSelector((state) => state.cards);
+  const { guessedResult } = useTypedSelector((state) => state.bet);
 
   const updateCardByIndex = (index: number, revealedSrc: string, isRevealed: boolean) => {
     const updatedCards = cards.map((card, i) => {
@@ -29,12 +31,18 @@ const RevealedCard = () => {
 
     setTimeout(() => {
       updateCardByIndex(activeCardIndex, '/images/card-show.png', true);
-    }, 200)
+    }, 200);
   };
 
   return (
     <>
-      <Image width={160} height={223} src="/images/card-show.png" className="mx-auto" alt="" />
+      <Image
+        width={160}
+        height={223}
+        src={`/images/cards/${getCardInfo(guessedResult!.cardNumber)}.png`}
+        className="mx-auto"
+        alt=""
+      />
       <DialogTitle className="mt-6 text-center">Card revealed 👀</DialogTitle>
       <DialogDescription className="mt-2 text-center">
         You have removed this card from the game

@@ -79,7 +79,7 @@ const ConfirmBet = () => {
         action: openDialog({
           content: (
             <AnimatedDialogContent key="result">
-              <ResultMessage status="success" />
+              <ResultMessage />
             </AnimatedDialogContent>
           ),
         }),
