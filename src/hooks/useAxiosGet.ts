@@ -7,7 +7,7 @@ interface UseAxiosGet<T> {
   loading: boolean;
 }
 
-const useAxiosGet = <T = unknown>(url: string, config?: AxiosRequestConfig): UseAxiosGet<T> => {
+const useAxiosGet = <T = unknown>(url: string, config?: AxiosRequestConfig, interval?: number): UseAxiosGet<T> => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -25,6 +25,11 @@ const useAxiosGet = <T = unknown>(url: string, config?: AxiosRequestConfig): Use
     };
 
     fetchData();
+
+    if (interval) {
+      const intervalId = setInterval(fetchData, interval);
+      return () => clearInterval(intervalId);
+    }
   }, [url, config]);
 
   return { data, error, loading };
