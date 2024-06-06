@@ -7,27 +7,49 @@ import { useDispatch } from 'react-redux';
 
 import { setAccount, setBalance } from '@/redux/features/accountSlice';
 import { Button } from '@/components';
-import { Contracts } from '@/constants/contracts';
+import { getConfig } from '@/redux/features/configSlice';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { AppDispatch } from '@/redux/store';
 
 import ConnectedWallet from './ConnectedWallet';
 import GiftButton from './GiftButton';
 
-const ConnectWallet = () => {
+// Custom hook for fetching config details
+const useFetchDetails = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getConfig());
+  }, [dispatch]);
+};
+
+// Custom hook for managing account and balance
+const useWalletInfo = () => {
   const dispatch = useDispatch();
   const { address, isConnected, isConnecting } = useAccount();
+  const { details } = useTypedSelector(state => state.config);
   const { data: balance } = useBalance({
-    address: address,
-    token: Contracts.STABLE_COIN,
+    address,
+    token: details?.usdt,
     watch: true,
+    enabled: Boolean(details?.usdt)
   });
 
   useEffect(() => {
-    dispatch(setBalance(balance?.formatted));
+    if (balance?.formatted) {
+      dispatch(setBalance(balance.formatted));
+    }
   }, [dispatch, balance]);
 
   useEffect(() => {
     dispatch(setAccount({ address, isConnected, isConnecting }));
-  }, [dispatch, isConnecting, isConnected]);
+  }, [dispatch, address, isConnected, isConnecting]);
+};
+
+const ConnectWallet = () => {
+  useFetchDetails();
+
+  useWalletInfo();
 
   return (
     <ConnectKitButton.Custom>

@@ -1,8 +1,24 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios, { AxiosError } from 'axios';
+
 import { BetData } from '@/views/_components/Board';
+import makeApiUrl from '@/helpers/makeApiUrl';
+
+interface Result {
+  cardNumber: number;
+  status: string;
+  result: {
+    isPlayerWinner: boolean;
+    usdtAmount: string;
+    montAmount: string;
+  };
+}
 
 interface InitialState {
   betData: BetData;
+  guessedResult: Result | null;
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: InitialState = {
@@ -10,7 +26,25 @@ const initialState: InitialState = {
     amount: '',
     keys: [],
   },
+  guessedResult: null,
+  loading: false,
+  error: null,
 };
+
+export const postGuessedCard = createAsyncThunk<
+  any,
+  { id: string; cardId: string; body: any },
+  { rejectValue: string }
+>('api/saveGuessedCard', async ({ id, cardId, body }, { rejectWithValue }) => {
+  try {
+    const url = makeApiUrl(`games/${id}/cards/${cardId}`);
+    const response = await axios.post(url, body);
+    return response.data.result;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    return rejectWithValue(axiosError.message);
+  }
+});
 
 const betSlice = createSlice({
   name: 'bet',
@@ -22,6 +56,21 @@ const betSlice = createSlice({
     clearBetData(state) {
       state.betData = initialState.betData;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(postGuessedCard.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(postGuessedCard.fulfilled, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.guessedResult = action.payload;
+      })
+      .addCase(postGuessedCard.rejected, (state, action: PayloadAction<string | undefined>) => {
+        state.loading = false;
+        state.error = action.payload || 'Something went wrong';
+      });
   },
 });
 

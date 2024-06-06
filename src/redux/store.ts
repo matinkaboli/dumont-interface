@@ -2,17 +2,19 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import accountReducer from './features/accountSlice';
 import dialogReducer from './features/dialogSlice';
-import CreateRoundReducer from './features/createRoundSlice';
 import betReducer from './features/betSlice';
 import cardsReducer from './features/cardsSlice';
+import gameReducer from './features/gameSlice';
+import infoReducer from './features/configSlice';
 
 const store = configureStore({
   reducer: {
     account: accountReducer,
     dialog: dialogReducer,
-    createRound: CreateRoundReducer,
     bet: betReducer,
     cards: cardsReducer,
+    game: gameReducer,
+    config: infoReducer,
   },
   // TODO: Check serializableCheck to ensure there are no problems (content type in modal)
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),

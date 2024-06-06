@@ -1,22 +1,30 @@
 'use client';
 
-import { redirect } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
 import { Toast, ToastContent } from '@/components';
+import { AppDispatch } from '@/redux/store';
+import { getGame } from '@/redux/features/gameSlice';
 
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
 
 const CreateRound = () => {
-  const { isConfirmed } = useTypedSelector((state) => state.createRound);
-  const { isConnected } = useTypedSelector((state) => state.account.profile);
+  const params = useParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
+  const { data: game, loading } = useTypedSelector((state) => state.game);
 
   useEffect(() => {
+    const id = params.id as string;
+    dispatch(getGame(id));
+
     toast(
       <ToastContent
         variant="neutral"
@@ -31,20 +39,30 @@ const CreateRound = () => {
     };
   }, []);
 
-  if (!isConnected || !isConfirmed) {
+  if (isConnecting || loading) return <div className="text-white">Loading...</div>;
+
+  if (!isConnected) {
     redirect('/');
   }
 
   return (
     <>
-      <div className="px-1.5"><ProgressbarTimer /></div>
+      {game?.id ? (
+        <>
+          <div className="px-1.5">
+            {game ? <ProgressbarTimer duration={+game.duration} /> : null}
+          </div>
 
-      <div className="flex flex-col gap-4">
-        <CardDeck />
-        <Board />
-        <ActivityTab className="md:mt-16 mt-14" />
-        <Toast />
-      </div>
+          <div className="flex flex-col gap-4">
+            <CardDeck />
+            <Board />
+            <ActivityTab className="md:mt-16 mt-14" />
+            <Toast />
+          </div>
+        </>
+      ) : (
+        <div className="text-white">There is no game with this id</div>
+      )}
     </>
   );
 };

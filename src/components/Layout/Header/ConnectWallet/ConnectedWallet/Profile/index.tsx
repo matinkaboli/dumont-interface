@@ -4,6 +4,8 @@ import { useDisconnect } from 'wagmi';
 import { Button, Icon, QRCode } from '@/components';
 import truncateString from '@/helpers/truncateString';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import useAxiosGet from '@/hooks/useAxiosGet';
+import makeApiUrl from '@/helpers/makeApiUrl';
 
 import CopyBox from './CopyBox';
 import BalanceList from './BalanceList';
@@ -13,13 +15,22 @@ interface Props {
   onOpenChange: () => void;
 }
 
+interface ReferralData {
+  id: number;
+}
+
 const Profile = ({ onOpenChange }: Props) => {
   const { address } = useTypedSelector((state) => state.account.profile);
+  const { data: referralData } = useAxiosGet<ReferralData>(
+    makeApiUrl(`players/${address}/referrals`),
+  );
   const { disconnect } = useDisconnect({
     onSuccess() {
       onOpenChange();
     },
   });
+
+  const referralLink = referralData ? `https://dumont.gg/i/${referralData?.id}` : '';
 
   return (
     <>
@@ -52,8 +63,8 @@ const Profile = ({ onOpenChange }: Props) => {
         <div className="flex flex-col gap-2">
           <h6 className="text-sm text-neutral-300 font-semibold">Invite Link</h6>
           <CopyBox
-            copyText="https://dumm.io/2341"
-            copyLabel="https://dumm.io/2341"
+            copyText={referralLink}
+            copyLabel={referralLink}
             copyIcon={<Icon name="link" />}
           />
         </div>

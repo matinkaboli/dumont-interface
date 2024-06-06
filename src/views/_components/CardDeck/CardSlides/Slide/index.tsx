@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 
+import getCardInfo from '@/helpers/getCardInfo';
+
 import FlipImage from './FlipImage';
-import { cardSizeStyles } from '../../index';
+import { cardSizeStyles } from '../../.';
 
 const circleSize = 112;
 
@@ -9,10 +11,11 @@ interface Props {
   isActive: boolean;
   index: number;
   slide: string;
-  isRevealed?: boolean;
+  isLeaked?: boolean;
+  revealed?: number;
 }
 
-const Slide = ({ isActive, index, slide, isRevealed = false }: Props) => {
+const Slide = ({ isActive, index, slide, revealed = -1 }: Props) => {
   return (
     <div
       className={clsx(
@@ -42,7 +45,11 @@ const Slide = ({ isActive, index, slide, isRevealed = false }: Props) => {
             'rounded-2xl flex items-center justify-center mx-auto',
           )}
         >
-          <FlipImage frontSrc={slide} backSrc="/images/card-show.png" isRevealed={isRevealed} />
+          <FlipImage
+            frontSrc={slide}
+            backSrc={revealed !== -1 ? `/images/cards/${getCardInfo(revealed)}.png` : ''}
+            isRevealed={revealed !== -1}
+          />
         </div>
       </div>
     </div>

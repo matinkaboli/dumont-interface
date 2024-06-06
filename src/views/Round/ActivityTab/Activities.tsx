@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import BN from 'bignumber.js';
 import {
   createColumnHelper,
   flexRender,
@@ -16,47 +19,55 @@ import {
   TableHeader,
   TableRow,
 } from '@/components';
+import makeApiUrl from '@/helpers/makeApiUrl';
+import useAxiosGet from '@/hooks/useAxiosGet';
 
 import EmptyDataMessage from './EmptyDataMessage';
 
 interface Activity {
-  date: string;
-  amount: number;
-  odds: number;
-  total: number;
-  result: 'won' | 'lost';
-  status: 'verifying' | 'verified' | 'claim';
+  cardIndex: number;
+  status: 'verifying' | 'verified' | 'claimable';
+  guessDate: string;
+  revealDate: string;
+  result: {
+    isPlayerWinner: boolean;
+    betAmount: string;
+    montAmount: string;
+    rate: string;
+  };
 }
 
-// fake data
-// const activities: Activity[] = [
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verifying' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'lost', status: 'verified' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'claim' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verified' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'lost', status: 'verified' },
-//   { date: '2 min ago', amount: 75, odds: 3.6, total: 230, result: 'won', status: 'verified' },
-// ];
-
-const activities: Activity[] = [];
+dayjs.extend(relativeTime);
 
 const columnHelper = createColumnHelper<Activity>();
 
 const columns = [
-  columnHelper.accessor('date', {}),
-  columnHelper.accessor('amount', {
+  columnHelper.accessor('guessDate', {
+    header: 'date',
+    cell: (info) => dayjs(info.getValue()).fromNow(),
+  }),
+  columnHelper.accessor('result.betAmount', {
+    header: 'amount',
     cell: (info) => `$${info.getValue()}`,
   }),
-  columnHelper.accessor('odds', {
+  columnHelper.accessor('result.rate', {
+    header: 'odd',
     cell: (info) => `x${info.renderValue()}`,
   }),
-  columnHelper.accessor('total', {
-    cell: (info) => `$${info.getValue()}`,
-  }),
   columnHelper.accessor('result', {
+    header: 'total',
+    cell: (info) => {
+      const rate = info.getValue().rate;
+      const amount = info.getValue().betAmount;
+      const total = new BN(rate).times(amount);
+      return `$${total}`;
+    },
+  }),
+  columnHelper.accessor('result.isPlayerWinner', {
+    header: 'result',
     cell: (info) => (
-      <Status className="capitalize" variant={info.getValue() === 'won' ? 'success' : 'error'}>
-        {info.getValue()}
+      <Status className="capitalize" variant={info.getValue() ? 'success' : 'error'}>
+        {info.getValue() ? 'won' : 'lost'}
       </Status>
     ),
   }),
@@ -66,7 +77,7 @@ const columns = [
 
       const generateValue = () => {
         if (value === 'verifying') return `${value}...`;
-        if (value === 'claim')
+        if (value === 'claimable')
           return (
             <Link href="/" className="flex items-center gap-0.5 text-primary-250">
               {value}
@@ -82,41 +93,49 @@ const columns = [
 ];
 
 const Activities = () => {
+  const url = makeApiUrl(`games/32/activities`);
+  const { data: activities, loading } = useAxiosGet<Activity[]>(url);
   const table = useReactTable({
-    data: activities,
+    data: activities || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <>
-      {!activities?.length ? (
-        <EmptyDataMessage message="No activity yet" />
+      {loading ? (
+        <div className="text-white">Loading...</div>
       ) : (
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="uppercase text-neutral-400">
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
+        <>
+          {activities?.length === 0 ? (
+            <EmptyDataMessage message="No activity yet" />
+          ) : (
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id} className="uppercase text-neutral-400">
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="text-neutral-200">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="text-neutral-200">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+              </TableBody>
+            </Table>
+          )}
+        </>
       )}
     </>
   );

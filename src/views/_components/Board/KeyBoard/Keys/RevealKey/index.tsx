@@ -9,8 +9,7 @@ import ConfirmReveal from './ConfirmReveal';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch();
-  const { revealCount, activeCardIndex, cards } = useTypedSelector((state) => state.cards);
-  const { isConfirmed } = useTypedSelector((state) => state.createRound);
+  const { data: game, leakedCount, activeCardIndex } = useTypedSelector((state) => state.game);
 
   const onOpenDialog = () => {
     dispatch(
@@ -25,10 +24,10 @@ const RevealKey = ({ className }: { className?: string }) => {
       className="flex flex-col gap-0.5 disabled:bg-neutral-800 disabled:border-neutral-750 [&>div]:disabled:text-neutral-500"
       borderClassName={clsx('col-span-2', className)}
       onClick={onOpenDialog}
-      disabled={!isConfirmed || cards[activeCardIndex]?.isRevealed || revealCount === 3 }
+      disabled={!game?.id || game.cards[activeCardIndex]?.isLeaked || leakedCount === 0}
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>
-      <div className="text-neutral-500 text-sm">{revealCount} / 3 remaining</div>
+      <div className="text-neutral-500 text-sm">{leakedCount} / 3 remaining</div>
     </KeyButton>
   );
 };

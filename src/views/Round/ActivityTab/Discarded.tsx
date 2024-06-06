@@ -1,36 +1,46 @@
 import Image from 'next/image';
 
+import makeApiUrl from '@/helpers/makeApiUrl';
+import getCardInfo from '@/helpers/getCardInfo';
+import useAxiosGet from '@/hooks/useAxiosGet';
+
 import EmptyDataMessage from './EmptyDataMessage';
 
-// fake data
-// const images = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
-const images: string[] = [];
-
 const Discarded = () => {
+  const url = makeApiUrl(`games/32/cards`);
+  const { data: discarded, loading } = useAxiosGet<number[]>(url);
+
   return (
     <>
-      {!images?.length ? (
-        <EmptyDataMessage message="Nothing discarded" />
+      {loading ? (
+        <div className="text-white">Loading...</div>
       ) : (
-        <div className="md:bg-neutral-750 bg-transparent rounded-lg md:p-6 p-0">
-          <h3 className="text-sm text-neutral-300">
-            Here you can view the cards that have been <b>discarded</b> from the game, arranged in
-            <span className="text-white"> numerical order.</span>
-          </h3>
+        <>
+          {discarded?.length === 0 ? (
+            <EmptyDataMessage message="Nothing discarded" />
+          ) : (
+            <div className="md:bg-neutral-750 bg-transparent rounded-lg md:p-6 p-0">
+              <h3 className="text-sm text-neutral-300">
+                Here you can view the cards that have been <b>discarded</b> from the game, arranged
+                in
+                <span className="text-white"> numerical order.</span>
+              </h3>
 
-          <div className="flex flex-wrap md:gap-4 gap-3 mt-6">
-            {images.map((item) => (
-              <Image
-                key={item}
-                src="/images/card-show.png"
-                width={99}
-                height={138}
-                className="md:w-[99px] sm:w-[105px] w-[30%] h-auto rounded-lg"
-                alt=""
-              />
-            ))}
-          </div>
-        </div>
+              <div className="flex flex-wrap md:gap-4 gap-3 mt-6">
+                {discarded?.map((discardedNumber) => (
+                  <Image
+                    key={discardedNumber}
+                    src={`/images/cards/${getCardInfo(discardedNumber)}.png`}
+                    width={99}
+                    height={138}
+                    className="md:w-[99px] sm:w-[105px] w-[30%] h-auto rounded-lg"
+                    alt=""
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </>
   );

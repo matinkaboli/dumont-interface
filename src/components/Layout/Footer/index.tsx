@@ -8,11 +8,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import Round from './Round';
 
 const Footer = ({ className }: { className?: string }) => {
-  const isConfirmed = useTypedSelector((state) => state.createRound.isConfirmed);
+  const { isCreated } = useTypedSelector((state) => state.game);
 
   return (
     <footer className={clsx('md:flex hidden justify-center items-center', className)}>
-      {isConfirmed ? (
+      {isCreated ? (
         <TooltipProvider delayDuration={100}>
           <Tooltip>
             <TooltipTrigger>

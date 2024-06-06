@@ -3,47 +3,66 @@ import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components';
 import { closeDialog } from '@/redux/features/dialogSlice';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import getCardInfo from '@/helpers/getCardInfo';
+import { swiperRef } from '@/components/Carousel';
 
-const successMessage = {
+const successMessage = (amount: string) => ({
   title: 'You won! 🎉',
   content: (
     <p className="text-white text-md">
-      Enjoy your <b className="text-success-400">$2,080 win</b> <b>in your wallet</b>
+      Enjoy your <b className="text-success-400">${amount} win</b> <b>in your wallet</b>
     </p>
   ),
   buttonText: 'Got it',
-};
+});
 
-const failureMessage = {
+const failureMessage = (amount: string) => ({
   title: 'No luck this time 💔',
   content: (
     <p className="text-sm text-neutral-200 px-0 md:px-5">
       You didn’t win this one, but you still got
-      <span className="text-success-400"> +1,200</span> $MONT in rewards.
+      <span className="text-success-400"> +{amount}</span> $MONT in rewards.
     </p>
   ),
   buttonText: 'Try the next',
-};
+});
 
-interface Props {
-  status: 'success' | 'failure';
-}
-
-const ResultMessage = ({ status }: Props) => {
-  const message = status === 'success' ? successMessage : failureMessage;
+const ResultMessage = () => {
   const dispatch = useDispatch();
-  const onCloseDialog = () => dispatch(closeDialog());
+  const { guessedResult } = useTypedSelector((state) => state.bet);
+
+  if (!guessedResult) {
+    return null; // Handle case where guessedResult is null or undefined
+  }
+
+  const {
+    cardNumber,
+    result: { isPlayerWinner, usdtAmount, montAmount },
+  } = guessedResult;
+  const message = isPlayerWinner ? successMessage(usdtAmount) : failureMessage(montAmount);
+  const onCloseDialog = () => {
+    dispatch(closeDialog());
+    // @ts-ignore
+    swiperRef?.current?.slideNext();
+  };
 
   return (
     <>
-      <Image src="/images/card.png" width={160} height={223} className="mx-auto" alt="" />
+      <Image
+        src={`/images/cards/${getCardInfo(cardNumber)}.png`}
+        width={160}
+        height={223}
+        className="mx-auto"
+        alt=""
+      />
       <h3 className="text-xl text-white text-center font-bold mt-6">{message.title}</h3>
 
       <div className="mt-2 text-center">{message.content}</div>
 
-      {status === 'success' && (
+      {isPlayerWinner && (
         <div className="mt-6 bg-neutral-600 text-center text-base text-white font-medium rounded-lg py-1">
-          <span className="text-white">+1,200 MONT</span>
+          <span className="text-white">+{montAmount} MONT</span>
           <span className="text-neutral-400"> in reward.</span>
         </div>
       )}
