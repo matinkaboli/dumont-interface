@@ -13,7 +13,7 @@ const BalanceList = () => {
     profile: { address },
   } = useTypedSelector((state) => state.account);
 
-  const { data: PlayerData } = useAxiosGet<PlayerData>(
+  const { data } = useAxiosGet<PlayerData>(
     makeApiUrl(`players/${address}`),
     undefined,
     5000,
@@ -31,7 +31,7 @@ const BalanceList = () => {
           tooltipText="Some Info"
           className="text-neutral-200 text-base font-medium"
         />
-        <div className="text-neutral-50 text-base font-medium">{PlayerData?.settling} USDT</div>
+        <div className="text-neutral-50 text-base font-medium">{data?.settling} USDT</div>
       </li>
     </ul>
   );
