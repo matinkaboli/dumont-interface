@@ -30,7 +30,7 @@ const useWalletInfo = () => {
   const { details } = useTypedSelector(state => state.config);
   const { data: balance } = useBalance({
     address,
-    token: details?.usdt,
+    token: '0xe195CBbf6a677ebBf2F1Cf6d4441b22B61BA9E4d',
     watch: true,
     enabled: Boolean(details?.usdt)
   });

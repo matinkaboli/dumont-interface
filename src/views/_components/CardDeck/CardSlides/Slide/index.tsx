@@ -47,7 +47,7 @@ const Slide = ({ isActive, index, slide, revealed = -1 }: Props) => {
         >
           <FlipImage
             frontSrc={slide}
-            backSrc={revealed !== -1 ? `/images/cards/${getCardInfo(revealed)}.png` : ''}
+            backSrc={revealed !== -1 ? `/images/cards/${getCardInfo(revealed)}.png` : '/images/card.png'}
             isRevealed={revealed !== -1}
           />
         </div>
