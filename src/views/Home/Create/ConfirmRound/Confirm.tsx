@@ -1,17 +1,32 @@
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { useContractWrite } from 'wagmi';
 
 import { AppDispatch } from '@/redux/store';
-import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { postGame } from '@/redux/features/gameSlice';
 import { Button, DialogDescription, DialogIcon, DialogTitle, Icon } from '@/components';
-import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
+import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
+import { postGame } from '@/redux/features/gameSlice';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
+import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 import delayedPromise from '@/helpers/delayedPromise';
 
 const Confirm = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const {
+    write: createGame,
+    data: writeData,
+    isSuccess,
+    isLoading,
+    error,
+  } = useContractWrite({
+    address: '0x88D5E2D3B8D3Ce415fF5717DEc9340f1114364Fd',
+    abi: GAME_FACTORY_ABI,
+    functionName: 'createGame',
+    args: ['0x0000000000000000000000000000000000000000'],
+  });
 
   const onConfirm = async () => {
     dispatch(postGame({ id: 34 }));
@@ -20,7 +35,7 @@ const Confirm = () => {
       openDialog({
         dialogProps: { showCloseButton: false, disableEvents: true },
         content: (
-          <AnimatedDialogContent>
+          <AnimatedDialogContent key="loading">
             <LongLoadingContent />
           </AnimatedDialogContent>
         ),
@@ -30,6 +45,8 @@ const Confirm = () => {
     await delayedPromise(() => dispatch(closeDialog()), 12000).then(() => {
       router.push('/34');
     });
+
+    createGame?.();
   };
 
   return (

@@ -3,15 +3,15 @@ import { useDispatch } from 'react-redux';
 import { Button } from '@/components';
 import { openDialog } from '@/redux/features/dialogSlice';
 
-import Confirm from './Confirm';
+import Approve from './Approve';
 
 const ConfirmRound = () => {
   const dispatch = useDispatch();
 
-  const onOpenDialog = () =>
+  const onApprove = () =>
     dispatch(
       openDialog({
-        content: <Confirm />,
+        content: <Approve />,
       }),
     );
 
@@ -20,7 +20,7 @@ const ConfirmRound = () => {
       variant="primary"
       size="sm"
       radius="lg"
-      onClick={onOpenDialog}
+      onClick={onApprove}
       className="mt-4 mx-auto !font-bold md:w-auto w-full"
     >
       Create Round
