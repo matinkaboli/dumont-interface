@@ -1,54 +1,10 @@
-import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/navigation';
-import { useContractWrite } from 'wagmi';
-
-import { AppDispatch } from '@/redux/store';
 import { Button, DialogDescription, DialogIcon, DialogTitle, Icon } from '@/components';
-import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
-import { postGame } from '@/redux/features/gameSlice';
-import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
-import delayedPromise from '@/helpers/delayedPromise';
 
-const Confirm = () => {
-  const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
+interface Props {
+  onCreateGame: () => void;
+}
 
-  const {
-    write: createGame,
-    data: writeData,
-    isSuccess,
-    isLoading,
-    error,
-  } = useContractWrite({
-    address: '0x88D5E2D3B8D3Ce415fF5717DEc9340f1114364Fd',
-    abi: GAME_FACTORY_ABI,
-    functionName: 'createGame',
-    args: ['0x0000000000000000000000000000000000000000'],
-  });
-
-  const onConfirm = async () => {
-    dispatch(postGame({ id: 34 }));
-
-    dispatch(
-      openDialog({
-        dialogProps: { showCloseButton: false, disableEvents: true },
-        content: (
-          <AnimatedDialogContent key="loading">
-            <LongLoadingContent />
-          </AnimatedDialogContent>
-        ),
-      }),
-    );
-
-    await delayedPromise(() => dispatch(closeDialog()), 12000).then(() => {
-      router.push('/34');
-    });
-
-    createGame?.();
-  };
-
+const Confirm = ({ onCreateGame }: Props) => {
   return (
     <>
       <DialogIcon name="game-objects-rainbow" variant="default" />
@@ -57,7 +13,7 @@ const Confirm = () => {
         You need to pay <span className="font-bold">$1</span> to create the round.
       </DialogDescription>
       <div className="flex flex-col gap-4 mt-8">
-        <Button fullWidth size="md" radius="lg" onClick={onConfirm}>
+        <Button fullWidth size="md" radius="lg" onClick={onCreateGame}>
           Create
         </Button>
         <Button

@@ -108,6 +108,7 @@ const config: Config = {
         'gradiant-slide': 'linear-gradient(180deg, #7A10C5 0%, #DD04F1 100%)',
         'gradiant-inside-horiz':
           'linear-gradient(180deg, #2E2D36, transparent 30%, transparent 70%, #2E2D36)',
+        'gradiant-blur': 'linear-gradient(247.35deg, rgba(250, 0, 255, 0.17) 1.52%, rgba(255, 255, 255, 0) 101.92%)'
       },
       fontSize: {
         xs: ['12px', '18px'],
@@ -123,6 +124,7 @@ const config: Config = {
       },
       boxShadow: {
         checkbox: '0px 0px 0px 3px rgba(0, 127, 103, 0.10)',
+        label: 'inset -2px -2px 100px rgba(255, 255, 255, 0.1), inset 2px 2px 100px rgba(66, 66, 66, 0.1)'
       },
       transitionProperty: {
         'height': 'height'
