@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { useContractRead, useContractWrite } from 'wagmi';
-import { useRouter } from 'next/navigation';
+import BN from 'bignumber.js';
 
 import { Button } from '@/components';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
@@ -11,7 +12,7 @@ import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { AppDispatch } from '@/redux/store';
-import convertDecimalToNumber from '@/helpers/convertDecimalToNumber';
+import formatUnits from '@/helpers/formatUnits';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -106,16 +107,15 @@ const ConfirmRound = () => {
   const onCreateGame = () => writeCreateGame?.();
 
   const onConfirm = () => {
-    const approvalValue = convertDecimalToNumber(allowanceData);
+    const isApproved = new BN(allowanceData as string).isGreaterThanOrEqualTo(formatUnits('1', 6));
 
     dispatch(
       openDialog({
-        content:
-          approvalValue > 1 ? (
-            <Confirm onCreateGame={onCreateGame} />
-          ) : (
-            <Approve onApprove={onApprove} />
-          ),
+        content: isApproved ? (
+          <Confirm onCreateGame={onCreateGame} />
+        ) : (
+          <Approve onApprove={onApprove} />
+        ),
       }),
     );
   };
