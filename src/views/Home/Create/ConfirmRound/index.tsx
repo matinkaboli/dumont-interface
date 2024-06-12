@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { useContractRead, useContractWrite } from 'wagmi';
+import { sepolia } from 'wagmi/chains';
+import { useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
 import BN from 'bignumber.js';
 
 import { Button } from '@/components';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { postGame } from '@/redux/features/gameSlice';
 import contractAddresses from '@/constants/contractAddresses';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
@@ -35,8 +35,8 @@ const ConfirmRound = () => {
 
   const {
     write: writeApprove,
+    data: approveData,
     isLoading: isApproveLoading,
-    isSuccess: isApproveSuccess,
   } = useContractWrite({
     address: contractAddresses.erc20,
     abi: ERC20_ABI,
@@ -44,10 +44,28 @@ const ConfirmRound = () => {
     args: [contractAddresses.gameFactory, '1000000'],
   });
 
+  useWaitForTransaction({
+    chainId: sepolia.id,
+    hash: approveData?.hash,
+    onSuccess: onApproveSuccess,
+  });
+
+  function onApproveSuccess() {
+    dispatch(
+      openDialog({
+        dialogProps: { showCloseButton: false, disableEvents: true },
+        content: (
+          <AnimatedDialogContent key="confirm">
+            <Confirm onCreateGame={onCreateGame} />
+          </AnimatedDialogContent>
+        ),
+      }),
+    );
+  }
+
   const {
     write: writeCreateGame,
     data: createGameData,
-    isSuccess: isCreateGameSuccess,
     isLoading: isCreateGameLoading,
   } = useContractWrite({
     address: contractAddresses.gameFactory,
@@ -56,10 +74,29 @@ const ConfirmRound = () => {
     args: ['0x0000000000000000000000000000000000000000'],
   });
 
+  useWaitForTransaction({
+    chainId: sepolia.id,
+    hash: createGameData?.hash,
+    onSuccess: onCreateGameSuccess,
+    onSettled: onCreateGameSettled,
+  });
+
+  function onCreateGameSuccess(data: any) {
+    console.log('success', data);
+    dispatch(closeDialog());
+  }
+
+  function onCreateGameSettled(data: any) {
+    console.log('setteled', data);
+    // dispatch(postGame({ id: createGameData?.hash }));
+    // router.push(`/${createGameData?.hash}`);
+  }
+
   useEffect(() => {
     if (isApproveLoading) {
       dispatch(
         openDialog({
+          dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
             <AnimatedDialogContent key="loading">
               <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
@@ -68,19 +105,7 @@ const ConfirmRound = () => {
         }),
       );
     }
-
-    if (isApproveSuccess) {
-      dispatch(
-        openDialog({
-          content: (
-            <AnimatedDialogContent key="confirm">
-              <Confirm onCreateGame={onCreateGame} />
-            </AnimatedDialogContent>
-          ),
-        }),
-      );
-    }
-  }, [isApproveLoading, isApproveSuccess]);
+  }, [isApproveLoading]);
 
   useEffect(() => {
     if (isCreateGameLoading) {
@@ -95,13 +120,7 @@ const ConfirmRound = () => {
         }),
       );
     }
-
-    if (isCreateGameSuccess) {
-      dispatch(postGame({ id: createGameData?.hash }));
-      dispatch(closeDialog());
-      router.push(`/${createGameData?.hash}`);
-    }
-  }, [isCreateGameLoading, isCreateGameSuccess]);
+  }, [isCreateGameLoading]);
 
   const onApprove = () => writeApprove?.();
   const onCreateGame = () => writeCreateGame?.();
