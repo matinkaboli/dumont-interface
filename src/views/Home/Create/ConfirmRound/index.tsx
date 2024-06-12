@@ -13,6 +13,7 @@ import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { AppDispatch } from '@/redux/store';
 import formatUnits from '@/helpers/formatUnits';
+import { postGame } from '@/redux/features/gameSlice';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -44,10 +45,28 @@ const ConfirmRound = () => {
     args: [contractAddresses.gameFactory, '1000000'],
   });
 
+  const {
+    write: writeCreateGame,
+    data: createGameData,
+    isLoading: isCreateGameLoading,
+  } = useContractWrite({
+    address: contractAddresses.gameFactory,
+    abi: GAME_FACTORY_ABI,
+    functionName: 'createGame',
+    args: ['0x0000000000000000000000000000000000000000'],
+  });
+
   useWaitForTransaction({
     chainId: sepolia.id,
     hash: approveData?.hash,
     onSuccess: onApproveSuccess,
+  });
+
+  useWaitForTransaction({
+    chainId: sepolia.id,
+    hash: createGameData?.hash,
+    onSuccess: onCreateGameSuccess,
+    onSettled: onCreateGameSettled,
   });
 
   function onApproveSuccess() {
@@ -63,64 +82,39 @@ const ConfirmRound = () => {
     );
   }
 
-  const {
-    write: writeCreateGame,
-    data: createGameData,
-    isLoading: isCreateGameLoading,
-  } = useContractWrite({
-    address: contractAddresses.gameFactory,
-    abi: GAME_FACTORY_ABI,
-    functionName: 'createGame',
-    args: ['0x0000000000000000000000000000000000000000'],
-  });
-
-  useWaitForTransaction({
-    chainId: sepolia.id,
-    hash: createGameData?.hash,
-    onSuccess: onCreateGameSuccess,
-    onSettled: onCreateGameSettled,
-  });
-
-  function onCreateGameSuccess(data: any) {
-    console.log('success', data);
+  function onCreateGameSuccess() {
     dispatch(closeDialog());
   }
 
   function onCreateGameSettled(data: any) {
-    console.log('setteled', data);
-    // dispatch(postGame({ id: createGameData?.hash }));
-    // router.push(`/${createGameData?.hash}`);
+    const logs = data.logs;
+    const lastLog = logs[logs.length - 1];
+    const address = lastLog.topics[1];
+    const id = Number(address);
+
+    dispatch(postGame({ id }));
+
+    router.push(`/${id}`);
   }
 
   useEffect(() => {
-    if (isApproveLoading) {
+    if (isApproveLoading || isCreateGameLoading) {
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
             <AnimatedDialogContent key="loading">
-              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+              {isApproveLoading ? (
+                <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+              ) : (
+                <LongLoadingContent />
+              )}
             </AnimatedDialogContent>
           ),
         }),
       );
     }
-  }, [isApproveLoading]);
-
-  useEffect(() => {
-    if (isCreateGameLoading) {
-      dispatch(
-        openDialog({
-          dialogProps: { showCloseButton: false, disableEvents: true },
-          content: (
-            <AnimatedDialogContent key="loading">
-              <LongLoadingContent />
-            </AnimatedDialogContent>
-          ),
-        }),
-      );
-    }
-  }, [isCreateGameLoading]);
+  }, [isApproveLoading, isCreateGameLoading, dispatch]);
 
   const onApprove = () => writeApprove?.();
   const onCreateGame = () => writeCreateGame?.();
