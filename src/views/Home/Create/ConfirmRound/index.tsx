@@ -74,6 +74,26 @@ const ConfirmRound = () => {
     onError: () => onError('Creating was unsuccessful', onCreateGame),
   });
 
+  useEffect(() => {
+    if (isApproveLoading || isCreateGameLoading) {
+      dispatch(
+        openDialog({
+          dialogProps: { showCloseButton: false, disableEvents: true },
+          content: (
+            <AnimatedDialogContent key="loading">
+              {isApproveLoading ? (
+                <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+              ) : (
+                <LongLoadingContent />
+              )}
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
+    }
+  }, [isApproveLoading, isCreateGameLoading, dispatch]);
+
+
   function onApproveSuccess() {
     dispatch(
       openDialog({
@@ -114,29 +134,11 @@ const ConfirmRound = () => {
     );
   }
 
-  useEffect(() => {
-    if (isApproveLoading || isCreateGameLoading) {
-      dispatch(
-        openDialog({
-          dialogProps: { showCloseButton: false, disableEvents: true },
-          content: (
-            <AnimatedDialogContent key="loading">
-              {isApproveLoading ? (
-                <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
-              ) : (
-                <LongLoadingContent />
-              )}
-            </AnimatedDialogContent>
-          ),
-        }),
-      );
-    }
-  }, [isApproveLoading, isCreateGameLoading, dispatch]);
-
   const onApprove = () => writeApprove?.();
+
   const onCreateGame = () => writeCreateGame?.();
 
-  const onConfirm = () => {
+  const onCreateRound = () => {
     const isApproved = new BN(allowanceData as string).isGreaterThanOrEqualTo(formatUnits('1', 6));
 
     dispatch(
@@ -155,7 +157,7 @@ const ConfirmRound = () => {
       variant="primary"
       size="sm"
       radius="lg"
-      onClick={onConfirm}
+      onClick={onCreateRound}
       className="mt-4 mx-auto !font-bold md:w-auto w-full"
     >
       Create Round
