@@ -21,6 +21,7 @@ import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 
 import Confirm from './Confirm';
 import Approve from './Approve';
+import Error from './Error';
 
 const ConfirmRound = () => {
   const router = useRouter();
@@ -43,6 +44,7 @@ const ConfirmRound = () => {
     abi: ERC20_ABI,
     functionName: 'approve',
     args: [contractAddresses.gameFactory, '1000000'],
+    onError: () => onError('Approve was unsuccessful', onApprove),
   });
 
   const {
@@ -54,12 +56,14 @@ const ConfirmRound = () => {
     abi: GAME_FACTORY_ABI,
     functionName: 'createGame',
     args: ['0x0000000000000000000000000000000000000000'],
+    onError: () => onError('Creating was unsuccessful', onCreateGame),
   });
 
   useWaitForTransaction({
     chainId: sepolia.id,
     hash: approveData?.hash,
     onSuccess: onApproveSuccess,
+    onError: () => onError('Approve was unsuccessful', onApprove),
   });
 
   useWaitForTransaction({
@@ -67,6 +71,7 @@ const ConfirmRound = () => {
     hash: createGameData?.hash,
     onSuccess: onCreateGameSuccess,
     onSettled: onCreateGameSettled,
+    onError: () => onError('Creating was unsuccessful', onCreateGame),
   });
 
   function onApproveSuccess() {
@@ -95,6 +100,18 @@ const ConfirmRound = () => {
     dispatch(postGame({ id }));
 
     router.push(`/${id}`);
+  }
+
+  function onError(title: string, func: () => void) {
+    dispatch(
+      openDialog({
+        content: (
+          <AnimatedDialogContent key="error">
+            <Error title={title} onClick={func} />
+          </AnimatedDialogContent>
+        ),
+      }),
+    );
   }
 
   useEffect(() => {
