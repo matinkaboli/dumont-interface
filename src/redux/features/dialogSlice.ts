@@ -30,8 +30,12 @@ const dialogSlice = createSlice({
     updateModalProps: (state, action) => {
       state.dialogProps = { ...state.dialogProps, ...action.payload.props };
     },
+    updateDialogContent: (state, action) => {
+      state.content = action.payload;
+    },
   },
 });
 
-export const { openDialog, closeDialog, updateModalProps } = dialogSlice.actions;
+export const { openDialog, closeDialog, updateModalProps, updateDialogContent } =
+  dialogSlice.actions;
 export default dialogSlice.reducer;

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { sepolia } from 'wagmi/chains';
@@ -6,7 +6,7 @@ import { useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi'
 import BN from 'bignumber.js';
 
 import { Button } from '@/components';
-import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
+import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
 import contractAddresses from '@/constants/contractAddresses';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
@@ -27,6 +27,8 @@ const ConfirmRound = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { address } = useTypedSelector((state) => state.account.profile);
+  const [redirectId, setRedirectId] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0); // The active index corresponds to the index in the long loading array.
 
   const { data: allowanceData } = useContractRead({
     address: contractAddresses.erc20,
@@ -57,11 +59,13 @@ const ConfirmRound = () => {
     functionName: 'createGame',
     args: ['0x0000000000000000000000000000000000000000'],
     onError: () => onError('Creating was unsuccessful', onCreateGame),
+    onSuccess: () => setActiveIndex(1),
   });
 
   useWaitForTransaction({
     chainId: sepolia.id,
     hash: approveData?.hash,
+    enabled: !!approveData?.hash,
     onSuccess: onApproveSuccess,
     onError: () => onError('Approve was unsuccessful', onApprove),
   });
@@ -84,7 +88,7 @@ const ConfirmRound = () => {
               {isApproveLoading ? (
                 <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
               ) : (
-                <LongLoadingContent />
+                <LongLoadingContent activeIndex={activeIndex} />
               )}
             </AnimatedDialogContent>
           ),
@@ -93,6 +97,30 @@ const ConfirmRound = () => {
     }
   }, [isApproveLoading, isCreateGameLoading, dispatch]);
 
+  useEffect(() => {
+    dispatch(
+      updateDialogContent(
+        <AnimatedDialogContent key="loading">
+          <LongLoadingContent activeIndex={activeIndex} />
+        </AnimatedDialogContent>,
+      ),
+    );
+
+    if (activeIndex === 3) {
+      const timer = setTimeout(() => {
+        setActiveIndex(4);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    } else if (activeIndex === 4) {
+      const redirectTimer = setTimeout(() => {
+        dispatch(closeDialog());
+        router.push(`/${redirectId}`);
+      }, 1000);
+
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [activeIndex]);
 
   function onApproveSuccess() {
     dispatch(
@@ -108,18 +136,27 @@ const ConfirmRound = () => {
   }
 
   function onCreateGameSuccess() {
-    dispatch(closeDialog());
+    setActiveIndex(2);
   }
 
   function onCreateGameSettled(data: any) {
-    const logs = data.logs;
-    const lastLog = logs[logs.length - 1];
-    const address = lastLog.topics[1];
-    const id = Number(address);
+    if (data) {
+      const logs = data.logs;
+      const lastLog = logs[logs.length - 1];
+      const address = lastLog.topics[1];
+      const id = Number(address);
 
-    dispatch(postGame({ id }));
+      setRedirectId(id);
 
-    router.push(`/${id}`);
+      dispatch(postGame({ id }))
+        .unwrap()
+        .then(() => {
+          setActiveIndex(3);
+        })
+        .catch(() => {
+          onError('Creating was unsuccessful', onCreateGame);
+        });
+    }
   }
 
   function onError(title: string, func: () => void) {
