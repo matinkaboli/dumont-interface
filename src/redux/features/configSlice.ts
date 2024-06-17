@@ -9,7 +9,11 @@ interface Details {
   gameFactory: HexString;
   usdt: HexString;
   mont: HexString;
-  networkId: string;
+  burner: HexString;
+  revealer: HexString;
+  valut: HexString;
+  montRewardManager: HexString;
+  networkId: number;
 }
 
 interface State {
