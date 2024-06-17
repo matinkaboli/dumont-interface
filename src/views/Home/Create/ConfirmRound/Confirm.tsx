@@ -1,37 +1,10 @@
-import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/navigation';
-
-import { AppDispatch } from '@/redux/store';
-import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { postGame } from '@/redux/features/gameSlice';
 import { Button, DialogDescription, DialogIcon, DialogTitle, Icon } from '@/components';
-import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
-import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import delayedPromise from '@/helpers/delayedPromise';
 
-const Confirm = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
+interface Props {
+  onCreateGame: () => void;
+}
 
-  const onConfirm = async () => {
-    dispatch(postGame({ id: 34 }));
-
-    dispatch(
-      openDialog({
-        dialogProps: { showCloseButton: false, disableEvents: true },
-        content: (
-          <AnimatedDialogContent>
-            <LongLoadingContent />
-          </AnimatedDialogContent>
-        ),
-      }),
-    );
-
-    await delayedPromise(() => dispatch(closeDialog()), 12000).then(() => {
-      router.push('/34');
-    });
-  };
-
+const Confirm = ({ onCreateGame }: Props) => {
   return (
     <>
       <DialogIcon name="game-objects-rainbow" variant="default" />
@@ -40,7 +13,7 @@ const Confirm = () => {
         You need to pay <span className="font-bold">$1</span> to create the round.
       </DialogDescription>
       <div className="flex flex-col gap-4 mt-8">
-        <Button fullWidth size="md" radius="lg" onClick={onConfirm}>
+        <Button fullWidth size="md" radius="lg" onClick={onCreateGame}>
           Create
         </Button>
         <Button

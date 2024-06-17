@@ -4,6 +4,7 @@ import { useState } from 'react';
 import clsx from 'clsx';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { Card } from '@/redux/features/gameSlice';
 
 import CardSlides from './CardSlides';
 import CardShuffling from './CardShuffling';
@@ -19,14 +20,19 @@ export const cardSizeStyles = {
   },
 };
 
-const demoCards = Array.from({ length: 18 }, (_, index) => ({
-  id: index + 1,
-  src: '/images/card.png',
+const demoCards: Card[] = Array.from({ length: 18 }, (_, index) => ({
+  revealed: -1,
+  hash: `hash_${index + 1}`,
+  isLeaked: false,
+  guessedNumbers: [],
+  status: 'hidden',
+  _id: `id_${index + 1}`,
 }));
 
 const PlayCards = ({ className = '' }: { className?: string }) => {
   const [showSlider, setShowSlider] = useState(false);
   const { data: game } = useTypedSelector((state) => state.game);
+  const { isConnected } = useTypedSelector((state) => state.account.profile);
 
   return (
     <div
@@ -37,7 +43,7 @@ const PlayCards = ({ className = '' }: { className?: string }) => {
     >
       {showSlider ? (
         <div className="fade-in animate-in duration-1000">
-          <CardSlides slides={game?.cards} />
+          <CardSlides slides={isConnected ? game?.cards : demoCards} />
         </div>
       ) : (
         <CardShuffling cards={demoCards} setShowSlider={setShowSlider} />

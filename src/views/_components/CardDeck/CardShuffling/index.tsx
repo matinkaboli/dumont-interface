@@ -2,9 +2,9 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import clsx from 'clsx';
 
-import { Card } from '@/types';
+import { Card } from '@/redux/features/gameSlice';
 
-import { cardSizeStyles } from '../index';
+import { cardSizeStyles } from '../.';
 
 const variants = {
   hidden: () => ({ scale: 1.5, y: -1000, rotate: 0 }),
@@ -57,7 +57,7 @@ const CardShuffling = ({ cards, setShowSlider }: Props) => {
       >
         {cards.map((card, i) => (
           <motion.div
-            key={card.id}
+            key={card._id}
             custom={i}
             variants={variants}
             initial="hidden"
@@ -70,7 +70,7 @@ const CardShuffling = ({ cards, setShowSlider }: Props) => {
           >
             <div
               className="w-full h-full bg-cover bg-center rounded-2xl"
-              style={{ backgroundImage: `url("${card.src}")` }}
+              style={{ backgroundImage: `url("/images/card.png")` }}
             />
           </motion.div>
         ))}
