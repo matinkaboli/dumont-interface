@@ -7,13 +7,14 @@ import BN from 'bignumber.js';
 
 import { Button } from '@/components';
 import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
+import { AppDispatch } from '@/redux/store';
+import { postGame } from '@/redux/features/gameSlice';
 import contractAddresses from '@/constants/contractAddresses';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import formatUnits from '@/helpers/formatUnits';
+import extractGameId from '@/helpers/extractGameId';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { AppDispatch } from '@/redux/store';
-import formatUnits from '@/helpers/formatUnits';
-import { postGame } from '@/redux/features/gameSlice';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -141,10 +142,7 @@ const ConfirmRound = () => {
 
   function onCreateGameSettled(data: any) {
     if (data) {
-      const logs = data.logs;
-      const lastLog = logs[logs.length - 1];
-      const address = lastLog.topics[1];
-      const id = Number(address);
+      const id = extractGameId(data.logs);
 
       setRedirectId(id);
 
