@@ -6,10 +6,10 @@ import { useAccount, useBalance } from 'wagmi';
 import { useDispatch } from 'react-redux';
 
 import { setAccount, setBalance } from '@/redux/features/accountSlice';
-import { Button } from '@/components';
 import { getConfig } from '@/redux/features/configSlice';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { AppDispatch } from '@/redux/store';
+import { Button } from '@/components';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import ConnectedWallet from './ConnectedWallet';
 import GiftButton from './GiftButton';
@@ -30,13 +30,12 @@ const useWalletInfo = () => {
   const { details } = useTypedSelector(state => state.config);
   const { data: balance } = useBalance({
     address,
-    token: '0xe195CBbf6a677ebBf2F1Cf6d4441b22B61BA9E4d',
+    token: details?.usdt,
     watch: true,
-    enabled: Boolean(details?.usdt)
   });
 
   useEffect(() => {
-    if (balance?.formatted) {
+    if (balance?.symbol === 'USDT') {
       dispatch(setBalance(balance.formatted));
     }
   }, [dispatch, balance]);
