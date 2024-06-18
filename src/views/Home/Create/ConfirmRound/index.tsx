@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { sepolia } from 'wagmi/chains';
 import { useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
 import BN from 'bignumber.js';
 
@@ -9,7 +8,6 @@ import { Button } from '@/components';
 import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
 import { postGame } from '@/redux/features/gameSlice';
-import contractAddresses from '@/constants/contractAddresses';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import formatUnits from '@/helpers/formatUnits';
 import extractGameId from '@/helpers/extractGameId';
@@ -28,14 +26,15 @@ const ConfirmRound = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { address } = useTypedSelector((state) => state.account.profile);
+  const { details } = useTypedSelector((state) => state.config);
   const [redirectId, setRedirectId] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0); // The active index corresponds to the index in the long loading array.
 
   const { data: allowanceData } = useContractRead({
-    address: contractAddresses.erc20,
+    address: details?.usdt,
     abi: ERC20_ABI,
     functionName: 'allowance',
-    args: [address, contractAddresses.gameFactory],
+    args: [address, details?.gameFactory],
   });
 
   const {
@@ -43,10 +42,10 @@ const ConfirmRound = () => {
     data: approveData,
     isLoading: isApproveLoading,
   } = useContractWrite({
-    address: contractAddresses.erc20,
+    address: details?.usdt,
     abi: ERC20_ABI,
     functionName: 'approve',
-    args: [contractAddresses.gameFactory, '1000000'],
+    args: [details?.gameFactory, '1000000'],
     onError: () => onError('Approve was unsuccessful', onApprove),
   });
 
@@ -55,7 +54,7 @@ const ConfirmRound = () => {
     data: createGameData,
     isLoading: isCreateGameLoading,
   } = useContractWrite({
-    address: contractAddresses.gameFactory,
+    address: details?.gameFactory,
     abi: GAME_FACTORY_ABI,
     functionName: 'createGame',
     args: ['0x0000000000000000000000000000000000000000'],
@@ -64,15 +63,14 @@ const ConfirmRound = () => {
   });
 
   useWaitForTransaction({
-    chainId: sepolia.id,
+    chainId: details?.networkId,
     hash: approveData?.hash,
-    enabled: !!approveData?.hash,
     onSuccess: onApproveSuccess,
     onError: () => onError('Approve was unsuccessful', onApprove),
   });
 
   useWaitForTransaction({
-    chainId: sepolia.id,
+    chainId: details?.networkId,
     hash: createGameData?.hash,
     onSuccess: onCreateGameSuccess,
     onSettled: onCreateGameSettled,
