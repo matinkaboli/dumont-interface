@@ -15,7 +15,7 @@ export interface Card {
 interface GameData {
   _id: string;
   id: string;
-  address: string;
+  address: `0x${string}`;
   revealer: string;
   player: string;
   duration: string;

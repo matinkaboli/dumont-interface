@@ -33,11 +33,11 @@ const initialState: InitialState = {
 
 export const postGuessedCard = createAsyncThunk<
   any,
-  { id: string; cardId: string; body: any },
+  { id: string; body: any },
   { rejectValue: string }
->('api/saveGuessedCard', async ({ id, cardId, body }, { rejectWithValue }) => {
+>('api/saveGuessedCard', async ({ id, body }, { rejectWithValue }) => {
   try {
-    const url = makeApiUrl(`games/${id}/cards/${cardId}`);
+    const url = makeApiUrl(`games/${id}/cards`);
     const response = await axios.post(url, body);
     return response.data.result;
   } catch (error) {

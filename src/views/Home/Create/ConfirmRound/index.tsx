@@ -17,10 +17,10 @@ import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
+import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 
 import Confirm from './Confirm';
 import Approve from './Approve';
-import Error from './Error';
 
 const ConfirmRound = () => {
   const router = useRouter();
@@ -160,7 +160,7 @@ const ConfirmRound = () => {
       openDialog({
         content: (
           <AnimatedDialogContent key="error">
-            <Error title={title} onClick={func} />
+            <ErrorContent title={title} onClick={func} />
           </AnimatedDialogContent>
         ),
       }),

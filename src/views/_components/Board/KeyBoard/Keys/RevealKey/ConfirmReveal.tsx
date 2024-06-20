@@ -1,56 +1,55 @@
 import { useDispatch } from 'react-redux';
 
 import { Button, DialogTitle, Icon } from '@/components';
-import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
+import { closeDialog } from '@/redux/features/dialogSlice';
 import { decrementLeakedCount } from '@/redux/features/gameSlice';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
-import delayedPromise from '@/helpers/delayedPromise';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
-import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import { postGuessedCard } from '@/redux/features/betSlice';
 import { AppDispatch } from '@/redux/store';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import RevealedCard from './RevealedCard';
+interface Props {
+  onReveal: () => void
+}
 
-const ConfirmReveal = () => {
+const ConfirmReveal = ({onReveal}:Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const { data: game, leakedCount, activeCardIndex } = useTypedSelector((state) => state.game);
 
   const onCloseDialog = () => dispatch(closeDialog());
 
   const onShowResult = async () => {
-    dispatch(
-      postGuessedCard({
-        id: game!.id,
-        cardId: game!.cards[activeCardIndex - 1]._id,
-        body: { tx: '0xe53c674cd5edd0e0f54921fa8bdf0debd972efae758e2d29dd17ff4598410136' },
-      }),
-    );
-
-    dispatch(
-      openDialog({
-        dialogProps: { showCloseButton: false, disableEvents: true },
-        content: (
-          <AnimatedDialogContent key="loading">
-            <LoadingContent title="Waiting for the network" desc="This may take a few seconds" />
-          </AnimatedDialogContent>
-        ),
-      }),
-    );
-
-    await delayedPromise(
-      () =>
-        dispatch(
-          openDialog({
-            content: (
-              <AnimatedDialogContent key="reveal">
-                <RevealedCard />
-              </AnimatedDialogContent>
-            ),
-          }),
-        ),
-      3000,
-    );
+    onReveal();
+    // dispatch(
+    //   postGuessedCard({
+    //     id: game!.id,
+    //     cardId: game!.cards[activeCardIndex - 1]._id,
+    //     body: { tx: '0xe53c674cd5edd0e0f54921fa8bdf0debd972efae758e2d29dd17ff4598410136' },
+    //   }),
+    // );
+    //
+    // dispatch(
+    //   openDialog({
+    //     dialogProps: { showCloseButton: false, disableEvents: true },
+    //     content: (
+    //       <AnimatedDialogContent key="loading">
+    //         <LoadingContent title="Waiting for the network" desc="This may take a few seconds" />
+    //       </AnimatedDialogContent>
+    //     ),
+    //   }),
+    // );
+    //
+    // await delayedPromise(
+    //   () =>
+    //     dispatch(
+    //       openDialog({
+    //         content: (
+    //           <AnimatedDialogContent key="reveal">
+    //             <RevealedCard />
+    //           </AnimatedDialogContent>
+    //         ),
+    //       }),
+    //     ),
+    //   3000,
+    // );
 
     dispatch(decrementLeakedCount());
   };
