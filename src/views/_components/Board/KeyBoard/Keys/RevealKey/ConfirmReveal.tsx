@@ -7,49 +7,17 @@ import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 interface Props {
-  onReveal: () => void
+  onReveal: () => void;
 }
 
-const ConfirmReveal = ({onReveal}:Props) => {
+const ConfirmReveal = ({ onReveal }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data: game, leakedCount, activeCardIndex } = useTypedSelector((state) => state.game);
+  const { leakedCount } = useTypedSelector((state) => state.game);
 
   const onCloseDialog = () => dispatch(closeDialog());
 
   const onShowResult = async () => {
     onReveal();
-    // dispatch(
-    //   postGuessedCard({
-    //     id: game!.id,
-    //     cardId: game!.cards[activeCardIndex - 1]._id,
-    //     body: { tx: '0xe53c674cd5edd0e0f54921fa8bdf0debd972efae758e2d29dd17ff4598410136' },
-    //   }),
-    // );
-    //
-    // dispatch(
-    //   openDialog({
-    //     dialogProps: { showCloseButton: false, disableEvents: true },
-    //     content: (
-    //       <AnimatedDialogContent key="loading">
-    //         <LoadingContent title="Waiting for the network" desc="This may take a few seconds" />
-    //       </AnimatedDialogContent>
-    //     ),
-    //   }),
-    // );
-    //
-    // await delayedPromise(
-    //   () =>
-    //     dispatch(
-    //       openDialog({
-    //         content: (
-    //           <AnimatedDialogContent key="reveal">
-    //             <RevealedCard />
-    //           </AnimatedDialogContent>
-    //         ),
-    //       }),
-    //     ),
-    //   3000,
-    // );
 
     dispatch(decrementLeakedCount());
   };
