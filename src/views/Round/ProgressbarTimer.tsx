@@ -46,10 +46,9 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
 
   const formattedTime = useMemo(() => formatTime(remainingTime), [remainingTime]);
 
-  const progressBarWidth = useMemo(
-    () => (remainingTime / duration) * 100,
-    [remainingTime, duration],
-  );
+  const progressBarWidth = useMemo(() => {
+    return initialTime <= 0 ? 0 : (remainingTime / duration) * 100;
+  }, [initialTime, remainingTime, duration]);
 
   return (
     <div className="relative cursor-pointer" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
