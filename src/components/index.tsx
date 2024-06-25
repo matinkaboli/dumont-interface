@@ -9,6 +9,7 @@ export { default as Loading } from './Loading';
 export { default as ModalSheet } from './ModalSheet';
 export { default as Skeleton } from './Skeleton';
 export { default as Status } from './Status';
+export { default as Confetti } from './Confetti';
 export * from './Dialog';
 export * from './Tooltip';
 export * from './Carousel';
