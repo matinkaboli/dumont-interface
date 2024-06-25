@@ -1,6 +1,7 @@
 'use client';
 
 import ReactConfetti, { Props as ConfettiProps } from 'react-confetti';
+
 import useWindowDimensions from '@/hooks/useWindowDimensions';
 
 interface Props extends Omit<ConfettiProps, 'drawShape' | 'height' | 'width'> {}
@@ -8,7 +9,7 @@ interface Props extends Omit<ConfettiProps, 'drawShape' | 'height' | 'width'> {}
 const Confetti = ({ run = false, numberOfPieces = 1000, recycle = false, ...props }: Props) => {
   const { height, width } = useWindowDimensions();
 
-  return width !== undefined ? (
+  return width > 0 ? (
     <ReactConfetti
       {...props}
       run={run}
