@@ -1,12 +1,11 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
-import { postGuessedCard, setBetData } from '@/redux/features/betSlice';
+import { setBetData } from '@/redux/features/betSlice';
 import { AppDispatch } from '@/redux/store';
 
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 export interface BetData {
   amount: string;
@@ -15,7 +14,6 @@ export interface BetData {
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data: game, activeCardIndex } = useTypedSelector((state) => state.game);
   const {
     control,
     handleSubmit,
@@ -31,13 +29,6 @@ const Board = () => {
 
   const onSubmit: SubmitHandler<BetData> = (data) => {
     dispatch(setBetData(data));
-
-    dispatch(
-      postGuessedCard({
-        id: game!.id,
-        body: { index: activeCardIndex - 1 },
-      }),
-    );
   };
 
   return (
