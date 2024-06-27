@@ -1,6 +1,6 @@
 const getCardInfo = (cardNumber: number): string => {
-  if (cardNumber < 1 || cardNumber > 52) {
-    return 'Invalid card number. Please enter a number between 1 and 52.';
+  if (cardNumber < 0 || cardNumber > 51) {
+    return 'Invalid card number. Please enter a number between 0 and 51.';
   }
 
   const suits: string[] = ['hearts', 'spades', 'diamonds', 'clubs'];
@@ -21,11 +21,11 @@ const getCardInfo = (cardNumber: number): string => {
   ];
 
   // Determine the suit
-  const suitIndex: number = Math.floor((cardNumber - 1) / 13);
+  const suitIndex: number = Math.floor(cardNumber / 13);
   const suit: string = suits[suitIndex];
 
   // Determine the rank
-  const rankIndex: number = (cardNumber - 1) % 13;
+  const rankIndex: number = cardNumber % 13;
   const rank: string = ranks[rankIndex];
 
   return `${rank}-${suit}`;
