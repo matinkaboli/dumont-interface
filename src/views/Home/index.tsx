@@ -37,10 +37,6 @@ const Home = () => {
 
   if (isConnecting) return <div className="text-center text-white mt-16">Loading...</div>;
 
-  console.log(process.env.NEXT_PUBLIC_ALCHEMY_ID);
-  console.log(process.env.NEXT_PUBLIC_API_URL);
-  console.log(process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID);
-
   return (
     <div className="flex flex-col gap-4">
       {isConnected ? <CreateRound /> : <CardDeck />}
