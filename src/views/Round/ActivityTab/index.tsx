@@ -1,4 +1,5 @@
 'use client';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
 
 import Activities from './Activities';
