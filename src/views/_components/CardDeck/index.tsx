@@ -23,7 +23,7 @@ export const cardSizeStyles = {
 const demoCards: Card[] = Array.from({ length: 18 }, (_, index) => ({
   revealed: -1,
   hash: `hash_${index + 1}`,
-  isLeaked: false,
+  isFreeReveal: false,
   guessedNumbers: [],
   status: 'hidden',
   _id: `id_${index + 1}`,

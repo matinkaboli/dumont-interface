@@ -28,7 +28,7 @@ const ConfirmReveal = ({ onReveal }: Props) => {
         <Icon name="eye-rainbow" />
       </div>
       <DialogTitle className="mt-5 mb-2 text-center">
-        Reveal card ({3 - leakedCount + 1}/3)
+        Reveal card ({leakedCount + 1}/3)
       </DialogTitle>
       <p className="text-base text-neutral-300 text-center">
         See the card’s face without placing a bet

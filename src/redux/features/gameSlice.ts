@@ -6,7 +6,7 @@ import makeApiUrl from '@/helpers/makeApiUrl';
 export interface Card {
   revealed: number;
   hash: string;
-  isLeaked: boolean;
+  isFreeReveal: boolean;
   guessedNumbers: any[];
   status: string;
   _id: string;
@@ -27,7 +27,7 @@ interface GameData {
   createdAt: Date;
   updatedAt: Date;
   __v: number;
-  leakedCount: number;
+  freeRevealRequests: number;
 }
 
 interface State {
@@ -114,7 +114,7 @@ const gameSlice = createSlice({
       .addCase(getGame.fulfilled, (state, action: PayloadAction<GameData>) => {
         state.loading = false;
         state.data = action.payload;
-        state.leakedCount = action.payload.leakedCount;
+        state.leakedCount = action.payload.freeRevealRequests;
       })
       .addCase(getGame.rejected, (state, action) => {
         state.loading = false;
