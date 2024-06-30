@@ -3,9 +3,9 @@
 import { type PropsWithChildren } from 'react';
 import { createConfig, WagmiConfig } from 'wagmi';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
-import { sepolia } from 'wagmi/chains';
+import { baseSepolia } from 'wagmi/chains';
 
-const chains = [sepolia];
+const chains = [baseSepolia];
 
 const config = createConfig(
   getDefaultConfig({
