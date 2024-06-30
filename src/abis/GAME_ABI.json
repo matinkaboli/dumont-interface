@@ -98,7 +98,12 @@
             "internalType": "uint256"
           },
           {
-            "name": "guessedAt",
+            "name": "houseEdgeAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "requestedAt",
             "type": "uint256",
             "internalType": "uint256"
           },
@@ -437,6 +442,31 @@
   },
   {
     "type": "event",
+    "name": "CardGuessed",
+    "inputs": [
+      {
+        "name": "_index",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "_usdtAmount",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "_guessedNumbers",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "CardRevealed",
     "inputs": [
       {
@@ -462,27 +492,8 @@
   },
   {
     "type": "event",
-    "name": "PlayerGuessed",
-    "inputs": [
-      {
-        "name": "_index",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "_usdtAmount",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "_guessedNumbers",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
+    "name": "GameInitialized",
+    "inputs": [],
     "anonymous": false
   },
   {

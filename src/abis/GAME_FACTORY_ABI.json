@@ -112,19 +112,6 @@
   },
   {
     "type": "function",
-    "name": "gameId",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "games",
     "inputs": [
       {
@@ -187,6 +174,19 @@
   {
     "type": "function",
     "name": "maxFreeReveals",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "nextGameId",
     "inputs": [],
     "outputs": [
       {

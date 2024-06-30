@@ -294,9 +294,9 @@
         "internalType": "uint256"
       },
       {
-        "name": "_player",
-        "type": "address",
-        "internalType": "address"
+        "name": "_houseEdgeAmount",
+        "type": "uint256",
+        "internalType": "uint256"
       },
       {
         "name": "_isPlayerWinner",
@@ -304,7 +304,7 @@
         "internalType": "bool"
       },
       {
-        "name": "_receiveReward",
+        "name": "_receiveMontReward",
         "type": "bool",
         "internalType": "bool"
       }
