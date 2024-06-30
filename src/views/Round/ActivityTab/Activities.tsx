@@ -22,6 +22,7 @@ import {
 import makeApiUrl from '@/helpers/makeApiUrl';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import isEmpty from '@/helpers/isEmpty';
 
 import EmptyDataMessage from './EmptyDataMessage';
 
@@ -110,7 +111,7 @@ const Activities = () => {
         <div className="text-white">Loading...</div>
       ) : (
         <>
-          {activities?.length === 0 ? (
+          {isEmpty(activities) ? (
             <EmptyDataMessage message="No activity yet" />
           ) : (
             <Table>

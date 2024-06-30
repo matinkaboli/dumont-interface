@@ -4,6 +4,7 @@ import makeApiUrl from '@/helpers/makeApiUrl';
 import getCardInfo from '@/helpers/getCardInfo';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import isEmpty from '@/helpers/isEmpty';
 
 import EmptyDataMessage from './EmptyDataMessage';
 
@@ -17,7 +18,7 @@ const Discarded = () => {
         <div className="text-white">Loading...</div>
       ) : (
         <>
-          {discarded?.length === 0 ? (
+          {isEmpty(discarded) ? (
             <EmptyDataMessage message="Nothing discarded" />
           ) : (
             <div className="md:bg-neutral-750 bg-transparent rounded-lg md:p-6 p-0">
