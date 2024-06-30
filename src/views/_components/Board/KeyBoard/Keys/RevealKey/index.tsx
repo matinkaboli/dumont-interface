@@ -64,7 +64,7 @@ const RevealKey = ({ className }: { className?: string }) => {
     dispatch(
       postGuessedCard({
         id: game!.id,
-        body: { cardIndex: activeCardIndex - 1 },
+        body: { index: activeCardIndex - 1 },
       }),
     )
       .unwrap()
@@ -81,9 +81,10 @@ const RevealKey = ({ className }: { className?: string }) => {
       })
       .catch(() => {
         onError();
-      }).finally(() => {
+      })
+      .finally(() => {
         console.log('finished');
-    });
+      });
   }
 
   function onError() {

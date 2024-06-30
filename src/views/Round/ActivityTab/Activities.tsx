@@ -58,8 +58,8 @@ const columns = [
   columnHelper.accessor('result', {
     header: 'total',
     cell: (info) => {
-      const rate = info.getValue().rate;
-      const amount = info.getValue().betAmount;
+      const rate = info.getValue()?.rate;
+      const amount = info.getValue()?.betAmount;
       const total = new BN(rate).times(amount);
       return `$${total}`;
     },
