@@ -35,8 +35,7 @@ const Board = () => {
     dispatch(
       postGuessedCard({
         id: game!.id,
-        cardId: game!.cards[activeCardIndex - 1]._id,
-        body: { tx: '0xe53c674cd5edd0e0f54921fa8bdf0debd972efae758e2d29dd17ff4598410136' },
+        body: { index: activeCardIndex - 1 },
       }),
     );
   };
