@@ -5,7 +5,7 @@ interface Props {
   onClick?: () => void;
 }
 
-const Error = ({ title, onClick }: Props) => {
+const ErrorContent = ({ title, onClick }: Props) => {
   return (
     <>
       <DialogIcon name="triangle-exclamation" variant="error" />
@@ -20,4 +20,4 @@ const Error = ({ title, onClick }: Props) => {
   );
 };
 
-export default Error;
+export default ErrorContent;

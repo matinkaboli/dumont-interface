@@ -24,9 +24,9 @@ const formatTime = (time: number) => {
   return timeString.trim() || 'There is no time';
 };
 
-const ProgressbarTimer = ({ duration }: { duration: number }) => {
+const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initialTime: number }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(duration);
+  const [remainingTime, setRemainingTime] = useState(initialTime);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -46,13 +46,17 @@ const ProgressbarTimer = ({ duration }: { duration: number }) => {
 
   const formattedTime = useMemo(() => formatTime(remainingTime), [remainingTime]);
 
+  const progressBarWidth = useMemo(() => {
+    return initialTime <= 0 ? 0 : (remainingTime / duration) * 100;
+  }, [initialTime, remainingTime, duration]);
+
   return (
     <div className="relative cursor-pointer" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
       <div className="h-0.5 rounded-xl w-full bg-neutral-500 overflow-hidden">
         <motion.div
-          initial={{ width: '100%' }}
+          initial={{ width: `${progressBarWidth}%` }}
           animate={{ width: '0%' }}
-          transition={{ duration }}
+          transition={{ duration: initialTime }}
           className={clsx(
             'absolute top-0 left-0 w-full rounded-xl bg-primary-300 transition-height ease-in-out duration-150',
             isHovered ? 'h-[3px]' : 'h-0.5',
@@ -64,9 +68,9 @@ const ProgressbarTimer = ({ duration }: { duration: number }) => {
         <Tooltip open={isHovered}>
           <TooltipTrigger asChild>
             <motion.div
-              initial={{ right: '0%' }}
+              initial={{ right: `${100 - progressBarWidth}%` }}
               animate={{ right: '100%' }}
-              transition={{ duration }}
+              transition={{ duration: initialTime }}
               className="absolute h-full rounded-full bg-primary-250 -mr-3"
               style={{
                 width: circleSize,

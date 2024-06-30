@@ -21,6 +21,7 @@ import {
 } from '@/components';
 import makeApiUrl from '@/helpers/makeApiUrl';
 import useAxiosGet from '@/hooks/useAxiosGet';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import EmptyDataMessage from './EmptyDataMessage';
 
@@ -93,8 +94,10 @@ const columns = [
 ];
 
 const Activities = () => {
-  const url = makeApiUrl(`games/32/activities`);
-  const { data: activities, loading } = useAxiosGet<Activity[]>(url);
+  const { data: game } = useTypedSelector((state) => state.game);
+  const { data: activities, loading } = useAxiosGet<Activity[]>(
+    makeApiUrl(`games/${game?.id}/activities`),
+  );
   const table = useReactTable({
     data: activities || [],
     columns,

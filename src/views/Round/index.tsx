@@ -5,12 +5,14 @@ import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 
-import { useTypedSelector } from '@/hooks/useTypedSelector';
-import CardDeck from '@/views/_components/CardDeck';
-import Board from '@/views/_components/Board';
 import { Toast, ToastContent } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { getGame } from '@/redux/features/gameSlice';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
+
+import CardDeck from '@/views/_components/CardDeck';
+import Board from '@/views/_components/Board';
 
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
@@ -50,7 +52,12 @@ const CreateRound = () => {
       {game?.id ? (
         <>
           <div className="px-1.5">
-            {game ? <ProgressbarTimer duration={+game.duration} /> : null}
+            {game ? (
+              <ProgressbarTimer
+                duration={+game?.duration}
+                initialTime={+game?.duration - timeLeftInSeconds(game?.createdAt)}
+              />
+            ) : null}
           </div>
 
           <div className="flex flex-col gap-4">
