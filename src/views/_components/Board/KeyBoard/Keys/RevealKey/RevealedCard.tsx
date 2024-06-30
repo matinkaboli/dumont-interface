@@ -38,7 +38,7 @@ const RevealedCard = () => {
       <Image
         width={160}
         height={223}
-        src={`/images/cards/${getCardInfo(guessedResult!.cardNumber)}.png`}
+        src={`/images/cards/${getCardInfo(guessedResult!.number)}.png`}
         className="mx-auto"
         alt=""
       />
