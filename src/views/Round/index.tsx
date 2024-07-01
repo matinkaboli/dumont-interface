@@ -21,7 +21,7 @@ const CreateRound = () => {
   const params = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { data: game, loading } = useTypedSelector((state) => state.game);
+  const { data: game, loading, isRefetching } = useTypedSelector((state) => state.game);
 
   useEffect(() => {
     const id = params.id as string;
@@ -41,7 +41,8 @@ const CreateRound = () => {
     };
   }, []);
 
-  if (isConnecting || loading) return <div className="text-white">Loading...</div>;
+  if (isConnecting || (loading && !isRefetching))
+    return <div className="text-white">Loading...</div>;
 
   if (!isConnected) {
     redirect('/');
@@ -63,7 +64,7 @@ const CreateRound = () => {
           <div className="flex flex-col gap-4">
             <CardDeck />
             <Board />
-            <ActivityTab className="md:mt-16 mt-14" />
+            <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
             <Toast />
           </div>
         </>

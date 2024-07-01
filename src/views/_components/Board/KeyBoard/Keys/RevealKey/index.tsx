@@ -82,9 +82,6 @@ const RevealKey = ({ className }: { className?: string }) => {
       .catch(() => {
         onError();
       })
-      .finally(() => {
-        console.log('finished');
-      });
   }
 
   function onError() {

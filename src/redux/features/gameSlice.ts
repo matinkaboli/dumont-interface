@@ -37,6 +37,7 @@ interface State {
   data: GameData | null;
   leakedCount: number;
   activeCardIndex: number;
+  isRefetching: boolean;
 }
 
 export const postGame = createAsyncThunk<GameData, Record<string, any>>(
@@ -74,6 +75,7 @@ const initialState: State = {
   data: null,
   leakedCount: 3,
   activeCardIndex: 0,
+  isRefetching: false,
 };
 
 const gameSlice = createSlice({
@@ -107,17 +109,23 @@ const gameSlice = createSlice({
         state.error = action.payload as string;
       });
     builder
-      .addCase(getGame.pending, (state) => {
-        state.loading = true;
+      .addCase(getGame.pending, (state, action) => {
+        if (state.data) {
+          state.isRefetching = true;
+        } else {
+          state.loading = true;
+        }
         state.error = null;
       })
       .addCase(getGame.fulfilled, (state, action: PayloadAction<GameData>) => {
         state.loading = false;
+        state.isRefetching = false;
         state.data = action.payload;
         state.leakedCount = action.payload.freeRevealRequests;
       })
       .addCase(getGame.rejected, (state, action) => {
         state.loading = false;
+        state.isRefetching = false;
         state.error = action.payload as string;
       });
   },
