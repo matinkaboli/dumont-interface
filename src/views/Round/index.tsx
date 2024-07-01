@@ -25,20 +25,20 @@ const CreateRound = () => {
 
   useEffect(() => {
     const id = params.id as string;
-    dispatch(getGame(id));
-
-    toast(
-      <ToastContent
-        variant="neutral"
-        title="Good luck!"
-        description="You have successfully created the round."
-      />,
-      { position: 'bottom-right' },
-    );
-
-    return () => {
-      toast.dismiss();
-    };
+    dispatch(getGame(id))
+      .unwrap()
+      .then((res) => {
+        if (timeLeftInSeconds(res.createdAt) <= 0) {
+          toast(
+            <ToastContent
+              variant="neutral"
+              title="Good luck!"
+              description="You have successfully created the round."
+            />,
+            { position: 'bottom-right', toastId: 'welcome' },
+          );
+        }
+      });
   }, []);
 
   if (isConnecting || (loading && !isRefetching))
