@@ -109,7 +109,7 @@ const gameSlice = createSlice({
         state.error = action.payload as string;
       });
     builder
-      .addCase(getGame.pending, (state, action) => {
+      .addCase(getGame.pending, (state) => {
         if (state.data) {
           state.isRefetching = true;
         } else {
