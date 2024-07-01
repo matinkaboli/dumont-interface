@@ -2,7 +2,6 @@ import { useDispatch } from 'react-redux';
 
 import { Button, DialogTitle, Icon } from '@/components';
 import { closeDialog } from '@/redux/features/dialogSlice';
-import { decrementLeakedCount } from '@/redux/features/gameSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
@@ -12,15 +11,9 @@ interface Props {
 
 const ConfirmReveal = ({ onReveal }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { leakedCount } = useTypedSelector((state) => state.game);
+  const { data: game } = useTypedSelector((state) => state.game);
 
   const onCloseDialog = () => dispatch(closeDialog());
-
-  const onShowResult = async () => {
-    onReveal();
-
-    dispatch(decrementLeakedCount());
-  };
 
   return (
     <>
@@ -28,7 +21,7 @@ const ConfirmReveal = ({ onReveal }: Props) => {
         <Icon name="eye-rainbow" />
       </div>
       <DialogTitle className="mt-5 mb-2 text-center">
-        Reveal card ({leakedCount + 1}/3)
+        Reveal card ({game!.freeRevealRequests + 1}/{game?.maxFreeReveals})
       </DialogTitle>
       <p className="text-base text-neutral-300 text-center">
         See the card’s face without placing a bet
@@ -38,7 +31,7 @@ const ConfirmReveal = ({ onReveal }: Props) => {
         <Button fullWidth variant="secondary" radius="lg" onClick={onCloseDialog}>
           Cancel
         </Button>
-        <Button fullWidth variant="primary" radius="lg" onClick={onShowResult}>
+        <Button fullWidth variant="primary" radius="lg" onClick={onReveal}>
           Reveal
         </Button>
       </div>

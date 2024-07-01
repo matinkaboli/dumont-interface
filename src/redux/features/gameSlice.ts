@@ -35,7 +35,6 @@ interface State {
   error: string | null;
   isCreated: boolean;
   data: GameData | null;
-  leakedCount: number;
   activeCardIndex: number;
   isRefetching: boolean;
 }
@@ -73,7 +72,6 @@ const initialState: State = {
   error: null,
   isCreated: false,
   data: null,
-  leakedCount: 3,
   activeCardIndex: 0,
   isRefetching: false,
 };
@@ -82,11 +80,6 @@ const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    decrementLeakedCount: (state) => {
-      if (state.leakedCount > 0) {
-        state.leakedCount -= 1;
-      }
-    },
     setActiveCardIndex(state, action: PayloadAction<number>) {
       state.activeCardIndex = action.payload;
     },
@@ -121,7 +114,6 @@ const gameSlice = createSlice({
         state.loading = false;
         state.isRefetching = false;
         state.data = action.payload;
-        state.leakedCount = action.payload.freeRevealRequests;
       })
       .addCase(getGame.rejected, (state, action) => {
         state.loading = false;
@@ -131,5 +123,5 @@ const gameSlice = createSlice({
   },
 });
 
-export const { decrementLeakedCount, setActiveCardIndex } = gameSlice.actions;
+export const { setActiveCardIndex } = gameSlice.actions;
 export default gameSlice.reducer;

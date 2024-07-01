@@ -20,7 +20,7 @@ import RevealedCard from './RevealedCard';
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
-  const { data: game, leakedCount, activeCardIndex } = useTypedSelector((state) => state.game);
+  const { data: game, activeCardIndex } = useTypedSelector((state) => state.game);
 
   const {
     write: writeRevealCard,
@@ -81,7 +81,7 @@ const RevealKey = ({ className }: { className?: string }) => {
       })
       .catch(() => {
         onError();
-      })
+      });
   }
 
   function onError() {
@@ -109,10 +109,16 @@ const RevealKey = ({ className }: { className?: string }) => {
       className="flex flex-col gap-0.5 disabled:bg-neutral-800 disabled:border-neutral-750 [&>div]:disabled:text-neutral-500"
       borderClassName={clsx('col-span-2', className)}
       onClick={onReveal}
-      disabled={!game?.id || game.cards[activeCardIndex]?.isFreeReveal}
+      disabled={
+        !game?.id ||
+        game.cards[activeCardIndex]?.isFreeReveal ||
+        +game?.freeRevealRequests === +game?.maxFreeReveals
+      }
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>
-      <div className="text-neutral-500 text-sm">{leakedCount} / 3 remaining</div>
+      <div className="text-neutral-500 text-sm">
+        {game?.freeRevealRequests} / {game?.maxFreeReveals} remaining
+      </div>
     </KeyButton>
   );
 };
