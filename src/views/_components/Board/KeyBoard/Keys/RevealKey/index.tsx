@@ -7,6 +7,7 @@ import { openDialog } from '@/redux/features/dialogSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import isEmpty from '@/helpers/isEmpty';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
@@ -110,15 +111,17 @@ const RevealKey = ({ className }: { className?: string }) => {
       borderClassName={clsx('col-span-2', className)}
       onClick={onReveal}
       disabled={
-        !game?.id ||
-        game.cards[activeCardIndex]?.isFreeReveal ||
-        +game?.freeRevealRequests === +game?.maxFreeReveals
+        isEmpty(game) ||
+        game!.cards[activeCardIndex]?.isFreeReveal ||
+        +game!.freeRevealRequests === +game!.maxFreeReveals
       }
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>
-      <div className="text-neutral-500 text-sm">
-        {game?.freeRevealRequests} / {game?.maxFreeReveals} remaining
-      </div>
+      {!isEmpty(game) ? (
+        <div className="text-neutral-500 text-sm">
+          {game?.freeRevealRequests} / {game?.maxFreeReveals} remaining
+        </div>
+      ) : null}
     </KeyButton>
   );
 };
