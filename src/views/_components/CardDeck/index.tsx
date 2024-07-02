@@ -21,7 +21,7 @@ export const cardSizeStyles = {
 };
 
 const demoCards: Card[] = Array.from({ length: 18 }, (_, index) => ({
-  revealed: -1,
+  number: -1,
   hash: `hash_${index + 1}`,
   isFreeReveal: false,
   guessedNumbers: [],

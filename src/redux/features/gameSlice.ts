@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import makeApiUrl from '@/helpers/makeApiUrl';
 
 export interface Card {
-  revealed: number;
+  number: number;
   hash: string;
   isFreeReveal: boolean;
   guessedNumbers: any[];

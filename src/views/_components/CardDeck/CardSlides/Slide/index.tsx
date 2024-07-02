@@ -12,10 +12,10 @@ interface Props {
   index: number;
   slide: string;
   isLeaked?: boolean;
-  revealed?: number;
+  number?: number;
 }
 
-const Slide = ({ isActive, index, slide, revealed = -1 }: Props) => {
+const Slide = ({ isActive, index, slide, number = -1 }: Props) => {
   return (
     <div
       className={clsx(
@@ -47,8 +47,8 @@ const Slide = ({ isActive, index, slide, revealed = -1 }: Props) => {
         >
           <FlipImage
             frontSrc={slide}
-            backSrc={revealed !== -1 ? `/images/cards/${getCardInfo(revealed)}.png` : '/images/card.png'}
-            isRevealed={revealed !== -1}
+            backSrc={number !== -1 ? `/images/cards/${getCardInfo(number)}.png` : '/images/card.png'}
+            isRevealed={number !== -1}
           />
         </div>
       </div>

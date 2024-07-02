@@ -37,7 +37,7 @@ const ResultMessage = () => {
   }
 
   const {
-    cardNumber,
+    number,
     result: { isPlayerWinner, usdtAmount, montAmount },
   } = guessedResult;
   const message = isPlayerWinner ? successMessage(usdtAmount) : failureMessage(montAmount);
@@ -50,7 +50,7 @@ const ResultMessage = () => {
   return (
     <>
       <Image
-        src={`/images/cards/${getCardInfo(cardNumber)}.png`}
+        src={`/images/cards/${getCardInfo(number)}.png`}
         width={160}
         height={223}
         className="mx-auto"
