@@ -29,7 +29,13 @@ const demoCards: Card[] = Array.from({ length: 18 }, (_, index) => ({
   _id: `id_${index + 1}`,
 }));
 
-const PlayCards = ({ className = '' }: { className?: string }) => {
+const PlayCards = ({
+  className = '',
+  needsShuffling = true,
+}: {
+  className?: string;
+  needsShuffling?: boolean;
+}) => {
   const [showSlider, setShowSlider] = useState(false);
   const { data: game } = useTypedSelector((state) => state.game);
   const { isConnected } = useTypedSelector((state) => state.account.profile);
@@ -41,12 +47,20 @@ const PlayCards = ({ className = '' }: { className?: string }) => {
         className,
       )}
     >
-      {showSlider ? (
+      {needsShuffling ? (
+        <>
+          {showSlider ? (
+            <div className="fade-in animate-in duration-1000">
+              <CardSlides slides={isConnected ? game?.cards : demoCards} />
+            </div>
+          ) : (
+            <CardShuffling cards={demoCards} setShowSlider={setShowSlider} />
+          )}
+        </>
+      ) : (
         <div className="fade-in animate-in duration-1000">
           <CardSlides slides={isConnected ? game?.cards : demoCards} />
         </div>
-      ) : (
-        <CardShuffling cards={demoCards} setShowSlider={setShowSlider} />
       )}
     </div>
   );

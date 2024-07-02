@@ -1,7 +1,7 @@
 'use client';
 
-import { redirect, useParams } from 'next/navigation';
 import { useEffect } from 'react';
+import { redirect, useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 
@@ -17,6 +17,8 @@ import Board from '@/views/_components/Board';
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
 
+const estimatedLoadingTime = 10;
+
 const CreateRound = () => {
   const params = useParams();
   const dispatch = useDispatch<AppDispatch>();
@@ -28,7 +30,7 @@ const CreateRound = () => {
     dispatch(getGame(id))
       .unwrap()
       .then((res) => {
-        if (timeLeftInSeconds(res.createdAt) <= 0) {
+        if (timeLeftInSeconds(res.createdAt) <= estimatedLoadingTime) {
           toast(
             <ToastContent
               variant="neutral"
@@ -62,7 +64,7 @@ const CreateRound = () => {
           </div>
 
           <div className="flex flex-col gap-4">
-            <CardDeck />
+            <CardDeck needsShuffling={timeLeftInSeconds(game?.createdAt) <= estimatedLoadingTime} />
             <Board />
             <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
             <Toast />
