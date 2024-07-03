@@ -35,8 +35,8 @@ const CardSlides = ({ slides = [] }: Props) => {
               <Slide
                 index={index + 1}
                 slide='/images/card.png'
-                isLeaked={slide.isLeaked}
-                revealed={slide.revealed}
+                isLeaked={slide.isFreeReveal}
+                number={slide?.number}
                 isActive={isActive}
               />
             )}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -20,19 +20,29 @@ export const cardSizeStyles = {
   },
 };
 
-const demoCards: Card[] = Array.from({ length: 18 }, (_, index) => ({
-  revealed: -1,
-  hash: `hash_${index + 1}`,
-  isLeaked: false,
-  guessedNumbers: [],
-  status: 'hidden',
-  _id: `id_${index + 1}`,
-}));
+const createDemoCards = (length: number): Card[] =>
+  Array.from({ length }, (_, index) => ({
+    number: -1,
+    hash: `hash_${index + 1}`,
+    isFreeReveal: false,
+    guessedNumbers: [],
+    status: 'hidden',
+    _id: `id_${index + 1}`,
+  }));
 
-const PlayCards = ({ className = '' }: { className?: string }) => {
+const PlayCards = ({
+  className = '',
+  needsShuffling = true,
+}: {
+  className?: string;
+  needsShuffling?: boolean;
+}) => {
   const [showSlider, setShowSlider] = useState(false);
   const { data: game } = useTypedSelector((state) => state.game);
   const { isConnected } = useTypedSelector((state) => state.account.profile);
+
+  const demoCards = useMemo(() => createDemoCards(18), []);
+  const cards = isConnected ? game?.cards : demoCards;
 
   return (
     <div
@@ -41,12 +51,12 @@ const PlayCards = ({ className = '' }: { className?: string }) => {
         className,
       )}
     >
-      {showSlider ? (
-        <div className="fade-in animate-in duration-1000">
-          <CardSlides slides={isConnected ? game?.cards : demoCards} />
-        </div>
-      ) : (
+      {needsShuffling && !showSlider ? (
         <CardShuffling cards={demoCards} setShowSlider={setShowSlider} />
+      ) : (
+        <div className="fade-in animate-in duration-1000">
+          <CardSlides slides={cards} />
+        </div>
       )}
     </div>
   );

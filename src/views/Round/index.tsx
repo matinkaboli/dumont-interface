@@ -1,7 +1,7 @@
 'use client';
 
-import { redirect, useParams } from 'next/navigation';
 import { useEffect } from 'react';
+import { redirect, useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 
@@ -10,6 +10,7 @@ import { AppDispatch } from '@/redux/store';
 import { getGame } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
+import isEmpty from '@/helpers/isEmpty';
 
 import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
@@ -18,58 +19,54 @@ import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
 
 const CreateRound = () => {
-  const params = useParams();
+  const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { data: game, loading } = useTypedSelector((state) => state.game);
+  const { data: game, loading, isCreated, isRefetching } = useTypedSelector((state) => state.game);
 
   useEffect(() => {
-    const id = params.id as string;
-    dispatch(getGame(id));
-
-    toast(
-      <ToastContent
-        variant="neutral"
-        title="Good luck!"
-        description="You have successfully created the round."
-      />,
-      { position: 'bottom-right' },
-    );
-
-    return () => {
-      toast.dismiss();
-    };
+    dispatch(getGame(id as string))
+      .unwrap()
+      .then(() => {
+        if (isCreated) {
+          toast(
+            <ToastContent
+              variant="neutral"
+              title="Good luck!"
+              description="You have successfully created the round."
+            />,
+            { position: 'bottom-right', toastId: 'welcome' },
+          );
+        }
+      });
   }, []);
 
-  if (isConnecting || loading) return <div className="text-white">Loading...</div>;
+  if (isConnecting || (loading && !isRefetching))
+    return <div className="text-white">Loading...</div>;
 
   if (!isConnected) {
     redirect('/');
   }
 
+  if (isEmpty(game)) {
+    return <div className="text-white">There is no game with this id</div>;
+  }
+
   return (
     <>
-      {game?.id ? (
-        <>
-          <div className="px-1.5">
-            {game ? (
-              <ProgressbarTimer
-                duration={+game?.duration}
-                initialTime={+game?.duration - timeLeftInSeconds(game?.createdAt)}
-              />
-            ) : null}
-          </div>
+      <div className="px-1.5">
+        <ProgressbarTimer
+          duration={+game!.duration}
+          initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}
+        />
+      </div>
 
-          <div className="flex flex-col gap-4">
-            <CardDeck />
-            <Board />
-            <ActivityTab className="md:mt-16 mt-14" />
-            <Toast />
-          </div>
-        </>
-      ) : (
-        <div className="text-white">There is no game with this id</div>
-      )}
+      <div className="flex flex-col gap-4">
+        <CardDeck needsShuffling={isCreated} />
+        <Board />
+        <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
+        <Toast />
+      </div>
     </>
   );
 };

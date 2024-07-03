@@ -3,10 +3,13 @@ import { useDispatch } from 'react-redux';
 import { useContractWrite, useWaitForTransaction } from 'wagmi';
 import clsx from 'clsx';
 
-import { openDialog } from '@/redux/features/dialogSlice';
+import { swiperRef } from '@/components';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
+import { getGame } from '@/redux/features/gameSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import isEmpty from '@/helpers/isEmpty';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
@@ -20,7 +23,7 @@ import RevealedCard from './RevealedCard';
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
-  const { data: game, leakedCount, activeCardIndex } = useTypedSelector((state) => state.game);
+  const { data: game, activeCardIndex } = useTypedSelector((state) => state.game);
 
   const {
     write: writeRevealCard,
@@ -71,6 +74,16 @@ const RevealKey = ({ className }: { className?: string }) => {
       .then(() => {
         dispatch(
           openDialog({
+            dialogProps: {
+              onCloseButton: () =>
+                dispatch(getGame(game!.id))
+                  .unwrap()
+                  .then(() => {
+                    dispatch(closeDialog());
+                    // @ts-ignore
+                    swiperRef?.current?.slideNext();
+                  }),
+            },
             content: (
               <AnimatedDialogContent key="reveal">
                 <RevealedCard />
@@ -81,9 +94,6 @@ const RevealKey = ({ className }: { className?: string }) => {
       })
       .catch(() => {
         onError();
-      })
-      .finally(() => {
-        console.log('finished');
       });
   }
 
@@ -112,10 +122,18 @@ const RevealKey = ({ className }: { className?: string }) => {
       className="flex flex-col gap-0.5 disabled:bg-neutral-800 disabled:border-neutral-750 [&>div]:disabled:text-neutral-500"
       borderClassName={clsx('col-span-2', className)}
       onClick={onReveal}
-      disabled={!game?.id || game.cards[activeCardIndex]?.isLeaked}
+      disabled={
+        isEmpty(game) ||
+        game!.cards[activeCardIndex - 1]?.isFreeReveal ||
+        +game!.freeRevealRequests === +game!.maxFreeReveals
+      }
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>
-      <div className="text-neutral-500 text-sm">{leakedCount} / 3 remaining</div>
+      {!isEmpty(game) ? (
+        <div className="text-neutral-500 text-sm">
+          {game?.freeRevealRequests} / {game?.maxFreeReveals} remaining
+        </div>
+      ) : null}
     </KeyButton>
   );
 };

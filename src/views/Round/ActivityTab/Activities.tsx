@@ -22,13 +22,14 @@ import {
 import makeApiUrl from '@/helpers/makeApiUrl';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import isEmpty from '@/helpers/isEmpty';
 
 import EmptyDataMessage from './EmptyDataMessage';
 
 interface Activity {
-  cardIndex: number;
-  status: 'verifying' | 'verified' | 'claimable';
-  guessDate: string;
+  index: number;
+  status: string;
+  requestedAt: string;
   revealDate: string;
   result: {
     isPlayerWinner: boolean;
@@ -43,7 +44,7 @@ dayjs.extend(relativeTime);
 const columnHelper = createColumnHelper<Activity>();
 
 const columns = [
-  columnHelper.accessor('guessDate', {
+  columnHelper.accessor('requestedAt', {
     header: 'date',
     cell: (info) => dayjs(info.getValue()).fromNow(),
   }),
@@ -110,7 +111,7 @@ const Activities = () => {
         <div className="text-white">Loading...</div>
       ) : (
         <>
-          {activities?.length === 0 ? (
+          {isEmpty(activities) ? (
             <EmptyDataMessage message="No activity yet" />
           ) : (
             <Table>

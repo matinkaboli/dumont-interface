@@ -4,9 +4,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import makeApiUrl from '@/helpers/makeApiUrl';
 
 export interface Card {
-  revealed: number;
+  number: number;
   hash: string;
-  isLeaked: boolean;
+  isFreeReveal: boolean;
   guessedNumbers: any[];
   status: string;
   _id: string;
@@ -27,7 +27,7 @@ interface GameData {
   createdAt: Date;
   updatedAt: Date;
   __v: number;
-  leakedCount: number;
+  freeRevealRequests: number;
 }
 
 interface State {
@@ -35,8 +35,8 @@ interface State {
   error: string | null;
   isCreated: boolean;
   data: GameData | null;
-  leakedCount: number;
   activeCardIndex: number;
+  isRefetching: boolean;
 }
 
 export const postGame = createAsyncThunk<GameData, Record<string, any>>(
@@ -72,19 +72,14 @@ const initialState: State = {
   error: null,
   isCreated: false,
   data: null,
-  leakedCount: 3,
   activeCardIndex: 0,
+  isRefetching: false,
 };
 
 const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    decrementLeakedCount: (state) => {
-      if (state.leakedCount > 0) {
-        state.leakedCount -= 1;
-      }
-    },
     setActiveCardIndex(state, action: PayloadAction<number>) {
       state.activeCardIndex = action.payload;
     },
@@ -108,20 +103,25 @@ const gameSlice = createSlice({
       });
     builder
       .addCase(getGame.pending, (state) => {
-        state.loading = true;
+        if (state.data) {
+          state.isRefetching = true;
+        } else {
+          state.loading = true;
+        }
         state.error = null;
       })
       .addCase(getGame.fulfilled, (state, action: PayloadAction<GameData>) => {
         state.loading = false;
+        state.isRefetching = false;
         state.data = action.payload;
-        state.leakedCount = action.payload.leakedCount;
       })
       .addCase(getGame.rejected, (state, action) => {
         state.loading = false;
+        state.isRefetching = false;
         state.error = action.payload as string;
       });
   },
 });
 
-export const { decrementLeakedCount, setActiveCardIndex } = gameSlice.actions;
+export const { setActiveCardIndex } = gameSlice.actions;
 export default gameSlice.reducer;

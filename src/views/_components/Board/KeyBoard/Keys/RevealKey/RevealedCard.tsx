@@ -2,35 +2,25 @@ import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 
 import { Button, DialogDescription, DialogTitle } from '@/components';
-import { closeDialog } from '@/redux/features/dialogSlice';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { swiperRef } from '@/components/Carousel';
+import { closeDialog } from '@/redux/features/dialogSlice';
+import { getGame } from '@/redux/features/gameSlice';
+import { AppDispatch } from '@/redux/store';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 import getCardInfo from '@/helpers/getCardInfo';
 
 const RevealedCard = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { guessedResult } = useTypedSelector((state) => state.bet);
-
-  // const updateCardByIndex = (index: number, revealedSrc: string, isRevealed: boolean) => {
-  //   const updatedCards = cards.map((card, i) => {
-  //     if (i === index) {
-  //       return { ...card, revealedSrc, isRevealed };
-  //     }
-  //     return card;
-  //   });
-  //   dispatch(setCards(updatedCards));
-  // };
+  const { data: game } = useTypedSelector((state) => state.game);
 
   const onCloseDialog = () => {
-    dispatch(closeDialog());
+    dispatch(getGame(game!.id)).unwrap().then(() => {
+      dispatch(closeDialog());
 
-    // @ts-ignore
-    swiperRef?.current?.slideNext();
-
-    // check for flip background card image
-    // setTimeout(() => {
-    //   updateCardByIndex(activeCardIndex, '/images/card-show.png', true);
-    // }, 200);
+      // @ts-ignore
+      swiperRef?.current?.slideNext();
+    });
   };
 
   return (
@@ -38,7 +28,7 @@ const RevealedCard = () => {
       <Image
         width={160}
         height={223}
-        src={`/images/cards/${getCardInfo(guessedResult!.cardNumber)}.png`}
+        src={`/images/cards/${getCardInfo(guessedResult!.number)}.png`}
         className="mx-auto"
         alt=""
       />

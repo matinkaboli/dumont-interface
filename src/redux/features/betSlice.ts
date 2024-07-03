@@ -5,7 +5,7 @@ import { BetData } from '@/views/_components/Board';
 import makeApiUrl from '@/helpers/makeApiUrl';
 
 interface Result {
-  cardNumber: number;
+  number: number;
   status: string;
   result: {
     isPlayerWinner: boolean;
