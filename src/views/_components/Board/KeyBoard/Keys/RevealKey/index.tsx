@@ -3,7 +3,9 @@ import { useDispatch } from 'react-redux';
 import { useContractWrite, useWaitForTransaction } from 'wagmi';
 import clsx from 'clsx';
 
-import { openDialog } from '@/redux/features/dialogSlice';
+import { swiperRef } from '@/components';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
+import { getGame } from '@/redux/features/gameSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -72,6 +74,16 @@ const RevealKey = ({ className }: { className?: string }) => {
       .then(() => {
         dispatch(
           openDialog({
+            dialogProps: {
+              onCloseButton: () =>
+                dispatch(getGame(game!.id))
+                  .unwrap()
+                  .then(() => {
+                    dispatch(closeDialog());
+                    // @ts-ignore
+                    swiperRef?.current?.slideNext();
+                  }),
+            },
             content: (
               <AnimatedDialogContent key="reveal">
                 <RevealedCard />

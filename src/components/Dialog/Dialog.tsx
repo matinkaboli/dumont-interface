@@ -23,6 +23,7 @@ export interface DialogProps
     VariantProps<typeof contentVariants> {
   open: boolean;
   onOpenChange: () => void;
+  onCloseButton?: () => void;
   className?: string;
   showCloseButton?: boolean;
   disableEvents?: boolean;
@@ -34,6 +35,7 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
     {
       open,
       onOpenChange,
+      onCloseButton,
       showCloseButton = true,
       disableEvents = false,
       className,
@@ -43,7 +45,17 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
     },
     ref,
   ) => {
-    const onCloseDialog = disableEvents ? () => {} : onOpenChange;
+    const onCloseDialog = () => {
+      if (!disableEvents) onOpenChange();
+    };
+
+    const handleCloseButton = () => {
+      if (onCloseButton) {
+        onCloseButton();
+      } else {
+        onCloseDialog();
+      }
+    };
 
     return (
       <Root ref={ref} {...props}>
@@ -69,7 +81,7 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
 
                     {showCloseButton && (
                       <div
-                        onClick={onCloseDialog}
+                        onClick={handleCloseButton}
                         className="absolute right-3.5 top-3.5 cursor-pointer"
                       >
                         <Icon name="xmark" color="#75757C" />
