@@ -18,19 +18,17 @@ import Board from '@/views/_components/Board';
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
 
-const ESTIMATED_LOADING_TIME = 10;
-
 const CreateRound = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { data: game, loading, isRefetching } = useTypedSelector((state) => state.game);
+  const { data: game, loading, isCreated, isRefetching } = useTypedSelector((state) => state.game);
 
   useEffect(() => {
     dispatch(getGame(id as string))
       .unwrap()
       .then((res) => {
-        if (timeLeftInSeconds(res.createdAt) <= ESTIMATED_LOADING_TIME) {
+        if (isCreated) {
           toast(
             <ToastContent
               variant="neutral"
@@ -64,7 +62,7 @@ const CreateRound = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <CardDeck needsShuffling={timeLeftInSeconds(game!.createdAt) <= ESTIMATED_LOADING_TIME} />
+        <CardDeck needsShuffling={isCreated} />
         <Board />
         <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
         <Toast />
