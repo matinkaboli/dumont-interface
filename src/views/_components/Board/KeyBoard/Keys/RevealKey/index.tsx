@@ -112,7 +112,7 @@ const RevealKey = ({ className }: { className?: string }) => {
       onClick={onReveal}
       disabled={
         isEmpty(game) ||
-        game!.cards[activeCardIndex]?.isFreeReveal ||
+        game!.cards[activeCardIndex - 1]?.isFreeReveal ||
         +game!.freeRevealRequests === +game!.maxFreeReveals
       }
     >

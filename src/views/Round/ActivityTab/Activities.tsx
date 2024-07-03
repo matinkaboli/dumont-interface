@@ -29,7 +29,7 @@ import EmptyDataMessage from './EmptyDataMessage';
 interface Activity {
   index: number;
   status: string;
-  guessedAt: string;
+  requestedAt: string;
   revealDate: string;
   result: {
     isPlayerWinner: boolean;
@@ -44,7 +44,7 @@ dayjs.extend(relativeTime);
 const columnHelper = createColumnHelper<Activity>();
 
 const columns = [
-  columnHelper.accessor('guessedAt', {
+  columnHelper.accessor('requestedAt', {
     header: 'date',
     cell: (info) => dayjs(info.getValue()).fromNow(),
   }),
