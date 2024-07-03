@@ -27,7 +27,7 @@ const CreateRound = () => {
   useEffect(() => {
     dispatch(getGame(id as string))
       .unwrap()
-      .then((res) => {
+      .then(() => {
         if (isCreated) {
           toast(
             <ToastContent

@@ -27,8 +27,8 @@ import isEmpty from '@/helpers/isEmpty';
 import EmptyDataMessage from './EmptyDataMessage';
 
 interface Activity {
-  cardIndex: number;
-  status: 'verifying' | 'verified' | 'claimable';
+  index: number;
+  status: string;
   guessedAt: string;
   revealDate: string;
   result: {
