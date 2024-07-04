@@ -128,6 +128,7 @@ const Activities = () => {
   const { data: game } = useTypedSelector((state) => state.game);
   const { data: activities, loading } = useAxiosGet<Activity[]>(
     useMemo(() => makeApiUrl(`games/${game?.id}/activities`), [game?.id]),
+    { interval: 30000 },
   );
 
   const table = useReactTable({

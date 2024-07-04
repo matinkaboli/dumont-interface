@@ -13,11 +13,7 @@ const BalanceList = () => {
     profile: { address },
   } = useTypedSelector((state) => state.account);
 
-  const { data } = useAxiosGet<PlayerData>(
-    makeApiUrl(`players/${address}`),
-    undefined,
-    5000,
-  );
+  const { data } = useAxiosGet<PlayerData>(makeApiUrl(`players/${address}`), { interval: 5000 });
 
   return (
     <ul className="bg-neutral-600 rounded-lg">
