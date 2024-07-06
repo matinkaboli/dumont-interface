@@ -26,6 +26,9 @@ import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
+import getStatusDetails from './helpers/getStatusDetails';
+import isClaimable from './helpers/isClaimable';
+
 import EmptyDataMessage from './EmptyDataMessage';
 
 interface Activity {
@@ -86,14 +89,11 @@ const columns = [
   columnHelper.accessor('result', {
     header: 'result',
     cell: ({ getValue }) => {
-      const isPlayerWinner = getValue()?.isPlayerWinner;
+      const { variant, text } = getStatusDetails(getValue()?.isPlayerWinner);
 
       return (
-        <Status
-          className="capitalize"
-          variant={isPlayerWinner === undefined ? 'default' : isPlayerWinner ? 'success' : 'error'}
-        >
-          {isPlayerWinner === undefined ? 'Revealed' : isPlayerWinner ? 'Won' : 'Lost'}
+        <Status className="capitalize" variant={variant as any}>
+          {text}
         </Status>
       );
     },
@@ -104,12 +104,7 @@ const columns = [
       const activity = row.original;
       const value = activity.status;
 
-      const requestedAt = parseInt(activity.requestedAt, 10); // Convert to number
-      const claimableAt = parseInt(claimableAfter ?? '0', 10);
-      const claimableTime = dayjs.unix(requestedAt + claimableAt);
-      const currentTime = dayjs();
-
-      if (currentTime.isAfter(claimableTime) && value === 'GUESSED') {
+      if (isClaimable(activity.requestedAt, claimableAfter) && value === 'GUESSED') {
         return (
           <Link href="/" className="flex items-center gap-0.5 text-primary-250">
             {value}
@@ -136,8 +131,6 @@ const Activities = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
-  console.log('here', activities);
 
   if (loading) return <div className="text-white">Loading...</div>;
 
