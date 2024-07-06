@@ -7,7 +7,16 @@ interface UseAxiosGet<T> {
   loading: boolean;
 }
 
-const useAxiosGet = <T = unknown>(url: string, config?: AxiosRequestConfig, interval?: number): UseAxiosGet<T> => {
+interface UseAxiosGetOptions {
+  interval?: number;
+  config?: AxiosRequestConfig;
+}
+
+const useAxiosGet = <T = unknown>(
+  url: string,
+  options: UseAxiosGetOptions = {},
+): UseAxiosGet<T> => {
+  const { interval, config } = options;
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
   const [loading, setLoading] = useState<boolean>(true);

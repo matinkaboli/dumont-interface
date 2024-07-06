@@ -1,8 +1,10 @@
+import { useMemo } from 'react';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import BN from 'bignumber.js';
 import {
+  CellContext,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
@@ -24,20 +26,27 @@ import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
+import getStatusDetails from './helpers/getStatusDetails';
+import isClaimable from './helpers/isClaimable';
+
 import EmptyDataMessage from './EmptyDataMessage';
 
 interface Activity {
   index: number;
-  status: string;
+  status: 'FREE_REVEAL_REQUESTED' | 'GUESSED' | 'REVEALED' | 'CLAIMED';
   requestedAt: string;
   revealDate: string;
-  result: {
+  result?: {
     isPlayerWinner: boolean;
     betAmount: string;
     montAmount: string;
     rate: string;
   };
 }
+
+type ExtendedCellContext<TData, TValue> = CellContext<TData, TValue> & {
+  claimableAfter?: string;
+};
 
 dayjs.extend(relativeTime);
 
@@ -46,50 +55,66 @@ const columnHelper = createColumnHelper<Activity>();
 const columns = [
   columnHelper.accessor('requestedAt', {
     header: 'date',
-    cell: (info) => dayjs(info.getValue()).fromNow(),
+    cell: ({ getValue }) => {
+      const timestamp = getValue();
+      const date = dayjs.unix(parseInt(timestamp, 10)); // Convert seconds to milliseconds
+      return date.fromNow();
+    },
   }),
-  columnHelper.accessor('result.betAmount', {
-    header: 'amount',
-    cell: (info) => `$${info.getValue()}`,
+  columnHelper.accessor('result', {
+    header: 'bet amount',
+    cell: ({ getValue }) => {
+      const amount = getValue()?.betAmount;
+      return amount ? `$${amount}` : '-';
+    },
   }),
-  columnHelper.accessor('result.rate', {
+  columnHelper.accessor('result', {
     header: 'odd',
-    cell: (info) => `x${info.renderValue()}`,
+    cell: ({ getValue }) => {
+      const rate = getValue()?.rate;
+      return rate ? `x${rate}` : '-';
+    },
   }),
   columnHelper.accessor('result', {
     header: 'total',
-    cell: (info) => {
-      const rate = info.getValue()?.rate;
-      const amount = info.getValue()?.betAmount;
-      const total = new BN(rate).times(amount);
-      return `$${total}`;
+    cell: ({ getValue }) => {
+      const result = getValue();
+      if (!isEmpty(result)) {
+        const total = new BN(result!.rate).times(result!.betAmount);
+        return `$${total}`;
+      }
+      return '-';
     },
   }),
-  columnHelper.accessor('result.isPlayerWinner', {
+  columnHelper.accessor('result', {
     header: 'result',
-    cell: (info) => (
-      <Status className="capitalize" variant={info.getValue() ? 'success' : 'error'}>
-        {info.getValue() ? 'won' : 'lost'}
-      </Status>
-    ),
+    cell: ({ getValue }) => {
+      const { variant, text } = getStatusDetails(getValue()?.isPlayerWinner);
+
+      return (
+        <Status className="capitalize" variant={variant as any}>
+          {text}
+        </Status>
+      );
+    },
   }),
   columnHelper.accessor('status', {
-    cell: (info) => {
-      const value = info.getValue();
+    header: 'proof',
+    cell: ({ row, claimableAfter }: ExtendedCellContext<Activity, Activity['status']>) => {
+      const activity = row.original;
+      const value = activity.status;
 
-      const generateValue = () => {
-        if (value === 'verifying') return `${value}...`;
-        if (value === 'claimable')
-          return (
-            <Link href="/" className="flex items-center gap-0.5 text-primary-250">
-              {value}
-              <Icon name="angle-right" width="16" height="16" color="#EA00FF" />
-            </Link>
-          );
-        return value;
-      };
-
-      return <div className="capitalize">{generateValue()}</div>;
+      if (isClaimable(activity.requestedAt, claimableAfter) && value === 'GUESSED') {
+        return (
+          <Link href="/" className="flex items-center gap-0.5 text-primary-250">
+            {value}
+            <Icon name="angle-right" width="16" height="16" color="#EA00FF" />
+          </Link>
+        );
+      }
+      if (value === 'FREE_REVEAL_REQUESTED' || value === 'GUESSED') return `Verifying...`;
+      if (value === 'REVEALED') return 'Verified';
+      if (value === 'CLAIMED') return 'Claimed';
     },
   }),
 ];
@@ -97,51 +122,48 @@ const columns = [
 const Activities = () => {
   const { data: game } = useTypedSelector((state) => state.game);
   const { data: activities, loading } = useAxiosGet<Activity[]>(
-    makeApiUrl(`games/${game?.id}/activities`),
+    useMemo(() => makeApiUrl(`games/${game?.id}/activities`), [game?.id]),
+    { interval: 30000 },
   );
+
   const table = useReactTable({
     data: activities || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
+  if (loading) return <div className="text-white">Loading...</div>;
+
+  if (isEmpty(activities)) return <EmptyDataMessage message="No activity yet" />;
+
   return (
-    <>
-      {loading ? (
-        <div className="text-white">Loading...</div>
-      ) : (
-        <>
-          {isEmpty(activities) ? (
-            <EmptyDataMessage message="No activity yet" />
-          ) : (
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableHead key={header.id} className="uppercase text-neutral-400">
-                        {flexRender(header.column.columnDef.header, header.getContext())}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="text-neutral-200">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </>
-      )}
-    </>
+    <Table>
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <TableHead key={header.id} className="uppercase text-neutral-400">
+                {flexRender(header.column.columnDef.header, header.getContext())}
+              </TableHead>
+            ))}
+          </TableRow>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows.map((row) => (
+          <TableRow key={row.id}>
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id} className="text-neutral-200">
+                {flexRender(cell.column.columnDef.cell, {
+                  ...cell.getContext(),
+                  claimableAfter: game?.claimableAfter,
+                })}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 
