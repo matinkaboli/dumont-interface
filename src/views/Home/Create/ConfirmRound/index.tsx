@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useContractWrite, useWaitForTransaction } from 'wagmi';
 import BN from 'bignumber.js';
 
 import { Button } from '@/components';
@@ -9,10 +9,10 @@ import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/d
 import { AppDispatch } from '@/redux/store';
 import { postGame } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import formatUnits from '@/helpers/formatUnits';
+import { useApproval } from '@/hooks/useApproval';
 import extractGameId from '@/helpers/extractGameId';
-import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
+import formatUnits from '@/helpers/formatUnits';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -22,32 +22,19 @@ import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import Confirm from './Confirm';
 import Approve from './Approve';
 
+const approveValue = '1';
+
 const ConfirmRound = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { address } = useTypedSelector((state) => state.account.profile);
   const { details } = useTypedSelector((state) => state.config);
   const [redirectId, setRedirectId] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0); // The active index corresponds to the index in the long loading array.
-
-  const { data: allowanceData } = useContractRead({
-    address: details?.usdt,
-    abi: ERC20_ABI,
-    functionName: 'allowance',
-    args: [address, details?.gameFactory],
-  });
-
-  const {
-    write: writeApprove,
-    data: approveData,
-    isLoading: isApproveLoading,
-  } = useContractWrite({
-    address: details?.usdt,
-    abi: ERC20_ABI,
-    functionName: 'approve',
-    args: [details?.gameFactory, '1000000'],
-    onError: () => onError('Approve was unsuccessful', onApprove),
-  });
+  const { allowanceData, onApprove, isApproveLoading } = useApproval(
+    details?.gameFactory,
+    onApproveSuccess,
+    onApproveError,
+  );
 
   const {
     write: writeCreateGame,
@@ -60,13 +47,6 @@ const ConfirmRound = () => {
     args: ['0x0000000000000000000000000000000000000000'],
     onError: () => onError('Creating was unsuccessful', onCreateGame),
     onSuccess: () => setActiveIndex(1),
-  });
-
-  useWaitForTransaction({
-    chainId: details?.networkId,
-    hash: approveData?.hash,
-    onSuccess: onApproveSuccess,
-    onError: () => onError('Approve was unsuccessful', onApprove),
   });
 
   useWaitForTransaction({
@@ -167,19 +147,23 @@ const ConfirmRound = () => {
     );
   }
 
-  const onApprove = () => writeApprove?.();
+  function onApproveError() {
+    onError('Approve was unsuccessful', () => onApprove(approveValue));
+  }
 
   const onCreateGame = () => writeCreateGame?.();
 
   const onCreateRound = () => {
-    const isApproved = new BN(allowanceData as string).isGreaterThanOrEqualTo(formatUnits('1', 6));
+    const isApproved = new BN(allowanceData as string).isGreaterThanOrEqualTo(
+      formatUnits(approveValue, 6),
+    );
 
     dispatch(
       openDialog({
         content: isApproved ? (
           <Confirm onCreateGame={onCreateGame} />
         ) : (
-          <Approve onApprove={onApprove} />
+          <Approve onApprove={() => onApprove('1')} />
         ),
       }),
     );

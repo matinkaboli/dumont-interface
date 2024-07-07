@@ -1,5 +1,5 @@
 import { UseFormSetValue } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Key from './Keys/Key';
 import RevealKey from './Keys/RevealKey';
@@ -30,17 +30,16 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 
   const onClickKey = (value: string) => {
-    const index = selectedKeys.indexOf(value);
-    if (index !== -1) {
-      setSelectedKeys((prevValues) => prevValues.filter((item) => item !== value));
-    } else {
-      setSelectedKeys((prevValues) => [...prevValues, value]);
-    }
-  };
+    setSelectedKeys((prevSelectedKeys) => {
+      const isSelected = prevSelectedKeys.includes(value);
+      const newSelectedKeys = isSelected
+        ? prevSelectedKeys.filter((key) => key !== value)
+        : [...prevSelectedKeys, value];
 
-  useEffect(() => {
-    setValue('keys', selectedKeys);
-  }, [selectedKeys]);
+      setValue('keys', newSelectedKeys);
+      return newSelectedKeys;
+    });
+  };
 
   return (
     <div className="grid grid-cols-5 gap-2">

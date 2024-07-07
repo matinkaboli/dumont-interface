@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
+
+import { BetData } from '@/views/_components/Board';
 
 import SelectedKey from './SelectedKey';
 import BetDetailList from './BetDetailList';
@@ -25,14 +25,11 @@ const sortKeys = (keys: string[]): string[] => {
   });
 };
 
-const ConfirmBet = ({ onConfirm }: { onConfirm: () => void }) => {
-  const dispatch = useDispatch();
-  const { keys, amount } = useTypedSelector((state) => state.bet.betData);
-
-  const sortedKeys = useMemo(() => sortKeys(keys), [keys]);
+const ConfirmBet = ({ bet, onConfirm }: { onConfirm: () => void, bet: BetData  }) => {
+  const sortedKeys = useMemo(() => sortKeys(bet.keys), [bet.keys]);
 
   const betDetails = [
-    { label: 'Amount', value: `${amount} USDT` },
+    { label: 'Amount', value: `${bet.amount} USDT` },
     { label: 'Overall odds', value: 'x3.4' },
     { label: 'Possible payout', value: '$220' },
   ];
