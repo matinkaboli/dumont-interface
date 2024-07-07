@@ -8,7 +8,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
 const BetButton = ({ size, disabled }: ButtonProps) => {
-  const { isCreated, data: game, activeCardIndex } = useTypedSelector((state) => state.game);
+  const { isCreated, data: game } = useTypedSelector((state) => state.game);
 
   const buttonProps: ButtonProps = {
     fullWidth: true,
