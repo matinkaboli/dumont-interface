@@ -19,6 +19,7 @@ import Approve from '@/views/Home/Create/ConfirmRound/Approve';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import ResultMessage from '@/views/_components/Board/Amount/ConfirmBet/ConfirmProcess/ResultMessage';
+import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
@@ -97,7 +98,7 @@ const Board = () => {
     dispatch(
       postGuessedCard({
         id: game!.id,
-        body: { cardIndex: activeCardIndex - 1 },
+        body: { index: activeCardIndex - 1 },
       }),
     )
       .unwrap()
@@ -115,14 +116,6 @@ const Board = () => {
       .catch(() => {
         onError();
       });
-  }
-
-  function onError() {
-    dispatch(
-      openDialog({
-        content: <AnimatedDialogContent key="error">Something went wrong!</AnimatedDialogContent>,
-      }),
-    );
   }
 
   const onConfirmBet = (data: BetData) => {
@@ -147,6 +140,18 @@ const Board = () => {
       }),
     );
   };
+
+  function onError() {
+    dispatch(
+      openDialog({
+        content: (
+          <AnimatedDialogContent key="error">
+            <ErrorContent title="Bet was unsuccessful" onClick={() => onConfirmBet(betData)} />
+          </AnimatedDialogContent>
+        ),
+      }),
+    );
+  }
 
   const onSubmit: SubmitHandler<BetData> = (data) => {
     if (data.amount) {
