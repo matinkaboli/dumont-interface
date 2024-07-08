@@ -4,9 +4,11 @@ import { useDispatch } from 'react-redux';
 import BN from 'bignumber.js';
 import { useContractWrite, useWaitForTransaction } from 'wagmi';
 
+import { swiperRef } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import { openDialog } from '@/redux/features/dialogSlice';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';
+import { getGame } from '@/redux/features/gameSlice';
 import transformedRanks from '@/helpers/transformedRanks';
 import guessArrayToNumber from '@/helpers/guessArrayToNumber';
 import formatUnits from '@/helpers/formatUnits';
@@ -105,6 +107,16 @@ const Board = () => {
       .then(() => {
         dispatch(
           openDialog({
+            dialogProps: {
+              onCloseButton: () =>
+                dispatch(getGame(game!.id))
+                  .unwrap()
+                  .then(() => {
+                    dispatch(closeDialog());
+                    // @ts-ignore
+                    swiperRef?.current?.slideNext();
+                  }),
+            },
             content: (
               <AnimatedDialogContent key="result">
                 <ResultMessage />

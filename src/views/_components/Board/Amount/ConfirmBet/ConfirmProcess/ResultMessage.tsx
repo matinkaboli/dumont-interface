@@ -2,10 +2,12 @@ import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components';
+import { swiperRef } from '@/components/Carousel';
 import { closeDialog } from '@/redux/features/dialogSlice';
+import { getGame } from '@/redux/features/gameSlice';
+import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import getCardInfo from '@/helpers/getCardInfo';
-import { swiperRef } from '@/components/Carousel';
 
 const successMessage = (amount: string) => ({
   title: 'You won! 🎉',
@@ -29,7 +31,8 @@ const failureMessage = (amount: string) => ({
 });
 
 const ResultMessage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const { data: game } = useTypedSelector((state) => state.game);
   const { guessedResult } = useTypedSelector((state) => state.bet);
 
   if (!guessedResult) {
@@ -42,9 +45,14 @@ const ResultMessage = () => {
   } = guessedResult;
   const message = isPlayerWinner ? successMessage(usdtAmount) : failureMessage(montAmount);
   const onCloseDialog = () => {
-    dispatch(closeDialog());
-    // @ts-ignore
-    swiperRef?.current?.slideNext();
+    dispatch(getGame(game!.id))
+      .unwrap()
+      .then(() => {
+        dispatch(closeDialog());
+
+        // @ts-ignore
+        swiperRef?.current?.slideNext();
+      });
   };
 
   return (
