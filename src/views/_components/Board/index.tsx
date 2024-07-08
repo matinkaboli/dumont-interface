@@ -68,7 +68,7 @@ const Board = () => {
     onError: onError,
   });
 
-  useWaitForTransaction({
+  const { isLoading: isWaitGuessCardLoading } = useWaitForTransaction({
     chainId: details?.networkId,
     hash: guessCardData?.hash,
     onSuccess: onGuessCardSuccess,
@@ -76,19 +76,30 @@ const Board = () => {
   });
 
   useEffect(() => {
-    if (isGuessCardLoading || isApproveLoading) {
+    if (isGuessCardLoading || isApproveLoading || isWaitGuessCardLoading) {
+      let title = '';
+      let desc = '';
+
+      if (isGuessCardLoading) {
+        title = 'Sign the transaction';
+        desc = 'Sign this transaction in your wallet';
+      } else if (isApproveLoading || isWaitGuessCardLoading) {
+        title = 'Waiting for the network';
+        desc = 'It will take a few seconds';
+      }
+
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
             <AnimatedDialogContent key="loading">
-              <LoadingContent title="Waiting for the network" desc="This may take a few seconds" />
+              <LoadingContent title={title} desc={desc} />
             </AnimatedDialogContent>
           ),
         }),
       );
     }
-  }, [isGuessCardLoading, isApproveLoading]);
+  }, [isGuessCardLoading, isApproveLoading, isWaitGuessCardLoading]);
 
   function onApproveSuccess() {
     dispatch(
