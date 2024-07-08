@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
 import Key from './Keys/Key';
@@ -55,4 +56,4 @@ const KeyBoard = ({
   );
 };
 
-export default KeyBoard;
+export default memo(KeyBoard);

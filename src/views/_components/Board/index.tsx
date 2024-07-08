@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import BN from 'bignumber.js';
 import { useContractWrite, useWaitForTransaction } from 'wagmi';
@@ -16,15 +16,15 @@ import { useApproval } from '@/hooks/useApproval';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 
-import ConfirmBet from '@/views/_components/Board/Amount/ConfirmBet';
 import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
-import ResultMessage from '@/views/_components/Board/Amount/ConfirmBet/ConfirmProcess/ResultMessage';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
+import ConfirmBet from './ConfirmBet';
+import ResultMessage from './ConfirmBet/ResultMessage';
 
 export interface BetData {
   amount: string;
@@ -33,9 +33,10 @@ export interface BetData {
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
   const { details } = useTypedSelector((state) => state.config);
   const { data: game, activeCardIndex } = useTypedSelector((state) => state.game);
+  const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
+
   const {
     control,
     handleSubmit,
@@ -77,16 +78,10 @@ const Board = () => {
 
   useEffect(() => {
     if (isGuessCardLoading || isApproveLoading || isWaitGuessCardLoading) {
-      let title = '';
-      let desc = '';
-
-      if (isGuessCardLoading) {
-        title = 'Sign the transaction';
-        desc = 'Sign this transaction in your wallet';
-      } else if (isApproveLoading || isWaitGuessCardLoading) {
-        title = 'Waiting for the network';
-        desc = 'It will take a few seconds';
-      }
+      let title = isGuessCardLoading ? 'Sign the transaction' : 'Waiting for the network';
+      let desc = isGuessCardLoading
+        ? 'Sign this transaction in your wallet'
+        : 'It will take a few seconds';
 
       dispatch(
         openDialog({
@@ -147,14 +142,14 @@ const Board = () => {
       });
   }
 
-  const onConfirmBet = (data: BetData) => {
+  function onConfirmBet(data: BetData) {
     const keys = transformedRanks(data.keys);
     const guessNumber = guessArrayToNumber(keys);
     const amount = formatUnits(data.amount, 6).toNumber();
     writeGuessCard?.({ args: [activeCardIndex - 1, amount, guessNumber] });
-  };
+  }
 
-  const onBet = (data: BetData) => {
+  function onBet(data: BetData) {
     const isApproved = new BN(allowanceData as string).isGreaterThanOrEqualTo(
       formatUnits(data.amount, 6),
     );
@@ -168,7 +163,7 @@ const Board = () => {
         ),
       }),
     );
-  };
+  }
 
   function onError() {
     dispatch(
@@ -182,12 +177,12 @@ const Board = () => {
     );
   }
 
-  const onSubmit: SubmitHandler<BetData> = (data) => {
+  function onSubmit(data: BetData) {
     if (data.amount) {
       setBetData(data);
       onBet(data);
     }
-  };
+  }
 
   const keys = watch('keys');
 
