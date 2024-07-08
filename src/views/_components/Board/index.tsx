@@ -15,7 +15,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 
 import ConfirmBet from '@/views/_components/Board/Amount/ConfirmBet';
-import Approve from '@/views/Home/Create/ConfirmRound/Approve';
+import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import ResultMessage from '@/views/_components/Board/Amount/ConfirmBet/ConfirmProcess/ResultMessage';
@@ -135,7 +135,7 @@ const Board = () => {
         content: isApproved ? (
           <ConfirmBet bet={data} onConfirm={() => onConfirmBet(data)} />
         ) : (
-          <Approve onApprove={() => onApprove(data.amount)} />
+          <ApproveAllowance onApprove={() => onApprove(data.amount)} />
         ),
       }),
     );

@@ -4,7 +4,7 @@ interface Props {
   onApprove: () => void;
 }
 
-const Approve = ({ onApprove }: Props) => {
+const ApproveAllowance = ({ onApprove }: Props) => {
   return (
     <>
       <DialogIcon name="badge-check-rainbow" variant="default" />
@@ -22,4 +22,4 @@ const Approve = ({ onApprove }: Props) => {
   );
 };
 
-export default Approve;
+export default ApproveAllowance;

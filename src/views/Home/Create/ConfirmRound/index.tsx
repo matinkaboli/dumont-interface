@@ -18,9 +18,9 @@ import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 
 import Confirm from './Confirm';
-import Approve from './Approve';
 
 const approveValue = '1';
 
@@ -163,7 +163,7 @@ const ConfirmRound = () => {
         content: isApproved ? (
           <Confirm onCreateGame={onCreateGame} />
         ) : (
-          <Approve onApprove={() => onApprove('1')} />
+          <ApproveAllowance onApprove={() => onApprove('1')} />
         ),
       }),
     );
