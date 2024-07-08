@@ -40,6 +40,8 @@ const Board = () => {
     control,
     handleSubmit,
     setValue,
+    reset,
+    watch,
     formState: { isDirty, isValid, errors },
   } = useForm<BetData>({
     mode: 'onChange',
@@ -96,6 +98,17 @@ const Board = () => {
     );
   }
 
+  function onCloseResultDialog() {
+    dispatch(getGame(game!.id))
+      .unwrap()
+      .then(() => {
+        reset();
+        dispatch(closeDialog());
+        // @ts-ignore
+        swiperRef?.current?.slideNext();
+      });
+  }
+
   function onGuessCardSuccess() {
     dispatch(
       postGuessedCard({
@@ -108,18 +121,11 @@ const Board = () => {
         dispatch(
           openDialog({
             dialogProps: {
-              onCloseButton: () =>
-                dispatch(getGame(game!.id))
-                  .unwrap()
-                  .then(() => {
-                    dispatch(closeDialog());
-                    // @ts-ignore
-                    swiperRef?.current?.slideNext();
-                  }),
+              onCloseButton: onCloseResultDialog,
             },
             content: (
               <AnimatedDialogContent key="result">
-                <ResultMessage />
+                <ResultMessage onCloseDialog={onCloseResultDialog} />
               </AnimatedDialogContent>
             ),
           }),
@@ -172,9 +178,7 @@ const Board = () => {
     }
   };
 
-  // <AnimatedDialogContent key="verification">
-  //    <VerificationOperation />
-  //  </AnimatedDialogContent>
+  const keys = watch('keys');
 
   return (
     <form
@@ -182,7 +186,7 @@ const Board = () => {
       className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4"
     >
       <div className="col-span-2 md:order-1 order-2">
-        <KeyBoard setValue={setValue} />
+        <KeyBoard values={keys} setValue={setValue} />
       </div>
       <div className="col-span-1 md:order-2 order-1">
         <Amount

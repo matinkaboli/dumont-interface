@@ -1,5 +1,4 @@
 import { UseFormSetValue } from 'react-hook-form';
-import { useState } from 'react';
 
 import Key from './Keys/Key';
 import RevealKey from './Keys/RevealKey';
@@ -26,19 +25,18 @@ const keys: KeyType[] = [
   { value: 'K', weight: 3.4 },
 ];
 
-const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-
+const KeyBoard = ({
+  values,
+  setValue,
+}: {
+  values: string[];
+  setValue: UseFormSetValue<BetData>;
+}) => {
   const onClickKey = (value: string) => {
-    setSelectedKeys((prevSelectedKeys) => {
-      const isSelected = prevSelectedKeys.includes(value);
-      const newSelectedKeys = isSelected
-        ? prevSelectedKeys.filter((key) => key !== value)
-        : [...prevSelectedKeys, value];
+    const isSelected = values.includes(value);
+    const newSelectedKeys = isSelected ? values.filter((key) => key !== value) : [...values, value];
 
-      setValue('keys', newSelectedKeys);
-      return newSelectedKeys;
-    });
+    setValue('keys', newSelectedKeys);
   };
 
   return (
@@ -48,7 +46,7 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
           key={key.value}
           value={key.value}
           weight={key.weight}
-          isSelected={selectedKeys.includes(key.value)}
+          isSelected={values.includes(key.value)}
           onClick={() => onClickKey(key.value)}
         />
       ))}

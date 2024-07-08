@@ -1,27 +1,11 @@
 import Image from 'next/image';
-import { useDispatch } from 'react-redux';
 
 import { Button, DialogDescription, DialogTitle } from '@/components';
-import { swiperRef } from '@/components/Carousel';
-import { closeDialog } from '@/redux/features/dialogSlice';
-import { getGame } from '@/redux/features/gameSlice';
-import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import getCardInfo from '@/helpers/getCardInfo';
 
-const RevealedCard = () => {
-  const dispatch = useDispatch<AppDispatch>();
+const RevealedCard = ({ onCloseDialog }: { onCloseDialog: () => void }) => {
   const { guessedResult } = useTypedSelector((state) => state.bet);
-  const { data: game } = useTypedSelector((state) => state.game);
-
-  const onCloseDialog = () => {
-    dispatch(getGame(game!.id)).unwrap().then(() => {
-      dispatch(closeDialog());
-
-      // @ts-ignore
-      swiperRef?.current?.slideNext();
-    });
-  };
 
   return (
     <>
