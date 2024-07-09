@@ -52,7 +52,7 @@ const Board = () => {
     },
   });
 
-  const { allowanceData, onApprove, isApproveLoading } = useApproval(
+  const { allowanceData, sendApprove, isApproveLoading } = useApproval(
     game?.address,
     onApproveSuccess,
     onError,
@@ -159,7 +159,7 @@ const Board = () => {
         content: isApproved ? (
           <ConfirmBet bet={data} onConfirm={() => onConfirmBet(data)} />
         ) : (
-          <ApproveAllowance onApprove={() => onApprove(data.amount)} />
+          <ApproveAllowance onApprove={() => sendApprove(data.amount)} />
         ),
       }),
     );

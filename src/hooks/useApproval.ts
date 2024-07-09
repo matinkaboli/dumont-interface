@@ -37,13 +37,13 @@ export const useApproval = (
     onError: onError,
   });
 
-  const onApprove = (value: any) => {
+  const sendApprove = (value: string) => {
     const approveValue = formatUnits(value, 6).toString();
     writeApprove?.({ args: [contractAddress, approveValue] });
   };
 
   return {
-    onApprove,
+    sendApprove,
     isApproveLoading,
     allowanceData,
   };

@@ -70,8 +70,8 @@ const columns = [
     },
   }),
   columnHelper.accessor('result', {
-    id: 'odd',
-    header: 'odd',
+    id: 'odds',
+    header: 'odds',
     cell: ({ getValue }) => {
       const rate = getValue()?.rate;
       return rate ? `x${rate}` : '-';

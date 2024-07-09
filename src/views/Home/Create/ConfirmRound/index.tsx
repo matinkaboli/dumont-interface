@@ -30,7 +30,7 @@ const ConfirmRound = () => {
   const { details } = useTypedSelector((state) => state.config);
   const [redirectId, setRedirectId] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0); // The active index corresponds to the index in the long loading array.
-  const { allowanceData, onApprove, isApproveLoading } = useApproval(
+  const { allowanceData, sendApprove, isApproveLoading } = useApproval(
     details?.gameFactory,
     onApproveSuccess,
     onApproveError,
@@ -148,7 +148,7 @@ const ConfirmRound = () => {
   }
 
   function onApproveError() {
-    onError('Approve was unsuccessful', () => onApprove(approveValue));
+    onError('Approve was unsuccessful', () => sendApprove(approveValue));
   }
 
   const onCreateGame = () => writeCreateGame?.();
@@ -163,7 +163,7 @@ const ConfirmRound = () => {
         content: isApproved ? (
           <Confirm onCreateGame={onCreateGame} />
         ) : (
-          <ApproveAllowance onApprove={() => onApprove('1')} />
+          <ApproveAllowance onApprove={() => sendApprove(approveValue)} />
         ),
       }),
     );
