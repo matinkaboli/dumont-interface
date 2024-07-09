@@ -12,6 +12,7 @@ import { getGame } from '@/redux/features/gameSlice';
 import transformedRanks from '@/helpers/transformedRanks';
 import guessArrayToNumber from '@/helpers/guessArrayToNumber';
 import formatUnits from '@/helpers/formatUnits';
+import isEmpty from '@/helpers/isEmpty';
 import { useApproval } from '@/hooks/useApproval';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
@@ -198,7 +199,9 @@ const Board = () => {
         <Amount
           inputErrors={errors}
           control={control}
-          disabledButton={!isValid || !isDirty || game?.cards[activeCardIndex - 1]?.number !== -1}
+          disabledButton={
+            !isValid || !isDirty || game?.cards[activeCardIndex - 1]?.number !== -1 || isEmpty(keys)
+          }
         />
       </div>
     </form>
