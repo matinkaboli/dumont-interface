@@ -12,7 +12,7 @@ export const useApproval = (
   const { address } = useTypedSelector((state) => state.account.profile);
   const { details } = useTypedSelector((state) => state.config);
 
-  const { data: allowanceData } = useContractRead({
+  const { data: allowanceData, refetch: refetchAllowance } = useContractRead({
     address: details?.usdt,
     abi: ERC20_ABI,
     functionName: 'allowance',
@@ -44,6 +44,7 @@ export const useApproval = (
 
   return {
     sendApprove,
+    refetchAllowance,
     isApproveLoading,
     allowanceData,
   };

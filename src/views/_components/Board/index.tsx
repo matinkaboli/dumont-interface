@@ -53,7 +53,7 @@ const Board = () => {
     },
   });
 
-  const { allowanceData, sendApprove, isApproveLoading } = useApproval(
+  const { allowanceData, sendApprove, isApproveLoading, refetchAllowance } = useApproval(
     game?.address,
     onApproveSuccess,
     onError,
@@ -117,6 +117,8 @@ const Board = () => {
   }
 
   function onGuessCardSuccess() {
+    refetchAllowance();
+
     dispatch(
       postGuessedCard({
         id: game!.id,
