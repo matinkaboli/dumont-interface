@@ -63,6 +63,16 @@ const RevealKey = ({ className }: { className?: string }) => {
     writeRevealCard?.();
   }
 
+  function onCloseDialog() {
+    dispatch(getGame(game!.id))
+      .unwrap()
+      .then(() => {
+        dispatch(closeDialog());
+        // @ts-ignore
+        swiperRef?.current?.slideNext();
+      });
+  }
+
   function onRevealCardSuccess() {
     dispatch(
       postGuessedCard({
@@ -75,18 +85,11 @@ const RevealKey = ({ className }: { className?: string }) => {
         dispatch(
           openDialog({
             dialogProps: {
-              onCloseButton: () =>
-                dispatch(getGame(game!.id))
-                  .unwrap()
-                  .then(() => {
-                    dispatch(closeDialog());
-                    // @ts-ignore
-                    swiperRef?.current?.slideNext();
-                  }),
+              onCloseButton: onCloseDialog,
             },
             content: (
               <AnimatedDialogContent key="reveal">
-                <RevealedCard />
+                <RevealedCard onCloseDialog={onCloseDialog} />
               </AnimatedDialogContent>
             ),
           }),

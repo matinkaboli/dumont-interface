@@ -1,5 +1,5 @@
+import { memo } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 
 import Key from './Keys/Key';
 import RevealKey from './Keys/RevealKey';
@@ -26,21 +26,19 @@ const keys: KeyType[] = [
   { value: 'K', weight: 3.4 },
 ];
 
-const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-
+const KeyBoard = ({
+  values,
+  setValue,
+}: {
+  values: string[];
+  setValue: UseFormSetValue<BetData>;
+}) => {
   const onClickKey = (value: string) => {
-    const index = selectedKeys.indexOf(value);
-    if (index !== -1) {
-      setSelectedKeys((prevValues) => prevValues.filter((item) => item !== value));
-    } else {
-      setSelectedKeys((prevValues) => [...prevValues, value]);
-    }
-  };
+    const isSelected = values.includes(value);
+    const newSelectedKeys = isSelected ? values.filter((key) => key !== value) : [...values, value];
 
-  useEffect(() => {
-    setValue('keys', selectedKeys);
-  }, [selectedKeys]);
+    setValue('keys', newSelectedKeys);
+  };
 
   return (
     <div className="grid grid-cols-5 gap-2">
@@ -49,7 +47,7 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
           key={key.value}
           value={key.value}
           weight={key.weight}
-          isSelected={selectedKeys.includes(key.value)}
+          isSelected={values.includes(key.value)}
           onClick={() => onClickKey(key.value)}
         />
       ))}
@@ -58,4 +56,4 @@ const KeyBoard = ({ setValue }: { setValue: UseFormSetValue<BetData> }) => {
   );
 };
 
-export default KeyBoard;
+export default memo(KeyBoard);

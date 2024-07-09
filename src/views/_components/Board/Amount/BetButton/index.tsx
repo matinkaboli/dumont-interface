@@ -1,17 +1,13 @@
 import './style.css';
 
-import { useDispatch } from 'react-redux';
 import { ConnectKitButton } from 'connectkit';
 
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 import { ButtonProps } from '@/components/Button';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { openDialog } from '@/redux/features/dialogSlice';
-
-import ConfirmBet from '../ConfirmBet';
+import isEmpty from '@/helpers/isEmpty';
 
 const BetButton = ({ size, disabled }: ButtonProps) => {
-  const dispatch = useDispatch();
   const { isCreated, data: game } = useTypedSelector((state) => state.game);
 
   const buttonProps: ButtonProps = {
@@ -21,14 +17,6 @@ const BetButton = ({ size, disabled }: ButtonProps) => {
     size: size,
   };
 
-  const onOpenModal = () => {
-    dispatch(
-      openDialog({
-        content: <ConfirmBet />,
-      }),
-    );
-  };
-
   return (
     <ConnectKitButton.Custom>
       {({ isConnected, show }) => {
@@ -36,7 +24,7 @@ const BetButton = ({ size, disabled }: ButtonProps) => {
           <div className="relative w-full h-12">
             {isConnected ? (
               <>
-                {isCreated || game?.id ? (
+                {isCreated || !isEmpty(game) ? (
                   <>
                     <div className="btn-glow" />
                     <Button
@@ -44,7 +32,6 @@ const BetButton = ({ size, disabled }: ButtonProps) => {
                       type="submit"
                       disabled={disabled}
                       className={disabled ? '' : 'btn-gradiant'}
-                      onClick={onOpenModal}
                     >
                       Bet
                     </Button>

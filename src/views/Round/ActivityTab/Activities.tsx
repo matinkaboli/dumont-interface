@@ -62,6 +62,7 @@ const columns = [
     },
   }),
   columnHelper.accessor('result', {
+    id: 'betAmount',
     header: 'bet amount',
     cell: ({ getValue }) => {
       const amount = getValue()?.betAmount;
@@ -69,13 +70,15 @@ const columns = [
     },
   }),
   columnHelper.accessor('result', {
-    header: 'odd',
+    id: 'odds',
+    header: 'odds',
     cell: ({ getValue }) => {
       const rate = getValue()?.rate;
       return rate ? `x${rate}` : '-';
     },
   }),
   columnHelper.accessor('result', {
+    id: 'total',
     header: 'total',
     cell: ({ getValue }) => {
       const result = getValue();

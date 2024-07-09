@@ -1,11 +1,8 @@
 import Image from 'next/image';
-import { useDispatch } from 'react-redux';
 
 import { Button } from '@/components';
-import { closeDialog } from '@/redux/features/dialogSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import getCardInfo from '@/helpers/getCardInfo';
-import { swiperRef } from '@/components/Carousel';
 
 const successMessage = (amount: string) => ({
   title: 'You won! 🎉',
@@ -28,8 +25,7 @@ const failureMessage = (amount: string) => ({
   buttonText: 'Try the next',
 });
 
-const ResultMessage = () => {
-  const dispatch = useDispatch();
+const ResultMessage = ({onCloseDialog}: {onCloseDialog: () => void}) => {
   const { guessedResult } = useTypedSelector((state) => state.bet);
 
   if (!guessedResult) {
@@ -41,11 +37,6 @@ const ResultMessage = () => {
     result: { isPlayerWinner, usdtAmount, montAmount },
   } = guessedResult;
   const message = isPlayerWinner ? successMessage(usdtAmount) : failureMessage(montAmount);
-  const onCloseDialog = () => {
-    dispatch(closeDialog());
-    // @ts-ignore
-    swiperRef?.current?.slideNext();
-  };
 
   return (
     <>
