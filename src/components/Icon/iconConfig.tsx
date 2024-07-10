@@ -41,6 +41,7 @@ import CheckCircleFill from './svgs/CheckCircleFill';
 import Inbox from './svgs/Inbox';
 import BadgeCheckRainbow from './svgs/BadgeCheckRainbow';
 import TriangleExclamation from './svgs/TriangleExclamation';
+import PartyHornRainbow from './svgs/PartyHornRainbow';
 
 export interface SvgProps {
   width?: string;
@@ -85,7 +86,8 @@ export type IconName =
   | 'check-circle-fill'
   | 'inbox'
   | 'badge-check-rainbow'
-  | 'triangle-exclamation';
+  | 'triangle-exclamation'
+  | 'party-horn-rainbow';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -123,4 +125,5 @@ export const iconMap: Record<IconName, ReactElement> = {
   inbox: <Inbox />,
   'badge-check-rainbow': <BadgeCheckRainbow />,
   'triangle-exclamation': <TriangleExclamation />,
+  'party-horn-rainbow': <PartyHornRainbow />,
 };

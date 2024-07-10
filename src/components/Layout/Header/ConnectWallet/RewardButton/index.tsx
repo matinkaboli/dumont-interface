@@ -3,14 +3,15 @@ import { useDispatch } from 'react-redux';
 import { Icon } from '@/components';
 import { openDialog } from '@/redux/features/dialogSlice';
 
-import ClaimReward from './ClaimReward';
+// import ClaimReward from './ClaimReward';
+import Claimed from './Claimed';
 
 const RewardButton = () => {
   const dispatch = useDispatch();
   const onOpenDialog = () =>
     dispatch(
       openDialog({
-        content: <ClaimReward />,
+        content: <Claimed />,
       }),
     );
 
