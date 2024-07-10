@@ -3,9 +3,9 @@ import { useDisconnect } from 'wagmi';
 
 import { Button, Icon, QRCode } from '@/components';
 import truncateString from '@/helpers/truncateString';
+import makeApiUrl from '@/helpers/makeApiUrl';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import useAxiosGet from '@/hooks/useAxiosGet';
-import makeApiUrl from '@/helpers/makeApiUrl';
 
 import CopyBox from './CopyBox';
 import BalanceList from './BalanceList';
