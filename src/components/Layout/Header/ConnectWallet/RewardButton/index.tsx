@@ -1,19 +1,35 @@
 import { useDispatch } from 'react-redux';
+import { useContractRead } from 'wagmi';
 
 import { Icon } from '@/components';
 import { openDialog } from '@/redux/features/dialogSlice';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import parseUnits from '@/helpers/parseUnits';
+import MONT_REWARD_MANAGER_ABI from '@/abis/MONT_REWARD_MANAGER_ABI.json';
 
-// import ClaimReward from './ClaimReward';
-import Claimed from './Claimed';
+import ClaimReward from './ClaimReward';
 
 const RewardButton = () => {
   const dispatch = useDispatch();
-  const onOpenDialog = () =>
+  const { details } = useTypedSelector((state) => state.config);
+  const { address } = useTypedSelector((state) => state.account.profile);
+
+  const { data: balancesData } = useContractRead({
+    address: details?.montRewardManager,
+    abi: MONT_REWARD_MANAGER_ABI,
+    functionName: 'balances',
+    args: [address],
+  });
+
+  const onOpenDialog = () => {
+    const claimValue = parseUnits(balancesData as string, 18).toNumber();
+
     dispatch(
       openDialog({
-        content: <Claimed />,
+        content: <ClaimReward claimValue={claimValue} />,
       }),
     );
+  };
 
   return (
     <div className="border-primary-gradiant rounded-lg">
