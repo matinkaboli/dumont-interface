@@ -1,6 +1,11 @@
 import { Button, Icon } from '@/components';
 
-const ClaimReward = ({ claimValue }: { claimValue: number }) => {
+interface Props {
+  claimValue: number;
+  onClaim: () => void;
+}
+
+const ClaimReward = ({ claimValue, onClaim }: Props) => {
   return (
     <div className="text-center">
       <h6 className="text-md text-white">Reward to claim</h6>
@@ -8,7 +13,7 @@ const ClaimReward = ({ claimValue }: { claimValue: number }) => {
         <span className="bg-gradiant-text text-transparent bg-clip-text">{claimValue}</span> MONT
       </h2>
 
-      <Button fullWidth className="mt-8" variant="primary" radius="lg">
+      <Button fullWidth className="mt-8" variant="primary" radius="lg" onClick={onClaim}>
         Claim Reward
       </Button>
       <Button
