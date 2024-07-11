@@ -47,6 +47,7 @@ interface Activity {
 type ExtendedCellContext<TData, TValue> = CellContext<TData, TValue> & {
   claimableAfter?: string;
   gameAddress?: `0x${string}`;
+  fetchActivities?: () => Promise<void>;
 };
 
 dayjs.extend(relativeTime);
@@ -108,12 +109,13 @@ const columns = [
       row,
       claimableAfter,
       gameAddress,
+      fetchActivities,
     }: ExtendedCellContext<Activity, Activity['status']>) => {
       const activity = row.original;
       const value = activity.status;
 
       if (isClaimable(activity.requestedAt, claimableAfter) && value === 'GUESSED') {
-        return <ClaimButton cardIndex={activity.index} gameAddress={gameAddress} />;
+        return <ClaimButton refetch={fetchActivities} cardIndex={activity.index} gameAddress={gameAddress} />;
       }
       if (value === 'FREE_REVEAL_REQUESTED' || value === 'GUESSED') return `Verifying...`;
       if (value === 'REVEALED') return 'Verified';
@@ -124,7 +126,7 @@ const columns = [
 
 const Activities = () => {
   const { data: game } = useTypedSelector((state) => state.game);
-  const { data: activities, loading } = useAxiosGet<Activity[]>(
+  const { data: activities, loading, refetch } = useAxiosGet<Activity[]>(
     useMemo(() => makeApiUrl(`games/${game?.id}/activities`), [game?.id]),
     { interval: 30000 },
   );
@@ -161,6 +163,7 @@ const Activities = () => {
                   ...cell.getContext(),
                   claimableAfter: game?.claimableAfter,
                   gameAddress: game?.address,
+                  fetchActivities: refetch,
                 })}
               </TableCell>
             ))}

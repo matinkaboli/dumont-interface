@@ -17,9 +17,10 @@ import ClaimedWin from './ClaimedWin';
 interface Props {
   cardIndex: number;
   gameAddress?: `0x${string}`;
+  refetch?: () => Promise<void>
 }
 
-const ClaimButton = ({ gameAddress, cardIndex }: Props) => {
+const ClaimButton = ({ gameAddress, cardIndex, refetch }: Props) => {
   const dispatch = useDispatch();
   const { details } = useTypedSelector((state) => state.config);
 
@@ -62,6 +63,8 @@ const ClaimButton = ({ gameAddress, cardIndex }: Props) => {
   }
 
   function onSuccess() {
+    refetch?.();
+
     dispatch(
       openDialog({
         content: <ClaimedWin />,
