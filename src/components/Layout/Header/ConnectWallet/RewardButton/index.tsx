@@ -72,9 +72,12 @@ const RewardButton = () => {
 
   function onSuccess() {
     setClaimed(true);
+
+    const claimValue = parseUnits(balancesData as string, 18).toNumber();
+
     dispatch(
       openDialog({
-        content: <Claimed />,
+        content: <Claimed amount={claimValue} />,
       }),
     );
   }

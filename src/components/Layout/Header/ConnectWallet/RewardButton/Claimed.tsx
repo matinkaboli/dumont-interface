@@ -4,9 +4,10 @@ import { Button, DialogTitle, Icon } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog } from '@/redux/features/dialogSlice';
 
-const Claimed = () => {
+const Claimed = ({ amount }: { amount: number }) => {
   const dispatch = useDispatch<AppDispatch>();
   const onCloseDialog = () => dispatch(closeDialog());
+
   return (
     <>
       <div className="w-14 h-14 rounded-full bg-neutral-600 flex-center mx-auto">
@@ -14,7 +15,7 @@ const Claimed = () => {
       </div>
       <DialogTitle className="mt-5 mb-2 text-center">The claim was successful</DialogTitle>
       <p className="text-base text-neutral-300 text-center">
-        You successfully claimed <span className="text-white font-semibold">2,340 $MONT</span>
+        You successfully claimed <span className="text-white font-semibold">{amount} $MONT</span>
       </p>
 
       <Button fullWidth variant="primary" radius="lg" className="mt-6" onClick={onCloseDialog}>
