@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import Link from 'next/link';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import BN from 'bignumber.js';
@@ -12,7 +11,6 @@ import {
 } from '@tanstack/react-table';
 
 import {
-  Icon,
   Status,
   Table,
   TableBody,
@@ -26,10 +24,12 @@ import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
-import getStatusDetails from './helpers/getStatusDetails';
-import isClaimable from './helpers/isClaimable';
+import getStatusDetails from '../helpers/getStatusDetails';
+import isClaimable from '../helpers/isClaimable';
 
-import EmptyDataMessage from './EmptyDataMessage';
+import EmptyDataMessage from '../EmptyDataMessage';
+
+import ClaimButton from './ClaimButton';
 
 interface Activity {
   index: number;
@@ -46,6 +46,7 @@ interface Activity {
 
 type ExtendedCellContext<TData, TValue> = CellContext<TData, TValue> & {
   claimableAfter?: string;
+  gameAddress?: `0x${string}`;
 };
 
 dayjs.extend(relativeTime);
@@ -103,17 +104,16 @@ const columns = [
   }),
   columnHelper.accessor('status', {
     header: 'proof',
-    cell: ({ row, claimableAfter }: ExtendedCellContext<Activity, Activity['status']>) => {
+    cell: ({
+      row,
+      claimableAfter,
+      gameAddress,
+    }: ExtendedCellContext<Activity, Activity['status']>) => {
       const activity = row.original;
       const value = activity.status;
 
       if (isClaimable(activity.requestedAt, claimableAfter) && value === 'GUESSED') {
-        return (
-          <Link href="/" className="flex items-center gap-0.5 text-primary-250">
-            {value}
-            <Icon name="angle-right" width="16" height="16" color="#EA00FF" />
-          </Link>
-        );
+        return <ClaimButton cardIndex={activity.index} gameAddress={gameAddress} />;
       }
       if (value === 'FREE_REVEAL_REQUESTED' || value === 'GUESSED') return `Verifying...`;
       if (value === 'REVEALED') return 'Verified';
@@ -160,6 +160,7 @@ const Activities = () => {
                 {flexRender(cell.column.columnDef.cell, {
                   ...cell.getContext(),
                   claimableAfter: game?.claimableAfter,
+                  gameAddress: game?.address,
                 })}
               </TableCell>
             ))}
