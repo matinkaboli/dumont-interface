@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { Icon, Input } from '@/components';
 import { Props as InputProps } from '@/components/Input';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import transformRanks from '@/helpers/transformedRanks';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
@@ -21,39 +22,57 @@ const inputProps: InputProps = {
   rightSection: <Image src="/images/USDT.svg" width={24} height={24} alt="" />,
 };
 
-interface Props {
-  control: Control<BetData>;
-  disabledButton: boolean;
-  inputErrors?: FieldErrors<BetData>;
-  setValue: UseFormSetValue<BetData>;
-}
+const mobileInputProps: InputProps = {
+  name: 'amount',
+  size: 'md',
+  placeholder: 'USDT amount',
+  rightSectionPointerEvents: 'auto',
+};
 
 const inputValidation = {
   required: 'Bet amount is required.',
   pattern: { value: /^\d+$/, message: 'This input is number only.' },
 };
 
-const Amount = ({ control, disabledButton, inputErrors, setValue }: Props) => {
+const calculateOdds = (
+  keys: string[],
+  cardOccurrences: { [key: string]: number },
+  cardsLength: number,
+) => {
+  if (keys.length === 0) return 0;
+
+  const transformedKeys = transformRanks(keys);
+  const total = transformedKeys.reduce((sum, key) => sum + (cardOccurrences[key] || 0), 0);
+
+  return cardsLength - total;
+};
+
+interface Props {
+  control: Control<BetData>;
+  disabledButton: boolean;
+  inputErrors?: FieldErrors<BetData>;
+  keys: string[];
+  setValue: UseFormSetValue<BetData>;
+  validCardNumbersLength: number;
+  cardOccurrences: { [key: string]: number };
+}
+
+const Amount = ({
+  control,
+  disabledButton,
+  inputErrors,
+  setValue,
+  keys,
+  validCardNumbersLength,
+  cardOccurrences,
+}: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const [isOpen, setIsOpen] = useState(false);
+  const odds = calculateOdds(keys, cardOccurrences, validCardNumbersLength);
+
   const handleToggle = () => setIsOpen((prev) => !prev);
 
-  const setMaxValue = () => {
-    setValue('amount', `${balance}`);
-  };
-
-  const mobileInputProps: InputProps = {
-    name: 'amount',
-    size: 'md',
-    placeholder: 'USDT amount',
-    rightSectionPointerEvents: 'auto',
-    rightSection: (
-      <div className="flex gap-3 items-center">
-        <span className="text-sm font-medium text-neutral-400">USDT</span>
-        <MaxButton onClick={setMaxValue} />
-      </div>
-    ),
-  };
+  const setMaxValue = () => setValue('amount', `${balance}`);
 
   return (
     <>
@@ -76,7 +95,7 @@ const Amount = ({ control, disabledButton, inputErrors, setValue }: Props) => {
             />
 
             <AmountInfo
-              odd={6.6}
+              odd={odds}
               total={220}
               className="gap-3 mt-4"
               labelClassName="text-white"
@@ -97,7 +116,17 @@ const Amount = ({ control, disabledButton, inputErrors, setValue }: Props) => {
               control={control}
               rules={inputValidation}
               render={({ field }) => (
-                <Input errors={inputErrors} {...mobileInputProps} {...field} />
+                <Input
+                  {...field}
+                  {...mobileInputProps}
+                  errors={inputErrors}
+                  rightSection={
+                    <div className="flex gap-3 items-center">
+                      <span className="text-sm font-medium text-neutral-400">USDT</span>
+                      <MaxButton onClick={setMaxValue} />
+                    </div>
+                  }
+                />
               )}
             />
           </div>
@@ -124,7 +153,7 @@ const Amount = ({ control, disabledButton, inputErrors, setValue }: Props) => {
           animate={{ height: isOpen ? 'auto' : '0' }}
         >
           <AmountInfo
-            odd={6.6}
+            odd={odds}
             total={220}
             className="bg-neutral-750 border border-neutral-600 rounded-lg px-4 py-2 gap-2"
             labelClassName="text-neutral-400"

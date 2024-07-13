@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import BN from 'bignumber.js';
@@ -8,7 +8,7 @@ import { swiperRef } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';
-import { getGame } from '@/redux/features/gameSlice';
+import { Card, getGame } from '@/redux/features/gameSlice';
 import transformedRanks from '@/helpers/transformedRanks';
 import guessArrayToNumber from '@/helpers/guessArrayToNumber';
 import formatUnits from '@/helpers/formatUnits';
@@ -27,6 +27,28 @@ import Amount from './Amount';
 import ConfirmBet from './ConfirmBet';
 import ResultMessage from './ConfirmBet/ResultMessage';
 
+const useCardData = () => {
+  const { data: game, activeCardIndex } = useTypedSelector((state) => state.game);
+
+  const validCardNumbers = useMemo(
+    () =>
+      game?.cards.filter((card: Card) => card.number !== -1).map((card: Card) => card.number) || [],
+    [game?.cards],
+  );
+
+  const cardOccurrences = useMemo(() => {
+    const obj: { [key: string]: number } = Object.fromEntries(
+      Array.from({ length: 13 }, (_, i) => [i.toString(), 0]),
+    );
+    validCardNumbers.forEach((number) => {
+      obj[(number % 13).toString()]++;
+    });
+    return obj;
+  }, [validCardNumbers]);
+
+  return { game, activeCardIndex, validCardNumbers, cardOccurrences };
+};
+
 export interface BetData {
   amount: string;
   keys: string[];
@@ -35,7 +57,7 @@ export interface BetData {
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
-  const { data: game, activeCardIndex } = useTypedSelector((state) => state.game);
+  const { game, activeCardIndex, validCardNumbers, cardOccurrences } = useCardData();
   const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
 
   const {
@@ -195,13 +217,21 @@ const Board = () => {
       className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4"
     >
       <div className="col-span-2 md:order-1 order-2">
-        <KeyBoard values={keys} setValue={setValue} />
+        <KeyBoard
+          values={keys}
+          setValue={setValue}
+          validCardNumbersLength={validCardNumbers.length}
+          cardOccurrences={cardOccurrences}
+        />
       </div>
       <div className="col-span-1 md:order-2 order-1">
         <Amount
+          keys={keys}
           setValue={setValue}
           inputErrors={errors}
           control={control}
+          validCardNumbersLength={validCardNumbers.length}
+          cardOccurrences={cardOccurrences}
           disabledButton={
             !isValid || !isDirty || game?.cards[activeCardIndex - 1]?.number !== -1 || isEmpty(keys)
           }
