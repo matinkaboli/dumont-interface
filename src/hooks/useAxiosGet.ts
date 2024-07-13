@@ -5,6 +5,7 @@ interface UseAxiosGet<T> {
   data: T | null;
   error: AxiosError | null;
   loading: boolean;
+  refetch: () => Promise<void>;
 }
 
 interface UseAxiosGetOptions {
@@ -21,18 +22,18 @@ const useAxiosGet = <T = unknown>(
   const [error, setError] = useState<AxiosError | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response: AxiosResponse<{ result: T }> = await axios.get(url, config);
-        setData(response.data?.result);
-      } catch (err) {
-        setError(err as AxiosError);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const response: AxiosResponse<{ result: T }> = await axios.get(url, config);
+      setData(response.data?.result);
+    } catch (err) {
+      setError(err as AxiosError);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
 
     if (interval) {
@@ -41,7 +42,11 @@ const useAxiosGet = <T = unknown>(
     }
   }, [url, config]);
 
-  return { data, error, loading };
+  const refetch = async () => {
+    await fetchData();
+  };
+
+  return { data, error, loading, refetch };
 };
 
 export default useAxiosGet;

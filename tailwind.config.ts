@@ -108,7 +108,8 @@ const config: Config = {
         'gradiant-slide': 'linear-gradient(180deg, #7A10C5 0%, #DD04F1 100%)',
         'gradiant-inside-horiz':
           'linear-gradient(180deg, #2E2D36, transparent 30%, transparent 70%, #2E2D36)',
-        'gradiant-blur': 'linear-gradient(247.35deg, rgba(250, 0, 255, 0.17) 1.52%, rgba(255, 255, 255, 0) 101.92%)'
+        'gradiant-blur': 'linear-gradient(247.35deg, rgba(250, 0, 255, 0.17) 1.52%, rgba(255, 255, 255, 0) 101.92%)',
+        'gradiant-text': 'linear-gradient(118.71deg, #FAFF00 28.61%, #FF5BCF 58.83%, #5100FE 103.65%, #52008C 120.05%)',
       },
       fontSize: {
         xs: ['12px', '18px'],

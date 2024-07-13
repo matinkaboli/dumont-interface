@@ -12,7 +12,7 @@ import { Button } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import ConnectedWallet from './ConnectedWallet';
-import GiftButton from './GiftButton';
+import RewardButton from './RewardButton';
 
 // Custom hook for fetching config details
 const useFetchDetails = () => {
@@ -57,7 +57,7 @@ const ConnectWallet = () => {
           <>
             {isConnected ? (
               <div className="flex gap-2">
-                <GiftButton />
+                <RewardButton />
                 <ConnectedWallet />
               </div>
             ) : (
