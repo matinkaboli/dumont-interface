@@ -199,6 +199,7 @@ const Board = () => {
       </div>
       <div className="col-span-1 md:order-2 order-1">
         <Amount
+          setValue={setValue}
           inputErrors={errors}
           control={control}
           disabledButton={

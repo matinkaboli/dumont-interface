@@ -1,12 +1,13 @@
 'use client';
 
-import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Control, Controller, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { Icon, Input } from '@/components';
 import { Props as InputProps } from '@/components/Input';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
@@ -20,23 +21,11 @@ const inputProps: InputProps = {
   rightSection: <Image src="/images/USDT.svg" width={24} height={24} alt="" />,
 };
 
-const mobileInputProps: InputProps = {
-  name: 'amount',
-  size: 'md',
-  placeholder: 'USDT amount',
-  rightSectionPointerEvents: 'auto',
-  rightSection: (
-    <div className="flex gap-3 items-center">
-      <span className="text-sm font-medium text-neutral-400">USDT</span>
-      <MaxButton />
-    </div>
-  ),
-};
-
 interface Props {
   control: Control<BetData>;
   disabledButton: boolean;
   inputErrors?: FieldErrors<BetData>;
+  setValue: UseFormSetValue<BetData>;
 }
 
 const inputValidation = {
@@ -44,9 +33,27 @@ const inputValidation = {
   pattern: { value: /^\d+$/, message: 'This input is number only.' },
 };
 
-const Amount = ({ control, disabledButton, inputErrors }: Props) => {
+const Amount = ({ control, disabledButton, inputErrors, setValue }: Props) => {
+  const { balance } = useTypedSelector((state) => state.account);
   const [isOpen, setIsOpen] = useState(false);
-  const handleToggle = () => setIsOpen(!isOpen);
+  const handleToggle = () => setIsOpen((prev) => !prev);
+
+  const setMaxValue = () => {
+    setValue('amount', `${balance}`);
+  };
+
+  const mobileInputProps: InputProps = {
+    name: 'amount',
+    size: 'md',
+    placeholder: 'USDT amount',
+    rightSectionPointerEvents: 'auto',
+    rightSection: (
+      <div className="flex gap-3 items-center">
+        <span className="text-sm font-medium text-neutral-400">USDT</span>
+        <MaxButton onClick={setMaxValue} />
+      </div>
+    ),
+  };
 
   return (
     <>
@@ -56,7 +63,7 @@ const Amount = ({ control, disabledButton, inputErrors }: Props) => {
           <div>
             <div className="flex justify-between mb-2">
               <div className="font-medium text-xs text-white">Amount</div>
-              <MaxButton>
+              <MaxButton onClick={setMaxValue}>
                 <Icon name="caret-up" />
               </MaxButton>
             </div>
