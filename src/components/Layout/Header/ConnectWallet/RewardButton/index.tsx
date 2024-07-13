@@ -21,7 +21,7 @@ const RewardButton = () => {
   const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
 
-  const { data: balancesData } = useContractRead({
+  const { data: balancesData, refetch: refetetchBalances } = useContractRead({
     address: details?.montRewardManager,
     abi: MONT_REWARD_MANAGER_ABI,
     functionName: 'balances',
@@ -71,6 +71,8 @@ const RewardButton = () => {
   }
 
   function onSuccess() {
+    refetetchBalances();
+
     setClaimed(true);
 
     const claimValue = parseUnits(balancesData as string, 18).toNumber();
