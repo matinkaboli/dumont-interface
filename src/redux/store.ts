@@ -3,7 +3,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import accountReducer from './features/accountSlice';
 import dialogReducer from './features/dialogSlice';
 import betReducer from './features/betSlice';
-import cardsReducer from './features/cardsSlice';
 import gameReducer from './features/gameSlice';
 import infoReducer from './features/configSlice';
 
@@ -12,7 +11,6 @@ const store = configureStore({
     account: accountReducer,
     dialog: dialogReducer,
     bet: betReducer,
-    cards: cardsReducer,
     game: gameReducer,
     config: infoReducer,
   },
