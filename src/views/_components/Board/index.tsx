@@ -38,16 +38,18 @@ const useCardData = () => {
 
   const cardOccurrences = useMemo(() => {
     const obj: { [key: string]: number } = Object.fromEntries(
-      Array.from({ length: 13 }, (_, i) => [i.toString(), 0]),
+      Array.from({ length: 13 }, (_, i) => [i.toString(), 4]),
     );
     validCardNumbers.forEach((number) => {
-      obj[(number % 13).toString()]++;
+      obj[(number % 13).toString()]--;
     });
     return obj;
   }, [validCardNumbers]);
 
   return { game, activeCardIndex, validCardNumbers, cardOccurrences };
 };
+
+export const TOTAL_CARDS_LENGTH = 52;
 
 export interface BetData {
   amount: string;

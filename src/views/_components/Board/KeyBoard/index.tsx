@@ -3,7 +3,7 @@ import { UseFormSetValue } from 'react-hook-form';
 
 import Key from './Keys/Key';
 import RevealKey from './Keys/RevealKey';
-import { BetData } from '../index';
+import { BetData, TOTAL_CARDS_LENGTH } from '../index';
 
 export interface KeyType {
   value: string;
@@ -47,7 +47,7 @@ const KeyBoard = ({ values, setValue, validCardNumbersLength, cardOccurrences }:
         <Key
           key={key.value}
           value={key.value}
-          weight={validCardNumbersLength - cardOccurrences[key.number]}
+          weight={(TOTAL_CARDS_LENGTH - validCardNumbersLength) / cardOccurrences[key.number]}
           isSelected={values.includes(key.value)}
           onClick={() => onClickKey(key.value)}
         />

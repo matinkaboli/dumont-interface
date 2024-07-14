@@ -13,7 +13,7 @@ import transformRanks from '@/helpers/transformedRanks';
 import AmountInfo from './Info';
 import BetButton from './BetButton';
 import MaxButton from './MaxButton';
-import { BetData } from '../index';
+import { BetData, TOTAL_CARDS_LENGTH } from '../index';
 
 const inputProps: InputProps = {
   name: 'amount',
@@ -44,7 +44,8 @@ const calculateOdds = (
   const transformedKeys = transformRanks(keys);
   const total = transformedKeys.reduce((sum, key) => sum + (cardOccurrences[key] || 0), 0);
 
-  return cardsLength - total;
+  const result = (TOTAL_CARDS_LENGTH - cardsLength) / total;
+  return Math.floor(result * 10) / 10;
 };
 
 interface Props {
