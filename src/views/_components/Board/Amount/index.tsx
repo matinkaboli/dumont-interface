@@ -70,6 +70,7 @@ const Amount = ({
   const { balance } = useTypedSelector((state) => state.account);
   const [isOpen, setIsOpen] = useState(false);
   const odds = calculateOdds(keys, cardOccurrences, validCardNumbersLength);
+  const payout = Math.floor(control._fields.amount?._f.value * odds * 10) / 10;
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 
@@ -97,7 +98,7 @@ const Amount = ({
 
             <AmountInfo
               odd={odds}
-              total={220}
+              total={payout}
               className="gap-3 mt-4"
               labelClassName="text-white"
               valueClassName="text-white opacity-50"
@@ -155,7 +156,7 @@ const Amount = ({
         >
           <AmountInfo
             odd={odds}
-            total={220}
+            total={payout}
             className="bg-neutral-750 border border-neutral-600 rounded-lg px-4 py-2 gap-2"
             labelClassName="text-neutral-400"
             valueClassName="text-neutral-200"

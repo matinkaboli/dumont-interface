@@ -212,6 +212,7 @@ const Board = () => {
   }
 
   const keys = watch('keys');
+  // const amount = watch('amount');
 
   return (
     <form
