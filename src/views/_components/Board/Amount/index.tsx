@@ -35,7 +35,7 @@ const inputValidation = {
   pattern: { value: /^\d*\.?\d+$/, message: 'This input is number only.' },
 };
 
-const calculateOdds = (
+const calculateTotalOdds = (
   keys: string[],
   cardOccurrences: { [key: string]: number },
   cardsLength: number,
@@ -70,8 +70,8 @@ const Amount = ({
 }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const [isOpen, setIsOpen] = useState(false);
-  const odds = calculateOdds(keys, cardOccurrences, validCardNumbersLength);
-  const payout = Math.floor(control._fields.amount?._f.value * odds * 10) / 10;
+  const totalOdds = calculateTotalOdds(keys, cardOccurrences, validCardNumbersLength);
+  const payout = Math.floor(control._fields.amount?._f.value * totalOdds * 10) / 10;
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 
@@ -100,7 +100,7 @@ const Amount = ({
             />
 
             <AmountInfo
-              odd={odds}
+              odd={totalOdds}
               total={payout}
               className="gap-3 mt-4"
               labelClassName="text-white"
@@ -158,7 +158,7 @@ const Amount = ({
           animate={{ height: isOpen ? 'auto' : '0' }}
         >
           <AmountInfo
-            odd={odds}
+            odd={totalOdds}
             total={payout}
             className="bg-neutral-750 border border-neutral-600 rounded-lg px-4 py-2 gap-2"
             labelClassName="text-neutral-400"
