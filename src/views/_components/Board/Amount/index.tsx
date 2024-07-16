@@ -46,10 +46,11 @@ const calculateTotalOdds = (
   const total = transformedKeys.reduce((sum, key) => sum + (cardOccurrences[key] || 0), 0);
 
   const result = (TOTAL_CARDS_LENGTH - cardsLength) / total;
-  return Math.floor(result * 10) / 10;
+  return Math.floor(result * 100) / 100;
 };
 
 interface Props {
+  amount: string;
   control: Control<BetData>;
   disabledButton: boolean;
   inputErrors?: FieldErrors<BetData>;
@@ -60,6 +61,7 @@ interface Props {
 }
 
 const Amount = ({
+  amount,
   control,
   disabledButton,
   inputErrors,
@@ -71,14 +73,15 @@ const Amount = ({
   const { balance } = useTypedSelector((state) => state.account);
   const [isOpen, setIsOpen] = useState(false);
   const totalOdds = calculateTotalOdds(keys, cardOccurrences, validCardNumbersLength);
-  const payout = Math.floor(control._fields.amount?._f.value * totalOdds * 10) / 10;
+  const payout = isEmpty(inputErrors) ? Math.floor(+amount * totalOdds * 100) / 100 : 0;
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 
   const setMaxValue = () => {
-    const amount = isEmpty(balance) ? 0 : balance;
-    setValue('amount', `${amount}`, { shouldDirty: true, shouldValidate: true });
+    const maxAmount = isEmpty(balance) ? 0 : balance;
+    setValue('amount', `${maxAmount}`, { shouldDirty: true, shouldValidate: true });
   };
+
   return (
     <>
       {/* Desktop View */}

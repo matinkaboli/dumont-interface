@@ -212,6 +212,7 @@ const Board = () => {
   }
 
   const keys = watch('keys');
+  const amount = watch('amount');
 
   return (
     <form
@@ -228,6 +229,7 @@ const Board = () => {
       </div>
       <div className="col-span-1 md:order-2 order-1">
         <Amount
+          amount={amount}
           keys={keys}
           setValue={setValue}
           inputErrors={errors}
