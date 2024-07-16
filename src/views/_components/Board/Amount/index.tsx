@@ -9,6 +9,7 @@ import { Icon, Input } from '@/components';
 import { Props as InputProps } from '@/components/Input';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import transformRanks from '@/helpers/transformedRanks';
+import isEmpty from '@/helpers/isEmpty';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
@@ -31,7 +32,7 @@ const mobileInputProps: InputProps = {
 
 const inputValidation = {
   required: 'Bet amount is required.',
-  pattern: { value: /^\d+$/, message: 'This input is number only.' },
+  pattern: { value: /^\d*\.?\d+$/, message: 'This input is number only.' },
 };
 
 const calculateOdds = (
@@ -74,8 +75,10 @@ const Amount = ({
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 
-  const setMaxValue = () => setValue('amount', `${balance}`);
-
+  const setMaxValue = () => {
+    const amount = isEmpty(balance) ? 0 : balance;
+    setValue('amount', `${amount}`, { shouldDirty: true, shouldValidate: true });
+  };
   return (
     <>
       {/* Desktop View */}
