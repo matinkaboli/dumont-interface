@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 
-import { BetData } from '@/views/_components/Board';
 import makeApiUrl from '@/helpers/makeApiUrl';
 
 interface Result {
@@ -15,17 +14,12 @@ interface Result {
 }
 
 interface InitialState {
-  betData: BetData;
   guessedResult: Result | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: InitialState = {
-  betData: {
-    amount: '',
-    keys: [],
-  },
   guessedResult: null,
   loading: false,
   error: null,
@@ -49,14 +43,7 @@ export const postGuessedCard = createAsyncThunk<
 const betSlice = createSlice({
   name: 'bet',
   initialState,
-  reducers: {
-    setBetData(state, action: PayloadAction<BetData>) {
-      state.betData = action.payload;
-    },
-    clearBetData(state) {
-      state.betData = initialState.betData;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(postGuessedCard.pending, (state) => {
@@ -73,7 +60,5 @@ const betSlice = createSlice({
       });
   },
 });
-
-export const { setBetData, clearBetData } = betSlice.actions;
 
 export default betSlice.reducer;

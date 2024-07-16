@@ -1,7 +1,8 @@
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import InfoTooltip from '@/views/_components/InfoTooltip';
-import makeApiUrl from '@/helpers/makeApiUrl';
 import useAxiosGet from '@/hooks/useAxiosGet';
+import makeApiUrl from '@/helpers/makeApiUrl';
+
+import InfoTooltip from '@/views/_components/InfoTooltip';
 
 interface PlayerData {
   settling: number;
@@ -27,7 +28,7 @@ const BalanceList = () => {
           tooltipText="Some Info"
           className="text-neutral-200 text-base font-medium"
         />
-        <div className="text-neutral-50 text-base font-medium">{data?.settling} USDT</div>
+        <div className="text-neutral-50 text-base font-medium">{data?.settling || 0} USDT</div>
       </li>
     </ul>
   );

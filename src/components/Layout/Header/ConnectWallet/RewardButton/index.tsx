@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
+import BigNumber from 'bignumber.js';
 import { useDispatch } from 'react-redux';
 import { useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
 
 import { Confetti, Icon } from '@/components';
-import { openDialog } from '@/redux/features/dialogSlice';
+import { openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import parseUnits from '@/helpers/parseUnits';
 import MONT_REWARD_MANAGER_ABI from '@/abis/MONT_REWARD_MANAGER_ABI.json';
@@ -71,8 +72,6 @@ const RewardButton = () => {
   }
 
   function onSuccess() {
-    refetetchBalances();
-
     setClaimed(true);
 
     const claimValue = parseUnits(balancesData as string, 18).toNumber();
@@ -96,14 +95,28 @@ const RewardButton = () => {
     );
   }
 
+  function updateClaimValue(value: BigNumber) {
+    const claimValue = parseUnits(value, 18);
+    dispatch(
+      updateDialogContent(<ClaimReward claimValue={claimValue.toString()} onClaim={onClaim} />),
+    );
+  }
+
   function onOpenDialog() {
-    const claimValue = parseUnits(balancesData as string, 18).toNumber();
+    const initialValue = parseUnits(balancesData as BigNumber, 18);
 
     dispatch(
       openDialog({
-        content: <ClaimReward claimValue={claimValue} onClaim={onClaim} />,
+        content: <ClaimReward claimValue={initialValue.toString()} onClaim={onClaim} />,
       }),
     );
+
+    refetetchBalances().then((newBalance) => {
+      if (balancesData !== newBalance.data) {
+        const newValue = parseUnits(newBalance.data as BigNumber, 18);
+        updateClaimValue(newValue);
+      }
+    });
   }
 
   return (

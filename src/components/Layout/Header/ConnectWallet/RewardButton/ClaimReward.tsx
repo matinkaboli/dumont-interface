@@ -1,7 +1,7 @@
 import { Button, Icon } from '@/components';
 
 interface Props {
-  claimValue: number;
+  claimValue: string;
   onClaim: () => void;
 }
 

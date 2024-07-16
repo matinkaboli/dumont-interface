@@ -56,7 +56,7 @@ const BetButton = ({ size, disabled }: ButtonProps) => {
             ) : (
               <>
                 <div className="btn-glow" />
-                <Button {...buttonProps} className="btn-gradiant" onClick={show}>
+                <Button {...buttonProps} type="button" className="btn-gradiant" onClick={show}>
                   Connect Wallet
                 </Button>
               </>

@@ -4,6 +4,7 @@ import KeyButton from './KeyButton';
 import { KeyType } from '../index';
 
 export interface KeyProps extends Partial<KeyType> {
+  weight: number;
   isSelected?: boolean;
   className?: string;
   onClick?: () => void;
