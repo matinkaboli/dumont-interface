@@ -23,6 +23,7 @@ import RevealedCard from './RevealedCard';
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
+  const { address } = useTypedSelector((state) => state.account.profile);
   const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
 
   const {
@@ -128,6 +129,7 @@ const RevealKey = ({ className }: { className?: string }) => {
       disabled={
         isEmpty(game) ||
         isExpired ||
+        game?.player !== address ||
         game!.cards[activeCardIndex - 1]?.isFreeReveal ||
         +game!.freeRevealRequests === +game!.maxFreeReveals
       }

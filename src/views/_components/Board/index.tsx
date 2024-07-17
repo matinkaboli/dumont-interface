@@ -59,6 +59,7 @@ export interface BetData {
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
+  const { address } = useTypedSelector((state) => state.account.profile);
   const { game, activeCardIndex, isExpired, validCardNumbers, cardOccurrences } = useCardData();
   const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
 
@@ -241,7 +242,8 @@ const Board = () => {
             !isDirty ||
             isEmpty(keys) ||
             isExpired ||
-            game?.cards[activeCardIndex - 1]?.number !== -1
+            game?.cards[activeCardIndex - 1]?.number !== -1 ||
+            game?.player !== address
           }
         />
       </div>
