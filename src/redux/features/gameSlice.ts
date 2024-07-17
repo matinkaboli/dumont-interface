@@ -34,6 +34,7 @@ interface State {
   loading: boolean;
   error: string | null;
   isCreated: boolean;
+  isExpired: boolean;
   data: GameData | null;
   activeCardIndex: number;
   isRefetching: boolean;
@@ -71,6 +72,7 @@ const initialState: State = {
   loading: false,
   error: null,
   isCreated: false,
+  isExpired: false,
   data: null,
   activeCardIndex: 0,
   isRefetching: false,
@@ -82,6 +84,9 @@ const gameSlice = createSlice({
   reducers: {
     setActiveCardIndex(state, action: PayloadAction<number>) {
       state.activeCardIndex = action.payload;
+    },
+    expireGame(state, action: PayloadAction<boolean>) {
+      state.isExpired = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -123,5 +128,5 @@ const gameSlice = createSlice({
   },
 });
 
-export const { setActiveCardIndex } = gameSlice.actions;
+export const { setActiveCardIndex, expireGame } = gameSlice.actions;
 export default gameSlice.reducer;
