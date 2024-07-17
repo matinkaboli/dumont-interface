@@ -34,9 +34,18 @@ interface Props {
 }
 
 const KeyBoard = ({ values, setValue, validCardNumbersLength, cardOccurrences }: Props) => {
+
   const onClickKey = (value: string) => {
     const isSelected = values.includes(value);
-    const newSelectedKeys = isSelected ? values.filter((key) => key !== value) : [...values, value];
+    let newSelectedKeys: string[];
+
+    if (isSelected) {
+      newSelectedKeys = values.filter((key) => key !== value);
+    } else if (values.length < keys.length - 1) {
+      newSelectedKeys = [...values, value];
+    } else {
+      newSelectedKeys = values;
+    }
 
     setValue('keys', newSelectedKeys);
   };
