@@ -22,7 +22,13 @@ const CreateRound = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { data: game, loading, isCreated, isRefetching } = useTypedSelector((state) => state.game);
+  const {
+    data: game,
+    loading,
+    isCreated,
+    isExpired,
+    isRefetching,
+  } = useTypedSelector((state) => state.game);
 
   useEffect(() => {
     dispatch(getGame(id as string))
@@ -40,6 +46,15 @@ const CreateRound = () => {
         }
       });
   }, []);
+
+  useEffect(() => {
+    if (isExpired) {
+      toast(
+        <ToastContent variant="neutral" title="Expired!" description="Your game has expired." />,
+        { position: 'bottom-right', toastId: 'expired' },
+      );
+    }
+  }, [isExpired]);
 
   if (isConnecting || (loading && !isRefetching))
     return <div className="text-white">Loading...</div>;

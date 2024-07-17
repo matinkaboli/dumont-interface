@@ -1,10 +1,13 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
+import { AppDispatch } from '@/redux/store';
+import { expireGame } from '@/redux/features/gameSlice';
 
 const circleSize = 12;
 
@@ -25,6 +28,7 @@ const formatTime = (time: number) => {
 };
 
 const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initialTime: number }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [isHovered, setIsHovered] = useState(false);
   const [remainingTime, setRemainingTime] = useState(initialTime);
 
@@ -35,7 +39,7 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
 
     if (remainingTime <= -1) {
       clearInterval(timer);
-      console.log('Timer expired!');
+      dispatch(expireGame(true));
     }
 
     return () => clearInterval(timer);

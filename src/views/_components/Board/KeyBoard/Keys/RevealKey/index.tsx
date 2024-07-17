@@ -23,7 +23,7 @@ import RevealedCard from './RevealedCard';
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
-  const { data: game, activeCardIndex } = useTypedSelector((state) => state.game);
+  const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
 
   const {
     write: writeRevealCard,
@@ -127,6 +127,7 @@ const RevealKey = ({ className }: { className?: string }) => {
       onClick={onReveal}
       disabled={
         isEmpty(game) ||
+        isExpired ||
         game!.cards[activeCardIndex - 1]?.isFreeReveal ||
         +game!.freeRevealRequests === +game!.maxFreeReveals
       }

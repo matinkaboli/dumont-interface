@@ -28,7 +28,7 @@ import ConfirmBet from './ConfirmBet';
 import ResultMessage from './ConfirmBet/ResultMessage';
 
 const useCardData = () => {
-  const { data: game, activeCardIndex } = useTypedSelector((state) => state.game);
+  const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
 
   const validCardNumbers = useMemo(
     () =>
@@ -46,7 +46,7 @@ const useCardData = () => {
     return obj;
   }, [validCardNumbers]);
 
-  return { game, activeCardIndex, validCardNumbers, cardOccurrences };
+  return { game, activeCardIndex, isExpired, validCardNumbers, cardOccurrences };
 };
 
 export const TOTAL_CARDS_LENGTH = 52;
@@ -59,7 +59,7 @@ export interface BetData {
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
-  const { game, activeCardIndex, validCardNumbers, cardOccurrences } = useCardData();
+  const { game, activeCardIndex, isExpired, validCardNumbers, cardOccurrences } = useCardData();
   const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
 
   const {
@@ -237,7 +237,11 @@ const Board = () => {
           validCardNumbersLength={validCardNumbers.length}
           cardOccurrences={cardOccurrences}
           disabledButton={
-            !isValid || !isDirty || game?.cards[activeCardIndex - 1]?.number !== -1 || isEmpty(keys)
+            !isValid ||
+            !isDirty ||
+            isEmpty(keys) ||
+            isExpired ||
+            game?.cards[activeCardIndex - 1]?.number !== -1
           }
         />
       </div>
