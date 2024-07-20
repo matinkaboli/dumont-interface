@@ -146,6 +146,9 @@ const Board = () => {
   function onApproveSuccess() {
     dispatch(
       openDialog({
+        dialogProps: {
+          onCloseButton: onCloseConfirmBet,
+        },
         content: (
           <ConfirmBet
             bet={betData}
@@ -167,6 +170,11 @@ const Board = () => {
         // @ts-ignore
         swiperRef?.current?.slideNext();
       });
+  }
+
+  function onCloseConfirmBet() {
+    refetchAllowance();
+    dispatch(closeDialog());
   }
 
   function onGuessCardSuccess() {
@@ -212,6 +220,9 @@ const Board = () => {
 
     dispatch(
       openDialog({
+        dialogProps: {
+          onCloseButton: onCloseConfirmBet,
+        },
         content: isApproved ? (
           <ConfirmBet
             bet={data}
