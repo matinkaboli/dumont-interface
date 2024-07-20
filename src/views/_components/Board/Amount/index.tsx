@@ -8,13 +8,12 @@ import { motion } from 'framer-motion';
 import { Icon, Input } from '@/components';
 import { Props as InputProps } from '@/components/Input';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import transformRanks from '@/helpers/transformedRanks';
 import isEmpty from '@/helpers/isEmpty';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
 import MaxButton from './MaxButton';
-import { BetData, TOTAL_CARDS_LENGTH } from '../index';
+import { BetData } from '../index';
 
 const inputProps: InputProps = {
   name: 'amount',
@@ -35,45 +34,19 @@ const inputValidation = {
   pattern: { value: /^\d*\.?\d+$/, message: 'This input is number only.' },
 };
 
-const calculateTotalOdds = (
-  keys: string[],
-  cardOccurrences: { [key: string]: number },
-  cardsLength: number,
-) => {
-  if (keys.length === 0) return 0;
-
-  const transformedKeys = transformRanks(keys);
-  const total = transformedKeys.reduce((sum, key) => sum + (cardOccurrences[key] || 0), 0);
-
-  const result = (TOTAL_CARDS_LENGTH - cardsLength) / total;
-  return Math.floor(result * 100) / 100;
-};
-
 interface Props {
-  amount: string;
   control: Control<BetData>;
   disabledButton: boolean;
   inputErrors?: FieldErrors<BetData>;
-  keys: string[];
   setValue: UseFormSetValue<BetData>;
-  validCardNumbersLength: number;
-  cardOccurrences: { [key: string]: number };
+  payout: number;
+  totalOdds: number;
 }
 
-const Amount = ({
-  amount,
-  control,
-  disabledButton,
-  inputErrors,
-  setValue,
-  keys,
-  validCardNumbersLength,
-  cardOccurrences,
-}: Props) => {
+const Amount = ({ control, disabledButton, inputErrors, setValue, payout, totalOdds }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const [isOpen, setIsOpen] = useState(false);
-  const totalOdds = calculateTotalOdds(keys, cardOccurrences, validCardNumbersLength);
-  const payout = isEmpty(inputErrors) ? Math.floor(+amount * totalOdds * 100) / 100 : 0;
+  const formattedPayout = isEmpty(inputErrors) ? payout : 0;
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 
@@ -104,7 +77,7 @@ const Amount = ({
 
             <AmountInfo
               odd={totalOdds}
-              total={payout}
+              payout={formattedPayout}
               className="gap-3 mt-4"
               labelClassName="text-white"
               valueClassName="text-white opacity-50"
@@ -162,7 +135,7 @@ const Amount = ({
         >
           <AmountInfo
             odd={totalOdds}
-            total={payout}
+            payout={formattedPayout}
             className="bg-neutral-750 border border-neutral-600 rounded-lg px-4 py-2 gap-2"
             labelClassName="text-neutral-400"
             valueClassName="text-neutral-200"

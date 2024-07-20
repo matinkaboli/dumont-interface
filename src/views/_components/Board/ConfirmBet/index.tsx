@@ -25,13 +25,20 @@ const sortKeys = (keys: string[]): string[] => {
   });
 };
 
-const ConfirmBet = ({ bet, onConfirm }: { onConfirm: () => void, bet: BetData  }) => {
+interface Props {
+  onConfirm: () => void;
+  bet: BetData;
+  payout: number;
+  totalOdds: number;
+}
+
+const ConfirmBet = ({ bet, onConfirm, totalOdds, payout }: Props) => {
   const sortedKeys = useMemo(() => sortKeys(bet.keys), [bet.keys]);
 
   const betDetails = [
     { label: 'Amount', value: `${bet.amount} USDT` },
-    { label: 'Overall odds', value: 'x3.4' },
-    { label: 'Possible payout', value: '$220' },
+    { label: 'Overall odds', value: `x${totalOdds}` },
+    { label: 'Possible payout', value: `$${payout}` },
   ];
 
   return (

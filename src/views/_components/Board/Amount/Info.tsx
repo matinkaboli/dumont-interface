@@ -5,7 +5,7 @@ interface Props {
   labelClassName?: string;
   valueClassName?: string;
   odd: number;
-  total: number;
+  payout: number;
 }
 
 const AmountInfo = ({
@@ -13,7 +13,7 @@ const AmountInfo = ({
   labelClassName = '',
   valueClassName = '',
   odd,
-  total,
+  payout,
 }: Props) => {
   return (
     <ul className={clsx('flex flex-col', className)}>
@@ -23,7 +23,7 @@ const AmountInfo = ({
       </li>
       <li className="text-sm font-medium flex-between">
         <span className={labelClassName}>Possible payout</span>
-        <span className={valueClassName}>${total}</span>
+        <span className={valueClassName}>${payout}</span>
       </li>
     </ul>
   );
