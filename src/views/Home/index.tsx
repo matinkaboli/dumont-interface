@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { redirect, useParams, usePathname } from 'next/navigation';
 import axios from 'axios';
 
 import { getPlayerGames, redirectPlayer } from '@/redux/features/accountSlice';
@@ -28,16 +28,15 @@ const fetchReferrerAddress = async (id: string) => {
 };
 
 const Home = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
   const pathname = usePathname();
-  const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
   const {
     profile: { isConnected, isConnecting, address },
     isRedirected,
     loading,
   } = useTypedSelector((state) => state.account);
-  const [localLoading, setLocalLoading] = useState<boolean>(true);
+  const [redirectId, setRedirectId] = useState<string>('');
 
   const hasReferralId = useMemo(() => params?.id && pathname.includes('/i/'), [params, pathname]);
 
@@ -49,29 +48,31 @@ const Home = () => {
 
   useEffect(() => {
     if (address) {
-      dispatch(getPlayerGames(address))
-        .unwrap()
-        .then((result) => {
-          const timeLeft = +result[0].duration - timeLeftInSeconds(result[0].createdAt);
-          if (timeLeft > 0 && !isRedirected) {
-            dispatch(redirectPlayer(true));
-            router.push(`/${result[0].id}`);
-          }
-        })
-        .finally(() => {
-          setLocalLoading(false);
-        });
+      handlePlayerGames(address);
     }
   }, [address]);
 
-  if (isConnecting || loading || localLoading)
+  const handlePlayerGames = (addr: `0x${string}`) => {
+    dispatch(getPlayerGames(addr))
+      .unwrap()
+      .then((result) => {
+        const timeLeft = +result[0].duration - timeLeftInSeconds(result[0].createdAt);
+
+        if (timeLeft > 0 && !isRedirected) {
+          setRedirectId(result[0].id);
+        } else {
+          setRedirectId('');
+        }
+      })
+      .finally(() => {
+        dispatch(redirectPlayer(true));
+      });
+  };
+
+  if (isConnecting || loading)
     return <div className="text-center text-white mt-16">Loading...</div>;
 
-  // if (!isRedirected && redirectId ) {
-  //   // dispatch(redirectPlayer(true));
-  //
-  //   redirect(`/${redirectId}`);
-  // }
+  if (redirectId) redirect(`/${redirectId}`);
 
   return (
     <div className="flex flex-col gap-4">
