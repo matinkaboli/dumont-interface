@@ -36,8 +36,10 @@ interface Props {
 }
 
 const KeyBoard = ({ values, setValue, validCardNumbersLength, cardOccurrences }: Props) => {
-  const calcWeight = (keyNumber: string) =>
-    (TOTAL_CARDS_LENGTH - validCardNumbersLength) / cardOccurrences[keyNumber];
+  const calcWeight = (keyNumber: string) => {
+    const weight = (TOTAL_CARDS_LENGTH - validCardNumbersLength) / cardOccurrences[keyNumber];
+    return formatDecimal({ amount: weight, decimalPlaces: 2 });
+  };
 
   const onClickKey = (value: string) => {
     const isSelected = values.includes(value);
@@ -60,7 +62,7 @@ const KeyBoard = ({ values, setValue, validCardNumbersLength, cardOccurrences }:
         <Key
           key={key.value}
           value={key.value}
-          weight={formatDecimal({ amount: calcWeight(key.number), decimalPlaces: 2 })}
+          weight={calcWeight(key.number)}
           isSelected={values.includes(key.value)}
           onClick={() => onClickKey(key.value)}
         />
