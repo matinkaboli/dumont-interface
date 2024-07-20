@@ -14,6 +14,7 @@ import transformRanks from '@/helpers/transformedRanks';
 import guessArrayToNumber from '@/helpers/guessArrayToNumber';
 import formatUnits from '@/helpers/formatUnits';
 import isEmpty from '@/helpers/isEmpty';
+import formatDecimal from '@/helpers/formatDecimal';
 import { useApproval } from '@/hooks/useApproval';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
@@ -41,7 +42,7 @@ const calculateTotalOdds = (
   const total = transformedKeys.reduce((sum, key) => sum + (cardOccurrences[key] || 0), 0);
 
   const result = (TOTAL_CARDS_LENGTH - cardsLength) / total;
-  return Math.floor(result * 100) / 100;
+  return formatDecimal({ amount: result, decimalPlaces: 2 });
 };
 
 const useCardData = () => {
@@ -97,7 +98,7 @@ const Board = () => {
   const amount = watch('amount');
 
   const totalOdds = calculateTotalOdds(keys, cardOccurrences, validCardNumbers.length);
-  const payout = Math.floor(+amount * totalOdds * 100) / 100;
+  const payout = formatDecimal({ amount: +amount * totalOdds, decimalPlaces: 2 });
 
   const { allowanceData, sendApprove, isApproveLoading, refetchAllowance } = useApproval(
     game?.address,
