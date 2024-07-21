@@ -10,9 +10,11 @@ import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';
 import { Card, getGame } from '@/redux/features/gameSlice';
 import transformedRanks from '@/helpers/transformedRanks';
+import transformRanks from '@/helpers/transformedRanks';
 import guessArrayToNumber from '@/helpers/guessArrayToNumber';
 import formatUnits from '@/helpers/formatUnits';
 import isEmpty from '@/helpers/isEmpty';
+import formatDecimal from '@/helpers/formatDecimal';
 import { useApproval } from '@/hooks/useApproval';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
@@ -26,6 +28,22 @@ import KeyBoard from './KeyBoard';
 import Amount from './Amount';
 import ConfirmBet from './ConfirmBet';
 import ResultMessage from './ConfirmBet/ResultMessage';
+
+export const TOTAL_CARDS_LENGTH = 52;
+
+const calculateTotalOdds = (
+  keys: string[],
+  cardOccurrences: { [key: string]: number },
+  cardsLength: number,
+) => {
+  if (keys.length === 0) return 0;
+
+  const transformedKeys = transformRanks(keys);
+  const total = transformedKeys.reduce((sum, key) => sum + (cardOccurrences[key] || 0), 0);
+
+  const result = (TOTAL_CARDS_LENGTH - cardsLength) / total;
+  return formatDecimal({ amount: result, decimalPlaces: 2 });
+};
 
 const useCardData = () => {
   const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
@@ -48,8 +66,6 @@ const useCardData = () => {
 
   return { game, activeCardIndex, isExpired, validCardNumbers, cardOccurrences };
 };
-
-export const TOTAL_CARDS_LENGTH = 52;
 
 export interface BetData {
   amount: string;
@@ -77,6 +93,12 @@ const Board = () => {
       keys: [],
     },
   });
+
+  const keys = watch('keys');
+  const amount = watch('amount');
+
+  const totalOdds = calculateTotalOdds(keys, cardOccurrences, validCardNumbers.length);
+  const payout = formatDecimal({ amount: +amount * totalOdds, decimalPlaces: 2 });
 
   const { allowanceData, sendApprove, isApproveLoading, refetchAllowance } = useApproval(
     game?.address,
@@ -125,7 +147,17 @@ const Board = () => {
   function onApproveSuccess() {
     dispatch(
       openDialog({
-        content: <ConfirmBet bet={betData} onConfirm={() => onConfirmBet(betData)} />,
+        dialogProps: {
+          onCloseButton: onCloseConfirmBet,
+        },
+        content: (
+          <ConfirmBet
+            bet={betData}
+            totalOdds={totalOdds}
+            payout={payout}
+            onConfirm={() => onConfirmBet(betData)}
+          />
+        ),
       }),
     );
   }
@@ -139,6 +171,11 @@ const Board = () => {
         // @ts-ignore
         swiperRef?.current?.slideNext();
       });
+  }
+
+  function onCloseConfirmBet() {
+    refetchAllowance();
+    dispatch(closeDialog());
   }
 
   function onGuessCardSuccess() {
@@ -184,8 +221,16 @@ const Board = () => {
 
     dispatch(
       openDialog({
+        dialogProps: {
+          onCloseButton: onCloseConfirmBet,
+        },
         content: isApproved ? (
-          <ConfirmBet bet={data} onConfirm={() => onConfirmBet(data)} />
+          <ConfirmBet
+            bet={data}
+            totalOdds={totalOdds}
+            payout={payout}
+            onConfirm={() => onConfirmBet(data)}
+          />
         ) : (
           <ApproveAllowance onApprove={() => sendApprove(data.amount)} />
         ),
@@ -212,9 +257,6 @@ const Board = () => {
     }
   }
 
-  const keys = watch('keys');
-  const amount = watch('amount');
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -230,13 +272,11 @@ const Board = () => {
       </div>
       <div className="col-span-1 md:order-2 order-1">
         <Amount
-          amount={amount}
-          keys={keys}
+          payout={payout}
+          totalOdds={totalOdds}
           setValue={setValue}
           inputErrors={errors}
           control={control}
-          validCardNumbersLength={validCardNumbers.length}
-          cardOccurrences={cardOccurrences}
           disabledButton={
             !isValid ||
             !isDirty ||

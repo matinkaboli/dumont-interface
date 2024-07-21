@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
+import formatDecimal from '@/helpers/formatDecimal';
+
 import Key from './Keys/Key';
 import RevealKey from './Keys/RevealKey';
 import { BetData, TOTAL_CARDS_LENGTH } from '../index';
@@ -34,6 +36,10 @@ interface Props {
 }
 
 const KeyBoard = ({ values, setValue, validCardNumbersLength, cardOccurrences }: Props) => {
+  const calcWeight = (keyNumber: string) => {
+    const weight = (TOTAL_CARDS_LENGTH - validCardNumbersLength) / cardOccurrences[keyNumber];
+    return formatDecimal({ amount: weight, decimalPlaces: 2 });
+  };
 
   const onClickKey = (value: string) => {
     const isSelected = values.includes(value);
@@ -56,7 +62,7 @@ const KeyBoard = ({ values, setValue, validCardNumbersLength, cardOccurrences }:
         <Key
           key={key.value}
           value={key.value}
-          weight={(TOTAL_CARDS_LENGTH - validCardNumbersLength) / cardOccurrences[key.number]}
+          weight={calcWeight(key.number)}
           isSelected={values.includes(key.value)}
           onClick={() => onClickKey(key.value)}
         />
