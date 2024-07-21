@@ -8,24 +8,9 @@ import clsx from 'clsx';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { expireGame } from '@/redux/features/gameSlice';
+import formatDurationFromSeconds from '@/helpers/formatDurationFromSeconds';
 
 const circleSize = 12;
-
-const formatTime = (time: number) => {
-  const hours = Math.floor(time / 3600);
-  const minutes = Math.floor((time % 3600) / 60);
-  const seconds = time % 60;
-
-  let timeString = '';
-
-  if (hours > 0) timeString += `${hours}h `;
-
-  if (minutes > 0 || hours > 0) timeString += `${minutes}m `;
-
-  if (seconds > 0 || (hours === 0 && minutes === 0)) timeString += `${seconds}s `;
-
-  return timeString.trim() || 'There is no time';
-};
 
 const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initialTime: number }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,8 +32,6 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
 
   const showTooltip = () => setIsHovered(true);
   const hideTooltip = () => setIsHovered(false);
-
-  const formattedTime = useMemo(() => formatTime(remainingTime), [remainingTime]);
 
   const progressBarWidth = useMemo(() => {
     return initialTime <= 0 ? 0 : (remainingTime / duration) * 100;
@@ -87,7 +70,7 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
           <TooltipContent className="text-sm font-medium flex items-center gap-1">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary-250" />
             <span className={remainingTime <= -1 ? 'text-neutral-300' : 'text-primary-250'}>
-              {formattedTime}
+              {formatDurationFromSeconds(remainingTime)}
             </span>
             <span className="text-neutral-300">has left</span>
           </TooltipContent>
