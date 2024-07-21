@@ -12,7 +12,7 @@ export interface Card {
   _id: string;
 }
 
-interface GameData {
+export interface GameData {
   _id: string;
   id: string;
   address: `0x${string}`;

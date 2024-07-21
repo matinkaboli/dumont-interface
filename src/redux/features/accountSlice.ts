@@ -1,4 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios, { AxiosError } from 'axios';
+
+import makeApiUrl from '@/helpers/makeApiUrl';
+
+import { GameData } from './gameSlice';
 
 interface Account {
   address: `0x${string}` | undefined;
@@ -9,12 +14,34 @@ interface Account {
 interface InitialState {
   profile: Account;
   balance?: string;
+  games: GameData[];
+  loading: boolean;
+  error: string | null;
+  isRedirected: boolean;
 }
 
 const initialState: InitialState = {
   profile: { address: undefined, isConnected: false, isConnecting: true },
   balance: undefined,
+  games: [],
+  loading: false,
+  error: null,
+  isRedirected: false,
 };
+
+export const getPlayerGames = createAsyncThunk<GameData[], string>(
+  'api/getPlayerGames',
+  async (address: string, { rejectWithValue }) => {
+    try {
+      const url = makeApiUrl(`players/${address}/games`);
+      const response = await axios.get(url);
+      return response.data.result;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      return rejectWithValue(axiosError.message);
+    }
+  },
+);
 
 const accountSlice = createSlice({
   name: 'account',
@@ -26,8 +53,26 @@ const accountSlice = createSlice({
     setBalance: (state, action: PayloadAction<string | undefined>) => {
       state.balance = action.payload;
     },
+    redirectPlayer(state, action: PayloadAction<boolean>) {
+      state.isRedirected = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getPlayerGames.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getPlayerGames.fulfilled, (state, action: PayloadAction<GameData[]>) => {
+        state.loading = false;
+        state.games = action.payload;
+      })
+      .addCase(getPlayerGames.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 
-export const { setAccount, setBalance } = accountSlice.actions;
+export const { setAccount, setBalance, redirectPlayer } = accountSlice.actions;
 export default accountSlice.reducer;
