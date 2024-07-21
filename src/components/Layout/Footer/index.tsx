@@ -1,30 +1,58 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import formatDurationFromSeconds from '@/helpers/formatDurationFromSeconds';
+import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
+import isEmpty from '@/helpers/isEmpty';
 
 import Round from './Round';
 
+const formatTime = (duration: string, createdAt: Date) => {
+  const time = +duration - timeLeftInSeconds(createdAt);
+  if (time <= 0) {
+    return 'There is no time';
+  }
+
+  return formatDurationFromSeconds(time);
+};
+
 const Footer = ({ className }: { className?: string }) => {
-  const { isCreated } = useTypedSelector((state) => state.game);
+  const { data: game } = useTypedSelector((state) => state.game);
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    if (!isEmpty(game)) {
+      const updateFormattedTime = () => {
+        setCurrentTime(formatTime(game!.duration, game!.createdAt));
+      };
+
+      updateFormattedTime();
+
+      const intervalId = setInterval(updateFormattedTime, 1000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [game]);
 
   return (
     <footer className={clsx('md:flex hidden justify-center items-center', className)}>
-      {isCreated ? (
+      {isEmpty(game) ? (
+        <Round />
+      ) : (
         <TooltipProvider delayDuration={100}>
           <Tooltip>
             <TooltipTrigger>
-              <Round roundTime="2h 20m 12s" />
+              <Round roundTime={currentTime} />
             </TooltipTrigger>
             <TooltipContent className="w-48 !text-xs">
               Each round has an expiration time. After that it becomes inactive.
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      ) : (
-        <Round />
       )}
     </footer>
   );
