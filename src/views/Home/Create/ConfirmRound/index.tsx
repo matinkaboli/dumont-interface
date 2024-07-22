@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { useContractWrite, useWaitForTransaction } from 'wagmi';
 import BN from 'bignumber.js';
+import axios from 'axios';
 
 import { Button } from '@/components';
 import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
@@ -13,6 +14,7 @@ import { useApproval } from '@/hooks/useApproval';
 import extractGameId from '@/helpers/extractGameId';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 import formatUnits from '@/helpers/formatUnits';
+import makeApiUrl from '@/helpers/makeApiUrl';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -23,13 +25,18 @@ import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 import Confirm from './Confirm';
 
 const approveValue = '1';
+const defaultAddress = '0x0000000000000000000000000000000000000000';
 
 const ConfirmRound = () => {
   const router = useRouter();
+  const params = useParams();
+  const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
+  const { address } = useTypedSelector((state) => state.account.profile);
   const [redirectId, setRedirectId] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0); // The active index corresponds to the index in the long loading array.
+  const [referralAddress, setReferralAddress] = useState<`0x${string}`>();
   const { allowanceData, sendApprove, isApproveLoading } = useApproval(
     details?.gameFactory,
     onApproveSuccess,
@@ -44,7 +51,7 @@ const ConfirmRound = () => {
     address: details?.gameFactory,
     abi: GAME_FACTORY_ABI,
     functionName: 'createGame',
-    args: ['0x0000000000000000000000000000000000000000'],
+    args: [referralAddress ?? defaultAddress],
     onError: () => onError('Creating was unsuccessful', onCreateGame),
     onSuccess: () => setActiveIndex(1),
   });
@@ -56,6 +63,27 @@ const ConfirmRound = () => {
     onSettled: onCreateGameSettled,
     onError: () => onError('Creating was unsuccessful', onCreateGame),
   });
+
+  useEffect(() => {
+    const hasReferralId = params?.id && pathname.includes('/i/');
+    const getReferral = async () => {
+      if (hasReferralId) {
+        try {
+          const response = await axios.get(makeApiUrl(`referrals/${params.id}`));
+          const referralAddress = response?.data?.result?.address;
+          if (referralAddress === address) {
+            setReferralAddress(defaultAddress);
+          } else {
+            setReferralAddress(referralAddress);
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+    };
+
+    getReferral();
+  }, [params.id, pathname]);
 
   useEffect(() => {
     if (isApproveLoading || isCreateGameLoading) {
@@ -151,7 +179,9 @@ const ConfirmRound = () => {
     onError('Approve was unsuccessful', () => sendApprove(approveValue));
   }
 
-  const onCreateGame = () => writeCreateGame?.();
+  const onCreateGame = () => {
+    writeCreateGame?.();
+  };
 
   const onCreateRound = () => {
     const isApproved = new BN(allowanceData as string).isGreaterThanOrEqualTo(
