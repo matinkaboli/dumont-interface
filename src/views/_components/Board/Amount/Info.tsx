@@ -5,7 +5,7 @@ interface Props {
   labelClassName?: string;
   valueClassName?: string;
   odd: number;
-  payout: number;
+  payout: string;
 }
 
 const AmountInfo = ({

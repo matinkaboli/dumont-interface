@@ -1,4 +1,5 @@
 import { Button, Icon } from '@/components';
+import humanizeAmount from '@/helpers/humanizeAmount';
 
 interface Props {
   claimValue: string;
@@ -10,7 +11,10 @@ const ClaimReward = ({ claimValue, onClaim }: Props) => {
     <div className="text-center">
       <h6 className="text-md text-white">Reward to claim</h6>
       <h2 className="font-bold text-4xl text-white mt-2">
-        <span className="bg-gradiant-text text-transparent bg-clip-text">{claimValue}</span> MONT
+        <span className="bg-gradiant-text text-transparent bg-clip-text">
+          {humanizeAmount(claimValue)}
+        </span>{' '}
+        MONT
       </h2>
 
       <Button fullWidth className="mt-8" variant="primary" radius="lg" onClick={onClaim}>
