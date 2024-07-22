@@ -25,6 +25,7 @@ import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 import Confirm from './Confirm';
 
 const approveValue = '1';
+const defaultAddress = '0x0000000000000000000000000000000000000000';
 
 const ConfirmRound = () => {
   const router = useRouter();
@@ -32,9 +33,10 @@ const ConfirmRound = () => {
   const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
+  const { address } = useTypedSelector((state) => state.account.profile);
   const [redirectId, setRedirectId] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0); // The active index corresponds to the index in the long loading array.
-  const [referralAddress, setReferralAddress] = useState();
+  const [referralAddress, setReferralAddress] = useState<`0x${string}`>();
   const { allowanceData, sendApprove, isApproveLoading } = useApproval(
     details?.gameFactory,
     onApproveSuccess,
@@ -49,7 +51,7 @@ const ConfirmRound = () => {
     address: details?.gameFactory,
     abi: GAME_FACTORY_ABI,
     functionName: 'createGame',
-    args: [referralAddress ?? '0x0000000000000000000000000000000000000000'],
+    args: [referralAddress ?? defaultAddress],
     onError: () => onError('Creating was unsuccessful', onCreateGame),
     onSuccess: () => setActiveIndex(1),
   });
@@ -68,7 +70,12 @@ const ConfirmRound = () => {
       if (hasReferralId) {
         try {
           const response = await axios.get(makeApiUrl(`referrals/${params.id}`));
-          setReferralAddress(response?.data?.result?.address);
+          const referralAddress = response?.data?.result?.address;
+          if (referralAddress === address) {
+            setReferralAddress(defaultAddress);
+          } else {
+            setReferralAddress(referralAddress);
+          }
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -173,7 +180,6 @@ const ConfirmRound = () => {
   }
 
   const onCreateGame = () => {
-    console.log(referralAddress)
     writeCreateGame?.();
   };
 
