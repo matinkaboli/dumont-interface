@@ -1,14 +1,12 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { redirect, useParams, usePathname } from 'next/navigation';
-import axios from 'axios';
+import { redirect } from 'next/navigation';
 
 import { getPlayerGames, redirectPlayer } from '@/redux/features/accountSlice';
 import { AppDispatch } from '@/redux/store';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
-import makeApiUrl from '@/helpers/makeApiUrl';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import Board from '@/views/_components/Board';
@@ -16,35 +14,14 @@ import CardDeck from '@/views/_components/CardDeck';
 
 import CreateRound from './Create';
 
-const fetchReferrerAddress = async (id: string) => {
-  try {
-    const url = makeApiUrl(`referrals/${id}`);
-    const response = await axios.get(url);
-    console.log('Data:', response.data);
-    // Add further processing or subsequent requests here
-  } catch (error) {
-    console.error('Error fetching referrer address:', error);
-  }
-};
-
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const params = useParams();
-  const pathname = usePathname();
   const {
     profile: { isConnected, isConnecting, address },
     isRedirected,
     loading,
   } = useTypedSelector((state) => state.account);
   const [redirectId, setRedirectId] = useState<string>('');
-
-  const hasReferralId = useMemo(() => params?.id && pathname.includes('/i/'), [params, pathname]);
-
-  useEffect(() => {
-    if (hasReferralId) {
-      fetchReferrerAddress(params.id as string);
-    }
-  }, [hasReferralId]);
 
   useEffect(() => {
     if (address) {
