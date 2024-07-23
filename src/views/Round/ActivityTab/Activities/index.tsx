@@ -23,6 +23,8 @@ import makeApiUrl from '@/helpers/makeApiUrl';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
+import parseUnits from '@/helpers/parseUnits';
+import humanizeAmount from '@/helpers/humanizeAmount';
 
 import getStatusDetails from '../helpers/getStatusDetails';
 import isClaimable from '../helpers/isClaimable';
@@ -68,7 +70,7 @@ const columns = [
     header: 'bet amount',
     cell: ({ getValue }) => {
       const amount = getValue()?.betAmount;
-      return amount ? `$${amount}` : '-';
+      return amount ? `$${humanizeAmount(parseUnits(amount, 6).toString())}` : '-';
     },
   }),
   columnHelper.accessor('result', {
@@ -86,7 +88,7 @@ const columns = [
       const result = getValue();
       if (!isEmpty(result)) {
         const total = new BN(result!.rate).times(result!.betAmount);
-        return `$${total}`;
+        return `$${humanizeAmount(parseUnits(total, 6).toString())}`;
       }
       return '-';
     },
@@ -115,7 +117,13 @@ const columns = [
       const value = activity.status;
 
       if (isClaimable(activity.requestedAt, claimableAfter) && value === 'GUESSED') {
-        return <ClaimButton refetch={fetchActivities} cardIndex={activity.index} gameAddress={gameAddress} />;
+        return (
+          <ClaimButton
+            refetch={fetchActivities}
+            cardIndex={activity.index}
+            gameAddress={gameAddress}
+          />
+        );
       }
       if (value === 'FREE_REVEAL_REQUESTED' || value === 'GUESSED') return `Verifying...`;
       if (value === 'REVEALED') return 'Verified';
@@ -126,7 +134,11 @@ const columns = [
 
 const Activities = () => {
   const { data: game } = useTypedSelector((state) => state.game);
-  const { data: activities, loading, refetch } = useAxiosGet<Activity[]>(
+  const {
+    data: activities,
+    loading,
+    refetch,
+  } = useAxiosGet<Activity[]>(
     useMemo(() => makeApiUrl(`games/${game?.id}/activities`), [game?.id]),
     { interval: 30000 },
   );
