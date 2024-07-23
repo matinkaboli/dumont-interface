@@ -147,20 +147,19 @@ const ConfirmRound = () => {
   }
 
   function onCreateGameSettled(data: any) {
-    if (data) {
-      const id = extractGameId(data.logs);
+    if (!data) return;
 
-      setRedirectId(id);
+    const id = extractGameId(data.logs);
+    setRedirectId(id);
 
+    const timer = setTimeout(() => {
       dispatch(postGame({ id }))
         .unwrap()
-        .then(() => {
-          setActiveIndex(3);
-        })
-        .catch(() => {
-          onError('Creating was unsuccessful', onCreateGame);
-        });
-    }
+        .then(() => setActiveIndex(3))
+        .catch(() => onError('Game creation was unsuccessful', onCreateGame));
+    }, 5000);
+
+    return () => clearTimeout(timer);
   }
 
   function onError(title: string, func: () => void) {
