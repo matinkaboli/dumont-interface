@@ -11,6 +11,7 @@ import {
 } from '@tanstack/react-table';
 
 import {
+  Loading,
   Status,
   Table,
   TableBody,
@@ -149,7 +150,12 @@ const Activities = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (loading) return <div className="text-white">Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex-center mt-14 mb-10">
+        <Loading size={32} />
+      </div>
+    );
 
   if (isEmpty(activities)) return <EmptyDataMessage message="No activity yet" />;
 

@@ -5,7 +5,7 @@ import { redirect, useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 
-import { Toast, ToastContent } from '@/components';
+import { Loading, Toast, ToastContent } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { getGame } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -57,7 +57,11 @@ const CreateRound = () => {
   }, [isExpired]);
 
   if (isConnecting || (loading && !isRefetching))
-    return <div className="text-white">Loading...</div>;
+    return (
+      <div className="min-h-[50vh] flex-center">
+        <Loading />
+      </div>
+    );
 
   if (!isConnected) {
     redirect('/');
