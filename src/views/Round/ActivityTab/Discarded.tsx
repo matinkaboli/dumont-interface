@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import { Loading } from '@/components';
 import makeApiUrl from '@/helpers/makeApiUrl';
 import getCardInfo from '@/helpers/getCardInfo';
 import useAxiosGet from '@/hooks/useAxiosGet';
@@ -15,7 +16,9 @@ const Discarded = () => {
   return (
     <>
       {loading ? (
-        <div className="text-white">Loading...</div>
+        <div className="flex-center mt-14 mb-10">
+          <Loading size={32} />
+        </div>
       ) : (
         <>
           {isEmpty(discarded) ? (

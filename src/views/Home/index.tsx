@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { redirect } from 'next/navigation';
 
+import { Loading } from '@/components';
 import { getPlayerGames, redirectPlayer } from '@/redux/features/accountSlice';
 import { AppDispatch } from '@/redux/store';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
@@ -47,7 +48,11 @@ const Home = () => {
   };
 
   if (isConnecting || loading)
-    return <div className="text-center text-white mt-16">Loading...</div>;
+    return (
+      <div className="min-h-[50vh] flex-center">
+        <Loading />
+      </div>
+    );
 
   if (redirectId) redirect(`/${redirectId}`);
 

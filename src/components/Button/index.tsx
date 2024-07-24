@@ -2,6 +2,8 @@ import React, { type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+import Loading from '@/components/Loading';
+
 const buttonVariants = cva(
   'font-semibold flex gap-2 items-center disabled:bg-primary-650 disabled:text-neutral-500 disabled:border-primary-650',
   {
@@ -87,7 +89,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           <>
             {isLoading ? (
-              <div>Loading...</div>
+              <Loading size={24} />
             ) : (
               <>
                 {leftSection}
