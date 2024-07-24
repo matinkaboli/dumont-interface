@@ -252,10 +252,10 @@ const Board = () => {
   }
 
   function onSubmit(data: BetData) {
-    if (data.amount) {
-      setBetData(data);
-      onBet(data);
-    }
+    if (!data.amount) return;
+
+    setBetData(data);
+    onBet(data);
   }
 
   return (
