@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Button, DialogTitle, Icon } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog } from '@/redux/features/dialogSlice';
+import humanizeAmount from '@/helpers/humanizeAmount';
 
 const Claimed = ({ amount }: { amount: number }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,7 +16,7 @@ const Claimed = ({ amount }: { amount: number }) => {
       </div>
       <DialogTitle className="mt-5 mb-2 text-center">The claim was successful</DialogTitle>
       <p className="text-base text-neutral-300 text-center">
-        You successfully claimed <span className="text-white font-semibold">{amount} $MONT</span>
+        You successfully claimed <span className="text-white font-semibold">{humanizeAmount(amount)} $MONT</span>
       </p>
 
       <Button fullWidth variant="primary" radius="lg" className="mt-6" onClick={onCloseDialog}>

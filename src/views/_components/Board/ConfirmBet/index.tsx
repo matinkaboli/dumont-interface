@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { Button } from '@/components';
+import humanizeAmount from '@/helpers/humanizeAmount';
 
 import { BetData } from '@/views/_components/Board';
 
@@ -28,7 +29,7 @@ const sortKeys = (keys: string[]): string[] => {
 interface Props {
   onConfirm: () => void;
   bet: BetData;
-  payout: number;
+  payout: string;
   totalOdds: number;
 }
 
@@ -36,7 +37,7 @@ const ConfirmBet = ({ bet, onConfirm, totalOdds, payout }: Props) => {
   const sortedKeys = useMemo(() => sortKeys(bet.keys), [bet.keys]);
 
   const betDetails = [
-    { label: 'Amount', value: `${bet.amount} USDT` },
+    { label: 'Amount', value: `${humanizeAmount(bet.amount)} USDT` },
     { label: 'Overall odds', value: `x${totalOdds}` },
     { label: 'Possible payout', value: `$${payout}` },
   ];

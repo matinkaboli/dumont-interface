@@ -39,14 +39,14 @@ interface Props {
   disabledButton: boolean;
   inputErrors?: FieldErrors<BetData>;
   setValue: UseFormSetValue<BetData>;
-  payout: number;
+  payout: string;
   totalOdds: number;
 }
 
 const Amount = ({ control, disabledButton, inputErrors, setValue, payout, totalOdds }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const [isOpen, setIsOpen] = useState(false);
-  const formattedPayout = isEmpty(inputErrors) ? payout : 0;
+  const formattedPayout = isEmpty(inputErrors) ? payout : '0';
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 

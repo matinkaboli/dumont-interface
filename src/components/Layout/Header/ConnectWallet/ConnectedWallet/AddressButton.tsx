@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import truncateString from '@/helpers/truncateString';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import humanizeAmount from '@/helpers/humanizeAmount';
 
 interface Props {
   onOpenChange: () => void;
@@ -20,7 +21,7 @@ const AddressButton = ({ onOpenChange }: Props) => {
       >
         <div className="flex-center-v gap-1 text-white text-sm bg-neutral-800 px-1 h-8 rounded-md">
           <Image width={20} height={20} src="/images/USDT.svg" alt="" />
-          <span className="font-bold">{balance}</span>
+          <span className="font-bold">{balance ? humanizeAmount(balance) : 0}</span>
           <span>USDT</span>
         </div>
         <div className="text-primary-250 text-sm">{truncateString(address || '')}</div>
