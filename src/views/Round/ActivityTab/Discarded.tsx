@@ -1,7 +1,6 @@
 import Image from 'next/image';
 
 import { Loading } from '@/components';
-import makeApiUrl from '@/helpers/makeApiUrl';
 import getCardInfo from '@/helpers/getCardInfo';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -11,7 +10,7 @@ import EmptyDataMessage from './EmptyDataMessage';
 
 const Discarded = () => {
   const { data: game } = useTypedSelector((state) => state.game);
-  const { data: discarded, loading } = useAxiosGet<number[]>(makeApiUrl(`games/${game?.id}/cards`));
+  const { data: discarded, loading } = useAxiosGet<number[]>(`games/${game?.id}/cards`);
 
   return (
     <>

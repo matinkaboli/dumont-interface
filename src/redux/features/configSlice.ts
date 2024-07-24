@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
-import makeApiUrl from '@/helpers/makeApiUrl';
+import axios from '@/lib/axios';
 
 type HexString = `0x${string}`;
 
@@ -28,19 +28,15 @@ const initialState: State = {
   error: null,
 };
 
-export const getConfig = createAsyncThunk(
-  'config/getDetails',
-  async (_, { rejectWithValue }) => {
-    try {
-      const url = makeApiUrl('details');
-      const response = await axios.get(url);
-      return response.data.result as Details;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      return rejectWithValue(axiosError.message);
-    }
-  },
-);
+export const getConfig = createAsyncThunk('config/getDetails', async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.get('details');
+    return response.data.result as Details;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    return rejectWithValue(axiosError.message);
+  }
+});
 
 const configSlice = createSlice({
   name: 'config',

@@ -1,6 +1,5 @@
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import useAxiosGet from '@/hooks/useAxiosGet';
-import makeApiUrl from '@/helpers/makeApiUrl';
 import humanizeAmount from '@/helpers/humanizeAmount';
 
 import InfoTooltip from '@/views/_components/InfoTooltip';
@@ -15,7 +14,7 @@ const BalanceList = () => {
     profile: { address },
   } = useTypedSelector((state) => state.account);
 
-  const { data } = useAxiosGet<PlayerData>(makeApiUrl(`players/${address}`), { interval: 5000 });
+  const { data } = useAxiosGet<PlayerData>(`players/${address}`, { interval: 5000 });
 
   return (
     <ul className="bg-neutral-600 rounded-lg">

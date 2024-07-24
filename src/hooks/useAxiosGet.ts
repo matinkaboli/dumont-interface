@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from '@/lib/axios';
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 interface UseAxiosGet<T> {
   data: T | null;

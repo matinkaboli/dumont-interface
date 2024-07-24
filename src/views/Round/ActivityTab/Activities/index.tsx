@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import BN from 'bignumber.js';
@@ -20,7 +19,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components';
-import makeApiUrl from '@/helpers/makeApiUrl';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
@@ -139,10 +137,7 @@ const Activities = () => {
     data: activities,
     loading,
     refetch,
-  } = useAxiosGet<Activity[]>(
-    useMemo(() => makeApiUrl(`games/${game?.id}/activities`), [game?.id]),
-    { interval: 30000 },
-  );
+  } = useAxiosGet<Activity[]>(`games/${game?.id}/activities`, { interval: 30000 });
 
   const table = useReactTable({
     data: activities || [],
