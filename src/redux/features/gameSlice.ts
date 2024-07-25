@@ -1,7 +1,7 @@
-import axios, { AxiosError } from 'axios';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
 
-import makeApiUrl from '@/helpers/makeApiUrl';
+import axios from '@/lib/axios';
 
 export interface Card {
   number: number;
@@ -44,8 +44,7 @@ export const postGame = createAsyncThunk<GameData, Record<string, any>>(
   'api/postGame',
   async (requestData: any, { rejectWithValue }) => {
     try {
-      const url = makeApiUrl('games');
-      const response = await axios.post(url, requestData);
+      const response = await axios.post('games', requestData);
       return response.data.result;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -58,8 +57,7 @@ export const getGame = createAsyncThunk<GameData, string>(
   'api/getGame',
   async (id: string, { rejectWithValue }) => {
     try {
-      const url = makeApiUrl(`games/${id}`);
-      const response = await axios.get(url);
+      const response = await axios.get(`games/${id}`);
       return response.data.result;
     } catch (error) {
       const axiosError = error as AxiosError;

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
-import makeApiUrl from '@/helpers/makeApiUrl';
+import axios from '@/lib/axios';
 
 interface Result {
   number: number;
@@ -31,8 +31,7 @@ export const postGuessedCard = createAsyncThunk<
   { rejectValue: string }
 >('api/saveGuessedCard', async ({ id, body }, { rejectWithValue }) => {
   try {
-    const url = makeApiUrl(`games/${id}/cards`);
-    const response = await axios.post(url, body);
+    const response = await axios.post(`games/${id}/cards`, body);
     return response.data.result;
   } catch (error) {
     const axiosError = error as AxiosError;

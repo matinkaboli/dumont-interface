@@ -3,7 +3,6 @@ import { useDisconnect } from 'wagmi';
 
 import { Button, Icon, QRCode } from '@/components';
 import truncateString from '@/helpers/truncateString';
-import makeApiUrl from '@/helpers/makeApiUrl';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import useAxiosGet from '@/hooks/useAxiosGet';
 
@@ -21,9 +20,7 @@ interface ReferralData {
 
 const Profile = ({ onOpenChange }: Props) => {
   const { address } = useTypedSelector((state) => state.account.profile);
-  const { data: referralData } = useAxiosGet<ReferralData>(
-    makeApiUrl(`players/${address}/referrals`),
-  );
+  const { data: referralData } = useAxiosGet<ReferralData>(`players/${address}/referrals`);
   const { disconnect } = useDisconnect({
     onSuccess() {
       onOpenChange();

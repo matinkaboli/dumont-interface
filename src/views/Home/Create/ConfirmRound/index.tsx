@@ -3,7 +3,6 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { useContractWrite, useWaitForTransaction } from 'wagmi';
 import BN from 'bignumber.js';
-import axios from 'axios';
 
 import { Button } from '@/components';
 import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
@@ -14,7 +13,7 @@ import { useApproval } from '@/hooks/useApproval';
 import extractGameId from '@/helpers/extractGameId';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 import formatUnits from '@/helpers/formatUnits';
-import makeApiUrl from '@/helpers/makeApiUrl';
+import axios from '@/lib/axios';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -69,7 +68,7 @@ const ConfirmRound = () => {
     const getReferral = async () => {
       if (hasReferralId) {
         try {
-          const response = await axios.get(makeApiUrl(`referrals/${params.id}`));
+          const response = await axios.get(`referrals/${params.id}`);
           const referralAddress = response?.data?.result?.address;
           if (referralAddress === address) {
             setReferralAddress(defaultAddress);

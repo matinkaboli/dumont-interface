@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
-import makeApiUrl from '@/helpers/makeApiUrl';
+import axios from '@/lib/axios';
 
 import { GameData } from './gameSlice';
 
@@ -33,8 +33,7 @@ export const getPlayerGames = createAsyncThunk<GameData[], string>(
   'api/getPlayerGames',
   async (address: string, { rejectWithValue }) => {
     try {
-      const url = makeApiUrl(`players/${address}/games`);
-      const response = await axios.get(url);
+      const response = await axios.get(`players/${address}/games`);
       return response.data.result;
     } catch (error) {
       const axiosError = error as AxiosError;
