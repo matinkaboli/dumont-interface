@@ -1,4 +1,4 @@
-import { Button, Typography, FadeInUp } from '@/components';
+import { Button, FadeInUp, LottiePlayer, Typography } from '@/components';
 
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
@@ -32,8 +32,16 @@ const TokenSupplySection = () => {
       </FadeInUp>
 
       <FadeInUp className='max-w-[456px] w-full md:ml-auto ml-0'>
-        <div className='w-full h-36 bg-primary-800 rounded-xl' />
-        <div className='flex flex-col gap-2 mt-8'>
+        <LottiePlayer
+          loop
+          autoplay
+          width='160px'
+          height='185px'
+          src='/lottie/mont.lottie'
+          className='-ml-5'
+          style={{ width: '100%', height: '100%', maxWidth: '160px', maxHeight: '185px' }}
+        />
+        <div className='flex flex-col gap-2 mt-3'>
           <div className='text-lg text-neutral-400'>Total Amount Burned</div>
           <h4 className='xl:text-5xl text-4xl text-primary-250 font-bold'>120,930 MONT</h4>
           <BlurBadge>From <b>$15,000</b> of collected fees</BlurBadge>
