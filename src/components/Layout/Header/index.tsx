@@ -11,6 +11,7 @@ export const navLinks = [
   { id: 'docs', title: 'Docs', href: '/' },
   { id: 'blog', title: 'Blog', href: '/' },
   { id: 'faq', title: 'FAQ', href: Routes.FAQ },
+  { id: 'mont', title: '$MONT', href: Routes.MONT },
 ];
 
 const Header = () => {
