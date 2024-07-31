@@ -6,16 +6,16 @@ import getCardInfo from '@/helpers/getCardInfo';
 import humanizeAmount from '@/helpers/humanizeAmount';
 import parseUnits from '@/helpers/parseUnits';
 
-const createMessage = (isWinner: boolean, amount: string) => ({
+const createMessage = (isWinner: boolean, usdtAmount: string, montAmount: string) => ({
   title: isWinner ? 'You won! 🎉' : 'No luck this time 💔',
   content: isWinner ? (
     <p className="text-white text-md">
-      Enjoy your <b className="text-success-400">${amount} win</b> <b>in your wallet</b>
+      Enjoy your <b className="text-success-400">${usdtAmount} win</b> <b>in your wallet</b>
     </p>
   ) : (
     <p className="text-sm text-neutral-200 px-0 md:px-5">
       You didn’t win this one, but you still got
-      <span className="text-success-400"> +{amount}</span> $MONT in rewards.
+      <span className="text-success-400"> +{montAmount}</span> $MONT in rewards.
     </p>
   ),
   buttonText: isWinner ? 'Got it' : 'Try the next',
@@ -30,10 +30,10 @@ const ResultMessage = ({ onCloseDialog }: { onCloseDialog: () => void }) => {
     number,
     result: { isPlayerWinner, usdtAmount, montAmount },
   } = guessedResult;
-  const amount = humanizeAmount(
-    parseUnits(isPlayerWinner ? usdtAmount : montAmount, 18).toString(),
-  );
-  const message = createMessage(isPlayerWinner, amount);
+  const USDTAmount = humanizeAmount(parseUnits(usdtAmount, 6).toString());
+  const MONTAmount = humanizeAmount(parseUnits(montAmount, 18).toString());
+
+  const message = createMessage(isPlayerWinner, USDTAmount, MONTAmount);
 
   return (
     <>
@@ -50,9 +50,7 @@ const ResultMessage = ({ onCloseDialog }: { onCloseDialog: () => void }) => {
 
       {isPlayerWinner && (
         <div className="mt-6 bg-neutral-600 text-center text-base text-white font-medium rounded-lg py-1">
-          <span className="text-white">
-            +{humanizeAmount(parseUnits(montAmount, 6).toString())} MONT
-          </span>
+          <span className="text-white">+{MONTAmount} MONT</span>
           <span className="text-neutral-400"> in reward.</span>
         </div>
       )}
