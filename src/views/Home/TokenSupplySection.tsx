@@ -1,10 +1,17 @@
+'use client';
+
+import { PlayerEvents } from '@dotlottie/react-player';
+
 import { Button, FadeInUp, LottiePlayer, Typography } from '@/components';
+import { useLottieContext } from '@/contexts/LottieContext';
 
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
 import BlurBadge from './_components/BlurBadge';
 
 const TokenSupplySection = () => {
+  const { onLottieLoad } = useLottieContext();
+
   return (
     <div className='grid md:grid-cols-2 grid-cols-1 items-center lg:gap-0 gap-16 md:py-56 py-36'>
       <FadeInUp>
@@ -40,6 +47,11 @@ const TokenSupplySection = () => {
           src='/lottie/mont.lottie'
           className='-ml-5'
           style={{ width: '100%', height: '100%', maxWidth: '160px', maxHeight: '185px' }}
+          onEvent={(event: PlayerEvents) => {
+            if (event === PlayerEvents.Ready) {
+              onLottieLoad();
+            }
+          }}
         />
         <div className='flex flex-col gap-2 mt-3'>
           <div className='text-lg text-neutral-400'>Total Amount Burned</div>

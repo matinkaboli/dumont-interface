@@ -2,10 +2,14 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useLenis } from '@studio-freight/react-lenis';
+
 import Loading from '@/components/Loading';
 import ProgressBar from '@/components/ProgressBar';
-import { useLoading } from '@/hooks/useLoading';
-import { useLenis } from '@studio-freight/react-lenis';
+import { useLoading } from '@/contexts/LoadingContext';
+import  useAssetLoading from '@/hooks/useAssetLoading';
+import { useLottieContext } from '@/contexts/LottieContext';
+import {homePageAssets} from '@/constants/general';
 
 const overlayVariants = {
   enter: { y: '0%' },
@@ -16,11 +20,18 @@ const overlayVariants = {
   transitionEnd: { display: 'none' },
 };
 
-
 const LoadingScreen = () => {
   const lenis = useLenis();
-  const { isLoading } = useLoading();
   const [percent, setPercent] = useState(40);
+  const { isLoading, setIsLoading } = useLoading();
+  const { allAssetsLoaded } = useAssetLoading(homePageAssets);
+  const { allAssetsLoaded: allLottieLoaded } = useLottieContext();
+
+  useEffect(() => {
+    if (allAssetsLoaded && allLottieLoaded) {
+      setIsLoading(false);
+    }
+  }, [allAssetsLoaded, allLottieLoaded]);
 
   useEffect(() => {
     if (isLoading) {
@@ -33,6 +44,7 @@ const LoadingScreen = () => {
       lenis?.start();
     }
   }, [isLoading]);
+
 
   return (
     <motion.div
