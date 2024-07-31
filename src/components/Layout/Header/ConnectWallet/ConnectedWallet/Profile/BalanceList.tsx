@@ -1,8 +1,8 @@
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 import useAxiosGet from '@/hooks/useAxiosGet';
+import parseUnits from '@/helpers/parseUnits';
 import humanizeAmount from '@/helpers/humanizeAmount';
-
 import InfoTooltip from '@/views/_components/InfoTooltip';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 interface PlayerData {
   settling: number;
@@ -15,6 +15,12 @@ const BalanceList = () => {
   } = useTypedSelector((state) => state.account);
 
   const { data } = useAxiosGet<PlayerData>(`players/${address}`, { interval: 5000 });
+
+  let settling = '0';
+
+  if (data?.settling) {
+    settling = humanizeAmount(parseUnits(data.settling, 6).toString());
+  }
 
   return (
     <ul className="bg-neutral-600 rounded-lg">
@@ -30,9 +36,7 @@ const BalanceList = () => {
           tooltipText="Some Info"
           className="text-neutral-200 text-base font-medium"
         />
-        <div className="text-neutral-50 text-base font-medium">
-          {data?.settling ? humanizeAmount(data?.settling) : 0} USDT
-        </div>
+        <div className="text-neutral-50 text-base font-medium">{settling} USDT</div>
       </li>
     </ul>
   );
