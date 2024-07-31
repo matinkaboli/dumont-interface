@@ -5,7 +5,7 @@ import { totalLottieAssets } from '@/constants/general';
 interface LottieContextType {
   onLottieLoad: () => void;
   allAssetsLoaded: boolean;
-};
+}
 
 const LottieContext = createContext<LottieContextType | undefined>(undefined);
 

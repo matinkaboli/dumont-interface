@@ -7,7 +7,7 @@ interface Asset {
 
 interface UseAssetsLoaderReturnType {
   allAssetsLoaded: boolean;
-};
+}
 
 const useAssetsLoader = (assetsList: Asset[]): UseAssetsLoaderReturnType => {
   const [allAssetsLoaded, setAllAssetsLoaded] = useState(false);
