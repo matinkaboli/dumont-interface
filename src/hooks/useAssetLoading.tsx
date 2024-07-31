@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
 
-type Asset = {
+interface Asset {
   src: string;
   type: 'image' | 'video';
-};
+}
 
-type UseAssetsLoaderReturnType = {
-  assets: Asset[];
+interface UseAssetsLoaderReturnType {
   allAssetsLoaded: boolean;
 };
 
 const useAssetsLoader = (assetsList: Asset[]): UseAssetsLoaderReturnType => {
-  const [assets, setAssets] = useState<Asset[]>(assetsList);
   const [allAssetsLoaded, setAllAssetsLoaded] = useState(false);
 
   useEffect(() => {
     let isMounted = true; // To prevent state updates if the component is unmounted
-    const assetLoadPromises = assets.map(asset => {
+    const assetLoadPromises = assetsList.map(asset => {
       return new Promise<void>((resolve, reject) => {
         let element: HTMLImageElement | HTMLVideoElement;
 
@@ -48,9 +46,9 @@ const useAssetsLoader = (assetsList: Asset[]): UseAssetsLoaderReturnType => {
     return () => {
       isMounted = false;
     };
-  }, [assets]);
+  }, [assetsList]);
 
-  return { assets, allAssetsLoaded };
+  return { allAssetsLoaded };
 };
 
 export default useAssetsLoader;

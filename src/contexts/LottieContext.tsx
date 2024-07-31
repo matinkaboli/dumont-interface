@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useCallback, useContext, useState } f
 
 import { totalLottieAssets } from '@/constants/general';
 
-type LottieContextType = {
+interface LottieContextType {
   onLottieLoad: () => void;
   allAssetsLoaded: boolean;
 };
@@ -19,8 +19,6 @@ export const useLottieContext = (): LottieContextType => {
 
 export const LottieProvider = ({ children }: PropsWithChildren) => {
   const [loadedCount, setLoadedCount] = useState(0);
-
-  console.log(loadedCount);
 
   const onLottieLoad = useCallback(() => {
     setLoadedCount(prevCount => prevCount + 1);
