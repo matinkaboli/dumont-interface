@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
 
 import { Icon } from '@/components';
 
@@ -10,6 +11,14 @@ interface Props {
   item: { id: string, title: string; body: string };
   handleClick: (n: number) => void;
 }
+
+const LinkRenderer = (props: any) => {
+  return (
+    <a href={props.href} target='_blank' rel='noreferrer'>
+      {props.children}
+    </a>
+  );
+};
 
 const AccordionItem = ({ item, idx, activeIndex, handleClick }: Props) => {
   const active = idx === activeIndex;
@@ -51,7 +60,12 @@ const AccordionItem = ({ item, idx, activeIndex, handleClick }: Props) => {
             transition={transition}
             className='overflow-hidden'
           >
-            <p className='text-base text-neutral-200 pb-6'>{item.body}</p>
+            <ReactMarkdown
+              components={{ a: LinkRenderer }}
+              className='text-base text-neutral-200 pb-6 [&>p>a]:text-primary-100 [&>p>a]:font-medium [&>ul]:list-disc [&>ul]:pl-4 [&>ul>li]:mt-4'
+            >
+              {item.body}
+            </ReactMarkdown>
           </motion.div>
         )}
       </AnimatePresence>
