@@ -3,62 +3,79 @@
     "type": "constructor",
     "inputs": [
       {
-        "name": "_mont",
+        "name": "_token",
         "type": "address",
         "internalType": "contract IMONT"
       },
       {
-        "name": "_usdt",
-        "type": "address",
-        "internalType": "contract IERC20"
-      },
-      {
-        "name": "_swapRouter",
-        "type": "address",
-        "internalType": "contract ISwapRouter"
-      },
-      {
-        "name": "_uniswapPoolFee",
-        "type": "uint24",
-        "internalType": "uint24"
-      }
-    ],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "acceptOwnership",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "burnTokens",
-    "inputs": [
-      {
-        "name": "_amountOutMinimum",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "_deadline",
+        "name": "_lockPeriod",
         "type": "uint256",
         "internalType": "uint256"
       }
     ],
-    "outputs": [],
     "stateMutability": "nonpayable"
   },
   {
     "type": "function",
-    "name": "mont",
+    "name": "calculateWithdrawableAmount",
     "inputs": [],
     "outputs": [
       {
         "name": "",
-        "type": "address",
-        "internalType": "contract IMONT"
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "initialize",
+    "inputs": [
+      {
+        "name": "_lockedAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "isInitialized",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "lockPeriod",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "lockedAmount",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "view"
@@ -78,19 +95,6 @@
   },
   {
     "type": "function",
-    "name": "pendingOwner",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "renounceOwnership",
     "inputs": [],
     "outputs": [],
@@ -98,13 +102,26 @@
   },
   {
     "type": "function",
-    "name": "swapRouter",
+    "name": "startTime",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "token",
     "inputs": [],
     "outputs": [
       {
         "name": "",
         "type": "address",
-        "internalType": "contract ISwapRouter"
+        "internalType": "contract IMONT"
       }
     ],
     "stateMutability": "view"
@@ -124,44 +141,25 @@
   },
   {
     "type": "function",
-    "name": "uniswapPoolFee",
+    "name": "withdraw",
     "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint24",
-        "internalType": "uint24"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "usdt",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "contract IERC20"
-      }
-    ],
-    "stateMutability": "view"
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
     "type": "event",
-    "name": "MONTTokensBurned",
+    "name": "Burned",
     "inputs": [
       {
-        "name": "_usdtAmount",
-        "type": "uint256",
+        "name": "owner",
+        "type": "address",
         "indexed": true,
-        "internalType": "uint256"
+        "internalType": "address"
       },
       {
-        "name": "_montAmount",
+        "name": "burnableAmount",
         "type": "uint256",
-        "indexed": true,
+        "indexed": false,
         "internalType": "uint256"
       }
     ],
@@ -169,21 +167,8 @@
   },
   {
     "type": "event",
-    "name": "OwnershipTransferStarted",
-    "inputs": [
-      {
-        "name": "previousOwner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "newOwner",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
+    "name": "Initialized",
+    "inputs": [],
     "anonymous": false
   },
   {
@@ -201,6 +186,25 @@
         "type": "address",
         "indexed": true,
         "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "Withdrawn",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "withdrawableAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
       }
     ],
     "anonymous": false
@@ -229,12 +233,43 @@
   },
   {
     "type": "error",
+    "name": "AlreadyInitialized",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "FailedInnerCall",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "NotEnoughUSDT",
+    "name": "InvalidAmount",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidLockedAmount",
+    "inputs": [
+      {
+        "name": "_currentBalance",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_lockedAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NotEnoughTokens",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotInitialized",
     "inputs": []
   },
   {

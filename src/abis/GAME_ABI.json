@@ -426,6 +426,12 @@
     "name": "CardClaimed",
     "inputs": [
       {
+        "name": "_gameId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
         "name": "_index",
         "type": "uint256",
         "indexed": true,
@@ -444,6 +450,12 @@
     "type": "event",
     "name": "CardGuessed",
     "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
       {
         "name": "_index",
         "type": "uint256",
@@ -470,6 +482,12 @@
     "name": "CardRevealed",
     "inputs": [
       {
+        "name": "_gameId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
         "name": "_index",
         "type": "uint256",
         "indexed": true,
@@ -493,13 +511,26 @@
   {
     "type": "event",
     "name": "GameInitialized",
-    "inputs": [],
+    "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
     "anonymous": false
   },
   {
     "type": "event",
     "name": "RevealFreeCardRequested",
     "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
       {
         "name": "_index",
         "type": "uint256",
@@ -545,17 +576,55 @@
   {
     "type": "error",
     "name": "BetAmountIsGreaterThanMaximum",
-    "inputs": []
+    "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_totalAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
     "name": "BetAmountIsLessThanMinimum",
-    "inputs": []
+    "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "CardIsAlreadyClaimable",
+    "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_index",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
     "name": "CardIsNotGuessed",
     "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
       {
         "name": "_index",
         "type": "uint256",
@@ -568,6 +637,11 @@
     "name": "CardIsNotSecret",
     "inputs": [
       {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
         "name": "_index",
         "type": "uint256",
         "internalType": "uint256"
@@ -579,7 +653,28 @@
     "name": "CardStatusIsNotFreeRevealRequested",
     "inputs": [
       {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
         "name": "_index",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "DivisionByZeroSelectedCards",
+    "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_numbers",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -593,17 +688,39 @@
   {
     "type": "error",
     "name": "GameExpired",
-    "inputs": []
+    "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
     "name": "InvalidGameIndex",
-    "inputs": []
+    "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_index",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
     "name": "InvalidNumbersGuessed",
     "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
       {
         "name": "_guessedNumbers",
         "type": "uint256",
@@ -615,6 +732,11 @@
     "type": "error",
     "name": "InvalidSalt",
     "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
       {
         "name": "_index",
         "type": "uint256",
@@ -634,13 +756,40 @@
   },
   {
     "type": "error",
+    "name": "InvalidSelectedCards",
+    "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_numbers",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "MaximumFreeRevealsRequested",
-    "inputs": []
+    "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
   },
   {
     "type": "error",
     "name": "NotAuthorized",
     "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
       {
         "name": "_caller",
         "type": "address",
@@ -657,6 +806,11 @@
     "type": "error",
     "name": "NotYetTimeToClaim",
     "inputs": [
+      {
+        "name": "_gameId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
       {
         "name": "_index",
         "type": "uint256",
