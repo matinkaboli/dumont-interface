@@ -30,7 +30,9 @@ const ResultMessage = ({ onCloseDialog }: { onCloseDialog: () => void }) => {
     number,
     result: { isPlayerWinner, usdtAmount, montAmount },
   } = guessedResult;
-  const amount = humanizeAmount(parseUnits(isPlayerWinner ? usdtAmount : montAmount, 6).toString());
+  const amount = humanizeAmount(
+    parseUnits(isPlayerWinner ? usdtAmount : montAmount, 18).toString(),
+  );
   const message = createMessage(isPlayerWinner, amount);
 
   return (
