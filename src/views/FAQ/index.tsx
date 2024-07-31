@@ -1,29 +1,8 @@
 import { Accordion, Container, Layout, Typography } from '@/components';
+import { faqs } from '@/constants/general';
 
 import CTASection from '@/views/_components/CTASection';
 
-const data = [
-  {
-    id: '1',
-    title: 'People most asked question',
-    body: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
-  },
-  {
-    id: '2',
-    title: 'People most asked question',
-    body: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
-  },
-  {
-    id: '3',
-    title: 'People most asked question',
-    body: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
-  },
-  {
-    id: '4',
-    title: 'People most asked question',
-    body: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
-  },
-];
 
 const FAQ = () => {
   return (
@@ -36,9 +15,9 @@ const FAQ = () => {
           Have any question? We’re here to help
         </Typography>
 
-        <Accordion className='md:mt-20 mt-14' sections={data} />
+        <Accordion className='md:mt-20 mt-14' sections={faqs} />
 
-        <CTASection className="md:mt-28 my-0" />
+        <CTASection className='md:mt-28 my-0' />
       </Container>
     </Layout>
   );

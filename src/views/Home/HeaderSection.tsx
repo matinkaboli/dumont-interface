@@ -5,16 +5,18 @@ import { PlayerEvents } from '@dotlottie/react-player';
 import clsx from 'clsx';
 
 import { LottiePlayer, Typography } from '@/components';
-import PlayButton from '@/views/_components/PlayButton';
-import { useLoading } from '@/hooks/useLoading';
 import { useMobileNav } from '@/contexts/MobileNavContext';
+import { useLottieContext } from '@/contexts/LottieContext';
+
+import PlayButton from '@/views/_components/PlayButton';
 
 
 const HeaderSection = () => {
   const lottieRef = useRef<any>();
   const [play, setPlay] = useState(false);
-  const { isLoading, setLoading } = useLoading();
+  const [isLoading, setLoading] = useState<boolean>(true);
   const { isNavOpen } = useMobileNav();
+  const { onLottieLoad } = useLottieContext();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -58,6 +60,7 @@ const HeaderSection = () => {
           onEvent={(event: PlayerEvents) => {
             if (event === PlayerEvents.Ready) {
               setLoading(false);
+              onLottieLoad();
             }
           }}
         />

@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
-import FAQ from '@/views/FAQ';
+import Mont from '@/views/Mont';
 
 export const metadata: Metadata = {
-  title: 'FAQ | Dumont',
+  title: 'Mont | Dumont',
 };
 
 export default function FaqPage() {
-  return <FAQ />;
+  return <Mont />;
 }

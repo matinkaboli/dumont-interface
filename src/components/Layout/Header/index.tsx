@@ -11,11 +11,12 @@ export const navLinks = [
   { id: 'docs', title: 'Docs', href: '/' },
   { id: 'blog', title: 'Blog', href: '/' },
   { id: 'faq', title: 'FAQ', href: Routes.FAQ },
+  { id: 'mont', title: '$MONT', href: Routes.MONT },
 ];
 
 const Header = () => {
   return (
-    <Container tag='header'>
+    <Container tag='header' className="relative">
       <ul className='flex items-center gap-12'>
         <li className='relative z-20'><Link href={Routes.HOME}><DumontLogo /></Link></li>
         {navLinks.map((nav) => (

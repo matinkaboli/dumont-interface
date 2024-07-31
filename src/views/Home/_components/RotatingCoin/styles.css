@@ -1,9 +1,9 @@
 :root {
     --size: 104px;
     --width: 0.1em;
-    --color: #FFF0A1;
+    --color: #CFB8FF;
     --speed: 3s;
-    --inner-color: #FFF0A1;
+    --inner-color: #CFB8FF;
 }
 
 .coin {

@@ -1,16 +1,25 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 import { ParallaxProvider } from 'react-scroll-parallax';
 
 import { MobileNavProvider } from '@/contexts/MobileNavContext';
+import { LoadingProvider } from '@/contexts/LoadingContext';
+import { LottieProvider } from '@/contexts/LottieContext';
+import { InitialVisitProvider } from '@/contexts/InitialVisitContext';
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children }: PropsWithChildren) {
   return (
     <ParallaxProvider>
-      <MobileNavProvider>
-        {children}
-      </MobileNavProvider>
+      <InitialVisitProvider>
+        <LoadingProvider>
+          <LottieProvider>
+            <MobileNavProvider>
+              {children}
+            </MobileNavProvider>
+          </LottieProvider>
+        </LoadingProvider>
+      </InitialVisitProvider>
     </ParallaxProvider>
   );
 }
