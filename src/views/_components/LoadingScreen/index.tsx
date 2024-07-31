@@ -7,9 +7,10 @@ import { useLenis } from '@studio-freight/react-lenis';
 import Loading from '@/components/Loading';
 import ProgressBar from '@/components/ProgressBar';
 import { useLoading } from '@/contexts/LoadingContext';
-import  useAssetLoading from '@/hooks/useAssetLoading';
+import useAssetLoading from '@/hooks/useAssetLoading';
 import { useLottieContext } from '@/contexts/LottieContext';
-import {homePageAssets} from '@/constants/general';
+import { homePageAssets } from '@/constants/general';
+import { useInitialVisit } from '@/contexts/InitialVisitContext';
 
 const overlayVariants = {
   enter: { y: '0%' },
@@ -26,10 +27,20 @@ const LoadingScreen = () => {
   const { isLoading, setIsLoading } = useLoading();
   const { allAssetsLoaded } = useAssetLoading(homePageAssets);
   const { allAssetsLoaded: allLottieLoaded } = useLottieContext();
+  const { isInitialVisit, setIsInitialVisit } = useInitialVisit();
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    const timeoutId = setTimeout(() => {
+      setIsInitialVisit(false);
+    }, 3000);
+
+    return () => clearTimeout(timeoutId);
+  };
 
   useEffect(() => {
     if (allAssetsLoaded && allLottieLoaded) {
-      setIsLoading(false);
+      handleLoadingComplete();
     }
   }, [allAssetsLoaded, allLottieLoaded]);
 
@@ -45,6 +56,9 @@ const LoadingScreen = () => {
     }
   }, [isLoading]);
 
+  if (!isInitialVisit) {
+    return null;
+  }
 
   return (
     <motion.div
