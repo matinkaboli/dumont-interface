@@ -10,15 +10,12 @@ const bgGradiantClassName = 'absolute left-0 right-0 bg-gradiant-primary-top blu
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <SmoothScroll>
-      <div className='relative'>
+      <div className='relative min-h-screen flex flex-col pt-8'>
         <div className={clsx('top-0', bgGradiantClassName)} />
         <div className={clsx('bottom-0', bgGradiantClassName)} />
-
-        <div className='relative h-full pt-8'>
-          <Header />
-          {children}
-          <Footer />
-        </div>
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer />
       </div>
     </SmoothScroll>
   );

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html, body {
-    @apply min-h-full
+    @apply min-h-screen
 }
 
 body {

@@ -8,7 +8,7 @@ import FollowLink from '@/views/Home/_components/FollowLink';
 const Mont = () => {
   return (
     <Layout>
-      <Container className='md:pt-32 pb-72 py-16'>
+      <Container className='md:pt-32 md:pb-72 pt-16 pb-20'>
         <div className='flex flex-col gap-4 text-center max-w-[744px] mx-auto'>
           <Image width={112} height={112} src='/images/mont.svg' className='mx-auto' alt='mont' />
           <Typography tag='h1' variant='title1'>$MONT</Typography>

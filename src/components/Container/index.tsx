@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import clsx from 'clsx';
 
-
 interface Props {
   children: ReactNode,
   className?: string,
@@ -10,7 +9,7 @@ interface Props {
 
 const Container = ({ children, className, tag: Tag = 'div' }: Props) => {
   return (
-    <Tag className={clsx('xl:px-40 lg:px-32 md:px-10 px-4 2xl:w-[1800px] w-auto mx-auto', className)}>
+    <Tag className={clsx('xl:px-40 lg:px-32 md:px-10 px-4 2xl:w-[1800px] w-full mx-auto', className)}>
       {children}
     </Tag>
   );
