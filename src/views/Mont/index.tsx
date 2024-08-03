@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { Button, Container, Icon, Layout, Typography } from '@/components';
+import links from '@/constants/externalLinks';
 
 import FollowLink from '@/views/Home/_components/FollowLink';
 
@@ -31,7 +32,7 @@ const Mont = () => {
             Buy $MONT
           </Button>
           <FollowLink
-            href='/'
+            href={links.TOKENOMICS}
             label='Learn more'
             className='font-semibold text-base'
           />

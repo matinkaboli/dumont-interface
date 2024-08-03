@@ -106,6 +106,7 @@ const MobileNavbar = () => {
                   <NavLink
                     title={link.title}
                     href={link.href}
+                    target={link.target}
                     onClick={toggleNav}
                   />
                 </div>),

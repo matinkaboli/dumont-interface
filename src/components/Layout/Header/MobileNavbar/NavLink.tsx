@@ -21,16 +21,17 @@ const linkVariants = {
 interface Props {
   title: string;
   href: string;
-  onClick: () => void
+  target: string;
+  onClick: () => void;
 }
 
-const NavLink = ({ title, href, onClick }: Props) => {
+const NavLink = ({ title, href, target, onClick }: Props) => {
   return (
     <motion.div
       variants={linkVariants}
       className='text-2xl text-white'
     >
-      <Link href={href} onClick={onClick}>{title}</Link>
+      <Link href={href} target={target} onClick={onClick}>{title}</Link>
     </motion.div>
   );
 };
