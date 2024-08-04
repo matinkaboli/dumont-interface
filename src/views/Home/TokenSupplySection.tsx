@@ -4,6 +4,7 @@ import { PlayerEvents } from '@dotlottie/react-player';
 
 import { Button, FadeInUp, LottiePlayer, Typography } from '@/components';
 import { useLottieContext } from '@/contexts/LottieContext';
+import links from '@/constants/externalLinks';
 
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
@@ -31,7 +32,7 @@ const TokenSupplySection = () => {
             Buy $MONT
           </Button>
           <FollowLink
-            href='/'
+            href={links.BURNING_MECHANISM}
             label='How it works'
             className='font-semibold text-base'
           />

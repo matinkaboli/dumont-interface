@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { Typography, FadeInUp } from '@/components';
+import links from '@/constants/externalLinks'
 
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
@@ -21,7 +22,7 @@ const FeaturesSection = () => {
             results are random and safe against manipulation.
           </Typography>
           <FollowLink
-            href='/'
+            href={links.IMMUTABLE_OUTCOMES}
             label='How it works'
             className='font-semibold text-base md:mt-14 mt-8'
           />

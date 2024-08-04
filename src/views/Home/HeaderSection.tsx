@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { LottiePlayer, Typography } from '@/components';
 import { useMobileNav } from '@/contexts/MobileNavContext';
 import { useLottieContext } from '@/contexts/LottieContext';
+import { useInitialVisit } from '@/contexts/InitialVisitContext';
 
 import PlayButton from '@/views/_components/PlayButton';
 
@@ -17,11 +18,12 @@ const HeaderSection = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const { isNavOpen } = useMobileNav();
   const { onLottieLoad } = useLottieContext();
+  const { isInitialVisit } = useInitialVisit();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setPlay(true);
-    }, 3000);
+    }, isInitialVisit ? 3000 : 0);
 
     return () => clearTimeout(timer);
   }, []);
@@ -30,7 +32,7 @@ const HeaderSection = () => {
     if (play && !isLoading) {
       lottieRef?.current?.play();
     }
-  }, [play, isLoading]);
+  }, [play, isLoading, isInitialVisit]);
 
   return (
     <div className='grid md:grid-cols-2 grid-cols-1 items-center gap-14 md:pt-28 pt-12 md:pb-40 pb-6'>

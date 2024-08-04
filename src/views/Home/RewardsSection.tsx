@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Parallax } from 'react-scroll-parallax';
 
 import { Typography } from '@/components';
+import links from '@/constants/externalLinks';
 
 import GradiantBadge from './_components/GradiantBadge';
 import FollowLink from './_components/FollowLink';
@@ -36,7 +37,7 @@ const RewardsSection = () => {
         </Typography>
 
         <FollowLink
-          href='/'
+          href={links.REWARD_PROGRAM}
           label='Learn more'
           className='font-semibold text-base mt-9'
         />
