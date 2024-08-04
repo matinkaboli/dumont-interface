@@ -8,6 +8,7 @@ const links = {
   DOCS: 'https://docs.dumont.gg/',
   TWITTER: 'https://x.com/dumontgg',
   TELEGRAM: 'https://t.me/dumontgg',
+  DUMONT_APP: 'http://app.dumont.gg/',
 };
 
 export default links;

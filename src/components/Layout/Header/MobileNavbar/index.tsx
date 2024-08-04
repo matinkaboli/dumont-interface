@@ -3,10 +3,12 @@
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLenis } from '@studio-freight/react-lenis';
+import Link from 'next/link';
 
 import Button from '@/components/Button';
 import Icon from '@/components/Icon';
 import { useMobileNav } from '@/contexts/MobileNavContext';
+import links from '@/constants/externalLinks';
 
 import NavLink from './NavLink';
 import ToggleButton from './ToggleButton';
@@ -113,13 +115,14 @@ const MobileNavbar = () => {
               )}
 
               <MotionedButton
+                asChild
                 radius='lg'
                 rightSection={<Icon name='angle-right' />}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, transition: { delay: 0.7 } }}
                 exit={{ opacity: 0 }}
                 className='absolute bottom-8 right-6 left-6'>
-                Start playing
+                <Link href={links.DUMONT_APP} target='_blank'>Start playing</Link>
               </MotionedButton>
             </motion.div>
           </motion.div>

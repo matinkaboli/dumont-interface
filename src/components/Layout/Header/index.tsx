@@ -30,11 +30,12 @@ const Header = () => {
         ))}
         <li className='ml-auto'>
           <Button
+            asChild
             variant='link'
             size='sm'
             radius='lg'
             className='bg-primary-500 hover:bg-primary-400 transition duration-75 ease-in-out text-primary-250 font-bold md:block hidden'>
-            Start playing
+            <Link href={links.DUMONT_APP} target='_blank'>Start playing</Link>
           </Button>
         </li>
         <li className='ml-auto md:hidden block'>
