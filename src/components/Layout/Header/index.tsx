@@ -34,7 +34,7 @@ const Header = () => {
             variant='link'
             size='sm'
             radius='lg'
-            className='bg-primary-500 hover:bg-primary-400 transition duration-75 ease-in-out text-primary-250 font-bold md:block hidden'>
+            className='bg-primary-500 hover:bg-primary-400 transition duration-75 ease-in-out text-primary-250 font-bold md:flex items-center justify-center hidden'>
             <Link href={links.DUMONT_APP} target='_blank'>Start playing</Link>
           </Button>
         </li>
