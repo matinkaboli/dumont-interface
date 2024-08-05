@@ -114,9 +114,19 @@ const RewardButton = () => {
     });
   }
 
+  function onConfettiComplete() {
+    setClaimed(false);
+  }
+
   return (
     <>
-      <Confetti run={claimed} className="!z-[45]" />
+      {claimed ? (
+        <Confetti
+          run
+          onConfettiComplete={onConfettiComplete}
+          className="!z-[45]"
+        />
+      ) : null}
 
       <div className="border-primary-gradiant rounded-lg">
         <button
