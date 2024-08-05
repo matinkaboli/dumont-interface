@@ -34,7 +34,7 @@ const Home = () => {
     dispatch(getPlayerGames(addr))
       .unwrap()
       .then((result) => {
-        const timeLeft = +result[0].duration - timeLeftInSeconds(result[0].createdAt);
+        const timeLeft = +result[0]?.duration - timeLeftInSeconds(result[0]?.createdAt);
 
         if (timeLeft > 0 && !isRedirected) {
           setRedirectId(result[0].id);
