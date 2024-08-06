@@ -2,7 +2,7 @@
 
 import { Control, Controller, FieldErrors, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { Icon, Input } from '@/components';
@@ -88,6 +88,17 @@ const Amount = ({
     setValue('amount', `${maxAmount}`, { shouldDirty: true, shouldValidate: true });
   };
 
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    onChange: (value: string) => void,
+  ) => {
+    const { value } = e.target;
+
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      onChange(value);
+    }
+  };
+
   return (
     <>
       {/* Desktop View */}
@@ -105,7 +116,14 @@ const Amount = ({
               name="amount"
               control={control}
               rules={inputValidation}
-              render={({ field }) => <Input errors={inputErrors} {...inputProps} {...field} />}
+              render={({ field }) => (
+                <Input
+                  errors={inputErrors}
+                  {...inputProps}
+                  {...field}
+                  onChange={(e) => handleInputChange(e, field.onChange)}
+                />
+              )}
             />
 
             <AmountInfo
@@ -140,6 +158,7 @@ const Amount = ({
                       <MaxButton onClick={setMaxValue} />
                     </div>
                   }
+                  onChange={(e) => handleInputChange(e, field.onChange)}
                 />
               )}
             />
