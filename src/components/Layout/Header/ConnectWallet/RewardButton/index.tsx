@@ -95,13 +95,6 @@ const RewardButton = () => {
     );
   }
 
-  function updateClaimValue(value: BigNumber) {
-    const claimValue = parseUnits(value, 18);
-    dispatch(
-      updateDialogContent(<ClaimReward claimValue={claimValue.toString()} onClaim={onClaim} />),
-    );
-  }
-
   function onOpenDialog() {
     const initialValue = parseUnits(balancesData as BigNumber, 18);
 
@@ -114,14 +107,26 @@ const RewardButton = () => {
     refetetchBalances().then((newBalance) => {
       if (balancesData !== newBalance.data) {
         const newValue = parseUnits(newBalance.data as BigNumber, 18);
-        updateClaimValue(newValue);
+        dispatch(
+          updateDialogContent(<ClaimReward claimValue={newValue.toString()} onClaim={onClaim} />),
+        );
       }
     });
   }
 
+  function onConfettiComplete() {
+    setClaimed(false);
+  }
+
   return (
     <>
-      <Confetti run={claimed} className="!z-[45]" />
+      {claimed ? (
+        <Confetti
+          run
+          onConfettiComplete={onConfettiComplete}
+          className="!z-[45]"
+        />
+      ) : null}
 
       <div className="border-primary-gradiant rounded-lg">
         <button
