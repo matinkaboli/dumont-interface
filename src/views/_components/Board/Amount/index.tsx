@@ -70,11 +70,11 @@ const Amount = ({
       if (totalOdds > 0) {
         const payoutValue = value * totalOdds;
 
-        if (payoutValue > maxBetAmount)
-          return 'The possible payout must be less than the maximum bet amount.';
+        if (balance && payoutValue > +balance) return 'Insufficient USDT balance';
 
-        if (payoutValue < minBetAmount)
-          return 'The possible payout must be more than the minimum bet amount.';
+        if (payoutValue > maxBetAmount) return `Max bet is $${maxBetAmount}.`;
+
+        if (payoutValue < minBetAmount) return `Min bet is $${minBetAmount}`;
 
         return true;
       }
