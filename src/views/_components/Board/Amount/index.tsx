@@ -4,17 +4,19 @@ import { Control, Controller, FieldErrors, UseFormSetValue, UseFormTrigger } fro
 import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import clsx from 'clsx';
 
 import { Icon, Input } from '@/components';
 import { Props as InputProps } from '@/components/Input';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
+import humanizeAmount from '@/helpers/humanizeAmount';
+import formatDecimal from '@/helpers/formatDecimal';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
 import MaxButton from './MaxButton';
 import { BetData } from '../index';
-import clsx from 'clsx';
 
 const inputProps: InputProps = {
   name: 'amount',
@@ -72,9 +74,12 @@ const Amount = ({
 
         if (balance && payoutValue > +balance) return 'Insufficient USDT balance';
 
-        if (payoutValue > maxBetAmount) return `Max bet is $${maxBetAmount}.`;
+        if (payoutValue > maxBetAmount)
+          return `Max bet is $${humanizeAmount(
+            formatDecimal({ amount: maxBetAmount, decimalPlaces: 2 }),
+          )}`;
 
-        if (payoutValue < minBetAmount) return `Min bet is $${minBetAmount}`;
+        if (value < minBetAmount) return `Min bet is $${minBetAmount}`;
 
         return true;
       }
