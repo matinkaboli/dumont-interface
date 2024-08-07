@@ -86,6 +86,7 @@ const Board = () => {
     setValue,
     reset,
     watch,
+    trigger,
     formState: { isDirty, isValid, errors },
   } = useForm<BetData>({
     mode: 'onChange',
@@ -99,7 +100,9 @@ const Board = () => {
   const amount = watch('amount');
 
   const totalOdds = calculateTotalOdds(keys, cardOccurrences, validCardNumbers.length);
-  const payout = humanizeAmount(formatDecimal({ amount: +amount * totalOdds, decimalPlaces: 2 }));
+  const formattedPayout = humanizeAmount(
+    formatDecimal({ amount: +amount * totalOdds, decimalPlaces: 2 }),
+  );
 
   const { allowanceData, sendApprove, isApproveLoading, refetchAllowance } = useApproval(
     game?.address,
@@ -155,7 +158,7 @@ const Board = () => {
           <ConfirmBet
             bet={betData}
             totalOdds={totalOdds}
-            payout={payout}
+            payout={formattedPayout}
             onConfirm={() => onConfirmBet(betData)}
           />
         ),
@@ -229,7 +232,7 @@ const Board = () => {
           <ConfirmBet
             bet={data}
             totalOdds={totalOdds}
-            payout={payout}
+            payout={formattedPayout}
             onConfirm={() => onConfirmBet(data)}
           />
         ) : (
@@ -273,11 +276,12 @@ const Board = () => {
       </div>
       <div className="col-span-1 md:order-2 order-1">
         <Amount
-          payout={payout}
+          payout={formattedPayout}
           totalOdds={totalOdds}
           setValue={setValue}
           inputErrors={errors}
           control={control}
+          trigger={trigger}
           disabledButton={
             !isValid ||
             !isDirty ||

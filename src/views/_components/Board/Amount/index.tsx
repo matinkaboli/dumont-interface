@@ -1,14 +1,17 @@
 'use client';
 
-import { Control, Controller, FieldErrors, UseFormSetValue } from 'react-hook-form';
+import { Control, Controller, FieldErrors, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 import Image from 'next/image';
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import clsx from 'clsx';
 
 import { Icon, Input } from '@/components';
 import { Props as InputProps } from '@/components/Input';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
+import humanizeAmount from '@/helpers/humanizeAmount';
+import formatDecimal from '@/helpers/formatDecimal';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
@@ -29,11 +32,6 @@ const mobileInputProps: InputProps = {
   rightSectionPointerEvents: 'auto',
 };
 
-const inputValidation = {
-  required: 'Bet amount is required.',
-  pattern: { value: /^\d*\.?\d+$/, message: 'This input is number only.' },
-};
-
 interface Props {
   control: Control<BetData>;
   disabledButton: boolean;
@@ -41,18 +39,71 @@ interface Props {
   setValue: UseFormSetValue<BetData>;
   payout: string;
   totalOdds: number;
+  trigger: UseFormTrigger<BetData>;
 }
 
-const Amount = ({ control, disabledButton, inputErrors, setValue, payout, totalOdds }: Props) => {
+const Amount = ({
+  control,
+  disabledButton,
+  inputErrors,
+  setValue,
+  payout,
+  totalOdds,
+  trigger,
+}: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
+  const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.bet);
   const [isOpen, setIsOpen] = useState(false);
-  const formattedPayout = isEmpty(inputErrors) ? payout : '0';
+  const [amount, setAmount] = useState();
+  const formattedPayout =
+    isEmpty(inputErrors) || inputErrors?.amount?.type === 'validate' ? payout : '0';
+
+  useEffect(() => {
+    if (totalOdds > 0 && amount) {
+      trigger('amount');
+    }
+  }, [totalOdds, amount]);
+
+  const inputValidation = {
+    required: 'Bet amount is required.',
+    pattern: { value: /^\d*\.?\d+$/, message: 'This input is number only.' },
+    validate: (value: any) => {
+      setAmount(value);
+      if (totalOdds > 0) {
+        const payoutValue = value * totalOdds;
+
+        if (balance && payoutValue > +balance) return 'Insufficient USDT balance';
+
+        const maxBetAmountMargined = (maxBetAmount * 98) / 100;
+
+        if (payoutValue > maxBetAmountMargined)
+          return `Max bet is $${humanizeAmount(
+            formatDecimal({ amount: maxBetAmountMargined, decimalPlaces: 2 }),
+          )}`;
+
+        if (value < minBetAmount) return `Min bet is $${minBetAmount}`;
+
+        return true;
+      }
+    },
+  };
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 
   const setMaxValue = () => {
     const maxAmount = isEmpty(balance) ? 0 : balance;
     setValue('amount', `${maxAmount}`, { shouldDirty: true, shouldValidate: true });
+  };
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    onChange: (value: string) => void,
+  ) => {
+    const { value } = e.target;
+
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      onChange(value);
+    }
   };
 
   return (
@@ -72,13 +123,20 @@ const Amount = ({ control, disabledButton, inputErrors, setValue, payout, totalO
               name="amount"
               control={control}
               rules={inputValidation}
-              render={({ field }) => <Input errors={inputErrors} {...inputProps} {...field} />}
+              render={({ field }) => (
+                <Input
+                  errors={inputErrors}
+                  {...inputProps}
+                  {...field}
+                  onChange={(e) => handleInputChange(e, field.onChange)}
+                />
+              )}
             />
 
             <AmountInfo
               odd={totalOdds}
               payout={formattedPayout}
-              className="gap-3 mt-4"
+              className={clsx('gap-3', isEmpty(inputErrors) ? 'mt-4' : 'mt-1')}
               labelClassName="text-white"
               valueClassName="text-white opacity-50"
             />
@@ -107,6 +165,7 @@ const Amount = ({ control, disabledButton, inputErrors, setValue, payout, totalO
                       <MaxButton onClick={setMaxValue} />
                     </div>
                   }
+                  onChange={(e) => handleInputChange(e, field.onChange)}
                 />
               )}
             />
