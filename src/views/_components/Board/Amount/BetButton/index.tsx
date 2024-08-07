@@ -7,7 +7,11 @@ import { ButtonProps } from '@/components/Button';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
-const BetButton = ({ size, disabled }: ButtonProps) => {
+interface Props extends ButtonProps {
+  disabledButtonLabel: string;
+}
+
+const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
   const { isCreated, data: game } = useTypedSelector((state) => state.game);
 
   const buttonProps: ButtonProps = {
@@ -33,7 +37,7 @@ const BetButton = ({ size, disabled }: ButtonProps) => {
                       disabled={disabled}
                       className={disabled ? '' : 'btn-gradiant'}
                     >
-                      Bet
+                      {disabled ? disabledButtonLabel : 'Bet'}
                     </Button>
                   </>
                 ) : (
