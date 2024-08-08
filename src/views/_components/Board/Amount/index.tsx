@@ -40,16 +40,18 @@ interface Props {
   payout: string;
   totalOdds: number;
   trigger: UseFormTrigger<BetData>;
+  disabledButtonLabel: string;
 }
 
 const Amount = ({
   control,
-  disabledButton,
   inputErrors,
   setValue,
   payout,
   totalOdds,
   trigger,
+  disabledButton,
+  disabledButtonLabel,
 }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.bet);
@@ -142,7 +144,11 @@ const Amount = ({
             />
           </div>
 
-          <BetButton size="md" disabled={disabledButton} />
+          <BetButton
+            size="md"
+            disabled={disabledButton}
+            disabledButtonLabel={disabledButtonLabel}
+          />
         </div>
       </div>
 
@@ -202,7 +208,11 @@ const Amount = ({
         </motion.div>
 
         <div className="bg-neutral-750 px-5 pt-6 pb-8 fixed -bottom-px right-0 left-0 rounded-t-2xl z-10">
-          <BetButton size="lg" disabled={disabledButton} />
+          <BetButton
+            size="lg"
+            disabled={disabledButton}
+            disabledButtonLabel={disabledButtonLabel}
+          />
         </div>
       </div>
     </>

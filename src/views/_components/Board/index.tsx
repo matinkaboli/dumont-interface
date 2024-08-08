@@ -261,6 +261,20 @@ const Board = () => {
     onBet(data);
   }
 
+  function disabledButtonLabel() {
+    if (game?.player !== address) return 'Not your game';
+    if (game?.cards[activeCardIndex - 1]?.number !== -1) return 'Revealed Card';
+    return 'Bet';
+  }
+
+  const isDisabled =
+    !isValid ||
+    !isDirty ||
+    isEmpty(keys) ||
+    isExpired ||
+    game?.cards[activeCardIndex - 1]?.number !== -1 ||
+    game?.player !== address;
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -282,14 +296,8 @@ const Board = () => {
           inputErrors={errors}
           control={control}
           trigger={trigger}
-          disabledButton={
-            !isValid ||
-            !isDirty ||
-            isEmpty(keys) ||
-            isExpired ||
-            game?.cards[activeCardIndex - 1]?.number !== -1 ||
-            game?.player !== address
-          }
+          disabledButton={isDisabled}
+          disabledButtonLabel={disabledButtonLabel()}
         />
       </div>
     </form>

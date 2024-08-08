@@ -24,7 +24,9 @@ const AddressButton = ({ onOpenChange }: Props) => {
           <span className="font-bold">{balance ? humanizeAmount(balance) : 0}</span>
           <span>USDT</span>
         </div>
-        <div className="text-primary-250 text-sm">{truncateString(address || '')}</div>
+        <div className="text-primary-250 text-sm">
+          {truncateString(address || '', { leftChars: 6, rightChars: 4 })}
+        </div>
       </button>
     </div>
   );

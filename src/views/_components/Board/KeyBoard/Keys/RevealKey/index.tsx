@@ -131,6 +131,7 @@ const RevealKey = ({ className }: { className?: string }) => {
         isExpired ||
         game?.player !== address ||
         game!.cards[activeCardIndex - 1]?.isFreeReveal ||
+        game?.cards[activeCardIndex - 1]?.number !== -1 ||
         +game!.freeRevealRequests === +game!.maxFreeReveals
       }
     >

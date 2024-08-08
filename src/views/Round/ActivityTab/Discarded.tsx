@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useMemo } from 'react';
 
 import { Loading } from '@/components';
 import getCardInfo from '@/helpers/getCardInfo';
@@ -11,6 +12,10 @@ import EmptyDataMessage from './EmptyDataMessage';
 const Discarded = () => {
   const { data: game } = useTypedSelector((state) => state.game);
   const { data: discarded, loading } = useAxiosGet<number[]>(`games/${game?.id}/cards`);
+
+  const sortedDiscarded = useMemo(() => {
+    return discarded?.sort((a, b) => (a % 13) - (b % 13)) || [];
+  }, [discarded]);
 
   return (
     <>
@@ -31,7 +36,7 @@ const Discarded = () => {
               </h3>
 
               <div className="flex flex-wrap md:gap-4 gap-3 mt-6">
-                {discarded?.map((discardedNumber) => (
+                {sortedDiscarded?.map((discardedNumber) => (
                   <Image
                     key={discardedNumber}
                     src={`/images/cards/${getCardInfo(discardedNumber)}.png`}

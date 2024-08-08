@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import BN from 'bignumber.js';
@@ -139,8 +140,12 @@ const Activities = () => {
     refetch,
   } = useAxiosGet<Activity[]>(`games/${game?.id}/activities`, { interval: 30000 });
 
+  const reversedActivities = useMemo(() => {
+    return activities ? [...activities].reverse() : [];
+  }, [activities]);
+
   const table = useReactTable({
-    data: activities || [],
+    data: reversedActivities,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
