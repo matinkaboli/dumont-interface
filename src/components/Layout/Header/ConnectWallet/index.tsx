@@ -60,7 +60,6 @@ const useWalletInfo = () => {
     abi: VAULT_ABI,
     functionName: 'getMinimumBetAmount',
     suspense: true,
-    watch: true,
     onSuccess: (data: number) => {
       dispatch(setMinBetAmount(parseUnits(data, 6).toNumber()));
     },
