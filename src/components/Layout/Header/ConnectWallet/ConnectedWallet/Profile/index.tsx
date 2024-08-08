@@ -36,7 +36,7 @@ const Profile = ({ onOpenChange }: Props) => {
       <div className="flex flex-col gap-6 mt-4">
         <CopyBox
           copyText={address || ''}
-          copyLabel={truncateString(address || '', { leftChars: 8, rightChars: 8 })}
+          copyLabel={truncateString(address || '', { leftChars: 6, rightChars: 4 })}
           copyIcon={<Image src="/images/metamask.png" width={24} height={24} alt="MetaMask" />}
         />
 
