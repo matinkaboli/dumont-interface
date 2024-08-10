@@ -5,6 +5,7 @@ import { Button, Icon, QRCode } from '@/components';
 import truncateString from '@/helpers/truncateString';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import useAxiosGet from '@/hooks/useAxiosGet';
+import links from '@/constants/links';
 
 import CopyBox from './CopyBox';
 import BalanceList from './BalanceList';
@@ -45,12 +46,12 @@ const Profile = ({ onOpenChange }: Props) => {
           <BalanceList />
 
           <div className="flex gap-2">
-            <LinkButton link="/">
+            <LinkButton link={links.BUY_CRYPTO}>
               <Icon name="credit-card" />
               Buy crypto
             </LinkButton>
 
-            <LinkButton link="/">
+            <LinkButton link={links.BRIDGE_ASSET}>
               <Icon name="swap-coin" />
               Bridge asset
             </LinkButton>
