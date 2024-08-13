@@ -9,6 +9,7 @@ import { getPlayerGames, redirectPlayer } from '@/redux/features/accountSlice';
 import { AppDispatch } from '@/redux/store';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import Routes from '@/constants/routes';
 
 import Board from '@/views/_components/Board';
 import CardDeck from '@/views/_components/CardDeck';
@@ -54,7 +55,7 @@ const Home = () => {
       </div>
     );
 
-  if (redirectId) redirect(`/${redirectId}`);
+  if (redirectId) redirect(`${Routes.ROUND}/${redirectId}`);
 
   return (
     <div className="flex flex-col gap-4">

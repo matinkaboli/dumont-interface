@@ -14,6 +14,7 @@ import extractGameId from '@/helpers/extractGameId';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 import formatUnits from '@/helpers/formatUnits';
 import axios from '@/lib/axios';
+import Routes from '@/constants/routes';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -121,7 +122,7 @@ const ConfirmRound = () => {
     } else if (activeIndex === 4) {
       const redirectTimer = setTimeout(() => {
         dispatch(closeDialog());
-        router.push(`/${redirectId}`);
+        router.push(`${Routes.ROUND}/${redirectId}`);
       }, 1000);
 
       return () => clearTimeout(redirectTimer);

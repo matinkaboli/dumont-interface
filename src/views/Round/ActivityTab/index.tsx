@@ -7,7 +7,7 @@ import Discarded from './Discarded';
 
 const ActivityTab = ({ className = '' }: { className?: string }) => {
   return (
-    <Tabs defaultValue="activity" className={className}>
+    <Tabs defaultValue="activity" className={className} onChange={(e) => e.preventDefault()}>
       <TabsList>
         <TabsTrigger value="activity">Activity</TabsTrigger>
         <TabsTrigger value="discarded">Discarded</TabsTrigger>
