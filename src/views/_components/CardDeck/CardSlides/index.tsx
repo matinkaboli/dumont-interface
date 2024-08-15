@@ -17,7 +17,7 @@ const CardSlides = ({ slides = [] }: Props) => {
 
   const initialSlide = useMemo(() => {
     const index = game?.cards.findIndex((card) => card.number === -1);
-    return index !== undefined ? index + 1 : 1;
+    return index && index !== -1 ? index + 1 : 1;
   }, [game]);
 
   return (
