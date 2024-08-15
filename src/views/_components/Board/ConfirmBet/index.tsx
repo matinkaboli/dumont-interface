@@ -37,7 +37,7 @@ const ConfirmBet = ({ bet, onConfirm, totalOdds, payout }: Props) => {
   const sortedKeys = useMemo(() => sortKeys(bet.keys), [bet.keys]);
 
   const betDetails = [
-    { label: 'Amount', value: `${humanizeAmount(bet.amount)} USDT` },
+    { label: 'Amount', value: `$${humanizeAmount(bet.amount)}` },
     { label: 'Overall odds', value: `x${totalOdds}` },
     { label: 'Possible payout', value: `$${payout}` },
   ];
