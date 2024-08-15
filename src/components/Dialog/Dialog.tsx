@@ -24,6 +24,7 @@ export interface DialogProps
   open: boolean;
   onOpenChange: () => void;
   onCloseButton?: () => void;
+  onClickOverlay?: () => void;
   className?: string;
   showCloseButton?: boolean;
   disableEvents?: boolean;
@@ -36,6 +37,7 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
       open,
       onOpenChange,
       onCloseButton,
+      onClickOverlay,
       showCloseButton = true,
       disableEvents = false,
       className,
@@ -57,12 +59,20 @@ const Dialog = React.forwardRef<React.ElementRef<typeof Root>, DialogProps>(
       }
     };
 
+    const handleClickOverlay = () => {
+      if (onClickOverlay) {
+        onClickOverlay();
+      } else {
+        onCloseDialog();
+      }
+    }
+
     return (
       <Root ref={ref} {...props}>
         <AnimatePresence>
           {open ? (
             <Portal forceMount>
-              <Overlay onClick={onCloseDialog} asChild className="fixed inset-0 z-40 bg-black">
+              <Overlay onClick={handleClickOverlay} asChild className="fixed inset-0 z-40 bg-black">
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.5 }}
