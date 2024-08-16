@@ -77,10 +77,11 @@ const Amount = ({
         if (balance && payoutValue > +balance) return 'Insufficient USDT balance';
 
         const maxBetAmountMargined = (maxBetAmount * 98) / 100;
+        const maxBetValue = maxBetAmountMargined / totalOdds;
 
         if (payoutValue > maxBetAmountMargined)
           return `Max bet is $${humanizeAmount(
-            formatDecimal({ amount: maxBetAmountMargined, decimalPlaces: 2 }),
+            formatDecimal({ amount: maxBetValue, decimalPlaces: 2 }),
           )}`;
 
         if (value < minBetAmount) return `Min bet is $${minBetAmount}`;

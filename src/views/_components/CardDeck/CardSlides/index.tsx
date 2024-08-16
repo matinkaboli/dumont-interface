@@ -1,9 +1,9 @@
+import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Carousel, CarouselItem } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { setActiveCardIndex } from '@/redux/features/gameSlice';
-import { Card } from '@/redux/features/gameSlice';
+import { Card, setActiveCardIndex } from '@/redux/features/gameSlice';
 
 import Slide from './Slide';
 
@@ -13,11 +13,16 @@ interface Props {
 
 const CardSlides = ({ slides = [] }: Props) => {
   const dispatch = useDispatch();
-  const { activeCardIndex } = useTypedSelector((state) => state.game);
+  const { activeCardIndex, data: game } = useTypedSelector((state) => state.game);
+
+  const initialSlide = useMemo(() => {
+    const index = game?.cards.findIndex((card) => card.number === -1);
+    return index && index !== -1 ? index + 1 : 1;
+  }, [game]);
 
   return (
     <Carousel
-      initialSlide={1}
+      initialSlide={initialSlide}
       allowSlidePrev={activeCardIndex > 1}
       prevELClassName={activeCardIndex === 1 ? '!bg-neutral-700 [&_.path]:!fill-neutral-500' : ''}
       onActiveIndexChange={(s) => dispatch(setActiveCardIndex(s.activeIndex))}
@@ -34,7 +39,7 @@ const CardSlides = ({ slides = [] }: Props) => {
             {({ isActive }) => (
               <Slide
                 index={index + 1}
-                slide='/images/card.png'
+                slide="/images/card.png"
                 isLeaked={slide.isFreeReveal}
                 number={slide?.number}
                 isActive={isActive}

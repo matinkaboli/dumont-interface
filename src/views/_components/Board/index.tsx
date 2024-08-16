@@ -153,6 +153,7 @@ const Board = () => {
       openDialog({
         dialogProps: {
           onCloseButton: onCloseConfirmBet,
+          onClickOverlay: onCloseConfirmBet,
         },
         content: (
           <ConfirmBet
@@ -197,6 +198,7 @@ const Board = () => {
           openDialog({
             dialogProps: {
               onCloseButton: onCloseResultDialog,
+              onClickOverlay: onCloseResultDialog,
             },
             content: (
               <AnimatedDialogContent key="result">
@@ -227,6 +229,7 @@ const Board = () => {
       openDialog({
         dialogProps: {
           onCloseButton: onCloseConfirmBet,
+          onClickOverlay: onCloseConfirmBet,
         },
         content: isApproved ? (
           <ConfirmBet
