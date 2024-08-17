@@ -1,4 +1,5 @@
-import { useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useEffect } from 'react';
+import { useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import formatUnits from '@/helpers/formatUnits';
@@ -12,7 +13,7 @@ export const useApproval = (
   const { address } = useTypedSelector((state) => state.account.profile);
   const { details } = useTypedSelector((state) => state.config);
 
-  const { data: allowanceData, refetch: refetchAllowance } = useContractRead({
+  const { data: allowanceData, refetch: refetchAllowance } = useReadContract({
     address: details?.usdt,
     abi: ERC20_ABI,
     functionName: 'allowance',
@@ -20,27 +21,37 @@ export const useApproval = (
   });
 
   const {
-    write: writeApprove,
-    data: approveData,
-    isLoading: isApproveLoading,
-  } = useContractWrite({
-    address: details?.usdt,
-    abi: ERC20_ABI,
-    functionName: 'approve',
-    onError: onError,
-  });
+    writeContract: writeApprove,
+    data: hash,
+    isPending: isApproveLoading,
+    isError: isWriteApproveError,
+  } = useWriteContract();
 
-  useWaitForTransaction({
-    chainId: details?.networkId,
-    hash: approveData?.hash,
-    onSuccess: onApproveSuccess,
-    onError: onError,
+  const {
+    isError: isWaitApproveError,
+    isSuccess: isConfirmed,
+    error,
+  } = useWaitForTransactionReceipt({
+    hash,
   });
 
   const sendApprove = (value: string) => {
     const approveValue = formatUnits(value, 6).toString();
-    writeApprove?.({ args: [contractAddress, approveValue] });
+    writeApprove?.({
+      address: details!.usdt,
+      abi: ERC20_ABI,
+      functionName: 'approve',
+      args: [contractAddress, approveValue],
+    });
   };
+
+  useEffect(() => {
+    if (isWriteApproveError || isWaitApproveError) onError();
+  }, [isWriteApproveError, isWaitApproveError]);
+
+  useEffect(() => {
+    if (isConfirmed) onApproveSuccess();
+  }, [isConfirmed]);
 
   return {
     sendApprove,

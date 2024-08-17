@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { useDispatch } from 'react-redux';
-import { useContractRead, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { Confetti, Icon } from '@/components';
 import { openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
@@ -22,7 +22,7 @@ const RewardButton = () => {
   const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
 
-  const { data: balancesData, refetch: refetetchBalances } = useContractRead({
+  const { data: balancesData, refetch: refetetchBalances } = useReadContract({
     address: details?.montRewardManager,
     abi: MONT_REWARD_MANAGER_ABI,
     functionName: 'balances',
@@ -30,21 +30,19 @@ const RewardButton = () => {
   });
 
   const {
-    write: writeClaim,
+    writeContract: writeClaim,
     data: claimData,
-    isLoading: isClaimLoading,
-  } = useContractWrite({
-    address: details?.montRewardManager,
-    abi: MONT_REWARD_MANAGER_ABI,
-    functionName: 'claim',
-    onError: onError,
-  });
+    isPending: isClaimLoading,
+    isError: isWriteClaimError,
+  } = useWriteContract();
 
-  const { isLoading: isWaitClaimLoading } = useWaitForTransaction({
+  const {
+    isLoading: isWaitClaimLoading,
+    isSuccess: isWaitClaimSuccess,
+    isError: isWaitClaimError,
+  } = useWaitForTransactionReceipt({
     chainId: details?.networkId,
-    hash: claimData?.hash,
-    onSuccess: onSuccess,
-    onError: onError,
+    hash: claimData,
   });
 
   useEffect(() => {
@@ -67,8 +65,20 @@ const RewardButton = () => {
     }
   }, [isClaimLoading, isWaitClaimLoading]);
 
+  useEffect(() => {
+    if (isWaitClaimSuccess) onSuccess();
+  }, [isWaitClaimSuccess]);
+
+  useEffect(() => {
+    if (isWriteClaimError || isWaitClaimError) onError();
+  }, [isWriteClaimError, isWaitClaimError]);
+
   function onClaim() {
-    writeClaim?.();
+    writeClaim?.({
+      address: details!.montRewardManager,
+      abi: MONT_REWARD_MANAGER_ABI,
+      functionName: 'claim',
+    });
   }
 
   function onSuccess() {
@@ -121,11 +131,7 @@ const RewardButton = () => {
   return (
     <>
       {claimed ? (
-        <Confetti
-          run
-          onConfettiComplete={onConfettiComplete}
-          className="!z-[45]"
-        />
+        <Confetti run onConfettiComplete={onConfettiComplete} className="!z-[45]" />
       ) : null}
 
       <div className="border-primary-gradiant rounded-lg">

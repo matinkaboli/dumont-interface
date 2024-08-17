@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import BN from 'bignumber.js';
 
 import { Button } from '@/components';
@@ -44,24 +44,18 @@ const ConfirmRound = () => {
   );
 
   const {
-    write: writeCreateGame,
-    data: createGameData,
-    isLoading: isCreateGameLoading,
-  } = useContractWrite({
-    address: details?.gameFactory,
-    abi: GAME_FACTORY_ABI,
-    functionName: 'createGame',
-    args: [referralAddress ?? defaultAddress],
-    onError: () => onError('Creating was unsuccessful', onCreateGame),
-    onSuccess: () => setActiveIndex(1),
-  });
+    writeContract: writeCreateGame,
+    data: hash,
+    isPending: isCreateGameLoading,
+    isError: isWriteGameError,
+  } = useWriteContract();
 
-  useWaitForTransaction({
-    chainId: details?.networkId,
-    hash: createGameData?.hash,
-    onSuccess: onCreateGameSuccess,
-    onSettled: onCreateGameSettled,
-    onError: () => onError('Creating was unsuccessful', onCreateGame),
+  const {
+    data: receiptData,
+    isSuccess: isConfirmed,
+    isError: isWaitGameError,
+  } = useWaitForTransactionReceipt({
+    hash,
   });
 
   useEffect(() => {
@@ -102,7 +96,7 @@ const ConfirmRound = () => {
         }),
       );
     }
-  }, [isApproveLoading, isCreateGameLoading, dispatch]);
+  }, [isApproveLoading, isCreateGameLoading]);
 
   useEffect(() => {
     dispatch(
@@ -129,6 +123,20 @@ const ConfirmRound = () => {
     }
   }, [activeIndex]);
 
+  useEffect(() => {
+    if (isConfirmed && receiptData) {
+      const id = extractGameId(receiptData.logs);
+      setRedirectId(id);
+      onCreateGameSuccess(id);
+    }
+  }, [isConfirmed, receiptData]);
+
+  useEffect(() => {
+    if (isWriteGameError || isWaitGameError) {
+      onError('Creating was unsuccessful', onCreateGame);
+    }
+  }, [isWriteGameError, isWaitGameError]);
+
   function onApproveSuccess() {
     dispatch(
       openDialog({
@@ -142,15 +150,8 @@ const ConfirmRound = () => {
     );
   }
 
-  function onCreateGameSuccess() {
+  function onCreateGameSuccess(id: number) {
     setActiveIndex(2);
-  }
-
-  function onCreateGameSettled(data: any) {
-    if (!data) return;
-
-    const id = extractGameId(data.logs);
-    setRedirectId(id);
 
     const timer = setTimeout(() => {
       dispatch(postGame({ id }))
@@ -179,7 +180,17 @@ const ConfirmRound = () => {
   }
 
   const onCreateGame = () => {
-    writeCreateGame?.();
+    writeCreateGame?.(
+      {
+        address: details!.gameFactory,
+        abi: GAME_FACTORY_ABI,
+        functionName: 'createGame',
+        args: [referralAddress ?? defaultAddress],
+      },
+      {
+        onSuccess: () => setActiveIndex(1),
+      },
+    );
   };
 
   const onCreateRound = () => {

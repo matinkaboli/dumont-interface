@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { ConnectKitButton } from 'connectkit';
-import { useAccount, useBalance, useContractRead } from 'wagmi';
+import { useAccount, useBalance, useReadContract } from 'wagmi';
 import { useDispatch } from 'react-redux';
 
 import { setAccount, setBalance } from '@/redux/features/accountSlice';
@@ -33,41 +33,40 @@ const useWalletInfo = () => {
 
   const { address, isConnected, isConnecting } = useAccount();
 
-  useBalance({
+  const { data: balance } = useBalance({
     address,
     token: details?.usdt,
-    watch: true,
-    onSuccess: (data) => {
-      if (data?.symbol === 'USDT') {
-        dispatch(setBalance(data?.formatted));
-      }
-    },
   });
 
-  useContractRead({
+  const { data: maxBetAmount } = useReadContract({
     address: details?.valut,
     abi: VAULT_ABI,
     functionName: 'getMaximumBetAmount',
-    suspense: true,
-    watch: true,
-    onSuccess: (data: number) => {
-      dispatch(setMaxBetAmount(parseUnits(data, 6).toNumber()));
-    },
   });
 
-  useContractRead({
+  const { data: minBetAmount } = useReadContract({
     address: details?.valut,
     abi: VAULT_ABI,
     functionName: 'getMinimumBetAmount',
-    suspense: true,
-    onSuccess: (data: number) => {
-      dispatch(setMinBetAmount(parseUnits(data, 6).toNumber()));
-    },
   });
 
   useEffect(() => {
     dispatch(setAccount({ address, isConnected, isConnecting }));
   }, [dispatch, address, isConnected, isConnecting]);
+
+  useEffect(() => {
+    if (balance && balance?.symbol === 'USDT') {
+      dispatch(setBalance(balance?.formatted));
+    }
+  }, [balance]);
+
+  useEffect(() => {
+    if (minBetAmount) dispatch(setMinBetAmount(parseUnits(minBetAmount as number, 6).toNumber()));
+  }, [minBetAmount]);
+
+  useEffect(() => {
+    if (maxBetAmount) dispatch(setMaxBetAmount(parseUnits(maxBetAmount as number, 6).toNumber()));
+  }, [maxBetAmount]);
 };
 
 const ConnectWallet = () => {
