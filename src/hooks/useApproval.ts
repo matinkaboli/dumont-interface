@@ -30,7 +30,6 @@ export const useApproval = (
   const {
     isError: isWaitApproveError,
     isSuccess: isConfirmed,
-    error,
   } = useWaitForTransactionReceipt({
     hash,
   });
