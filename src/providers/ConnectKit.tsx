@@ -10,9 +10,7 @@ const config = createConfig(
   getDefaultConfig({
     chains: [baseSepolia],
     transports: {
-      [baseSepolia.id]: http(
-        `https://base-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
-      ),
+      [baseSepolia.id]: http(`${process.env.NEXT_PUBLIC_RPC}`),
     },
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
     appName: 'Dumont',
