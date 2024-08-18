@@ -38,10 +38,9 @@ const RewardButton = () => {
 
   const {
     isLoading: isWaitClaimLoading,
-    isSuccess: isWaitClaimSuccess,
+    isSuccess: isConfirmed,
     isError: isWaitClaimError,
   } = useWaitForTransactionReceipt({
-    chainId: details?.networkId,
     hash: claimData,
   });
 
@@ -66,8 +65,8 @@ const RewardButton = () => {
   }, [isClaimLoading, isWaitClaimLoading]);
 
   useEffect(() => {
-    if (isWaitClaimSuccess) onSuccess();
-  }, [isWaitClaimSuccess]);
+    if (isConfirmed) onSuccess();
+  }, [isConfirmed]);
 
   useEffect(() => {
     if (isWriteClaimError || isWaitClaimError) onError();
