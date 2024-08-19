@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import clsx from 'clsx';
 
 import { swiperRef } from '@/components';
@@ -22,28 +22,20 @@ import RevealedCard from './RevealedCard';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
   const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
 
   const {
-    write: writeRevealCard,
+    writeContract: writeRevealCard,
     data: revealCardData,
-    isLoading: isRevealCardLoading,
-  } = useContractWrite({
-    address: game?.address,
-    abi: GAME_ABI,
-    functionName: 'requestFreeRevealCard',
-    args: [activeCardIndex - 1],
-    onError: onError,
-  });
+    isPending: isRevealCardLoading,
+    isError: isWriteRevealError,
+  } = useWriteContract();
 
-  useWaitForTransaction({
-    chainId: details?.networkId,
-    hash: revealCardData?.hash,
-    onSuccess: onRevealCardSuccess,
-    onError: onError,
-  });
+  const { isError: isWaitRevealError, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash: revealCardData,
+    });
 
   useEffect(() => {
     if (isRevealCardLoading) {
@@ -60,8 +52,21 @@ const RevealKey = ({ className }: { className?: string }) => {
     }
   }, [isRevealCardLoading]);
 
+  useEffect(() => {
+    if (isConfirmed) onRevealCardSuccess();
+  }, [isConfirmed]);
+
+  useEffect(() => {
+    if (isWriteRevealError || isWaitRevealError) onError();
+  }, [isWriteRevealError, isWaitRevealError]);
+
   function onRequestFreeRevealCard() {
-    writeRevealCard?.();
+    writeRevealCard?.({
+      address: game!.address,
+      abi: GAME_ABI,
+      functionName: 'requestFreeRevealCard',
+      args: [activeCardIndex - 1],
+    });
   }
 
   function onCloseDialog() {

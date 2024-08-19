@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { openDialog } from '@/redux/features/dialogSlice';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 import { Icon } from '@/components';
 
@@ -17,30 +16,21 @@ import ClaimedWin from './ClaimedWin';
 interface Props {
   cardIndex: number;
   gameAddress?: `0x${string}`;
-  refetch?: () => Promise<void>
+  refetch?: () => Promise<void>;
 }
 
 const ClaimButton = ({ gameAddress, cardIndex, refetch }: Props) => {
   const dispatch = useDispatch();
-  const { details } = useTypedSelector((state) => state.config);
 
   const {
-    write: writeClaim,
-    data: claimData,
-    isLoading: isClaimLoading,
-  } = useContractWrite({
-    address: gameAddress,
-    abi: GAME_ABI,
-    functionName: 'claimWin',
-    args: [cardIndex],
-    onError: onError,
-  });
+    writeContract: writeClaim,
+    data: hash,
+    isPending: isClaimLoading,
+    isError: isWriteClaimError,
+  } = useWriteContract();
 
-  useWaitForTransaction({
-    chainId: details?.networkId,
-    hash: claimData?.hash,
-    onSuccess: onSuccess,
-    onError: onError,
+  const { isSuccess: isConfirmed, isError: isWaitClaimError } = useWaitForTransactionReceipt({
+    hash,
   });
 
   useEffect(() => {
@@ -58,8 +48,21 @@ const ClaimButton = ({ gameAddress, cardIndex, refetch }: Props) => {
     }
   }, [isClaimLoading]);
 
+  useEffect(() => {
+    if (isWriteClaimError || isWaitClaimError) onError();
+  }, [isWriteClaimError, isWaitClaimError]);
+
+  useEffect(() => {
+    if (isConfirmed) onSuccess();
+  }, [isConfirmed]);
+
   function onClaim() {
-    writeClaim?.();
+    writeClaim?.({
+      address: gameAddress!,
+      abi: GAME_ABI,
+      functionName: 'claimWin',
+      args: [cardIndex],
+    });
   }
 
   function onSuccess() {

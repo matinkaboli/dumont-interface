@@ -11,24 +11,23 @@ import CopyBox from './CopyBox';
 import BalanceList from './BalanceList';
 import LinkButton from './LinkButton';
 
-interface Props {
-  onOpenChange: () => void;
-}
-
 interface ReferralData {
   id: number;
 }
 
-const Profile = ({ onOpenChange }: Props) => {
+const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
   const { address } = useTypedSelector((state) => state.account.profile);
   const { data: referralData } = useAxiosGet<ReferralData>(`players/${address}/referrals`);
-  const { disconnect } = useDisconnect({
-    onSuccess() {
-      onOpenChange();
-    },
-  });
+  const { disconnectAsync } = useDisconnect();
 
   const referralLink = referralData ? `https://dumont.gg/i/${referralData?.id}` : '';
+
+  const onDisconnect = async () => {
+    try {
+      await disconnectAsync();
+      onOpenChange();
+    } catch (error) {}
+  };
 
   return (
     <>
@@ -74,7 +73,7 @@ const Profile = ({ onOpenChange }: Props) => {
         radius="lg"
         className="text-error-400 font-semibold text-base mt-8 mx-auto !px-0 hover:bg-neutral-600"
         leftSection={<Icon name="arrow-right-from-bracket" />}
-        onClick={() => disconnect()}
+        onClick={onDisconnect}
       >
         Disconnect
       </Button>

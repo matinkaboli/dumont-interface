@@ -1,26 +1,31 @@
 'use client';
 
 import { type PropsWithChildren } from 'react';
-import { createConfig, WagmiConfig } from 'wagmi';
+import { createConfig, http, WagmiProvider } from 'wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 import { baseSepolia } from 'wagmi/chains';
 
-const chains = [baseSepolia];
-
 const config = createConfig(
   getDefaultConfig({
-    alchemyId: process.env.NEXT_PUBLIC_ALCHEMY_ID,
+    chains: [baseSepolia],
+    transports: {
+      [baseSepolia.id]: http(`${process.env.NEXT_PUBLIC_RPC}`),
+    },
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
     appName: 'Dumont',
-    chains,
   }),
 );
 
+const queryClient = new QueryClient();
+
 const ConnectKit = ({ children }: PropsWithChildren) => {
   return (
-    <WagmiConfig config={config}>
-      <ConnectKitProvider theme="midnight">{children}</ConnectKitProvider>
-    </WagmiConfig>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <ConnectKitProvider theme="midnight">{children}</ConnectKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 };
 

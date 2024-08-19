@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import BN from 'bignumber.js';
-import { useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { swiperRef } from '@/components';
 import { AppDispatch } from '@/redux/store';
@@ -75,7 +75,6 @@ export interface BetData {
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
   const { game, activeCardIndex, isExpired, validCardNumbers, cardOccurrences } = useCardData();
   const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
@@ -111,21 +110,18 @@ const Board = () => {
   );
 
   const {
-    write: writeGuessCard,
+    writeContract: writeGuessCard,
     data: guessCardData,
-    isLoading: isGuessCardLoading,
-  } = useContractWrite({
-    address: game?.address as any,
-    abi: GAME_ABI,
-    functionName: 'guessCard',
-    onError: onError,
-  });
+    isPending: isGuessCardLoading,
+    isError: isWriteGuessError,
+  } = useWriteContract();
 
-  const { isLoading: isWaitGuessCardLoading } = useWaitForTransaction({
-    chainId: details?.networkId,
-    hash: guessCardData?.hash,
-    onSuccess: onGuessCardSuccess,
-    onError: onError,
+  const {
+    isLoading: isWaitGuessCardLoading,
+    isSuccess: isConfirmed,
+    isError: isWaitGuessError,
+  } = useWaitForTransactionReceipt({
+    hash: guessCardData,
   });
 
   useEffect(() => {
@@ -147,6 +143,14 @@ const Board = () => {
       );
     }
   }, [isGuessCardLoading, isApproveLoading, isWaitGuessCardLoading]);
+
+  useEffect(() => {
+    if (isConfirmed) onGuessCardSuccess();
+  }, [isConfirmed]);
+
+  useEffect(() => {
+    if (isWriteGuessError || isWaitGuessError) onError();
+  }, [isWriteGuessError, isWaitGuessError]);
 
   function onApproveSuccess() {
     dispatch(
@@ -217,7 +221,12 @@ const Board = () => {
     const keys = transformedRanks(data.keys);
     const guessNumber = guessArrayToNumber(keys);
     const amount = formatUnits(data.amount, 6).toNumber();
-    writeGuessCard?.({ args: [activeCardIndex - 1, amount, guessNumber] });
+    writeGuessCard?.({
+      address: game!.address,
+      abi: GAME_ABI,
+      functionName: 'guessCard',
+      args: [activeCardIndex - 1, amount, guessNumber],
+    });
   }
 
   function onBet(data: BetData) {
@@ -306,5 +315,4 @@ const Board = () => {
     </form>
   );
 };
-
 export default Board;
