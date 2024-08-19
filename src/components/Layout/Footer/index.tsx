@@ -22,6 +22,7 @@ const formatTime = (duration: string, createdAt: Date) => {
 
 const Footer = ({ className }: { className?: string }) => {
   const { data: game } = useTypedSelector((state) => state.game);
+  const { isConnected } = useTypedSelector((state) => state.account.profile);
   const [currentTime, setCurrentTime] = useState('');
 
   useEffect(() => {
@@ -37,6 +38,8 @@ const Footer = ({ className }: { className?: string }) => {
       return () => clearInterval(intervalId);
     }
   }, [game]);
+
+  if (!isConnected) return null;
 
   return (
     <footer className={clsx('md:flex hidden justify-center items-center', className)}>
