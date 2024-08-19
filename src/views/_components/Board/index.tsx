@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import BN from 'bignumber.js';
 import { useContractWrite, useWaitForTransaction } from 'wagmi';
 
-import { swiperRef } from '@/components';
+import { swiperRef } from '@/components/Carousel';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';
