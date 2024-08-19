@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import clsx from 'clsx';
 
-import { swiperRef } from '@/components';
+import { swiperRef } from '@/components/Carousel';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { getGame } from '@/redux/features/gameSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';

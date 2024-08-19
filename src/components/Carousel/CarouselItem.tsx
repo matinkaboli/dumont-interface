@@ -1,3 +1,5 @@
+'use client';
+
 import { SwiperSlide, SwiperSlideProps } from 'swiper/react';
 
 const CarouselItem = ({ ...props }: SwiperSlideProps) => {

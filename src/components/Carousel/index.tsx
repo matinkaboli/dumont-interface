@@ -9,7 +9,6 @@ import { Navigation } from 'swiper/modules';
 import clsx from 'clsx';
 
 import NavButton from './NavButton';
-import CarouselItem from './CarouselItem';
 
 interface Props extends Pick<SwiperProps, Exclude<keyof SwiperProps, 'modules' | 'navigation'>> {
   prevELClassName?: string;
@@ -59,4 +58,4 @@ const Carousel = ({
 
 Carousel.displayName = Swiper.displayName;
 
-export { Carousel, CarouselItem };
+export default Carousel;
