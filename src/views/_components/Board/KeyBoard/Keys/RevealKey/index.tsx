@@ -92,6 +92,7 @@ const RevealKey = ({ className }: { className?: string }) => {
           openDialog({
             dialogProps: {
               onCloseButton: onCloseDialog,
+              onClickOverlay: onCloseDialog,
             },
             content: (
               <AnimatedDialogContent key="reveal">
