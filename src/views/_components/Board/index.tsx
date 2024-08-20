@@ -274,8 +274,17 @@ const Board = () => {
   }
 
   function disabledButtonLabel() {
-    if (game?.player !== address) return 'Not your game';
-    if (game?.cards[activeCardIndex - 1]?.number !== -1) return 'Revealed Card';
+    if (!game) return 'Bet';
+
+    const card = game.cards?.[activeCardIndex - 1];
+    const isPlayerGame = game.player === address;
+    const isCardNumberDefined = card?.number !== undefined;
+    const isCardRevealed = isCardNumberDefined && card.number !== -1;
+
+    if (!isPlayerGame) return 'Not your game';
+    if (!isCardNumberDefined) return 'Card not available';
+    if (isCardRevealed) return 'Revealed Card';
+
     return 'Bet';
   }
 
