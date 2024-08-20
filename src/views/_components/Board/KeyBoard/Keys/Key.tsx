@@ -14,12 +14,13 @@ const Key = memo(({ value, weight, className, isSelected = false, onClick }: Key
   return (
     <KeyButton
       isSelected={isSelected}
-      className="flex-col"
       borderClassName={className}
       onClick={onClick}
+      disabled={weight === 0}
+      className="flex-col"
     >
       <span className="text-2xl font-bold text-white">{value}</span>
-      <span className="text-sm text-neutral-400">x{weight}</span>
+      <span className="text-sm text-neutral-400">{weight === 0 ? '-' : `x${weight}`}</span>
     </KeyButton>
   );
 });

@@ -38,8 +38,14 @@ interface Props {
 const KeyBoard = ({ values, setValue, validCardNumbersLength, cardOccurrences }: Props) => {
   const calcWeight = (keyNumber: string) => {
     const weight = (TOTAL_CARDS_LENGTH - validCardNumbersLength) / cardOccurrences[keyNumber];
+    if (!isFinite(weight)) {
+      return 0;
+    }
+
     return formatDecimal({ amount: weight, decimalPlaces: 2 });
   };
+
+
 
   const onClickKey = (value: string) => {
     const isSelected = values.includes(value);
