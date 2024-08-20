@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 
 import { Loading, Toast, ToastContent } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import { getGame } from '@/redux/features/gameSlice';
+import { getGame, setAllCardsGuessed } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import isEmpty from '@/helpers/isEmpty';
@@ -17,6 +17,8 @@ import Board from '@/views/_components/Board';
 
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
+
+const maxCardsLength = 51;
 
 const CreateRound = () => {
   const { id } = useParams();
@@ -48,13 +50,21 @@ const CreateRound = () => {
   }, []);
 
   useEffect(() => {
-    if (isExpired) {
+    if (!game) return;
+
+    const guessedCardsCount = game.cards.filter((card) => card.number !== -1).length;
+
+    if (guessedCardsCount >= maxCardsLength) {
+      dispatch(setAllCardsGuessed(true));
+    }
+
+    if (isExpired || guessedCardsCount >= maxCardsLength) {
       toast(
         <ToastContent variant="neutral" title="Expired!" description="Your game has expired." />,
         { position: 'bottom-right', toastId: 'expired' },
       );
     }
-  }, [isExpired]);
+  }, [isExpired, game]);
 
   if (isConnecting || (loading && !isRefetching))
     return (
