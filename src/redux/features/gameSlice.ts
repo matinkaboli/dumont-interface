@@ -91,6 +91,9 @@ const gameSlice = createSlice({
     setAllCardsGuessed(state, action: PayloadAction<boolean>) {
       state.areAllCardsGuessed = action.payload;
     },
+    resetGame() {
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -131,5 +134,5 @@ const gameSlice = createSlice({
   },
 });
 
-export const { setActiveCardIndex, expireGame, setAllCardsGuessed } = gameSlice.actions;
+export const { setActiveCardIndex, expireGame, resetGame, setAllCardsGuessed } = gameSlice.actions;
 export default gameSlice.reducer;

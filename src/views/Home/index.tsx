@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 
 import { Loading } from '@/components';
 import { getPlayerGames, redirectPlayer } from '@/redux/features/accountSlice';
+import { resetGame } from '@/redux/features/gameSlice';
 import { AppDispatch } from '@/redux/store';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -28,6 +29,7 @@ const Home = () => {
   useEffect(() => {
     if (address) {
       handlePlayerGames(address);
+      dispatch(resetGame());
     }
   }, [address]);
 
