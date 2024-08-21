@@ -7,7 +7,7 @@ import BN from 'bignumber.js';
 import { Button } from '@/components';
 import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
-import { postGame } from '@/redux/features/gameSlice';
+import { expireGame, postGame } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { useApproval } from '@/hooks/useApproval';
 import extractGameId from '@/helpers/extractGameId';
@@ -116,6 +116,7 @@ const ConfirmRound = () => {
     } else if (activeIndex === 4) {
       const redirectTimer = setTimeout(() => {
         dispatch(closeDialog());
+        dispatch(expireGame(false));
         router.push(`${Routes.ROUND}/${redirectId}`);
       }, 1000);
 
@@ -156,7 +157,9 @@ const ConfirmRound = () => {
     const timer = setTimeout(() => {
       dispatch(postGame({ id }))
         .unwrap()
-        .then(() => setActiveIndex(3))
+        .then(() => {
+          setActiveIndex(3);
+        })
         .catch(() => onError('Game creation was unsuccessful', onCreateGame));
     }, 5000);
 

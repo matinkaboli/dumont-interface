@@ -23,7 +23,12 @@ import RevealedCard from './RevealedCard';
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { address } = useTypedSelector((state) => state.account.profile);
-  const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
+  const {
+    data: game,
+    activeCardIndex,
+    isExpired,
+    areAllCardsGuessed,
+  } = useTypedSelector((state) => state.game);
 
   const {
     writeContract: writeRevealCard,
@@ -32,10 +37,9 @@ const RevealKey = ({ className }: { className?: string }) => {
     isError: isWriteRevealError,
   } = useWriteContract();
 
-  const { isError: isWaitRevealError, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash: revealCardData,
-    });
+  const { isError: isWaitRevealError, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash: revealCardData,
+  });
 
   useEffect(() => {
     if (isRevealCardLoading) {

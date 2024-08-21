@@ -3,7 +3,17 @@ import clsx from 'clsx';
 import DemoCard from './DemoCard';
 import ConfirmRound from './ConfirmRound';
 
-const CreateRound = ({ className = '' }: { className?: string }) => {
+interface Props {
+  className?: string;
+  title?: string;
+  desc?: string;
+}
+
+const CreateRound = ({
+  className = '',
+  title = 'Let’s start your round',
+  desc = 'To start the game, you need to create a round',
+}: Props) => {
   return (
     <div
       className={clsx(
@@ -11,8 +21,8 @@ const CreateRound = ({ className = '' }: { className?: string }) => {
         className,
       )}
     >
-      <h1 className="text-2xl text-white font-bold">Let’s start your round</h1>
-      <p className="text-sm text-neutral-200 mt-1">To start the game, you need to create a round</p>
+      <h1 className="text-2xl text-white font-bold">{title}</h1>
+      <p className="text-sm text-neutral-200 mt-1">{desc}</p>
 
       <ConfirmRound />
 

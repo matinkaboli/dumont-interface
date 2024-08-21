@@ -14,8 +14,7 @@ import Routes from '@/constants/routes';
 
 import Board from '@/views/_components/Board';
 import CardDeck from '@/views/_components/CardDeck';
-
-import CreateRound from './Create';
+import CreateRound from '@/views/_components/CreateRound';
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,9 +26,10 @@ const Home = () => {
   const [redirectId, setRedirectId] = useState<string>('');
 
   useEffect(() => {
+    dispatch(resetGame());
+
     if (address) {
       handlePlayerGames(address);
-      dispatch(resetGame());
     }
   }, [address]);
 

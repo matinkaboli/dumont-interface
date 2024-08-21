@@ -14,13 +14,14 @@ import isEmpty from '@/helpers/isEmpty';
 
 import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
+import CreateRound from '@/views/_components/CreateRound';
 
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
 
-const maxCardsLength = 51;
+const maxCardsLength = 6;
 
-const CreateRound = () => {
+const Round = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
@@ -30,6 +31,7 @@ const CreateRound = () => {
     isCreated,
     isExpired,
     isRefetching,
+    areAllCardsGuessed,
   } = useTypedSelector((state) => state.game);
 
   useEffect(() => {
@@ -47,51 +49,64 @@ const CreateRound = () => {
           );
         }
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
-    if (!game) return;
-
-    const guessedCardsCount = game.cards.filter((card) => card.number !== -1).length;
-
-    if (guessedCardsCount >= maxCardsLength) {
-      dispatch(setAllCardsGuessed(true));
-    }
-
-    if (isExpired || guessedCardsCount >= maxCardsLength) {
+    if (isExpired) {
       toast(
         <ToastContent variant="neutral" title="Expired!" description="Your game has expired." />,
         { position: 'bottom-right', toastId: 'expired' },
       );
     }
-  }, [isExpired, game]);
+  }, [isExpired]);
 
-  if (isConnecting || (loading && !isRefetching))
+  useEffect(() => {
+    if (!game) return;
+
+    dispatch(setAllCardsGuessed(false));
+    const guessedCardsCount = game.cards.filter((card) => card.number !== -1).length;
+
+    if (guessedCardsCount >= maxCardsLength) {
+      dispatch(setAllCardsGuessed(true));
+    }
+  }, [game]);
+
+  if (isConnecting || (loading && !isRefetching && !areAllCardsGuessed && !isExpired)) {
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
       </div>
     );
+  }
 
   if (!isConnected) {
     redirect('/');
   }
 
-  if (isEmpty(game)) {
+  if (isEmpty(game) && !isCreated) {
     return <div className="text-white">There is no game with this id</div>;
   }
 
   return (
     <>
-      <div className="px-1.5">
-        <ProgressbarTimer
-          duration={+game!.duration}
-          initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}
-        />
-      </div>
+      {!isEmpty(game) && !areAllCardsGuessed  && (
+        <div className="px-1.5">
+          <ProgressbarTimer
+            duration={+game!.duration}
+            initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}
+          />
+        </div>
+      )}
 
       <div className="flex flex-col gap-4">
-        <CardDeck needsShuffling={isCreated} />
+        {areAllCardsGuessed || isExpired ? (
+          <CreateRound
+            title={isExpired ? 'This round has expired' : 'This round has ended'}
+            desc="You can try out your luck again in a new round."
+          />
+        ) : (
+          <CardDeck needsShuffling={isCreated} />
+        )}
         <Board />
         <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
         <Toast />
@@ -100,4 +115,4 @@ const CreateRound = () => {
   );
 };
 
-export default CreateRound;
+export default Round;

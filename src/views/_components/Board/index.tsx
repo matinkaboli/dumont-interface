@@ -47,7 +47,12 @@ const calculateTotalOdds = (
 };
 
 const useCardData = () => {
-  const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
+  const {
+    data: game,
+    activeCardIndex,
+    isExpired,
+    areAllCardsGuessed,
+  } = useTypedSelector((state) => state.game);
 
   const validCardNumbers = useMemo(
     () =>
@@ -65,7 +70,14 @@ const useCardData = () => {
     return obj;
   }, [validCardNumbers]);
 
-  return { game, activeCardIndex, isExpired, validCardNumbers, cardOccurrences };
+  return {
+    game,
+    activeCardIndex,
+    isExpired,
+    areAllCardsGuessed,
+    validCardNumbers,
+    cardOccurrences,
+  };
 };
 
 export interface BetData {
@@ -76,7 +88,14 @@ export interface BetData {
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { address } = useTypedSelector((state) => state.account.profile);
-  const { game, activeCardIndex, isExpired, validCardNumbers, cardOccurrences } = useCardData();
+  const {
+    game,
+    activeCardIndex,
+    isExpired,
+    areAllCardsGuessed,
+    validCardNumbers,
+    cardOccurrences,
+  } = useCardData();
   const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
 
   const {
