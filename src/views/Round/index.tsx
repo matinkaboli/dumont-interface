@@ -20,8 +20,6 @@ import CreateRound from '@/views/_components/CreateRound';
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
 
-const maxCardsLength = 3;
-
 const Round = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
