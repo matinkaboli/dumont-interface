@@ -11,7 +11,7 @@ import { getGame, setAllCardsGuessed, setGuessedCardsCount } from '@/redux/featu
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import isEmpty from '@/helpers/isEmpty';
-import {MAX_GUESSABLE_CARDS} from '@/constants/static'
+import { MAX_GUESSABLE_CARDS } from '@/constants/static';
 
 import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
@@ -23,7 +23,7 @@ import ProgressbarTimer from './ProgressbarTimer';
 const Round = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
+  const { isConnected } = useTypedSelector((state) => state.account.profile);
   const {
     data: game,
     loading,
@@ -71,7 +71,7 @@ const Round = () => {
     }
   }, [game]);
 
-  if (isConnecting || (loading && !isRefetching && !areAllCardsGuessed && !isExpired)) {
+  if (loading && !isRefetching && !areAllCardsGuessed && !isExpired) {
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
@@ -89,7 +89,7 @@ const Round = () => {
 
   return (
     <>
-      {!isEmpty(game) && !areAllCardsGuessed  && (
+      {!isEmpty(game) && !areAllCardsGuessed && (
         <div className="px-1.5">
           <ProgressbarTimer
             duration={+game!.duration}

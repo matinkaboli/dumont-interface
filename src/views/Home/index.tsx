@@ -19,7 +19,7 @@ import CreateRound from '@/views/_components/CreateRound';
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
-    profile: { isConnected, isConnecting, address },
+    profile: { isConnected, address },
     isRedirected,
     loading,
   } = useTypedSelector((state) => state.account);
@@ -50,7 +50,7 @@ const Home = () => {
       });
   };
 
-  if (isConnecting || loading)
+  if (loading)
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
