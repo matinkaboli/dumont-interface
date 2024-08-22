@@ -11,6 +11,7 @@ import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import GAME_ABI from '@/abis/GAME_ABI.json';
+import { MAX_GUESSABLE_CARDS } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -27,7 +28,7 @@ const RevealKey = ({ className }: { className?: string }) => {
     data: game,
     activeCardIndex,
     isExpired,
-    areAllCardsGuessed,
+    guessedCardsCount,
   } = useTypedSelector((state) => state.game);
 
   const {
@@ -78,8 +79,10 @@ const RevealKey = ({ className }: { className?: string }) => {
       .unwrap()
       .then(() => {
         dispatch(closeDialog());
-        // @ts-ignore
-        swiperRef?.current?.slideNext();
+        if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
+          // @ts-ignore
+          swiperRef?.current?.slideNext();
+        }
       });
   }
 

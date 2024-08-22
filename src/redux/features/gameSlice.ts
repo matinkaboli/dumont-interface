@@ -36,6 +36,7 @@ interface State {
   isCreated: boolean;
   isExpired: boolean;
   areAllCardsGuessed: boolean;
+  guessedCardsCount: number;
   data: GameData | null;
   activeCardIndex: number;
   isRefetching: boolean;
@@ -73,6 +74,7 @@ const initialState: State = {
   isCreated: false,
   isExpired: false,
   areAllCardsGuessed: false,
+  guessedCardsCount: 0,
   data: null,
   activeCardIndex: 0,
   isRefetching: false,
@@ -90,6 +92,9 @@ const gameSlice = createSlice({
     },
     setAllCardsGuessed(state, action: PayloadAction<boolean>) {
       state.areAllCardsGuessed = action.payload;
+    },
+    setGuessedCardsCount(state, action: PayloadAction<number>) {
+      state.guessedCardsCount = action.payload;
     },
     resetGame() {
       return initialState;
@@ -134,5 +139,11 @@ const gameSlice = createSlice({
   },
 });
 
-export const { setActiveCardIndex, expireGame, resetGame, setAllCardsGuessed } = gameSlice.actions;
+export const {
+  setActiveCardIndex,
+  expireGame,
+  resetGame,
+  setAllCardsGuessed,
+  setGuessedCardsCount,
+} = gameSlice.actions;
 export default gameSlice.reducer;

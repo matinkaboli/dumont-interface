@@ -7,10 +7,11 @@ import { useDispatch } from 'react-redux';
 
 import { Loading, Toast, ToastContent } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import { getGame, setAllCardsGuessed } from '@/redux/features/gameSlice';
+import { getGame, setAllCardsGuessed, setGuessedCardsCount } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import isEmpty from '@/helpers/isEmpty';
+import {MAX_GUESSABLE_CARDS} from '@/constants/static'
 
 import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
@@ -19,7 +20,7 @@ import CreateRound from '@/views/_components/CreateRound';
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
 
-const maxCardsLength = 6;
+const maxCardsLength = 3;
 
 const Round = () => {
   const { id } = useParams();
@@ -63,10 +64,11 @@ const Round = () => {
   useEffect(() => {
     if (!game) return;
 
-    dispatch(setAllCardsGuessed(false));
     const guessedCardsCount = game.cards.filter((card) => card.number !== -1).length;
+    dispatch(setAllCardsGuessed(false));
+    dispatch(setGuessedCardsCount(guessedCardsCount));
 
-    if (guessedCardsCount >= maxCardsLength) {
+    if (guessedCardsCount >= MAX_GUESSABLE_CARDS) {
       dispatch(setAllCardsGuessed(true));
     }
   }, [game]);

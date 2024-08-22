@@ -19,6 +19,7 @@ import humanizeAmount from '@/helpers/humanizeAmount';
 import { useApproval } from '@/hooks/useApproval';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
+import { MAX_GUESSABLE_CARDS, TOTAL_CARDS_LENGTH } from '@/constants/static';
 
 import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
@@ -29,8 +30,6 @@ import KeyBoard from './KeyBoard';
 import Amount from './Amount';
 import ConfirmBet from './ConfirmBet';
 import ResultMessage from './ConfirmBet/ResultMessage';
-
-export const TOTAL_CARDS_LENGTH = 52;
 
 const calculateTotalOdds = (
   keys: string[],
@@ -51,7 +50,7 @@ const useCardData = () => {
     data: game,
     activeCardIndex,
     isExpired,
-    areAllCardsGuessed,
+    guessedCardsCount,
   } = useTypedSelector((state) => state.game);
 
   const validCardNumbers = useMemo(
@@ -74,9 +73,9 @@ const useCardData = () => {
     game,
     activeCardIndex,
     isExpired,
-    areAllCardsGuessed,
     validCardNumbers,
     cardOccurrences,
+    guessedCardsCount,
   };
 };
 
@@ -92,7 +91,7 @@ const Board = () => {
     game,
     activeCardIndex,
     isExpired,
-    areAllCardsGuessed,
+    guessedCardsCount,
     validCardNumbers,
     cardOccurrences,
   } = useCardData();
@@ -196,8 +195,10 @@ const Board = () => {
       .then(() => {
         reset();
         dispatch(closeDialog());
-        // @ts-ignore
-        swiperRef?.current?.slideNext();
+        if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
+          // @ts-ignore
+          swiperRef?.current?.slideNext();
+        }
       });
   }
 
