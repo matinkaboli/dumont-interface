@@ -49,7 +49,7 @@ const Home = () => {
       });
   };
 
-  if (loading)
+  if (isConnecting || loading)
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />

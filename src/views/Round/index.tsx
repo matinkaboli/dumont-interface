@@ -23,7 +23,7 @@ import ProgressbarTimer from './ProgressbarTimer';
 const Round = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { isConnected } = useTypedSelector((state) => state.account.profile);
+  const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
   const {
     data: game,
     loading,
@@ -71,7 +71,7 @@ const Round = () => {
     }
   }, [game]);
 
-  if (loading && !isRefetching && !areAllCardsGuessed && !isExpired) {
+  if (isConnecting || (loading && !isRefetching && !areAllCardsGuessed && !isExpired)) {
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
