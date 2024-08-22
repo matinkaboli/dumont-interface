@@ -19,21 +19,20 @@ import CreateRound from '@/views/_components/CreateRound';
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
-    profile: { isConnected, address },
+    profile: { isConnected, address, isConnecting },
     isRedirected,
     loading,
   } = useTypedSelector((state) => state.account);
   const [redirectId, setRedirectId] = useState<string>('');
 
   useEffect(() => {
-    dispatch(resetGame());
-
-    if (address) {
-      handlePlayerGames(address);
-    }
-  }, [address]);
+    if (address) handlePlayerGames(address);
+  }, [address, isConnecting]);
 
   const handlePlayerGames = (addr: `0x${string}`) => {
+    dispatch(resetGame());
+    setRedirectId('');
+
     dispatch(getPlayerGames(addr))
       .unwrap()
       .then((result) => {
