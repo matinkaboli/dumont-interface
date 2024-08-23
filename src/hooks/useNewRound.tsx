@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import BN from 'bignumber.js';
 
-import { Button } from '@/components';
 import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
 import { expireGame, postGame } from '@/redux/features/gameSlice';
@@ -21,13 +20,12 @@ import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
-
-import Confirm from './Confirm';
+import Confirm from '@/views/_components/ConfirmNewRound';
 
 const approveValue = '1';
 const defaultAddress = '0x0000000000000000000000000000000000000000';
 
-const ConfirmRound = () => {
+export const useNewRound = () => {
   const router = useRouter();
   const params = useParams();
   const pathname = usePathname();
@@ -35,7 +33,7 @@ const ConfirmRound = () => {
   const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
   const [redirectId, setRedirectId] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(0); // The active index corresponds to the index in the long loading array.
+  const [activeIndex, setActiveIndex] = useState(0);
   const [referralAddress, setReferralAddress] = useState<`0x${string}`>();
   const { allowanceData, sendApprove, isApproveLoading } = useApproval(
     details?.gameFactory,
@@ -99,13 +97,15 @@ const ConfirmRound = () => {
   }, [isApproveLoading, isCreateGameLoading]);
 
   useEffect(() => {
-    dispatch(
-      updateDialogContent(
-        <AnimatedDialogContent key="loading">
-          <LongLoadingContent activeIndex={activeIndex} />
-        </AnimatedDialogContent>,
-      ),
-    );
+    if(activeIndex > 0) {
+      dispatch(
+        updateDialogContent(
+          <AnimatedDialogContent key="loading">
+            <LongLoadingContent activeIndex={activeIndex} />
+          </AnimatedDialogContent>,
+        ),
+      );
+    }
 
     if (activeIndex === 3) {
       const timer = setTimeout(() => {
@@ -117,6 +117,7 @@ const ConfirmRound = () => {
       const redirectTimer = setTimeout(() => {
         dispatch(closeDialog());
         dispatch(expireGame(false));
+        setActiveIndex(0);
         router.push(`${Routes.ROUND}/${redirectId}`);
       }, 1000);
 
@@ -212,17 +213,9 @@ const ConfirmRound = () => {
     );
   };
 
-  return (
-    <Button
-      variant="primary"
-      size="sm"
-      radius="lg"
-      onClick={onCreateRound}
-      className="mt-4 mx-auto !font-bold md:w-auto w-full"
-    >
-      Create Round
-    </Button>
-  );
+  return {
+    onCreateRound,
+    isApproveLoading,
+    isCreateGameLoading,
+  };
 };
-
-export default ConfirmRound;

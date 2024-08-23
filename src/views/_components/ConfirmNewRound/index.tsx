@@ -1,10 +1,6 @@
 import { Button, DialogDescription, DialogIcon, DialogTitle, Icon } from '@/components';
 
-interface Props {
-  onCreateGame: () => void;
-}
-
-const Confirm = ({ onCreateGame }: Props) => {
+const ConfirmNewRound = ({ onCreateGame }: { onCreateGame: () => void }) => {
   return (
     <>
       <DialogIcon name="game-objects-rainbow" variant="default" />
@@ -29,4 +25,4 @@ const Confirm = ({ onCreateGame }: Props) => {
   );
 };
 
-export default Confirm;
+export default ConfirmNewRound;

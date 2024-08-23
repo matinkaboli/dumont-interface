@@ -7,8 +7,6 @@ import Menus from './Menus';
 import ConnectWallet from './ConnectWallet';
 import ResponsiveMenu from './ResponsiveMenu';
 
-export const newRoundMenu = { label: 'New round', href: Routes.CREATE_ROUND };
-
 const Header = () => {
   return (
     <div className="flex-between">
