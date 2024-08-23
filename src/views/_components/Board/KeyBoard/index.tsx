@@ -2,10 +2,11 @@ import { memo } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
 import formatDecimal from '@/helpers/formatDecimal';
+import { TOTAL_CARDS_LENGTH } from '@/constants/static';
 
 import Key from './Keys/Key';
 import RevealKey from './Keys/RevealKey';
-import { BetData, TOTAL_CARDS_LENGTH } from '../index';
+import { BetData } from '../index';
 
 export interface KeyType {
   value: string;
@@ -38,6 +39,7 @@ interface Props {
 const KeyBoard = ({ values, setValue, validCardNumbersLength, cardOccurrences }: Props) => {
   const calcWeight = (keyNumber: string) => {
     const weight = (TOTAL_CARDS_LENGTH - validCardNumbersLength) / cardOccurrences[keyNumber];
+    if (!isFinite(weight)) return 0;
     return formatDecimal({ amount: weight, decimalPlaces: 2 });
   };
 

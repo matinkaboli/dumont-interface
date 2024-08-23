@@ -7,18 +7,20 @@ import { useDispatch } from 'react-redux';
 
 import { Loading, Toast, ToastContent } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import { getGame } from '@/redux/features/gameSlice';
+import { getGame, setAllCardsGuessed, setGuessedCardsCount } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import isEmpty from '@/helpers/isEmpty';
+import { MAX_GUESSABLE_CARDS } from '@/constants/static';
 
 import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
+import CreateRound from '@/views/_components/CreateRound';
 
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
 
-const CreateRound = () => {
+const Round = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
@@ -28,6 +30,7 @@ const CreateRound = () => {
     isCreated,
     isExpired,
     isRefetching,
+    areAllCardsGuessed,
   } = useTypedSelector((state) => state.game);
 
   useEffect(() => {
@@ -45,7 +48,7 @@ const CreateRound = () => {
           );
         }
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (isExpired) {
@@ -56,32 +59,54 @@ const CreateRound = () => {
     }
   }, [isExpired]);
 
-  if (isConnecting || (loading && !isRefetching))
+  useEffect(() => {
+    if (!game) return;
+
+    const guessedCardsCount = game.cards.filter((card) => card.number !== -1).length;
+    dispatch(setAllCardsGuessed(false));
+    dispatch(setGuessedCardsCount(guessedCardsCount));
+
+    if (guessedCardsCount >= MAX_GUESSABLE_CARDS) {
+      dispatch(setAllCardsGuessed(true));
+    }
+  }, [game]);
+
+  if (isConnecting || (loading && !isRefetching && !areAllCardsGuessed && !isExpired)) {
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
       </div>
     );
+  }
 
   if (!isConnected) {
     redirect('/');
   }
 
-  if (isEmpty(game)) {
+  if (isEmpty(game) && !isCreated) {
     return <div className="text-white">There is no game with this id</div>;
   }
 
   return (
     <>
-      <div className="px-1.5">
-        <ProgressbarTimer
-          duration={+game!.duration}
-          initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}
-        />
-      </div>
+      {!isEmpty(game) && !areAllCardsGuessed && (
+        <div className="px-1.5">
+          <ProgressbarTimer
+            duration={+game!.duration}
+            initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}
+          />
+        </div>
+      )}
 
       <div className="flex flex-col gap-4">
-        <CardDeck needsShuffling={isCreated} />
+        {areAllCardsGuessed || isExpired ? (
+          <CreateRound
+            title={isExpired ? 'This round has expired' : 'This round has ended'}
+            desc="You can try out your luck again in a new round."
+          />
+        ) : (
+          <CardDeck needsShuffling={isCreated} />
+        )}
         <Board />
         <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
         <Toast />
@@ -90,4 +115,4 @@ const CreateRound = () => {
   );
 };
 
-export default CreateRound;
+export default Round;

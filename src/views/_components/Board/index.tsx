@@ -19,6 +19,7 @@ import humanizeAmount from '@/helpers/humanizeAmount';
 import { useApproval } from '@/hooks/useApproval';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
+import { MAX_GUESSABLE_CARDS, TOTAL_CARDS_LENGTH } from '@/constants/static';
 
 import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
@@ -29,8 +30,6 @@ import KeyBoard from './KeyBoard';
 import Amount from './Amount';
 import ConfirmBet from './ConfirmBet';
 import ResultMessage from './ConfirmBet/ResultMessage';
-
-export const TOTAL_CARDS_LENGTH = 52;
 
 const calculateTotalOdds = (
   keys: string[],
@@ -47,7 +46,12 @@ const calculateTotalOdds = (
 };
 
 const useCardData = () => {
-  const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
+  const {
+    data: game,
+    activeCardIndex,
+    isExpired,
+    guessedCardsCount,
+  } = useTypedSelector((state) => state.game);
 
   const validCardNumbers = useMemo(
     () =>
@@ -65,7 +69,14 @@ const useCardData = () => {
     return obj;
   }, [validCardNumbers]);
 
-  return { game, activeCardIndex, isExpired, validCardNumbers, cardOccurrences };
+  return {
+    game,
+    activeCardIndex,
+    isExpired,
+    validCardNumbers,
+    cardOccurrences,
+    guessedCardsCount,
+  };
 };
 
 export interface BetData {
@@ -76,7 +87,14 @@ export interface BetData {
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { address } = useTypedSelector((state) => state.account.profile);
-  const { game, activeCardIndex, isExpired, validCardNumbers, cardOccurrences } = useCardData();
+  const {
+    game,
+    activeCardIndex,
+    isExpired,
+    guessedCardsCount,
+    validCardNumbers,
+    cardOccurrences,
+  } = useCardData();
   const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
 
   const {
@@ -177,8 +195,10 @@ const Board = () => {
       .then(() => {
         reset();
         dispatch(closeDialog());
-        // @ts-ignore
-        swiperRef?.current?.slideNext();
+        if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
+          // @ts-ignore
+          swiperRef?.current?.slideNext();
+        }
       });
   }
 
@@ -274,8 +294,17 @@ const Board = () => {
   }
 
   function disabledButtonLabel() {
-    if (game?.player !== address) return 'Not your game';
-    if (game?.cards[activeCardIndex - 1]?.number !== -1) return 'Revealed Card';
+    if (!game) return 'Bet';
+
+    const card = game.cards?.[activeCardIndex - 1];
+    const isPlayerGame = game.player === address;
+    const isCardNumberDefined = card?.number !== undefined;
+    const isCardRevealed = isCardNumberDefined && card.number !== -1;
+
+    if (!isPlayerGame) return 'Not your game';
+    if (!isCardNumberDefined) return 'Card not available';
+    if (isCardRevealed) return 'Revealed Card';
+
     return 'Bet';
   }
 

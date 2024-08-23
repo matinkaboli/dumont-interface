@@ -11,6 +11,7 @@ import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import GAME_ABI from '@/abis/GAME_ABI.json';
+import { MAX_GUESSABLE_CARDS } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -23,7 +24,12 @@ import RevealedCard from './RevealedCard';
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { address } = useTypedSelector((state) => state.account.profile);
-  const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
+  const {
+    data: game,
+    activeCardIndex,
+    isExpired,
+    guessedCardsCount,
+  } = useTypedSelector((state) => state.game);
 
   const {
     writeContract: writeRevealCard,
@@ -32,10 +38,9 @@ const RevealKey = ({ className }: { className?: string }) => {
     isError: isWriteRevealError,
   } = useWriteContract();
 
-  const { isError: isWaitRevealError, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash: revealCardData,
-    });
+  const { isError: isWaitRevealError, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash: revealCardData,
+  });
 
   useEffect(() => {
     if (isRevealCardLoading) {
@@ -74,8 +79,10 @@ const RevealKey = ({ className }: { className?: string }) => {
       .unwrap()
       .then(() => {
         dispatch(closeDialog());
-        // @ts-ignore
-        swiperRef?.current?.slideNext();
+        if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
+          // @ts-ignore
+          swiperRef?.current?.slideNext();
+        }
       });
   }
 
@@ -92,6 +99,7 @@ const RevealKey = ({ className }: { className?: string }) => {
           openDialog({
             dialogProps: {
               onCloseButton: onCloseDialog,
+              onClickOverlay: onCloseDialog,
             },
             content: (
               <AnimatedDialogContent key="reveal">
@@ -128,7 +136,7 @@ const RevealKey = ({ className }: { className?: string }) => {
 
   return (
     <KeyButton
-      className="flex flex-col gap-0.5 disabled:bg-neutral-800 disabled:border-neutral-750 [&>div]:disabled:text-neutral-500"
+      className="flex flex-col gap-0.5 [&>div]:disabled:text-neutral-500"
       borderClassName={clsx('col-span-2', className)}
       onClick={onReveal}
       disabled={
