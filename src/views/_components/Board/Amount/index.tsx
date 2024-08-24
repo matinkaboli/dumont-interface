@@ -17,6 +17,8 @@ import AmountInfo from './Info';
 import BetButton from './BetButton';
 import MaxButton from './MaxButton';
 import { BetData } from '../index';
+import BigNumber from 'bignumber.js';
+import toFixedNumber from '@/helpers/toFixedNumber';
 
 const inputProps: InputProps = {
   name: 'amount',
@@ -74,7 +76,7 @@ const Amount = ({
       if (totalOdds > 0) {
         const payoutValue = value * totalOdds;
 
-        if (balance && payoutValue > +balance) return 'Insufficient USDT balance';
+        if (balance && value > +balance) return 'Insufficient USDT balance';
 
         const maxBetAmountMargined = (maxBetAmount * 98) / 100;
         const maxBetValue = maxBetAmountMargined / totalOdds;
@@ -94,8 +96,21 @@ const Amount = ({
   const handleToggle = () => setIsOpen((prev) => !prev);
 
   const setMaxValue = () => {
-    const maxAmount = isEmpty(balance) ? 0 : balance;
-    setValue('amount', `${maxAmount}`, { shouldDirty: true, shouldValidate: true });
+    let maximumPossibleAmount = '0';
+
+    if (!isEmpty(balance) && balance) {
+      const maxPossible = new BigNumber(maxBetAmount).div(totalOdds).times(97).div(100);
+
+      if (maxPossible.isLessThan(balance)) {
+        maximumPossibleAmount = maxPossible.toString();
+      } else {
+        maximumPossibleAmount = balance.toString();
+      }
+    }
+
+    maximumPossibleAmount = toFixedNumber(maximumPossibleAmount, 4);
+
+    setValue('amount', maximumPossibleAmount, { shouldDirty: true, shouldValidate: true });
   };
 
   const handleInputChange = (

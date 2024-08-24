@@ -6,6 +6,8 @@ import axios from '@/lib/axios';
 interface Result {
   number: number;
   status: string;
+  betAmount: string;
+  totalAmount: string;
   result: {
     isPlayerWinner: boolean;
     usdtAmount: string;

@@ -34,7 +34,11 @@ export const getPlayerGames = createAsyncThunk<GameData[], string>(
   async (address: string, { rejectWithValue }) => {
     try {
       const response = await axios.get(`players/${address}/games`);
-      return response.data.result;
+
+      const { result } = response.data;
+      const sortedResult = result.sort((a: any, b: any) => b.id - a.id);
+
+      return sortedResult;
     } catch (error) {
       const axiosError = error as AxiosError;
       return rejectWithValue(axiosError.message);

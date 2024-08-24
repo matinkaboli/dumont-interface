@@ -1,16 +1,16 @@
 import Image from 'next/image';
 
 import { Button } from '@/components';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
-import getCardInfo from '@/helpers/getCardInfo';
-import humanizeAmount from '@/helpers/humanizeAmount';
 import parseUnits from '@/helpers/parseUnits';
+import getCardInfo from '@/helpers/getCardInfo';
+import toFixedNumber from '@/helpers/toFixedNumber';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-const createMessage = (isWinner: boolean, usdtAmount: string, montAmount: string) => ({
+const createMessage = (isWinner: boolean, totalAmount: string, montAmount: string) => ({
   title: isWinner ? 'You won! 🎉' : 'No luck this time 💔',
   content: isWinner ? (
     <p className="text-white text-md">
-      Enjoy your <b className="text-success-400">${usdtAmount} win</b> <b>in your wallet</b>
+      Enjoy your <b className="text-success-400">${totalAmount} win</b> <b>in your wallet</b>
     </p>
   ) : (
     <p className="text-sm text-neutral-200 px-0 md:px-5">
@@ -28,12 +28,13 @@ const ResultMessage = ({ onCloseDialog }: { onCloseDialog: () => void }) => {
 
   const {
     number,
-    result: { isPlayerWinner, usdtAmount, montAmount },
+    totalAmount,
+    result: { isPlayerWinner, montAmount },
   } = guessedResult;
-  const USDTAmount = humanizeAmount(parseUnits(usdtAmount, 6).toString());
-  const MONTAmount = humanizeAmount(parseUnits(montAmount, 18).toString());
+  const TOTALAmount = toFixedNumber(parseUnits(totalAmount, 6).toString(), 2);
+  const MONTAmount = toFixedNumber(parseUnits(montAmount, 18).toString(), 4);
 
-  const message = createMessage(isPlayerWinner, USDTAmount, MONTAmount);
+  const message = createMessage(isPlayerWinner, TOTALAmount, MONTAmount);
 
   return (
     <>

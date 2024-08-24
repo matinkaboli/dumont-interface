@@ -30,6 +30,7 @@ import KeyBoard from './KeyBoard';
 import Amount from './Amount';
 import ConfirmBet from './ConfirmBet';
 import ResultMessage from './ConfirmBet/ResultMessage';
+import toFixedNumber from '@/helpers/toFixedNumber';
 
 const calculateTotalOdds = (
   keys: string[],
@@ -87,14 +88,8 @@ export interface BetData {
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { address } = useTypedSelector((state) => state.account.profile);
-  const {
-    game,
-    activeCardIndex,
-    isExpired,
-    guessedCardsCount,
-    validCardNumbers,
-    cardOccurrences,
-  } = useCardData();
+  const { game, activeCardIndex, isExpired, guessedCardsCount, validCardNumbers, cardOccurrences } =
+    useCardData();
   const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
 
   const {
@@ -117,9 +112,10 @@ const Board = () => {
   const amount = watch('amount');
 
   const totalOdds = calculateTotalOdds(keys, cardOccurrences, validCardNumbers.length);
-  const formattedPayout = humanizeAmount(
-    formatDecimal({ amount: +amount * totalOdds, decimalPlaces: 2 }),
-  );
+  const totalAmount = Number(amount) * totalOdds;
+  const reward = totalAmount - (totalAmount - Number(amount)) / 10;
+
+  const formattedPayout = formatDecimal({ amount: reward, decimalPlaces: 2 });
 
   const { allowanceData, sendApprove, isApproveLoading, refetchAllowance } = useApproval(
     game?.address,
@@ -297,7 +293,7 @@ const Board = () => {
     if (!game) return 'Bet';
 
     const card = game.cards?.[activeCardIndex - 1];
-    const isPlayerGame = game.player === address;
+    const isPlayerGame = game.player.toLowerCase() === address?.toLowerCase();
     const isCardNumberDefined = card?.number !== undefined;
     const isCardRevealed = isCardNumberDefined && card.number !== -1;
 
@@ -314,7 +310,7 @@ const Board = () => {
     isEmpty(keys) ||
     isExpired ||
     game?.cards[activeCardIndex - 1]?.number !== -1 ||
-    game?.player !== address;
+    game?.player.toLowerCase() !== address?.toLowerCase();
 
   return (
     <form

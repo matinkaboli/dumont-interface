@@ -33,15 +33,17 @@ import EmptyDataMessage from '../EmptyDataMessage';
 
 import ClaimButton from './ClaimButton';
 import InfoTooltip from '@/views/_components/InfoTooltip';
+import toFixedNumber from '@/helpers/toFixedNumber';
 
 interface Activity {
   index: number;
   status: 'FREE_REVEAL_REQUESTED' | 'GUESSED' | 'REVEALED' | 'CLAIMED';
   requestedAt: string;
   revealDate: string;
+  betAmount: string;
+  totalAmount: string;
   result?: {
     isPlayerWinner: boolean;
-    betAmount: string;
     montAmount: string;
     rate: string;
   };
@@ -66,12 +68,19 @@ const columns = [
       return date.fromNow();
     },
   }),
-  columnHelper.accessor('result', {
+  columnHelper.accessor('betAmount', {
     id: 'betAmount',
     header: 'bet amount',
     cell: ({ getValue }) => {
-      const amount = getValue()?.betAmount;
-      return amount ? `$${humanizeAmount(parseUnits(amount, 6).toString())}` : '-';
+      const amount: string = getValue();
+
+      if (!amount || amount === '0') {
+        return '-';
+      }
+
+      const amountToFixed = toFixedNumber(parseUnits(amount, 6));
+
+      return `$${amountToFixed}`;
     },
   }),
   columnHelper.accessor('result', {
@@ -79,19 +88,29 @@ const columns = [
     header: 'odds',
     cell: ({ getValue }) => {
       const rate = getValue()?.rate;
-      return rate ? `x${rate}` : '-';
+
+      if (!rate) {
+        return '-';
+      }
+
+      const rateToFixed = toFixedNumber(rate);
+
+      return `x${rateToFixed}`;
     },
   }),
-  columnHelper.accessor('result', {
+  columnHelper.accessor('totalAmount', {
     id: 'total',
     header: 'total',
     cell: ({ getValue }) => {
-      const result = getValue();
-      if (!isEmpty(result)) {
-        const total = new BN(result!.rate).times(result!.betAmount);
-        return `$${humanizeAmount(parseUnits(total, 6).toString())}`;
+      const amount: string = getValue();
+
+      if (!amount || amount === '0') {
+        return '-';
       }
-      return '-';
+
+      const amountToFixed = toFixedNumber(parseUnits(amount, 6));
+
+      return `$${amountToFixed}`;
     },
   }),
   columnHelper.accessor('result', {
