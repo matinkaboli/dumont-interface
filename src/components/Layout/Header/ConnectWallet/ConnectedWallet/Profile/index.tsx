@@ -20,7 +20,7 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
   const { data: referralData } = useAxiosGet<ReferralData>(`players/${address}/referrals`);
   const { disconnectAsync } = useDisconnect();
 
-  const referralLink = referralData ? `https://dumont.gg/i/${referralData?.id}` : '';
+  const referralLink = referralData ? `${links.APP}/i/${referralData?.id}` : '';
 
   const onDisconnect = async () => {
     try {
