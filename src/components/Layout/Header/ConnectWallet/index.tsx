@@ -36,12 +36,18 @@ const useWalletInfo = () => {
   const { data: balance } = useBalance({
     address,
     token: details?.usdt,
+    query: {
+      refetchInterval: 8000,
+    },
   });
 
   const { data: maxBetAmount } = useReadContract({
     address: details?.valut,
     abi: VAULT_ABI,
     functionName: 'getMaximumBetAmount',
+    query: {
+      refetchInterval: 15000,
+    },
   });
 
   const { data: minBetAmount } = useReadContract({
