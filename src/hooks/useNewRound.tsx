@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import BN from 'bignumber.js';
 
-import { Button } from '@/components';
 import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
 import { expireGame, postGame } from '@/redux/features/gameSlice';
@@ -13,30 +12,23 @@ import { useApproval } from '@/hooks/useApproval';
 import extractGameId from '@/helpers/extractGameId';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 import formatUnits from '@/helpers/formatUnits';
-import axios from '@/lib/axios';
 import Routes from '@/constants/routes';
+import { DEFAULT_APPROVE_VALUE } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
+import Confirm from '@/views/_components/ConfirmNewRound';
 
-import Confirm from './Confirm';
-
-const approveValue = '1';
-const defaultAddress = '0x0000000000000000000000000000000000000000';
-
-const ConfirmRound = () => {
+export const useNewRound = () => {
   const router = useRouter();
-  const params = useParams();
-  const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
-  const { address } = useTypedSelector((state) => state.account.profile);
+  const { referralAddress } = useTypedSelector((state) => state.referral);
   const [redirectId, setRedirectId] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(0); // The active index corresponds to the index in the long loading array.
-  const [referralAddress, setReferralAddress] = useState<`0x${string}`>();
+  const [activeIndex, setActiveIndex] = useState(0);
   const { allowanceData, sendApprove, isApproveLoading } = useApproval(
     details?.gameFactory,
     onApproveSuccess,
@@ -59,27 +51,6 @@ const ConfirmRound = () => {
   });
 
   useEffect(() => {
-    const hasReferralId = params?.id && pathname.includes('/i/');
-    const getReferral = async () => {
-      if (hasReferralId) {
-        try {
-          const response = await axios.get(`referrals/${params.id}`);
-          const referralAddress = response?.data?.result?.address;
-          if (referralAddress === address) {
-            setReferralAddress(defaultAddress);
-          } else {
-            setReferralAddress(referralAddress);
-          }
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      }
-    };
-
-    getReferral();
-  }, [params.id, pathname]);
-
-  useEffect(() => {
     if (isApproveLoading || isCreateGameLoading) {
       dispatch(
         openDialog({
@@ -99,13 +70,15 @@ const ConfirmRound = () => {
   }, [isApproveLoading, isCreateGameLoading]);
 
   useEffect(() => {
-    dispatch(
-      updateDialogContent(
-        <AnimatedDialogContent key="loading">
-          <LongLoadingContent activeIndex={activeIndex} />
-        </AnimatedDialogContent>,
-      ),
-    );
+    if (activeIndex > 0) {
+      dispatch(
+        updateDialogContent(
+          <AnimatedDialogContent key="loading">
+            <LongLoadingContent activeIndex={activeIndex} />
+          </AnimatedDialogContent>,
+        ),
+      );
+    }
 
     if (activeIndex === 3) {
       const timer = setTimeout(() => {
@@ -117,6 +90,7 @@ const ConfirmRound = () => {
       const redirectTimer = setTimeout(() => {
         dispatch(closeDialog());
         dispatch(expireGame(false));
+        setActiveIndex(0);
         router.push(`${Routes.ROUND}/${redirectId}`);
       }, 1000);
 
@@ -179,7 +153,7 @@ const ConfirmRound = () => {
   }
 
   function onApproveError() {
-    onError('Approve was unsuccessful', () => sendApprove(approveValue));
+    onError('Approve was unsuccessful', () => sendApprove(DEFAULT_APPROVE_VALUE));
   }
 
   const onCreateGame = () => {
@@ -188,7 +162,7 @@ const ConfirmRound = () => {
         address: details!.gameFactory,
         abi: GAME_FACTORY_ABI,
         functionName: 'createGame',
-        args: [referralAddress ?? defaultAddress],
+        args: [referralAddress],
       },
       {
         onSuccess: () => setActiveIndex(1),
@@ -198,7 +172,7 @@ const ConfirmRound = () => {
 
   const onCreateRound = () => {
     const isApproved = new BN(allowanceData as string).isGreaterThanOrEqualTo(
-      formatUnits(approveValue, 6),
+      formatUnits(DEFAULT_APPROVE_VALUE, 6),
     );
 
     dispatch(
@@ -206,23 +180,15 @@ const ConfirmRound = () => {
         content: isApproved ? (
           <Confirm onCreateGame={onCreateGame} />
         ) : (
-          <ApproveAllowance onApprove={() => sendApprove(approveValue)} />
+          <ApproveAllowance onApprove={() => sendApprove(DEFAULT_APPROVE_VALUE)} />
         ),
       }),
     );
   };
 
-  return (
-    <Button
-      variant="primary"
-      size="sm"
-      radius="lg"
-      onClick={onCreateRound}
-      className="mt-4 mx-auto !font-bold md:w-auto w-full"
-    >
-      Create Round
-    </Button>
-  );
+  return {
+    onCreateRound,
+    isApproveLoading,
+    isCreateGameLoading,
+  };
 };
-
-export default ConfirmRound;

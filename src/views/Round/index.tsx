@@ -105,7 +105,13 @@ const Round = () => {
             desc="You can try out your luck again in a new round."
           />
         ) : (
-          <CardDeck needsShuffling={isCreated} />
+          <>
+            {isEmpty(game) ? (
+              <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height"></div>
+            ) : (
+              <CardDeck needsShuffling={isCreated} />
+            )}
+          </>
         )}
         <Board />
         <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
