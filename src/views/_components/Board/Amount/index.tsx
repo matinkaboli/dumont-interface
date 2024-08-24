@@ -108,7 +108,7 @@ const Amount = ({
       }
     }
 
-    maximumPossibleAmount = toFixedNumber(maximumPossibleAmount, 4);
+    maximumPossibleAmount = toFixedNumber(maximumPossibleAmount, 9);
 
     setValue('amount', maximumPossibleAmount, { shouldDirty: true, shouldValidate: true });
   };
