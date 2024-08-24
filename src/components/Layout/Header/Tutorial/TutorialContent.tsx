@@ -11,7 +11,7 @@ const TutorialContent = () => {
         <ReactPlayer
           width="100%"
           height="136px"
-          url="https://www.youtube.com/watch?v=lKUw8NB53M8"
+          url="https://www.youtube.com/watch?v=FBwtPHXeAHw"
         />
       </div>
       <div className="flex flex-col gap-6">

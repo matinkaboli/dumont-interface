@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Button, Icon } from '@/components';
 import humanizeAmount from '@/helpers/humanizeAmount';
 import Links from '@/constants/links';
+import BigNumber from 'bignumber.js';
 
 interface Props {
   claimValue: string;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const ClaimReward = ({ claimValue, onClaim }: Props) => {
+  const isClaimAmountZero = new BigNumber(claimValue).isZero();
+
   return (
     <div className="text-center">
       <h6 className="text-md text-white">Reward to claim</h6>
@@ -20,7 +23,14 @@ const ClaimReward = ({ claimValue, onClaim }: Props) => {
         MONT
       </h2>
 
-      <Button fullWidth className="mt-8" variant="primary" radius="lg" onClick={onClaim}>
+      <Button
+        fullWidth
+        className="mt-8"
+        variant="primary"
+        radius="lg"
+        onClick={onClaim}
+        disabled={isClaimAmountZero}
+      >
         Claim Reward
       </Button>
       <Button

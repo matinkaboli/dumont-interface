@@ -1,7 +1,9 @@
+import { ReactNode } from 'react';
+
 import { Icon, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 
 interface Props {
-  label?: string;
+  label?: string | ReactNode;
   tooltipText?: string;
   className?: string;
 }
