@@ -5,6 +5,7 @@ import dialogReducer from './features/dialogSlice';
 import betReducer from './features/betSlice';
 import gameReducer from './features/gameSlice';
 import infoReducer from './features/configSlice';
+import referralReducer from './features/referralSlice';
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     bet: betReducer,
     game: gameReducer,
     config: infoReducer,
+    referral: referralReducer,
   },
   // TODO: Check serializableCheck to ensure there are no problems (content type in modal)
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),

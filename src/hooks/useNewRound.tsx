@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import BN from 'bignumber.js';
@@ -12,8 +12,8 @@ import { useApproval } from '@/hooks/useApproval';
 import extractGameId from '@/helpers/extractGameId';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 import formatUnits from '@/helpers/formatUnits';
-import axios from '@/lib/axios';
 import Routes from '@/constants/routes';
+import { DEFAULT_APPROVE_VALUE } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -22,19 +22,13 @@ import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 import Confirm from '@/views/_components/ConfirmNewRound';
 
-const approveValue = '1';
-const defaultAddress = '0x0000000000000000000000000000000000000000';
-
 export const useNewRound = () => {
   const router = useRouter();
-  const params = useParams();
-  const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
-  const { address } = useTypedSelector((state) => state.account.profile);
+  const { referralAddress } = useTypedSelector((state) => state.referral);
   const [redirectId, setRedirectId] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [referralAddress, setReferralAddress] = useState<`0x${string}`>();
   const { allowanceData, sendApprove, isApproveLoading } = useApproval(
     details?.gameFactory,
     onApproveSuccess,
@@ -57,27 +51,6 @@ export const useNewRound = () => {
   });
 
   useEffect(() => {
-    const hasReferralId = params?.id && pathname.includes('/i/');
-    const getReferral = async () => {
-      if (hasReferralId) {
-        try {
-          const response = await axios.get(`referrals/${params.id}`);
-          const referralAddress = response?.data?.result?.address;
-          if (referralAddress === address) {
-            setReferralAddress(defaultAddress);
-          } else {
-            setReferralAddress(referralAddress);
-          }
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      }
-    };
-
-    getReferral();
-  }, [params.id, pathname]);
-
-  useEffect(() => {
     if (isApproveLoading || isCreateGameLoading) {
       dispatch(
         openDialog({
@@ -97,7 +70,7 @@ export const useNewRound = () => {
   }, [isApproveLoading, isCreateGameLoading]);
 
   useEffect(() => {
-    if(activeIndex > 0) {
+    if (activeIndex > 0) {
       dispatch(
         updateDialogContent(
           <AnimatedDialogContent key="loading">
@@ -180,7 +153,7 @@ export const useNewRound = () => {
   }
 
   function onApproveError() {
-    onError('Approve was unsuccessful', () => sendApprove(approveValue));
+    onError('Approve was unsuccessful', () => sendApprove(DEFAULT_APPROVE_VALUE));
   }
 
   const onCreateGame = () => {
@@ -189,7 +162,7 @@ export const useNewRound = () => {
         address: details!.gameFactory,
         abi: GAME_FACTORY_ABI,
         functionName: 'createGame',
-        args: [referralAddress ?? defaultAddress],
+        args: [referralAddress],
       },
       {
         onSuccess: () => setActiveIndex(1),
@@ -199,7 +172,7 @@ export const useNewRound = () => {
 
   const onCreateRound = () => {
     const isApproved = new BN(allowanceData as string).isGreaterThanOrEqualTo(
-      formatUnits(approveValue, 6),
+      formatUnits(DEFAULT_APPROVE_VALUE, 6),
     );
 
     dispatch(
@@ -207,7 +180,7 @@ export const useNewRound = () => {
         content: isApproved ? (
           <Confirm onCreateGame={onCreateGame} />
         ) : (
-          <ApproveAllowance onApprove={() => sendApprove(approveValue)} />
+          <ApproveAllowance onApprove={() => sendApprove(DEFAULT_APPROVE_VALUE)} />
         ),
       }),
     );

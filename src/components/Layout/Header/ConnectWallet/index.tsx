@@ -16,6 +16,8 @@ import VAULT_ABI from '@/abis/VAULT_ABI.json';
 
 import ConnectedWallet from './ConnectedWallet';
 import RewardButton from './RewardButton';
+import { useParams, usePathname } from 'next/navigation';
+import { fetchReferralAddress } from '@/redux/features/referralSlice';
 
 // Custom hook for fetching config details
 const useFetchDetails = () => {
@@ -28,7 +30,9 @@ const useFetchDetails = () => {
 
 // Custom hook for managing account and balance
 const useWalletInfo = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const params = useParams();
+  const pathname = usePathname();
   const { details } = useTypedSelector((state) => state.config);
 
   const { address, isConnected, isConnecting } = useAccount();
@@ -73,6 +77,14 @@ const useWalletInfo = () => {
   useEffect(() => {
     if (maxBetAmount) dispatch(setMaxBetAmount(parseUnits(maxBetAmount as number, 6).toNumber()));
   }, [maxBetAmount]);
+
+  useEffect(() => {
+    const hasReferralId = params?.id && pathname.includes('/i/');
+
+    if (hasReferralId) {
+      dispatch(fetchReferralAddress({ id: params.id as string, currentAddress: address }));
+    }
+  }, [params.id, pathname, dispatch, address]);
 };
 
 const ConnectWallet = () => {
