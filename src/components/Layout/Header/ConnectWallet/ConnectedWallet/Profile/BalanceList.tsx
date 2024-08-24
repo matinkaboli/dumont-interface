@@ -33,7 +33,7 @@ const BalanceList = () => {
       <li className="px-4 h-10 flex-between">
         <InfoTooltip
           label="Settling"
-          tooltipText="Some Info"
+          tooltipText="Pending winnings will be added to your balance after verification, usually within 15 seconds."
           className="text-neutral-200 text-base font-medium"
         />
         <div className="text-neutral-50 text-base font-medium">{settling} USDT</div>
