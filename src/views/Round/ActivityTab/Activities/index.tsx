@@ -137,8 +137,6 @@ const columns = [
       const activity = row.original;
       const value = activity.status;
 
-      console.log(activity);
-
       if (isClaimable(activity.requestedAt, claimableAfter) && value === 'GUESSED') {
         return (
           <ClaimButton

@@ -5,8 +5,8 @@ import formatDecimal from '@/helpers/formatDecimal';
 import { TOTAL_CARDS_LENGTH } from '@/constants/static';
 
 import Key from './Keys/Key';
-import RevealKey from './Keys/RevealKey';
 import { BetData } from '../index';
+import RevealKey from './Keys/RevealKey';
 
 export interface KeyType {
   value: string;
@@ -29,6 +29,20 @@ const keys: KeyType[] = [
   { value: 'K', number: '12' },
 ];
 
+const revealedRanks = (cardOccurrences: Record<string, number>): number => {
+  const ranks = Object.values(cardOccurrences);
+
+  let count = 0;
+
+  for (const rank of ranks) {
+    if (rank === 0) {
+      count++;
+    }
+  }
+
+  return count;
+};
+
 interface Props {
   values: string[];
   setValue: UseFormSetValue<BetData>;
@@ -47,9 +61,12 @@ const KeyBoard = ({ values, setValue, validCardNumbersLength, cardOccurrences }:
     const isSelected = values.includes(value);
     let newSelectedKeys: string[];
 
+    const revealedRanksCount = revealedRanks(cardOccurrences);
+    const maximumRankSelectionAvailable = keys.length - 1;
+
     if (isSelected) {
       newSelectedKeys = values.filter((key) => key !== value);
-    } else if (values.length < keys.length - 1) {
+    } else if (values.length < maximumRankSelectionAvailable - revealedRanksCount) {
       newSelectedKeys = [...values, value];
     } else {
       newSelectedKeys = values;
