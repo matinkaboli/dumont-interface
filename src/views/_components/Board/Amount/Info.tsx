@@ -1,5 +1,7 @@
 import clsx from 'clsx';
 
+import toFixedNumber from '@/helpers/toFixedNumber';
+
 interface Props {
   className?: string;
   labelClassName?: string;
@@ -19,7 +21,7 @@ const AmountInfo = ({
     <ul className={clsx('flex flex-col', className)}>
       <li className="text-sm font-medium flex-between">
         <span className={labelClassName}>Total odds</span>
-        <span className={valueClassName}>x{odd}</span>
+        <span className={valueClassName}>x{toFixedNumber(odd)}</span>
       </li>
       <li className="text-sm font-medium flex-between">
         <span className={labelClassName}>Possible payout</span>

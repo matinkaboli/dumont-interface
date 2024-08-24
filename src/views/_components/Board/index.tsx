@@ -29,7 +29,6 @@ import KeyBoard from './KeyBoard';
 import Amount from './Amount';
 import ConfirmBet from './ConfirmBet';
 import ResultMessage from './ConfirmBet/ResultMessage';
-import toFixedNumber from '@/helpers/toFixedNumber';
 
 const calculateTotalOdds = (
   keys: string[],
@@ -42,7 +41,8 @@ const calculateTotalOdds = (
   const total = transformedKeys.reduce((sum, key) => sum + (cardOccurrences[key] || 0), 0);
 
   const result = (TOTAL_CARDS_LENGTH - cardsLength) / total;
-  return formatDecimal({ amount: result, decimalPlaces: 2 });
+
+  return result;
 };
 
 const useCardData = () => {
@@ -111,6 +111,7 @@ const Board = () => {
   const amount = watch('amount');
 
   const totalOdds = calculateTotalOdds(keys, cardOccurrences, validCardNumbers.length);
+
   const totalAmount = Number(amount) * totalOdds;
   const reward = totalAmount - (totalAmount - Number(amount)) / 10;
 

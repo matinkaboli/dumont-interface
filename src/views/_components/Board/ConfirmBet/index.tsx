@@ -7,6 +7,7 @@ import { BetData } from '@/views/_components/Board';
 
 import SelectedKey from './SelectedKey';
 import BetDetailList from './BetDetailList';
+import toFixedNumber from '@/helpers/toFixedNumber';
 
 const sortKeys = (keys: string[]): string[] => {
   return [...keys].sort((a: string, b: string) => {
@@ -38,7 +39,7 @@ const ConfirmBet = ({ bet, onConfirm, totalOdds, payout }: Props) => {
 
   const betDetails = [
     { label: 'Amount', value: `$${humanizeAmount(bet.amount)}` },
-    { label: 'Overall odds', value: `x${totalOdds}` },
+    { label: 'Overall odds', value: `x${toFixedNumber(totalOdds)}` },
     { label: 'Possible payout', value: `$${payout}` },
   ];
 
