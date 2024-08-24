@@ -39,7 +39,7 @@ interface Props {
   disabledButton: boolean;
   inputErrors?: FieldErrors<BetData>;
   setValue: UseFormSetValue<BetData>;
-  payout: string;
+  payout: number;
   totalOdds: number;
   trigger: UseFormTrigger<BetData>;
   disabledButtonLabel: string;
@@ -60,7 +60,7 @@ const Amount = ({
   const [isOpen, setIsOpen] = useState(false);
   const [amount, setAmount] = useState();
   const formattedPayout =
-    isEmpty(inputErrors) || inputErrors?.amount?.type === 'validate' ? payout : '0';
+    isEmpty(inputErrors) || inputErrors?.amount?.type === 'validate' ? payout : 0;
 
   useEffect(() => {
     if (totalOdds > 0 && amount) {

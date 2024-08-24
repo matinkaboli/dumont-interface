@@ -29,7 +29,7 @@ const sortKeys = (keys: string[]): string[] => {
 interface Props {
   onConfirm: () => void;
   bet: BetData;
-  payout: string;
+  payout: number;
   totalOdds: number;
 }
 

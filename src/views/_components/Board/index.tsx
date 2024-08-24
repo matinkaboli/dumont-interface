@@ -15,7 +15,6 @@ import guessArrayToNumber from '@/helpers/guessArrayToNumber';
 import formatUnits from '@/helpers/formatUnits';
 import isEmpty from '@/helpers/isEmpty';
 import formatDecimal from '@/helpers/formatDecimal';
-import humanizeAmount from '@/helpers/humanizeAmount';
 import { useApproval } from '@/hooks/useApproval';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';

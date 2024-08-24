@@ -150,7 +150,9 @@ const RevealKey = ({ className }: { className?: string }) => {
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>
       {!isEmpty(game) ? (
-        <div className="text-neutral-500 text-sm">{3 - game?.freeRevealRequests} remaining</div>
+        <div className="text-neutral-500 text-sm">
+          {3 - (game?.freeRevealRequests || 0)} remaining
+        </div>
       ) : null}
     </KeyButton>
   );
