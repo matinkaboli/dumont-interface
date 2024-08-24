@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import BN from 'bignumber.js';
+import { useMemo } from 'react';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import {
   CellContext,
   createColumnHelper,
@@ -32,6 +32,7 @@ import isClaimable from '../helpers/isClaimable';
 import EmptyDataMessage from '../EmptyDataMessage';
 
 import ClaimButton from './ClaimButton';
+import InfoTooltip from '@/views/_components/InfoTooltip';
 
 interface Activity {
   index: number;
@@ -165,13 +166,24 @@ const Activities = () => {
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <TableHead key={header.id} className="uppercase text-neutral-400">
-                {flexRender(header.column.columnDef.header, header.getContext())}
+              <TableHead key={header.id}>
+                {header.column.id === 'total' ? (
+                  <InfoTooltip
+                    label={flexRender(header.column.columnDef.header, header.getContext())}
+                    tooltipText="We'll deduct a 10% fee from your winnings."
+                    className="uppercase text-neutral-400 inline"
+                  />
+                ) : (
+                  <span className="uppercase text-neutral-400 inline">
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                  </span>
+                )}
               </TableHead>
             ))}
           </TableRow>
         ))}
       </TableHeader>
+
       <TableBody>
         {table.getRowModel().rows.map((row) => (
           <TableRow key={row.id}>
