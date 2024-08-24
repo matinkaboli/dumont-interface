@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
 import { Button } from '@/components';
-import humanizeAmount from '@/helpers/humanizeAmount';
 
 import { BetData } from '@/views/_components/Board';
 
@@ -40,7 +39,7 @@ const ConfirmBet = ({ bet, onConfirm, totalOdds, payout }: Props) => {
   const betDetails = [
     { label: 'Amount', value: `$${toFixedNumber(bet.amount)}` },
     { label: 'Overall odds', value: `x${toFixedNumber(totalOdds)}` },
-    { label: 'Possible payout', value: `$${payout}` },
+    { label: 'Possible payout', value: `$${payout}`, tooltip: "We'll deduct a 10% fee from your winnings." },
   ];
 
   return (
