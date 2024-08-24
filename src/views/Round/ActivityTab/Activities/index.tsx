@@ -24,7 +24,6 @@ import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import parseUnits from '@/helpers/parseUnits';
-import humanizeAmount from '@/helpers/humanizeAmount';
 
 import getStatusDetails from '../helpers/getStatusDetails';
 import isClaimable from '../helpers/isClaimable';
@@ -34,6 +33,7 @@ import EmptyDataMessage from '../EmptyDataMessage';
 import ClaimButton from './ClaimButton';
 import InfoTooltip from '@/views/_components/InfoTooltip';
 import toFixedNumber from '@/helpers/toFixedNumber';
+import VerifiedButton from './VerifiedButton';
 
 interface Activity {
   index: number;
@@ -42,6 +42,7 @@ interface Activity {
   revealDate: string;
   betAmount: string;
   totalAmount: string;
+  revelationHash?: string;
   result?: {
     isPlayerWinner: boolean;
     montAmount: string;
@@ -136,6 +137,8 @@ const columns = [
       const activity = row.original;
       const value = activity.status;
 
+      console.log(activity);
+
       if (isClaimable(activity.requestedAt, claimableAfter) && value === 'GUESSED') {
         return (
           <ClaimButton
@@ -145,8 +148,11 @@ const columns = [
           />
         );
       }
+
+      if (value === 'REVEALED') return <VerifiedButton revelationHash={activity.revelationHash} />;
+
       if (value === 'FREE_REVEAL_REQUESTED' || value === 'GUESSED') return `Verifying...`;
-      if (value === 'REVEALED') return 'Verified';
+
       if (value === 'CLAIMED') return 'Claimed';
     },
   }),

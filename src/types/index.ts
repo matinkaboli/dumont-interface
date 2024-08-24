@@ -4,3 +4,5 @@ export interface Card {
   revealedSrc?: string | null;
   isRevealed?: boolean;
 }
+
+export type Networks = 'base' | 'baseSepolia';
