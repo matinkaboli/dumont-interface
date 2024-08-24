@@ -14,7 +14,7 @@ const BalanceList = () => {
     profile: { address },
   } = useTypedSelector((state) => state.account);
 
-  const { data } = useAxiosGet<PlayerData>(`players/${address}`, { interval: 5000 });
+  const { data } = useAxiosGet<PlayerData>(`players/${address}`, { interval: 2000 });
 
   let settling = '0';
 
