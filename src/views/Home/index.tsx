@@ -14,24 +14,25 @@ import Routes from '@/constants/routes';
 
 import Board from '@/views/_components/Board';
 import CardDeck from '@/views/_components/CardDeck';
-import CreateRound from '@/views/_components/CreateRound';
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
-    profile: { isConnected, address, isConnecting },
-    isRedirected,
     loading,
+    isRedirected,
+    profile: { isConnected, address, isConnecting },
   } = useTypedSelector((state) => state.account);
-  const [redirectId, setRedirectId] = useState<string>('');
+  const [activeRoundId, setActiveRoundId] = useState<string>('');
+  const [isDecidingRedirect, setIsDecidingRedirect] = useState(true);
 
   useEffect(() => {
     if (address) handlePlayerGames(address);
-  }, [address, isConnecting]);
+  }, [address]);
 
   const handlePlayerGames = (addr: `0x${string}`) => {
     dispatch(resetGame());
-    setRedirectId('');
+    setIsDecidingRedirect(true);
+    setActiveRoundId('');
 
     dispatch(getPlayerGames(addr))
       .unwrap()
@@ -39,32 +40,35 @@ const Home = () => {
         const timeLeft = +result[0]?.duration - timeLeftInSeconds(result[0]?.createdAt);
 
         if (timeLeft > 0 && !isRedirected) {
-          setRedirectId(result[0].id);
+          setActiveRoundId(result[0].id);
         } else {
-          setRedirectId('');
+          setActiveRoundId('');
         }
+
+        setIsDecidingRedirect(false);
       })
       .finally(() => {
         dispatch(redirectPlayer(true));
       });
   };
 
-  if (isConnecting || loading)
+  if (isConnecting || loading || (isConnected && isDecidingRedirect))
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
       </div>
     );
 
-  if (redirectId) redirect(`${Routes.ROUND}/${redirectId}`);
+  if (isConnected) {
+    if (activeRoundId) redirect(`${Routes.ROUND}/${activeRoundId}`);
+
+    if (!activeRoundId) redirect(Routes.START);
+  }
 
   return (
     <div className="flex flex-col gap-4">
-      {isConnected ? <CreateRound /> : <CardDeck />}
-
-      <div className={isConnected ? 'md:block hidden' : ''}>
-        <Board />
-      </div>
+      <CardDeck />
+      <Board />
     </div>
   );
 };

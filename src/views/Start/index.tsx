@@ -9,7 +9,7 @@ import CreateRound from '@/views/_components/CreateRound';
 const Start = () => {
   const {
     loading,
-    profile: { isConnecting },
+    profile: { isConnecting, isConnected },
   } = useTypedSelector((state) => state.account);
 
   if (isConnecting || loading)
@@ -23,7 +23,9 @@ const Start = () => {
     <div className="flex flex-col gap-4">
       <CreateRound />
 
-      <Board />
+      <div className={isConnected ? 'md:block hidden' : ''}>
+        <Board />
+      </div>
     </div>
   );
 };
