@@ -39,10 +39,8 @@ const PlayCards = ({
 }) => {
   const [showSlider, setShowSlider] = useState(false);
   const { data: game } = useTypedSelector((state) => state.game);
-  const { isConnected } = useTypedSelector((state) => state.account.profile);
 
   const demoCards = useMemo(() => createDemoCards(18), []);
-  const cards = isConnected ? game?.cards : demoCards;
 
   return (
     <div
@@ -55,7 +53,7 @@ const PlayCards = ({
         <CardShuffling cards={demoCards} setShowSlider={setShowSlider} />
       ) : (
         <div className="fade-in animate-in duration-1000">
-          <CardSlides slides={cards} />
+          <CardSlides slides={game?.cards} />
         </div>
       )}
     </div>
