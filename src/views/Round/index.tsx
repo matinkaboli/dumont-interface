@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { redirect, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 
@@ -21,9 +21,9 @@ import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
 
 const Round = () => {
-  const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { isConnected, isConnecting } = useTypedSelector((state) => state.account.profile);
+  const { id } = useParams();
+  const { isConnecting } = useTypedSelector((state) => state.account.profile);
   const {
     data: game,
     loading,
@@ -77,10 +77,6 @@ const Round = () => {
         <Loading />
       </div>
     );
-  }
-
-  if (!isConnected) {
-    redirect('/');
   }
 
   if (isEmpty(game) && !isCreated) {

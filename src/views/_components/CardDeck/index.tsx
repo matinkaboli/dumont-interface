@@ -1,10 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { Card } from '@/redux/features/gameSlice';
+import demoCards from '@/constants/demoCards';
 
 import CardSlides from './CardSlides';
 import CardShuffling from './CardShuffling';
@@ -20,16 +20,6 @@ export const cardSizeStyles = {
   },
 };
 
-const createDemoCards = (length: number): Card[] =>
-  Array.from({ length }, (_, index) => ({
-    number: -1,
-    hash: `hash_${index + 1}`,
-    isFreeReveal: false,
-    guessedNumbers: [],
-    status: 'hidden',
-    _id: `id_${index + 1}`,
-  }));
-
 const PlayCards = ({
   className = '',
   needsShuffling = true,
@@ -39,10 +29,6 @@ const PlayCards = ({
 }) => {
   const [showSlider, setShowSlider] = useState(false);
   const { data: game } = useTypedSelector((state) => state.game);
-  const { isConnected } = useTypedSelector((state) => state.account.profile);
-
-  const demoCards = useMemo(() => createDemoCards(18), []);
-  const cards = isConnected ? game?.cards : demoCards;
 
   return (
     <div
@@ -52,10 +38,10 @@ const PlayCards = ({
       )}
     >
       {needsShuffling && !showSlider ? (
-        <CardShuffling cards={demoCards} setShowSlider={setShowSlider} />
+        <CardShuffling cards={demoCards.slice(0, 18)} setShowSlider={setShowSlider} />
       ) : (
         <div className="fade-in animate-in duration-1000">
-          <CardSlides slides={cards} />
+          <CardSlides slides={game?.cards ?? demoCards} />
         </div>
       )}
     </div>
