@@ -9,10 +9,10 @@ import CreateRound from '@/views/_components/CreateRound';
 const Start = () => {
   const {
     loading,
-    profile: { isConnecting, isConnected },
+    profile: { isConnected },
   } = useTypedSelector((state) => state.account);
 
-  if (isConnecting || loading)
+  if (loading)
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />

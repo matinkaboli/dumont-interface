@@ -20,7 +20,7 @@ const Home = () => {
   const {
     loading,
     isRedirected,
-    profile: { isConnected, address, isConnecting },
+    profile: { isConnected, address },
   } = useTypedSelector((state) => state.account);
   const [activeRoundId, setActiveRoundId] = useState<string>('');
   const [isDecidingRedirect, setIsDecidingRedirect] = useState(true);
@@ -52,7 +52,7 @@ const Home = () => {
       });
   };
 
-  if (isConnecting || loading || (isConnected && isDecidingRedirect))
+  if (loading || (isConnected && isDecidingRedirect))
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
