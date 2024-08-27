@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { redirect } from 'next/navigation';
 
 import { Loading } from '@/components';
-import { getPlayerGames, redirectPlayer } from '@/redux/features/accountSlice';
+import { getPlayerGames } from '@/redux/features/accountSlice';
 import { resetGame } from '@/redux/features/gameSlice';
 import { AppDispatch } from '@/redux/store';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
@@ -19,7 +19,6 @@ const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     loading,
-    isRedirected,
     profile: { isConnected, address },
   } = useTypedSelector((state) => state.account);
   const [activeRoundId, setActiveRoundId] = useState<string>('');
@@ -39,16 +38,13 @@ const Home = () => {
       .then((result) => {
         const timeLeft = +result[0]?.duration - timeLeftInSeconds(result[0]?.createdAt);
 
-        if (timeLeft > 0 && !isRedirected) {
+        if (timeLeft > 0) {
           setActiveRoundId(result[0].id);
         } else {
           setActiveRoundId('');
         }
 
         setIsDecidingRedirect(false);
-      })
-      .finally(() => {
-        dispatch(redirectPlayer(true));
       });
   };
 
