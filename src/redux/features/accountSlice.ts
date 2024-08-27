@@ -17,7 +17,6 @@ interface InitialState {
   games: GameData[];
   loading: boolean;
   error: string | null;
-  isRedirected: boolean;
 }
 
 const initialState: InitialState = {
@@ -26,7 +25,6 @@ const initialState: InitialState = {
   games: [],
   loading: false,
   error: null,
-  isRedirected: false,
 };
 
 export const getPlayerGames = createAsyncThunk<GameData[], string>(
@@ -36,9 +34,7 @@ export const getPlayerGames = createAsyncThunk<GameData[], string>(
       const response = await axios.get(`players/${address}/games`);
 
       const { result } = response.data;
-      const sortedResult = result.sort((a: any, b: any) => b.id - a.id);
-
-      return sortedResult;
+      return result.sort((a: any, b: any) => b.id - a.id);
     } catch (error) {
       const axiosError = error as AxiosError;
       return rejectWithValue(axiosError.message);
@@ -55,9 +51,6 @@ const accountSlice = createSlice({
     },
     setBalance: (state, action: PayloadAction<string | undefined>) => {
       state.balance = action.payload;
-    },
-    redirectPlayer(state, action: PayloadAction<boolean>) {
-      state.isRedirected = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -77,5 +70,5 @@ const accountSlice = createSlice({
   },
 });
 
-export const { setAccount, setBalance, redirectPlayer } = accountSlice.actions;
+export const { setAccount, setBalance } = accountSlice.actions;
 export default accountSlice.reducer;

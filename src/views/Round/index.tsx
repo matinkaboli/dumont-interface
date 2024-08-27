@@ -71,7 +71,10 @@ const Round = () => {
     }
   }, [game]);
 
-  if (isConnecting || (loading && !isRefetching && !areAllCardsGuessed && !isExpired)) {
+  if (
+    (isEmpty(game) && isConnecting) ||
+    (loading && !isRefetching && !areAllCardsGuessed && !isExpired)
+  ) {
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
