@@ -3,8 +3,9 @@ import { Networks } from '@/types';
 const links = {
   EXPLORER: '',
   APP: 'https://app.dumont.gg',
-  BUY_CRYPTO: 'https://www.moonpay.com/',
-  BRIDGE_ASSET: 'https://jumper.exchange/',
+  BUY_CRYPTO: 'https://www.moonpay.com/buy/eth',
+  BRIDGE_ASSET:
+    'https://jumper.exchange/?fromChain=1&fromToken=0x0000000000000000000000000000000000000000&toChain=8453&toToken=0x0000000000000000000000000000000000000000',
   GET_REWARD: 'https://docs.dumont.gg/usdmont-token/reward-program',
 };
 

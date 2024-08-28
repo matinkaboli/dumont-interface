@@ -13,10 +13,14 @@ const VerifiedButton = ({ revelationHash }: VerifiedButtonProps) => {
   const explorerUrl = `${links.EXPLORER}/tx/${revelationHash}`;
 
   return (
-    <div className="text-primary-100">
+    <div className="group text-primary-100 hover:text-primary-250">
       <a href={explorerUrl} target="_blank" className="flex items-center justify-start">
         <span>Verified</span>
-        <ArrowUpRight color="#DAA7FE" width="8" height="8" className="ml-1" />
+        <ArrowUpRight
+          width="8"
+          height="8"
+          className="ml-1 fill-current text-primary-100 group-hover:text-primary-250"
+        />
       </a>
     </div>
   );
