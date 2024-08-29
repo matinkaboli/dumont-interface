@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import BN from 'bignumber.js';
 import { useMemo } from 'react';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {
