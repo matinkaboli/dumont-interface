@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import BN from 'bignumber.js';
 import { useMemo } from 'react';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {
@@ -162,7 +161,7 @@ const Activities = () => {
     data: activities,
     loading,
     refetch,
-  } = useAxiosGet<Activity[]>(`games/${game?.id}/activities`, { interval: 30000 });
+  } = useAxiosGet<Activity[]>(`games/${game?.id}/activities`, { interval: 10000 });
 
   const reversedActivities = useMemo(() => {
     return activities ? [...activities].reverse() : [];
