@@ -12,14 +12,10 @@ const ConfirmNewRound = ({ onCreateGame }: { onCreateGame: () => void }) => {
         <Button fullWidth size="md" radius="lg" onClick={onCreateGame}>
           Create
         </Button>
-        <Button
-          variant="link"
-          size="md"
-          className="w-fit mx-auto text-neutral-400 hover:text-neutral-300 [&_.path]:hover:fill-neutral-300 font-semibold text-base"
-          rightSection={<Icon name="arrow-up-right" />}
-        >
-          Why should pay
-        </Button>
+
+        <p className="text-neutral-400 text-xs text-center font-thin mt-2">
+          *Note: This fee covers blockchain proof costs.
+        </p>
       </div>
     </>
   );

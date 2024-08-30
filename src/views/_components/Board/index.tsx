@@ -113,9 +113,8 @@ const Board = () => {
   const totalOdds = calculateTotalOdds(keys, cardOccurrences, validCardNumbers.length);
 
   const totalAmount = Number(amount) * totalOdds;
-  const reward = totalAmount - (totalAmount - Number(amount)) / 10;
 
-  const formattedPayout = formatDecimal({ amount: reward, decimalPlaces: 2 });
+  const formattedPayout = formatDecimal({ amount: totalAmount, decimalPlaces: 2 });
 
   const { allowanceData, sendApprove, isApproveLoading, refetchAllowance } = useApproval(
     game?.address,

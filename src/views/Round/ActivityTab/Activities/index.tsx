@@ -192,7 +192,7 @@ const Activities = () => {
                 {header.column.id === 'total' ? (
                   <InfoTooltip
                     label={flexRender(header.column.columnDef.header, header.getContext())}
-                    tooltipText="We'll deduct a 10% fee from your winnings."
+                    tooltipText="We deducted a 10% fee from your winnings."
                     className="uppercase text-neutral-400 inline"
                   />
                 ) : (

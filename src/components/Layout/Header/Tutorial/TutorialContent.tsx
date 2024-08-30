@@ -10,7 +10,7 @@ const TutorialContent = () => {
       <div className="w-full min-h-[136px] overflow-hidden rounded-xl">
         <ReactPlayer
           width="100%"
-          height="136px"
+          height="190px"
           url="https://www.youtube.com/watch?v=FBwtPHXeAHw"
         />
       </div>
