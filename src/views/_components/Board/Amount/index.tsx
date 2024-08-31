@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
+import BigNumber from 'bignumber.js';
 
 import { Icon, Input } from '@/components';
 import { Props as InputProps } from '@/components/Input';
@@ -12,13 +13,12 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import humanizeAmount from '@/helpers/humanizeAmount';
 import formatDecimal from '@/helpers/formatDecimal';
+import toFixedNumber from '@/helpers/toFixedNumber';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
 import MaxButton from './MaxButton';
 import { BetData } from '../index';
-import BigNumber from 'bignumber.js';
-import toFixedNumber from '@/helpers/toFixedNumber';
 
 const inputProps: InputProps = {
   name: 'amount',
@@ -43,6 +43,7 @@ interface Props {
   totalOdds: number;
   trigger: UseFormTrigger<BetData>;
   disabledButtonLabel: string;
+  touchedFields: Partial<{ amount?: boolean | undefined; keys?: boolean[] | undefined }>;
 }
 
 const Amount = ({
@@ -54,6 +55,7 @@ const Amount = ({
   trigger,
   disabledButton,
   disabledButtonLabel,
+  touchedFields,
 }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.bet);
@@ -96,6 +98,8 @@ const Amount = ({
   const handleToggle = () => setIsOpen((prev) => !prev);
 
   const setMaxValue = () => {
+    touchedFields.amount = true;
+
     let maximumPossibleAmount = '0';
 
     if (!isEmpty(balance) && balance) {
@@ -117,6 +121,8 @@ const Amount = ({
     e: ChangeEvent<HTMLInputElement>,
     onChange: (value: string) => void,
   ) => {
+    touchedFields.amount = true;
+
     const { value } = e.target;
 
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
@@ -143,7 +149,7 @@ const Amount = ({
               rules={inputValidation}
               render={({ field }) => (
                 <Input
-                  errors={inputErrors}
+                  errors={touchedFields?.amount ? inputErrors : {}}
                   {...inputProps}
                   {...field}
                   onChange={(e) => handleInputChange(e, field.onChange)}
@@ -154,7 +160,10 @@ const Amount = ({
             <AmountInfo
               odd={totalOdds}
               payout={formattedPayout}
-              className={clsx('gap-3', isEmpty(inputErrors) ? 'mt-4' : 'mt-1')}
+              className={clsx(
+                'gap-3',
+                !isEmpty(inputErrors) && touchedFields?.amount ? 'mt-1' : 'mt-4',
+              )}
               labelClassName="text-white"
               valueClassName="text-white opacity-50"
             />
@@ -180,14 +189,14 @@ const Amount = ({
                 <Input
                   {...field}
                   {...mobileInputProps}
-                  errors={inputErrors}
+                  errors={touchedFields?.amount ? inputErrors : {}}
+                  onChange={(e) => handleInputChange(e, field.onChange)}
                   rightSection={
                     <div className="flex gap-3 items-center">
                       <span className="text-sm font-medium text-neutral-400">USDT</span>
                       <MaxButton onClick={setMaxValue} />
                     </div>
                   }
-                  onChange={(e) => handleInputChange(e, field.onChange)}
                 />
               )}
             />
