@@ -22,8 +22,8 @@ jobs:
     steps:
       - name: Execution
         run: |
-          docker-compose down
-          docker-compose up -d
+          docker compose down
+          docker compose up -d
 
   Cleanup:
     name: Cleanup
