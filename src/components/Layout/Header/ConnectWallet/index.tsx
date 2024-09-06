@@ -65,7 +65,7 @@ const useWalletInfo = () => {
   }, [dispatch, address, isConnected, isConnecting]);
 
   useEffect(() => {
-    if (balance && balance?.symbol === 'USDT') {
+    if (balance && balance?.symbol === 'USDC') {
       dispatch(setBalance(balance?.formatted));
     }
   }, [balance]);
