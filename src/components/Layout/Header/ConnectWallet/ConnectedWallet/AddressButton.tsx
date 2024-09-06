@@ -20,9 +20,9 @@ const AddressButton = ({ onOpenChange }: Props) => {
         onClick={onOpenChange}
       >
         <div className="flex-center-v gap-1 text-white text-sm bg-neutral-800 px-1 h-8 rounded-md">
-          <Image width={20} height={20} src="/images/USDT.svg" alt="" />
+          <Image width={20} height={20} src="/images/USDC.png" alt="" />
           <span className="font-bold">{balance ? humanizeAmount(balance) : 0}</span>
-          <span>USDT</span>
+          <span>USDC</span>
         </div>
         <div className="text-primary-250 text-sm">
           {truncateString(address || '', { leftChars: 6, rightChars: 4 })}

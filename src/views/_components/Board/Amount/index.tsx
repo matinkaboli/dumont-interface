@@ -24,13 +24,13 @@ const inputProps: InputProps = {
   name: 'amount',
   size: 'sm',
   placeholder: 'Enter amount',
-  rightSection: <Image src="/images/USDT.svg" width={24} height={24} alt="" />,
+  rightSection: <Image src="/images/USDC.png" width={24} height={24} alt="" />,
 };
 
 const mobileInputProps: InputProps = {
   name: 'amount',
   size: 'md',
-  placeholder: 'USDT amount',
+  placeholder: 'USDC amount',
   rightSectionPointerEvents: 'auto',
 };
 
@@ -78,7 +78,7 @@ const Amount = ({
       if (totalOdds > 0) {
         const payoutValue = value * totalOdds;
 
-        if (balance && value > +balance) return 'Insufficient USDT balance';
+        if (balance && value > +balance) return 'Insufficient USDC balance';
 
         const maxBetAmountMargined = (maxBetAmount * 98) / 100;
         const maxBetValue = maxBetAmountMargined / totalOdds;
@@ -193,7 +193,7 @@ const Amount = ({
                   onChange={(e) => handleInputChange(e, field.onChange)}
                   rightSection={
                     <div className="flex gap-3 items-center">
-                      <span className="text-sm font-medium text-neutral-400">USDT</span>
+                      <span className="text-sm font-medium text-neutral-400">USDC</span>
                       <MaxButton onClick={setMaxValue} />
                     </div>
                   }

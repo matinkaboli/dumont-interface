@@ -1,31 +1,5 @@
 [
   {
-    "type": "constructor",
-    "inputs": [
-      {
-        "name": "_mont",
-        "type": "address",
-        "internalType": "contract IMONT"
-      },
-      {
-        "name": "_usdt",
-        "type": "address",
-        "internalType": "contract IERC20"
-      },
-      {
-        "name": "_swapRouter",
-        "type": "address",
-        "internalType": "contract ISwapRouter"
-      },
-      {
-        "name": "_uniswapPoolFee",
-        "type": "uint24",
-        "internalType": "uint24"
-      }
-    ],
-    "stateMutability": "nonpayable"
-  },
-  {
     "type": "function",
     "name": "acceptOwnership",
     "inputs": [],
@@ -45,6 +19,34 @@
         "name": "_deadline",
         "type": "uint256",
         "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "initialize",
+    "inputs": [
+      {
+        "name": "_mont",
+        "type": "address",
+        "internalType": "contract IMONT"
+      },
+      {
+        "name": "_usdc",
+        "type": "address",
+        "internalType": "contract IERC20"
+      },
+      {
+        "name": "_swapRouter",
+        "type": "address",
+        "internalType": "contract ISwapRouter02"
+      },
+      {
+        "name": "_uniswapPoolFee",
+        "type": "uint24",
+        "internalType": "uint24"
       }
     ],
     "outputs": [],
@@ -104,7 +106,7 @@
       {
         "name": "",
         "type": "address",
-        "internalType": "contract ISwapRouter"
+        "internalType": "contract ISwapRouter02"
       }
     ],
     "stateMutability": "view"
@@ -137,7 +139,7 @@
   },
   {
     "type": "function",
-    "name": "usdt",
+    "name": "usdc",
     "inputs": [],
     "outputs": [
       {
@@ -150,10 +152,23 @@
   },
   {
     "type": "event",
+    "name": "Initialized",
+    "inputs": [
+      {
+        "name": "version",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
     "name": "MONTTokensBurned",
     "inputs": [
       {
-        "name": "_usdtAmount",
+        "name": "_usdcAmount",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
@@ -229,12 +244,27 @@
   },
   {
     "type": "error",
+    "name": "DeadlinePassed",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "FailedInnerCall",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "NotEnoughUSDT",
+    "name": "InvalidInitialization",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotEnoughUSDC",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotInitializing",
     "inputs": []
   },
   {

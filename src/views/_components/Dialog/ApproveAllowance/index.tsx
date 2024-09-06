@@ -8,7 +8,7 @@ const ApproveAllowance = ({ onApprove }: Props) => {
   return (
     <>
       <DialogIcon name="badge-check-rainbow" variant="default" />
-      <DialogTitle className="text-center mt-4">USDT Approval</DialogTitle>
+      <DialogTitle className="text-center mt-4">USDC Approval</DialogTitle>
       <div className="mx-auto text-xs font-medium text-primary-100 px-4 py-1 rounded-full bg-gradiant-blur backdrop-blur-[25px] shadow-label w-fit mt-1 mb-2">
         One Time Approval
       </div>

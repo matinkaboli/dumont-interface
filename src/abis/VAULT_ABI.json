@@ -8,7 +8,7 @@
         "internalType": "contract IMONT"
       },
       {
-        "name": "_usdt",
+        "name": "_usdc",
         "type": "address",
         "internalType": "contract IERC20"
       },
@@ -302,7 +302,7 @@
   },
   {
     "type": "function",
-    "name": "usdt",
+    "name": "usdc",
     "inputs": [],
     "outputs": [
       {
@@ -550,6 +550,11 @@
   {
     "type": "error",
     "name": "FailedToSendEther",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "GameFactoryAlreadySet",
     "inputs": []
   },
   {
