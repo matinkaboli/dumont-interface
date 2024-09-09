@@ -8,9 +8,9 @@ import { Loading } from '@/components';
 import { getPlayerGames } from '@/redux/features/accountSlice';
 import { resetGame } from '@/redux/features/gameSlice';
 import { AppDispatch } from '@/redux/store';
-import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import Routes from '@/constants/routes';
+import isEmpty from '@/helpers/isEmpty';
 
 import Board from '@/views/_components/Board';
 import CardDeck from '@/views/_components/CardDeck';
@@ -36,14 +36,7 @@ const Home = () => {
     dispatch(getPlayerGames(addr))
       .unwrap()
       .then((result) => {
-        const timeLeft = +result[0]?.duration - timeLeftInSeconds(result[0]?.createdAt);
-
-        if (timeLeft > 0) {
-          setActiveRoundId(result[0].id);
-        } else {
-          setActiveRoundId('');
-        }
-
+        setActiveRoundId(isEmpty(result) ? '' : result[0].id);
         setIsDecidingRedirect(false);
       });
   };
