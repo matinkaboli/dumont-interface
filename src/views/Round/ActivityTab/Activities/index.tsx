@@ -37,7 +37,7 @@ import VerifiedButton from './VerifiedButton';
 interface Activity {
   index: number;
   status: 'FREE_REVEAL_REQUESTED' | 'GUESSED' | 'REVEALED' | 'CLAIMED';
-  requestedAt: string;
+  requestedAt: number;
   revealDate: string;
   betAmount: string;
   totalAmount: string;
@@ -64,7 +64,7 @@ const columns = [
     header: 'date',
     cell: ({ getValue }) => {
       const timestamp = getValue();
-      const date = dayjs.unix(parseInt(timestamp, 10)); // Convert seconds to milliseconds
+      const date = dayjs.unix(timestamp); // Convert seconds to milliseconds
       return date.fromNow();
     },
   }),
@@ -164,7 +164,11 @@ const Activities = () => {
   } = useAxiosGet<Activity[]>(`games/${game?.id}/activities`, { interval: 10000 });
 
   const reversedActivities = useMemo(() => {
-    return activities ? [...activities].reverse() : [];
+    if (!activities) {
+      return [];
+    }
+
+    return activities.sort((a, b) => b.requestedAt - a.requestedAt);
   }, [activities]);
 
   const table = useReactTable({
