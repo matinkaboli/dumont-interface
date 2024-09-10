@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 
 import { useNewRound } from '@/hooks/useNewRound';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import Tutorial from './Tutorial';
 
@@ -11,17 +12,20 @@ const menuClassNames =
 
 const Menus = ({ className }: { className?: string }) => {
   const { onCreateRound } = useNewRound();
+  const { isConnected } = useTypedSelector((state) => state.account.profile);
 
   return (
     <ul className={clsx('md:flex hidden items-center gap-8', className)}>
       <li className={menuClassNames}>
         <Tutorial />
       </li>
-      <li className={menuClassNames}>
-        <button type="button" onClick={onCreateRound}>
-          New Round
-        </button>
-      </li>
+      {isConnected && (
+        <li className={menuClassNames}>
+          <button type="button" onClick={onCreateRound}>
+            New Round
+          </button>
+        </li>
+      )}
     </ul>
   );
 };
