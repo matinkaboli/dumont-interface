@@ -5,12 +5,12 @@ import { DialogDescription, DialogTitle } from '@/components';
 
 const TutorialContent = () => {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 overflow-y-auto max-h-[80vh]">
       <DialogTitle>Gameplay Tutorial</DialogTitle>
-      <div className="w-full min-h-[136px] overflow-hidden rounded-xl">
+      <div className="w-full min-h-[300px] overflow-hidden rounded-xl">
         <ReactPlayer
           width="100%"
-          height="190px"
+          height="300px"
           url="https://www.youtube.com/watch?v=FBwtPHXeAHw"
         />
       </div>

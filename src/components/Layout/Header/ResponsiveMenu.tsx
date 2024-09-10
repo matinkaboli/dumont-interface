@@ -15,7 +15,7 @@ const menuClassNames = 'text-white text-md';
 
 const ResponsiveMenu = () => {
   const dispatch = useDispatch();
-  const { address } = useTypedSelector((state) => state.account.profile);
+  const { address, isConnected } = useTypedSelector((state) => state.account.profile);
   const { isMobile } = useScreenDetector();
   const { onCreateRound } = useNewRound();
 
@@ -33,11 +33,13 @@ const ResponsiveMenu = () => {
             <li className={menuClassNames}>
               <Tutorial />
             </li>
+            {isConnected &&
             <li className={menuClassNames}>
               <button type="button" onClick={onCreateRound}>
                 New Round
               </button>
             </li>
+            }
           </ul>
         ),
       }),
