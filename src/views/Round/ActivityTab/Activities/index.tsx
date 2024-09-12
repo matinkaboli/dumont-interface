@@ -23,6 +23,9 @@ import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import parseUnits from '@/helpers/parseUnits';
+import toFixedNumber from '@/helpers/toFixedNumber';
+
+import InfoTooltip from '@/views/_components/InfoTooltip';
 
 import getStatusDetails from '../helpers/getStatusDetails';
 import isClaimable from '../helpers/isClaimable';
@@ -30,8 +33,6 @@ import isClaimable from '../helpers/isClaimable';
 import EmptyDataMessage from '../EmptyDataMessage';
 
 import ClaimButton from './ClaimButton';
-import InfoTooltip from '@/views/_components/InfoTooltip';
-import toFixedNumber from '@/helpers/toFixedNumber';
 import VerifiedButton from './VerifiedButton';
 
 interface Activity {
