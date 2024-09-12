@@ -1,21 +1,19 @@
-import Image from 'next/image';
 import { useMemo } from 'react';
+import Image from 'next/image';
 
 import { Loading } from '@/components';
 import getCardInfo from '@/helpers/getCardInfo';
-import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
 import EmptyDataMessage from './EmptyDataMessage';
 
 const Discarded = () => {
-  const { data: game } = useTypedSelector((state) => state.game);
-  const { data: discarded, loading } = useAxiosGet<number[]>(`games/${game?.id}/cards`);
+  const { cards, loading } = useTypedSelector((state) => state.discarded);
 
   const sortedDiscarded = useMemo(() => {
-    return discarded?.sort((a, b) => (a % 13) - (b % 13)) || [];
-  }, [discarded]);
+    return [...cards].sort((a, b) => (a % 13) - (b % 13)) || [];
+  }, [cards]);
 
   return (
     <>
@@ -25,14 +23,14 @@ const Discarded = () => {
         </div>
       ) : (
         <>
-          {isEmpty(discarded) ? (
+          {isEmpty(cards) ? (
             <EmptyDataMessage message="Nothing discarded" />
           ) : (
             <div className="md:bg-neutral-750 bg-transparent rounded-lg md:p-6 p-0">
               <h3 className="text-sm text-neutral-300">
-                Here you can view the cards that have been <b>discarded</b> from the game, arranged
-                in
-                <span className="text-white"> numerical order.</span>
+                <span className="text-white font-bold">{cards?.length} cards </span>
+                have been discarded so far, arranged in
+                <span className="text-white font-bold"> numerical order.</span>
               </h3>
 
               <div className="flex flex-wrap md:gap-4 gap-3 mt-6">
