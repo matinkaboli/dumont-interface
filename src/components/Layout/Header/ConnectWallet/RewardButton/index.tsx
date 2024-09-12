@@ -132,8 +132,7 @@ const RewardButton = () => {
       {claimed ? (
         <Confetti
           run
-          gravity={0.2}
-          tweenDuration={2000}
+          tweenDuration={1000}
           onConfettiComplete={onConfettiComplete}
           className="!z-[45]"
         />

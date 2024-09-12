@@ -319,8 +319,7 @@ const Board = () => {
         <Confetti
           run
           key={guessedResult?._id}
-          gravity={0.2}
-          tweenDuration={2000}
+          tweenDuration={1000}
           className="!z-[45]"
         />
       ) : null}
