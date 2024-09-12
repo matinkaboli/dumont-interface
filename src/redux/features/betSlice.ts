@@ -8,6 +8,7 @@ interface Result {
   status: string;
   betAmount: string;
   totalAmount: string;
+  _id: string;
   result: {
     isPlayerWinner: boolean;
     usdtAmount: string;
