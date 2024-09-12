@@ -7,6 +7,7 @@ const links = {
   BRIDGE_ASSET:
     'https://jumper.exchange/?fromChain=1&fromToken=0x0000000000000000000000000000000000000000&toChain=8453&toToken=0x0000000000000000000000000000000000000000',
   GET_REWARD: 'https://docs.dumont.gg/usdmont-token/reward-program',
+  TUTORIAL_VIDEO: 'https://www.youtube.com/watch?v=VDU1sxo-HqA',
 };
 
 const network = process.env.NEXT_PUBLIC_NETWORK as Networks;

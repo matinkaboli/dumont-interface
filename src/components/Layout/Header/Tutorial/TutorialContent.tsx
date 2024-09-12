@@ -2,6 +2,7 @@ import Link from 'next/link';
 import ReactPlayer from 'react-player';
 
 import { DialogDescription, DialogTitle } from '@/components';
+import links from '@/constants/links';
 
 const TutorialContent = () => {
   return (
@@ -11,7 +12,7 @@ const TutorialContent = () => {
         <ReactPlayer
           width="100%"
           height="300px"
-          url="https://www.youtube.com/watch?v=FBwtPHXeAHw"
+          url={links.TUTORIAL_VIDEO}
         />
       </div>
       <div className="flex flex-col gap-6">
