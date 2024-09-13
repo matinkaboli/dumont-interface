@@ -130,7 +130,12 @@ const RewardButton = () => {
   return (
     <>
       {claimed ? (
-        <Confetti run onConfettiComplete={onConfettiComplete} className="!z-[45]" />
+        <Confetti
+          run
+          tweenDuration={2000}
+          onConfettiComplete={onConfettiComplete}
+          className="!z-[45]"
+        />
       ) : null}
 
       <div className="border-primary-gradiant rounded-lg">

@@ -5,6 +5,7 @@ import BN from 'bignumber.js';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { swiperRef } from '@/components/Carousel';
+import { Confetti } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';
@@ -86,6 +87,7 @@ export interface BetData {
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { guessedResult } = useTypedSelector((state) => state.bet);
   const { address } = useTypedSelector((state) => state.account.profile);
   const { game, activeCardIndex, isExpired, guessedCardsCount, validCardNumbers, cardOccurrences } =
     useCardData();
@@ -312,32 +314,42 @@ const Board = () => {
     game?.player.toLowerCase() !== address?.toLowerCase();
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4"
-    >
-      <div className="col-span-2 md:order-1 order-2">
-        <KeyBoard
-          values={keys}
-          setValue={setValue}
-          validCardNumbersLength={validCardNumbers.length}
-          cardOccurrences={cardOccurrences}
+    <>
+      {guessedResult?.result?.isPlayerWinner ? (
+        <Confetti
+          run
+          key={guessedResult?._id}
+          tweenDuration={2000}
+          className="!z-[45]"
         />
-      </div>
-      <div className="col-span-1 md:order-2 order-1">
-        <Amount
-          payout={formattedPayout}
-          totalOdds={totalOdds}
-          setValue={setValue}
-          inputErrors={errors}
-          control={control}
-          trigger={trigger}
-          touchedFields={touchedFields}
-          disabledButton={isDisabled}
-          disabledButtonLabel={disabledButtonLabel()}
-        />
-      </div>
-    </form>
+      ) : null}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4"
+      >
+        <div className="col-span-2 md:order-1 order-2">
+          <KeyBoard
+            values={keys}
+            setValue={setValue}
+            validCardNumbersLength={validCardNumbers.length}
+            cardOccurrences={cardOccurrences}
+          />
+        </div>
+        <div className="col-span-1 md:order-2 order-1">
+          <Amount
+            payout={formattedPayout}
+            totalOdds={totalOdds}
+            setValue={setValue}
+            inputErrors={errors}
+            control={control}
+            trigger={trigger}
+            touchedFields={touchedFields}
+            disabledButton={isDisabled}
+            disabledButtonLabel={disabledButtonLabel()}
+          />
+        </div>
+      </form>
+    </>
   );
 };
 export default Board;
