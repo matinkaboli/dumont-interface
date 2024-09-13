@@ -162,7 +162,7 @@ const Activities = () => {
     data: activities,
     loading,
     refetch,
-  } = useAxiosGet<Activity[]>(`games/${game?.id}/activities`, { interval: 10000 });
+  } = useAxiosGet<Activity[]>(`games/${game?.id}/activities`, { interval: 5000 });
 
   const reversedActivities = useMemo(() => {
     if (!activities) {
