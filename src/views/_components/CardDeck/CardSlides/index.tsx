@@ -43,6 +43,7 @@ const CardSlides = ({ slides = [] }: Props) => {
                 isLeaked={slide.isFreeReveal}
                 number={slide?.number}
                 isActive={isActive}
+                isPlayerWinner={slide?.result?.isPlayerWinner}
               />
             )}
           </CarouselItem>

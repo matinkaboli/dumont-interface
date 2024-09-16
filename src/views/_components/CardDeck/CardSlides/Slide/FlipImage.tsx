@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
+import { Icon } from '@/components';
 
 const imgWidth = 200;
 const imgHeight = 0;
@@ -16,9 +17,10 @@ interface Props {
   backSrc: string;
   frontSrc: string;
   isRevealed?: boolean;
+  isPlayerWinner?: boolean;
 }
 
-const FlipImage = ({ frontSrc, backSrc, isRevealed }: Props) => {
+const FlipImage = ({ frontSrc, backSrc, isRevealed, isPlayerWinner = false }: Props) => {
   return (
     <div
       className="w-full h-full"
@@ -44,8 +46,17 @@ const FlipImage = ({ frontSrc, backSrc, isRevealed }: Props) => {
         initial={{ rotateY: 180 }}
         animate={{ rotateY: isRevealed ? 0 : 180 }}
         transition={spring}
-        className={clsx(imgParentClassnames, isRevealed ? 'z-10' : 'z-0')}
+        className={clsx(imgParentClassnames, isRevealed ? 'z-10' : 'z-0', 'relative')}
       >
+        {isRevealed && (
+          <div className="absolute left-2.5 bottom-3.5">
+            {isPlayerWinner ? (
+              <Icon name="check-circle-fill" color="#C4C4CC" width="25" height="25" />
+            ) : (
+              <Icon name="xmark-circle-fill" color="#C4C4CC" width="22" height="22" />
+            )}
+          </div>
+        )}
         <Image width={imgWidth} height={imgHeight} src={backSrc} className={imgClassNames} alt="" />
       </motion.div>
     </div>
