@@ -3,6 +3,13 @@ import { AxiosError } from 'axios';
 
 import axios from '@/lib/axios';
 
+interface Result {
+  montAmount: string;
+  rate: string;
+  isPlayerWinner: boolean;
+  revelationHash: string;
+}
+
 export interface Card {
   number: number;
   hash: string;
@@ -10,6 +17,7 @@ export interface Card {
   guessedNumbers: any[];
   status: string;
   _id: string;
+  result?: Result;
 }
 
 export interface GameData {

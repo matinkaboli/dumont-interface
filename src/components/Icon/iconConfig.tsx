@@ -44,6 +44,7 @@ import TriangleExclamation from './svgs/TriangleExclamation';
 import PartyHornRainbow from './svgs/PartyHornRainbow';
 import HandHoldingCoinRainbow from './svgs/HandHoldingCoinRainbow';
 import CheckRainbow from './svgs/CheckRainbow';
+import XMarkCircleFill from './svgs/XMarkCircleFill';
 
 export interface SvgProps {
   width?: string;
@@ -91,7 +92,8 @@ export type IconName =
   | 'triangle-exclamation'
   | 'party-horn-rainbow'
   | 'hand-holding-coin-rainbow'
-  | 'check-rainbow';
+  | 'check-rainbow'
+  | 'xmark-circle-fill';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -132,4 +134,5 @@ export const iconMap: Record<IconName, ReactElement> = {
   'party-horn-rainbow': <PartyHornRainbow />,
   'hand-holding-coin-rainbow': <HandHoldingCoinRainbow />,
   'check-rainbow': <CheckRainbow />,
+  'xmark-circle-fill': <XMarkCircleFill />,
 };

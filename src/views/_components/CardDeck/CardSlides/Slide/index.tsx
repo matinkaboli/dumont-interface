@@ -13,9 +13,11 @@ interface Props {
   slide: string;
   isLeaked?: boolean;
   number?: number;
+  isPlayerWinner?: boolean;
+  isFreeReveal?: boolean;
 }
 
-const Slide = ({ isActive, index, slide, number = -1 }: Props) => {
+const Slide = ({ isActive, index, slide, number = -1, isPlayerWinner, isFreeReveal }: Props) => {
   return (
     <div
       className={clsx(
@@ -47,8 +49,12 @@ const Slide = ({ isActive, index, slide, number = -1 }: Props) => {
         >
           <FlipImage
             frontSrc={slide}
-            backSrc={number !== -1 ? `/images/cards/${getCardInfo(number)}.png` : '/images/card.png'}
             isRevealed={number !== -1}
+            isPlayerWinner={isPlayerWinner}
+            isFreeReveal={isFreeReveal}
+            backSrc={
+              number !== -1 ? `/images/cards/${getCardInfo(number)}.png` : '/images/card.png'
+            }
           />
         </div>
       </div>
