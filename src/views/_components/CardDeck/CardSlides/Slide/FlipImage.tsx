@@ -18,9 +18,16 @@ interface Props {
   frontSrc: string;
   isRevealed?: boolean;
   isPlayerWinner?: boolean;
+  isFreeReveal?: boolean;
 }
 
-const FlipImage = ({ frontSrc, backSrc, isRevealed, isPlayerWinner = false }: Props) => {
+const FlipImage = ({
+  frontSrc,
+  backSrc,
+  isRevealed,
+  isPlayerWinner = false,
+  isFreeReveal = false,
+}: Props) => {
   return (
     <div
       className="w-full h-full"
@@ -48,7 +55,7 @@ const FlipImage = ({ frontSrc, backSrc, isRevealed, isPlayerWinner = false }: Pr
         transition={spring}
         className={clsx(imgParentClassnames, isRevealed ? 'z-10' : 'z-0', 'relative')}
       >
-        {isRevealed && (
+        {!isFreeReveal && isRevealed && (
           <div className="absolute left-2.5 bottom-3.5">
             {isPlayerWinner ? (
               <Icon name="check-circle-fill" color="#C4C4CC" width="25" height="25" />
