@@ -1,11 +1,13 @@
-import BN, { BigNumber } from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
+
+const truncateDecimals = (num: number, decimalPlaces: number): number => {
+  const factor = Math.pow(10, decimalPlaces);
+
+  return Math.trunc(num * factor) / factor;
+};
 
 const toFixedNumber = (num: string | number | BigNumber, decimals: number = 2) => {
-  const n = Number(num.toString()).toFixed(decimals);
-
-  const bn = new BN(n);
-
-  return bn.toString();
+  return truncateDecimals(Number(num.toString()), decimals).toString();
 };
 
 export default toFixedNumber;

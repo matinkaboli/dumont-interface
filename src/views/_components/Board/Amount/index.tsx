@@ -105,14 +105,16 @@ const Amount = ({
     if (!isEmpty(balance) && balance) {
       const maxPossible = new BigNumber(maxBetAmount).div(totalOdds).times(97).div(100);
 
+      let maxPossibleString = balance.toString();
+
       if (maxPossible.isLessThan(balance)) {
-        maximumPossibleAmount = maxPossible.toString();
-      } else {
-        maximumPossibleAmount = balance.toString();
+        maxPossibleString = maxPossible.toString();
       }
+
+      maximumPossibleAmount = maxPossibleString;
     }
 
-    maximumPossibleAmount = toFixedNumber(maximumPossibleAmount, 9);
+    maximumPossibleAmount = toFixedNumber(maximumPossibleAmount, 3);
 
     setValue('amount', maximumPossibleAmount, { shouldDirty: true, shouldValidate: true });
   };
