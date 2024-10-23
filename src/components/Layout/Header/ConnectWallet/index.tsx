@@ -4,11 +4,13 @@ import { useEffect } from 'react';
 import { ConnectKitButton } from 'connectkit';
 import { useAccount, useBalance, useReadContract } from 'wagmi';
 import { useDispatch } from 'react-redux';
+import { useParams, usePathname } from 'next/navigation';
 
 import { setAccount, setBalance } from '@/redux/features/accountSlice';
 import { setMaxBetAmount, setMinBetAmount } from '@/redux/features/betSlice';
 import { getConfig } from '@/redux/features/configSlice';
 import { AppDispatch } from '@/redux/store';
+import { fetchReferralAddress } from '@/redux/features/referralSlice';
 import { Button } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import parseUnits from '@/helpers/parseUnits';
@@ -16,8 +18,7 @@ import VAULT_ABI from '@/abis/VAULT_ABI.json';
 
 import ConnectedWallet from './ConnectedWallet';
 import RewardButton from './RewardButton';
-import { useParams, usePathname } from 'next/navigation';
-import { fetchReferralAddress } from '@/redux/features/referralSlice';
+import AirdropButton from './AirdropButton';
 
 // Custom hook for fetching config details
 const useFetchDetails = () => {
@@ -98,7 +99,8 @@ const ConnectWallet = () => {
         return (
           <>
             {isConnected ? (
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
+                <AirdropButton />
                 <RewardButton />
                 <ConnectedWallet />
               </div>
