@@ -52,6 +52,7 @@ const useCardData = () => {
     activeCardIndex,
     isExpired,
     guessedCardsCount,
+    areAllCardsGuessed,
   } = useTypedSelector((state) => state.game);
 
   const validCardNumbers = useMemo(
@@ -72,11 +73,12 @@ const useCardData = () => {
 
   return {
     game,
-    activeCardIndex,
     isExpired,
-    validCardNumbers,
+    activeCardIndex,
     cardOccurrences,
+    validCardNumbers,
     guessedCardsCount,
+    areAllCardsGuessed,
   };
 };
 
@@ -89,8 +91,15 @@ const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { guessedResult } = useTypedSelector((state) => state.bet);
   const { address } = useTypedSelector((state) => state.account.profile);
-  const { game, activeCardIndex, isExpired, guessedCardsCount, validCardNumbers, cardOccurrences } =
-    useCardData();
+  const {
+    game,
+    activeCardIndex,
+    isExpired,
+    areAllCardsGuessed,
+    guessedCardsCount,
+    validCardNumbers,
+    cardOccurrences,
+  } = useCardData();
   const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
 
   const {
@@ -298,6 +307,8 @@ const Board = () => {
     const isCardNumberDefined = card?.number !== undefined;
     const isCardRevealed = isCardNumberDefined && card.number !== -1;
 
+    if (areAllCardsGuessed) return 'Round is ended';
+    if (isExpired) return 'Round is expired';
     if (!isPlayerGame) return 'Not your game';
     if (!isCardNumberDefined) return 'Card not available';
     if (isCardRevealed) return 'Revealed Card';
@@ -316,12 +327,7 @@ const Board = () => {
   return (
     <>
       {guessedResult?.result?.isPlayerWinner ? (
-        <Confetti
-          run
-          key={guessedResult?._id}
-          tweenDuration={2000}
-          className="!z-[45]"
-        />
+        <Confetti run key={guessedResult?._id} tweenDuration={2000} className="!z-[45]" />
       ) : null}
       <form
         onSubmit={handleSubmit(onSubmit)}

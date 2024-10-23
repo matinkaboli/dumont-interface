@@ -1,23 +1,25 @@
 'use client';
 
 import { useEffect } from 'react';
-import { ConnectKitButton } from 'connectkit';
-import { useAccount, useBalance, useReadContract } from 'wagmi';
 import { useDispatch } from 'react-redux';
+import { ConnectKitButton } from 'connectkit';
+import { useParams, usePathname } from 'next/navigation';
+import { useAccount, useBalance, useReadContract } from 'wagmi';
 
-import { setAccount, setBalance } from '@/redux/features/accountSlice';
-import { setMaxBetAmount, setMinBetAmount } from '@/redux/features/betSlice';
-import { getConfig } from '@/redux/features/configSlice';
-import { AppDispatch } from '@/redux/store';
 import { Button } from '@/components';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { AppDispatch } from '@/redux/store';
 import parseUnits from '@/helpers/parseUnits';
 import VAULT_ABI from '@/abis/VAULT_ABI.json';
-
-import ConnectedWallet from './ConnectedWallet';
-import RewardButton from './RewardButton';
-import { useParams, usePathname } from 'next/navigation';
+import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
+import { getConfig } from '@/redux/features/configSlice';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { fetchReferralAddress } from '@/redux/features/referralSlice';
+import { setMaxBetAmount, setMinBetAmount } from '@/redux/features/betSlice';
+import { setAccount, setBalance, setIsAirdropEligible } from '@/redux/features/accountSlice';
+
+import RewardButton from './RewardButton';
+import AirdropButton from './AirdropButton';
+import ConnectedWallet from './ConnectedWallet';
 
 // Custom hook for fetching config details
 const useFetchDetails = () => {
@@ -60,6 +62,13 @@ const useWalletInfo = () => {
     functionName: 'getMinimumBetAmount',
   });
 
+  const { data: isAirdropEligible } = useReadContract({
+    address: details?.airdrop,
+    abi: AIRDROP_ABI,
+    functionName: 'claimers',
+    args: [address],
+  });
+
   useEffect(() => {
     dispatch(setAccount({ address, isConnected, isConnecting }));
   }, [dispatch, address, isConnected, isConnecting]);
@@ -69,6 +78,15 @@ const useWalletInfo = () => {
       dispatch(setBalance(balance?.formatted));
     }
   }, [balance]);
+
+  useEffect(() => {
+    if (isAirdropEligible !== undefined) {
+      const claimableAmountBigInt = isAirdropEligible as BigInt;
+      const claimableAmount = claimableAmountBigInt.toString();
+
+      dispatch(setIsAirdropEligible(claimableAmount));
+    }
+  }, [address, isAirdropEligible]);
 
   useEffect(() => {
     if (minBetAmount) dispatch(setMinBetAmount(parseUnits(minBetAmount as number, 6).toNumber()));
@@ -98,7 +116,8 @@ const ConnectWallet = () => {
         return (
           <>
             {isConnected ? (
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
+                <AirdropButton />
                 <RewardButton />
                 <ConnectedWallet />
               </div>

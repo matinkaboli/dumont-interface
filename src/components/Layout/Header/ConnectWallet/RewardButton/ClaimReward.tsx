@@ -39,10 +39,10 @@ const ClaimReward = ({ claimValue, onClaim }: Props) => {
         variant="link"
         radius="lg"
         className="text-neutral-400 font-semibold text-base mt-4 !px-0 hover:bg-neutral-600"
-        rightSection={<Icon name="arrow-up-right" />}
       >
         <Link href={Links.GET_REWARD} target="_blank">
           How i get reward
+          <Icon name="arrow-up-right" color="#ADADB6" />
         </Link>
       </Button>
     </div>
