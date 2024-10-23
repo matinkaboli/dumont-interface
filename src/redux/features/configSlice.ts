@@ -10,6 +10,7 @@ interface Details {
   usdt: HexString;
   mont: HexString;
   burner: HexString;
+  airdrop: HexString;
   revealer: HexString;
   valut: HexString;
   montRewardManager: HexString;

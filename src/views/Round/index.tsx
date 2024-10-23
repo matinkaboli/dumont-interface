@@ -15,7 +15,6 @@ import { MAX_GUESSABLE_CARDS } from '@/constants/static';
 
 import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
-import CreateRound from '@/views/_components/CreateRound';
 
 import ActivityTab from './ActivityTab';
 import ProgressbarTimer from './ProgressbarTimer';
@@ -98,20 +97,13 @@ const Round = () => {
       )}
 
       <div className="flex flex-col gap-4">
-        {areAllCardsGuessed || isExpired ? (
-          <CreateRound
-            title={isExpired ? 'This round has expired' : 'This round has ended'}
-            desc="You can try out your luck again in a new round."
-          />
-        ) : (
-          <>
-            {isEmpty(game) ? (
-              <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height"></div>
-            ) : (
-              <CardDeck needsShuffling={isCreated} />
-            )}
-          </>
-        )}
+        <>
+          {isEmpty(game) ? (
+            <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height"></div>
+          ) : (
+            <CardDeck needsShuffling={isCreated} />
+          )}
+        </>
         <Board />
         <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
         <Toast />
