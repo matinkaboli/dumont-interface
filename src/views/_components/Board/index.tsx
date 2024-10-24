@@ -5,11 +5,11 @@ import BN from 'bignumber.js';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { swiperRef } from '@/components/Carousel';
-import { Confetti } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { postGuessedCard } from '@/redux/features/betSlice';
 import { Card, getGame } from '@/redux/features/gameSlice';
+import { showConfetti } from '@/redux/features/confettiSlice';
 import transformedRanks from '@/helpers/transformedRanks';
 import transformRanks from '@/helpers/transformedRanks';
 import guessArrayToNumber from '@/helpers/guessArrayToNumber';
@@ -173,6 +173,11 @@ const Board = () => {
   }, [isConfirmed]);
 
   useEffect(() => {
+    if (guessedResult?.result.isPlayerWinner)
+      dispatch(showConfetti({ confettiProps: { key: guessedResult?._id } }));
+  }, [guessedResult]);
+
+  useEffect(() => {
     if (isWriteGuessError || isWaitGuessError) onError();
   }, [isWriteGuessError, isWaitGuessError]);
 
@@ -325,37 +330,32 @@ const Board = () => {
     game?.player.toLowerCase() !== address?.toLowerCase();
 
   return (
-    <>
-      {guessedResult?.result?.isPlayerWinner ? (
-        <Confetti run key={guessedResult?._id} tweenDuration={2000} className="!z-[45]" />
-      ) : null}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4"
-      >
-        <div className="col-span-2 md:order-1 order-2">
-          <KeyBoard
-            values={keys}
-            setValue={setValue}
-            validCardNumbersLength={validCardNumbers.length}
-            cardOccurrences={cardOccurrences}
-          />
-        </div>
-        <div className="col-span-1 md:order-2 order-1">
-          <Amount
-            payout={formattedPayout}
-            totalOdds={totalOdds}
-            setValue={setValue}
-            inputErrors={errors}
-            control={control}
-            trigger={trigger}
-            touchedFields={touchedFields}
-            disabledButton={isDisabled}
-            disabledButtonLabel={disabledButtonLabel()}
-          />
-        </div>
-      </form>
-    </>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4"
+    >
+      <div className="col-span-2 md:order-1 order-2">
+        <KeyBoard
+          values={keys}
+          setValue={setValue}
+          validCardNumbersLength={validCardNumbers.length}
+          cardOccurrences={cardOccurrences}
+        />
+      </div>
+      <div className="col-span-1 md:order-2 order-1">
+        <Amount
+          payout={formattedPayout}
+          totalOdds={totalOdds}
+          setValue={setValue}
+          inputErrors={errors}
+          control={control}
+          trigger={trigger}
+          touchedFields={touchedFields}
+          disabledButton={isDisabled}
+          disabledButtonLabel={disabledButtonLabel()}
+        />
+      </div>
+    </form>
   );
 };
 export default Board;

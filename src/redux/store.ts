@@ -7,6 +7,7 @@ import gameReducer from './features/gameSlice';
 import infoReducer from './features/configSlice';
 import referralReducer from './features/referralSlice';
 import discardedSliceReducer from './features/discardedSlice';
+import confettiSliceReducer from './features/confettiSlice';
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     config: infoReducer,
     referral: referralReducer,
     discarded: discardedSliceReducer,
+    confetti: confettiSliceReducer,
   },
   // TODO: Check serializableCheck to ensure there are no problems (content type in modal)
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),

@@ -6,6 +6,7 @@ import ConnectKit from '@/providers/ConnectKit';
 import Redux from '@/providers/Redux';
 import './globals.css';
 import DialogRoot from './DialogRoot';
+import ConfettiRoot from './ConfettiRoot';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
             <Layout>
               {children}
               <DialogRoot />
+              <ConfettiRoot />
             </Layout>
           </ConnectKit>
         </Redux>
