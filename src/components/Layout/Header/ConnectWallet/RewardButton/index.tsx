@@ -3,8 +3,9 @@ import BigNumber from 'bignumber.js';
 import { useDispatch } from 'react-redux';
 import { useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
-import { Confetti, Icon } from '@/components';
+import { Icon } from '@/components';
 import { openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
+import { showConfetti } from '@/redux/features/confettiSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import parseUnits from '@/helpers/parseUnits';
 import MONT_REWARD_MANAGER_ABI from '@/abis/MONT_REWARD_MANAGER_ABI.json';
@@ -72,6 +73,10 @@ const RewardButton = () => {
     if (isWriteClaimError || isWaitClaimError) onError();
   }, [isWriteClaimError, isWaitClaimError]);
 
+  useEffect(() => {
+    if (claimed) dispatch(showConfetti({ confettiProps: { onConfettiComplete } }));
+  }, [claimed]);
+
   function onClaim() {
     writeClaim?.({
       address: details!.montRewardManager,
@@ -128,26 +133,15 @@ const RewardButton = () => {
   }
 
   return (
-    <>
-      {claimed ? (
-        <Confetti
-          run
-          tweenDuration={2000}
-          onConfettiComplete={onConfettiComplete}
-          className="!z-[45]"
-        />
-      ) : null}
-
-      <div className="border-primary-gradiant rounded-lg">
-        <button
-          type="button"
-          className="flex-center-v bg-primary-800 rounded-lg px-2 h-10"
-          onClick={onOpenDialog}
-        >
-          <Icon name="gift-rainbow" />
-        </button>
-      </div>
-    </>
+    <div className="border-primary-gradiant rounded-lg">
+      <button
+        type="button"
+        className="flex-center-v bg-primary-800 rounded-lg px-2 h-10"
+        onClick={onOpenDialog}
+      >
+        <Icon name="gift-rainbow" />
+      </button>
+    </div>
   );
 };
 
