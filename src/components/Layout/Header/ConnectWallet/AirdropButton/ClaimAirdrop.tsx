@@ -9,6 +9,7 @@ import { showConfetti } from '@/redux/features/confettiSlice';
 import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
 import humanizeAmount from '@/helpers/humanizeAmount';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import links from '@/constants/links';
 
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -100,7 +101,7 @@ const ClaimAirdrop = () => {
         radius="lg"
         className="text-neutral-400 font-semibold text-base mt-4 !px-0 hover:bg-neutral-600"
       >
-        <Link href="https://x.com/dumontgg/status/1848362145802862998" target="_blank">
+        <Link href={links.AIRDROP} target="_blank">
           How to qualify for airdrop
           <Icon name="arrow-up-right" color="#ADADB6" />
         </Link>

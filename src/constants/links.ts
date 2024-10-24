@@ -8,6 +8,7 @@ const links = {
     'https://jumper.exchange/?fromChain=1&fromToken=0x0000000000000000000000000000000000000000&toChain=8453&toToken=0x0000000000000000000000000000000000000000',
   GET_REWARD: 'https://docs.dumont.gg/usdmont-token/reward-program',
   TUTORIAL_VIDEO: 'https://www.youtube.com/watch?v=VDU1sxo-HqA',
+  AIRDROP: 'https://x.com/dumontgg/status/1848362145802862998',
 };
 
 const network = process.env.NEXT_PUBLIC_NETWORK as Networks;
