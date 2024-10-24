@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import ReactConfetti, { Props as ConfettiProps } from 'react-confetti';
+import ReactConfetti, { Props } from 'react-confetti';
+import clsx from 'clsx';
 
-interface Props extends Omit<ConfettiProps, 'drawShape' | 'height' | 'width'> {}
+export interface ConfettiProps extends Omit<Props, 'drawShape' | 'height' | 'width' | 'tweenDuration'> {}
 
-const Confetti = ({ run = false, numberOfPieces = 1000, recycle = false, ...props }: Props) => {
+const Confetti = ({ run = false, numberOfPieces = 1000, recycle = false, className = '', ...props }: ConfettiProps) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
@@ -41,6 +42,8 @@ const Confetti = ({ run = false, numberOfPieces = 1000, recycle = false, ...prop
       height={dimensions.height}
       numberOfPieces={numberOfPieces}
       recycle={recycle}
+      tweenDuration={2000}
+      className={clsx('!z-[45]', className)}
       drawShape={(ctx) => {
         ctx.beginPath();
         ctx.rect(-10, -5, 12, 5);
