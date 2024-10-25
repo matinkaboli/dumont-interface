@@ -42,7 +42,7 @@ const ClaimAirdrop = () => {
 
   const handleClick = () => {
     writeClaim?.({
-      address: details!.montRewardManager,
+      address: details!.airdrop,
       abi: AIRDROP_ABI,
       functionName: 'claim',
     });
