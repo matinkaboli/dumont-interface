@@ -10,6 +10,7 @@ import { AppDispatch } from '@/redux/store';
 
 import Activities from './Activities';
 import Discarded from './Discarded';
+import Stats from './Stats';
 
 const ActivityTab = ({ className = '' }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,12 +31,16 @@ const ActivityTab = ({ className = '' }: { className?: string }) => {
             {cards?.length}
           </span>
         </TabsTrigger>
+        <TabsTrigger value="stats">Stats</TabsTrigger>
       </TabsList>
       <TabsContent value="activity">
         <Activities />
       </TabsContent>
       <TabsContent value="discarded">
         <Discarded />
+      </TabsContent>
+      <TabsContent value="stats">
+        <Stats />
       </TabsContent>
     </Tabs>
   );
