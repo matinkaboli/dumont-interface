@@ -3,6 +3,12 @@ import { useMemo } from 'react';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import toFixedNumber from '@/helpers/toFixedNumber';
 import parseUnits from '@/helpers/parseUnits';
+import isEmpty from '@/helpers/isEmpty';
+import { Loading } from '@/components';
+
+import StatsBar from './StatsBar';
+import EmptyDataMessage from '../EmptyDataMessage';
+
 
 const Stats = () => {
   const { activities, loading } = useTypedSelector((state) => state.activity);
@@ -32,7 +38,20 @@ const Stats = () => {
   const isPnlPositive = pnl > 0;
 
   const winPercentage = (stats.wins / (stats.wins + stats.losses)) * 100;
-  console.log(winPercentage);
+
+  const formatAmount = (amount: number) => toFixedNumber(parseUnits(Math.abs(amount), 6));
+
+  if (loading) {
+    return (
+      <div className="flex-center mt-14 mb-10">
+        <Loading size={32} />
+      </div>
+    );
+  }
+
+  if (isEmpty(activities)) {
+    return <EmptyDataMessage message="There is no stats" />;
+  }
 
   return (
     <div className="bg-neutral-750 md:px-6 px-4 md:pt-6 pt-4 md:pb-10 pb-8 rounded-lg">
@@ -42,31 +61,25 @@ const Stats = () => {
           <span className="text-neutral-300 text-xs pl-1">(Profit and Loss)</span>
         </div>
         <div className="font-bold text-2xl text-white mt-2">
-          {isPnlPositive ? '+' : '-'}${toFixedNumber(parseUnits(Math.abs(pnl), 6))}
+          {isPnlPositive ? '+' : '-'}${formatAmount(pnl)}
         </div>
       </div>
 
-      <div className="flex flex-col mt-6">
-        <div className="max-w-[486px] w-full">
-          <div className="text-white text-base">
-            <b>+ ${toFixedNumber(parseUnits(stats.wins, 6))}</b> Win
-          </div>
-          <div
-            className="bg-success-400 h-2 mt-2 rounded"
-            style={{ width: `${winPercentage}%` }}
-          ></div>
-        </div>
-
-        <div className="max-w-[486px] w-full mt-6">
-          <div className="text-white text-base">
-            <b>- ${toFixedNumber(parseUnits(stats.losses, 6))}</b> Lost
-          </div>
-          <div
-            className="bg-error-400 h-2 mt-2 rounded"
-            style={{ width: `${100 - winPercentage}%` }}
-          ></div>
-        </div>
-        <div></div>
+      <div className="flex flex-col">
+        <StatsBar
+          label="Win"
+          amount={stats.wins}
+          percentage={winPercentage}
+          type="win"
+          formatAmount={formatAmount}
+        />
+        <StatsBar
+          label="Lost"
+          amount={stats.losses}
+          percentage={100 - winPercentage}
+          type="loss"
+          formatAmount={formatAmount}
+        />
       </div>
     </div>
   );
