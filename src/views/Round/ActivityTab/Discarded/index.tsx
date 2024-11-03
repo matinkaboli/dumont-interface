@@ -6,7 +6,7 @@ import getCardInfo from '@/helpers/getCardInfo';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
-import EmptyDataMessage from './EmptyDataMessage';
+import EmptyDataMessage from '../EmptyDataMessage';
 
 const Discarded = () => {
   const { cards, loading } = useTypedSelector((state) => state.discarded);

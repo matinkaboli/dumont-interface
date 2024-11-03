@@ -9,7 +9,7 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className="relative">
+    <div className="relative lg:pb-0 pb-24">
       <div className="absolute -z-10 top-0 left-0 right-0 bg-gradiant-layout blur-[20px] w-screen h-[243px]" />
 
       <div className="lg:w-[840px] w-full mx-auto flex flex-col min-h-screen lg:px-0 px-5 pt-10 pb-6">

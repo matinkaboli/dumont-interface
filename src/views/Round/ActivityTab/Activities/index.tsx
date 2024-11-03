@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {
   CellContext,
@@ -19,7 +20,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components';
-import useAxiosGet from '@/hooks/useAxiosGet';
+import { AppDispatch } from '@/redux/store';
+import { getActivities } from '@/redux/features/activitySlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import parseUnits from '@/helpers/parseUnits';
@@ -157,19 +159,24 @@ const columns = [
 ];
 
 const Activities = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const { data: game } = useTypedSelector((state) => state.game);
-  const {
-    data: activities,
-    loading,
-    refetch,
-  } = useAxiosGet<Activity[]>(`games/${game?.id}/activities`, { interval: 5000 });
+  const { activities, loading, isRefetching } = useTypedSelector((state) => state.activity);
+  const handleFetchActivities = () => {
+    if (game?.id) dispatch(getActivities(game.id));
+  };
+
+  useEffect(() => {
+    handleFetchActivities();
+    const intervalId = setInterval(handleFetchActivities, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const reversedActivities = useMemo(() => {
-    if (!activities) {
-      return [];
-    }
+    if (!activities) return [];
 
-    return activities.sort((a, b) => b.requestedAt - a.requestedAt);
+    return [...activities].sort((a, b) => b.requestedAt - a.requestedAt);
   }, [activities]);
 
   const table = useReactTable({
@@ -178,7 +185,7 @@ const Activities = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (loading)
+  if (loading && !isRefetching)
     return (
       <div className="flex-center mt-14 mb-10">
         <Loading size={32} />
@@ -220,7 +227,7 @@ const Activities = () => {
                   ...cell.getContext(),
                   claimableAfter: game?.claimableAfter,
                   gameAddress: game?.address,
-                  fetchActivities: refetch,
+                  fetchActivities: handleFetchActivities,
                 })}
               </TableCell>
             ))}
