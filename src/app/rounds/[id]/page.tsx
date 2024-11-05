@@ -1,26 +1,12 @@
 import Round from '@/views/Round';
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 
 type Props = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
-  const { id } = await params;
-  const { cardIndex } = await searchParams;
-
-  console.log(id, cardIndex);
-
-  // // fetch data
-  // const product = await fetch(`https://.../${id}`).then((res) => res.json());
-
-  // optionally access and extend (rather than replace) parent metadata
-  // const previousImages = (await parent).openGraph?.images || [];
-
+export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL('https://acme.com'),
     openGraph: {

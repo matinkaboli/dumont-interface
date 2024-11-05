@@ -106,7 +106,7 @@ const useWalletInfo = () => {
 };
 
 const ConnectWallet = () => {
-  const { login, authenticated, ready, user } = usePrivy();
+  const { login, authenticated, ready } = usePrivy();
 
   useFetchDetails();
 
