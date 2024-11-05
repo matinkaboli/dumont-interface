@@ -2,20 +2,20 @@
 
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { ConnectKitButton } from 'connectkit';
 import { useParams, usePathname } from 'next/navigation';
 import { useAccount, useBalance, useReadContract } from 'wagmi';
+import { usePrivy } from '@privy-io/react-auth';
 
 import { Button } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import parseUnits from '@/helpers/parseUnits';
-import VAULT_ABI from '@/abis/VAULT_ABI.json';
-import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
 import { getConfig } from '@/redux/features/configSlice';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { fetchReferralAddress } from '@/redux/features/referralSlice';
 import { setMaxBetAmount, setMinBetAmount } from '@/redux/features/betSlice';
 import { setAccount, setBalance, setIsAirdropEligible } from '@/redux/features/accountSlice';
+import parseUnits from '@/helpers/parseUnits';
+import VAULT_ABI from '@/abis/VAULT_ABI.json';
+import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import RewardButton from './RewardButton';
 import AirdropButton from './AirdropButton';
@@ -106,36 +106,33 @@ const useWalletInfo = () => {
 };
 
 const ConnectWallet = () => {
+  const { login, authenticated, ready, user } = usePrivy();
+
   useFetchDetails();
 
   useWalletInfo();
 
   return (
-    <ConnectKitButton.Custom>
-      {({ isConnected, show }) => {
-        return (
-          <>
-            {isConnected ? (
-              <div className="flex items-center gap-2">
-                <AirdropButton />
-                <RewardButton />
-                <ConnectedWallet />
-              </div>
-            ) : (
-              <Button
-                variant="link"
-                size="sm"
-                radius="lg"
-                onClick={show}
-                className="text-primary-250 bg-primary-500 hover:bg-primary-400 !font-bold"
-              >
-                Connect Wallet
-              </Button>
-            )}
-          </>
-        );
-      }}
-    </ConnectKitButton.Custom>
+    <>
+      {ready && authenticated ? (
+        <div className="flex items-center gap-2">
+          <AirdropButton />
+          <RewardButton />
+          <ConnectedWallet />
+        </div>
+      ) : (
+        <Button
+          variant="link"
+          size="sm"
+          radius="lg"
+          onClick={login}
+          disabled={!ready}
+          className="text-primary-250 bg-primary-500 hover:bg-primary-400 !font-bold"
+        >
+          Connect Wallet
+        </Button>
+      )}
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useDisconnect } from 'wagmi';
+import { usePrivy } from '@privy-io/react-auth';
 
 import { Button, Icon, QRCode } from '@/components';
 import truncateString from '@/helpers/truncateString';
@@ -18,13 +18,13 @@ interface ReferralData {
 const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
   const { address } = useTypedSelector((state) => state.account.profile);
   const { data: referralData } = useAxiosGet<ReferralData>(`players/${address}/referrals`);
-  const { disconnectAsync } = useDisconnect();
+  const { logout } = usePrivy();
 
   const referralLink = referralData ? `${links.APP}/i/${referralData?.id}` : '';
 
   const onDisconnect = async () => {
     try {
-      await disconnectAsync();
+      await logout();
       onOpenChange();
     } catch (error) {}
   };
