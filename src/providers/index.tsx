@@ -7,9 +7,9 @@ import Privy from './PrivyAuth';
 const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <Redux>
-      <Wagmi>
-        <Privy>{children}</Privy>
-      </Wagmi>
+      <Privy>
+        <Wagmi>{children}</Wagmi>
+      </Privy>
     </Redux>
   );
 };

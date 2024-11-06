@@ -12,6 +12,7 @@ import { getConfig } from '@/redux/features/configSlice';
 import { fetchReferralAddress } from '@/redux/features/referralSlice';
 import { setMaxBetAmount, setMinBetAmount } from '@/redux/features/betSlice';
 import { setAccount, setBalance, setIsAirdropEligible } from '@/redux/features/accountSlice';
+
 import parseUnits from '@/helpers/parseUnits';
 import VAULT_ABI from '@/abis/VAULT_ABI.json';
 import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
@@ -106,7 +107,7 @@ const useWalletInfo = () => {
 };
 
 const ConnectWallet = () => {
-  const { login, authenticated, ready } = usePrivy();
+  const { login, authenticated, ready, user } = usePrivy();
 
   useFetchDetails();
 

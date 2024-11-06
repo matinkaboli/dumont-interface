@@ -2,7 +2,8 @@
 
 import { type PropsWithChildren } from 'react';
 import { base, baseSepolia } from 'wagmi/chains';
-import { createConfig, http, WagmiProvider } from 'wagmi';
+import { http } from 'wagmi';
+import { createConfig, WagmiProvider } from '@privy-io/wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Networks } from '@/types';
@@ -28,9 +29,9 @@ const queryClient = new QueryClient();
 
 const Wagmi = ({ children }: PropsWithChildren) => {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </WagmiProvider>
+    <QueryClientProvider client={queryClient}>
+      <WagmiProvider config={config}>{children}</WagmiProvider>
+    </QueryClientProvider>
   );
 };
 

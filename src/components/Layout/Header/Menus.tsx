@@ -1,9 +1,9 @@
 'use client';
 
 import clsx from 'clsx';
+import { usePrivy } from '@privy-io/react-auth';
 
 import { useNewRound } from '@/hooks/useNewRound';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import Tutorial from './Tutorial';
 
@@ -12,14 +12,14 @@ const menuClassNames =
 
 const Menus = ({ className }: { className?: string }) => {
   const { onCreateRound } = useNewRound();
-  const { isConnected } = useTypedSelector((state) => state.account.profile);
+  const { ready ,authenticated } = usePrivy();
 
   return (
     <ul className={clsx('md:flex hidden items-center gap-8', className)}>
       <li className={menuClassNames}>
         <Tutorial />
       </li>
-      {isConnected && (
+      {ready && authenticated && (
         <li className={menuClassNames}>
           <button type="button" onClick={onCreateRound}>
             New Round

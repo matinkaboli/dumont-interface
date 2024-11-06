@@ -13,6 +13,9 @@ export default function Privy({ children }: { children: ReactNode }) {
           accentColor: '#A23BEA',
           logo: '/images/logo.svg',
         },
+        embeddedWallets: {
+          createOnLogin: 'users-without-wallets',
+        },
       }}
     >
       {children}
