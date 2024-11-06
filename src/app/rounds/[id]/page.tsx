@@ -1,11 +1,6 @@
 import Round from '@/views/Round';
 import { Metadata } from 'next';
 
-type Props = {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-};
-
 export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL('https://acme.com'),
