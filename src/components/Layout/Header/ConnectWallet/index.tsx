@@ -2,42 +2,35 @@
 
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { ConnectKitButton } from 'connectkit';
 import { useParams, usePathname } from 'next/navigation';
 import { useAccount, useBalance, useReadContract } from 'wagmi';
+import { usePrivy } from '@privy-io/react-auth';
 
 import { Button } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import parseUnits from '@/helpers/parseUnits';
-import VAULT_ABI from '@/abis/VAULT_ABI.json';
-import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
 import { getConfig } from '@/redux/features/configSlice';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { fetchReferralAddress } from '@/redux/features/referralSlice';
 import { setMaxBetAmount, setMinBetAmount } from '@/redux/features/betSlice';
 import { setAccount, setBalance, setIsAirdropEligible } from '@/redux/features/accountSlice';
+
+import parseUnits from '@/helpers/parseUnits';
+import VAULT_ABI from '@/abis/VAULT_ABI.json';
+import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import RewardButton from './RewardButton';
 import AirdropButton from './AirdropButton';
 import ConnectedWallet from './ConnectedWallet';
 
-// Custom hook for fetching config details
-const useFetchDetails = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(getConfig());
-  }, [dispatch]);
-};
-
-// Custom hook for managing account and balance
-const useWalletInfo = () => {
-  const dispatch = useDispatch<AppDispatch>();
+const ConnectWallet = () => {
   const params = useParams();
   const pathname = usePathname();
+  const dispatch = useDispatch<AppDispatch>();
+  const { login, authenticated, ready, user } = usePrivy();
+  const address = user?.wallet?.address as `0x${string}`;
   const { details } = useTypedSelector((state) => state.config);
 
-  const { address, isConnected, isConnecting } = useAccount();
+  const { isConnected, isConnecting } = useAccount();
 
   const { data: balance } = useBalance({
     address,
@@ -70,14 +63,18 @@ const useWalletInfo = () => {
   });
 
   useEffect(() => {
+    dispatch(getConfig());
+  }, []);
+
+  useEffect(() => {
     dispatch(setAccount({ address, isConnected, isConnecting }));
-  }, [dispatch, address, isConnected, isConnecting]);
+  }, [address, isConnected, isConnecting]);
 
   useEffect(() => {
     if (balance && balance?.symbol === 'USDC') {
       dispatch(setBalance(balance?.formatted));
     }
-  }, [balance]);
+  }, [balance, isConnected]);
 
   useEffect(() => {
     if (isAirdropEligible !== undefined) {
@@ -103,39 +100,28 @@ const useWalletInfo = () => {
       dispatch(fetchReferralAddress({ id: params.id as string, currentAddress: address }));
     }
   }, [params.id, pathname, dispatch, address]);
-};
-
-const ConnectWallet = () => {
-  useFetchDetails();
-
-  useWalletInfo();
 
   return (
-    <ConnectKitButton.Custom>
-      {({ isConnected, show }) => {
-        return (
-          <>
-            {isConnected ? (
-              <div className="flex items-center gap-2">
-                <AirdropButton />
-                <RewardButton />
-                <ConnectedWallet />
-              </div>
-            ) : (
-              <Button
-                variant="link"
-                size="sm"
-                radius="lg"
-                onClick={show}
-                className="text-primary-250 bg-primary-500 hover:bg-primary-400 !font-bold"
-              >
-                Connect Wallet
-              </Button>
-            )}
-          </>
-        );
-      }}
-    </ConnectKitButton.Custom>
+    <>
+      {ready && authenticated ? (
+        <div className="flex items-center gap-2">
+          <AirdropButton />
+          <RewardButton />
+          <ConnectedWallet />
+        </div>
+      ) : (
+        <Button
+          variant="link"
+          size="sm"
+          radius="lg"
+          onClick={login}
+          disabled={!ready}
+          className="text-primary-250 bg-primary-500 hover:bg-primary-400 !font-bold"
+        >
+          Connect Wallet
+        </Button>
+      )}
+    </>
   );
 };
 

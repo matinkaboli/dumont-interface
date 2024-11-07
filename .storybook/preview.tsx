@@ -2,7 +2,7 @@ import type { Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
 
 import Redux from '../src/providers/Redux';
-import ConnectKit from '../src/providers/ConnectKit';
+import Wagmi from '@/providers/Wagmi';
 import '../src/app/globals.css';
 
 const preview: Preview = {
@@ -34,9 +34,9 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <Redux>
-        <ConnectKit>
+        <Wagmi>
           <Story />
-        </ConnectKit>
+        </Wagmi>
       </Redux>
     ),
   ],
