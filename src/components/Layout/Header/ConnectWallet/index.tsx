@@ -22,23 +22,15 @@ import RewardButton from './RewardButton';
 import AirdropButton from './AirdropButton';
 import ConnectedWallet from './ConnectedWallet';
 
-// Custom hook for fetching config details
-const useFetchDetails = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(getConfig());
-  }, [dispatch]);
-};
-
-// Custom hook for managing account and balance
-const useWalletInfo = () => {
-  const dispatch = useDispatch<AppDispatch>();
+const ConnectWallet = () => {
   const params = useParams();
   const pathname = usePathname();
+  const dispatch = useDispatch<AppDispatch>();
+  const { login, authenticated, ready, user } = usePrivy();
+  const address = user?.wallet?.address as `0x${string}`;
   const { details } = useTypedSelector((state) => state.config);
 
-  const { address, isConnected, isConnecting } = useAccount();
+  const { isConnected, isConnecting } = useAccount();
 
   const { data: balance } = useBalance({
     address,
@@ -71,14 +63,18 @@ const useWalletInfo = () => {
   });
 
   useEffect(() => {
+    dispatch(getConfig());
+  }, []);
+
+  useEffect(() => {
     dispatch(setAccount({ address, isConnected, isConnecting }));
-  }, [dispatch, address, isConnected, isConnecting]);
+  }, [address, isConnected, isConnecting]);
 
   useEffect(() => {
     if (balance && balance?.symbol === 'USDC') {
       dispatch(setBalance(balance?.formatted));
     }
-  }, [balance]);
+  }, [balance, isConnected]);
 
   useEffect(() => {
     if (isAirdropEligible !== undefined) {
@@ -104,14 +100,6 @@ const useWalletInfo = () => {
       dispatch(fetchReferralAddress({ id: params.id as string, currentAddress: address }));
     }
   }, [params.id, pathname, dispatch, address]);
-};
-
-const ConnectWallet = () => {
-  const { login, authenticated, ready } = usePrivy();
-
-  useFetchDetails();
-
-  useWalletInfo();
 
   return (
     <>
