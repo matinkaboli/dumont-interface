@@ -2,6 +2,10 @@
 
 import { ReactNode } from 'react';
 import { PrivyProvider } from '@privy-io/react-auth';
+import { base, baseSepolia } from 'wagmi/chains';
+import { Networks } from '@/types';
+
+const network = process.env.NEXT_PUBLIC_NETWORK as Networks;
 
 export default function Privy({ children }: { children: ReactNode }) {
   return (
@@ -16,6 +20,7 @@ export default function Privy({ children }: { children: ReactNode }) {
         embeddedWallets: {
           createOnLogin: 'users-without-wallets',
         },
+        supportedChains: [network === 'baseSepolia' ? baseSepolia : base],
       }}
     >
       {children}
