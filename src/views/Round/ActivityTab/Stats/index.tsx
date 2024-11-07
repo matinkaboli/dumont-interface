@@ -9,23 +9,22 @@ import { Loading } from '@/components';
 import StatsBar from './StatsBar';
 import EmptyDataMessage from '../EmptyDataMessage';
 
-
 const Stats = () => {
   const { activities, loading } = useTypedSelector((state) => state.activity);
 
+  console.log(activities);
+
   const stats = useMemo(() => {
     if (!activities?.length) {
-      return { wins: 0, losses: 0, pnl: 0 };
+      return { wins: 0, losses: 0 };
     }
 
     return activities.reduce(
       (acc, activity) => {
-        const amount = activity.totalAmount || 0;
-
         if (activity?.result?.isPlayerWinner) {
-          acc.wins += +amount;
+          acc.wins += +activity.totalAmount - +activity.betAmount;
         } else {
-          acc.losses += +amount;
+          acc.losses += +activity.betAmount;
         }
 
         return acc;
@@ -50,7 +49,7 @@ const Stats = () => {
   }
 
   if (isEmpty(activities)) {
-    return <EmptyDataMessage message="There is no stats" />;
+    return <EmptyDataMessage message="No stats" />;
   }
 
   return (
