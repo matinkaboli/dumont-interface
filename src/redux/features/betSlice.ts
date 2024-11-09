@@ -11,6 +11,7 @@ interface Result {
   _id: string;
   result: {
     isPlayerWinner: boolean;
+    isFreeReveal: boolean;
     usdtAmount: string;
     montAmount: string;
   };

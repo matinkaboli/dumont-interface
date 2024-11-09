@@ -13,6 +13,7 @@ interface Activity {
   revelationHash?: string;
   result?: {
     isPlayerWinner: boolean;
+    isFreeReveal: boolean;
     montAmount: string;
     rate: string;
   };
