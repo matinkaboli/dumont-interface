@@ -19,10 +19,15 @@ const Stats = () => {
 
     return activities.reduce(
       (acc, activity) => {
+        if (activity?.result?.isFreeReveal) return acc;
+
+        const bet = Number(activity.betAmount) || 0;
+        const total = Number(activity.totalAmount) || 0;
+
         if (activity?.result?.isPlayerWinner) {
-          acc.wins += +activity.totalAmount - +activity.betAmount;
+          acc.wins += total - bet;
         } else {
-          acc.losses += +activity.betAmount;
+          acc.losses += bet;
         }
 
         return acc;
@@ -58,7 +63,7 @@ const Stats = () => {
           <span className="text-neutral-300 text-xs pl-1">(Profit and Loss)</span>
         </div>
         <div className="font-bold text-2xl text-white mt-2">
-          {isPnlPositive ? '+' : '-'}${formatAmount(pnl)}
+          {pnl !== 0 ? (isPnlPositive ? '+' : '-') : null}${formatAmount(pnl)}
         </div>
       </div>
 

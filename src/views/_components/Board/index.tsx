@@ -173,8 +173,10 @@ const Board = () => {
   }, [isConfirmed]);
 
   useEffect(() => {
-    if (guessedResult?.result.isPlayerWinner)
-      dispatch(showConfetti({ confettiProps: { key: guessedResult?._id } }));
+    const result = guessedResult?.result;
+    const isWinner = result?.isPlayerWinner && !result?.isFreeReveal;
+
+    if (isWinner) dispatch(showConfetti({ confettiProps: { key: guessedResult?._id } }));
   }, [guessedResult]);
 
   useEffect(() => {
