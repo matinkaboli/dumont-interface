@@ -34,3 +34,19 @@ body {
     @apply md:min-h-[366px] min-h-[333px]
 }
 
+:root {
+    /*--privy-color-background: '#2E2D36'!important;*/
+    /*--privy-color-background-2: '#2E2D36'!important;*/
+    /*--privy-color-foreground: 'your-custom-value';*/
+    /*--privy-color-foreground-2: 'your-custom-value';*/
+    /*--privy-color-foreground-3: 'your-custom-value';*/
+    /*--privy-color-foreground-4: 'your-custom-value';*/
+    /*--privy-color-foreground-accent: 'your-custom-value';*/
+    /*--privy-color-accent: 'your-custom-value';*/
+    /*--privy-color-accent-light: 'your-custom-value';*/
+    /*--privy-color-accent-dark: 'your-custom-value';*/
+    /*--privy-color-success: 'your-custom-value';*/
+    /*--privy-color-error: 'your-custom-value';*/
+    /*--privy-color-error-light: 'your-custom-value';*/
+}
+

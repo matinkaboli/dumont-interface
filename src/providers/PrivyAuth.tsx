@@ -13,10 +13,11 @@ export default function Privy({ children }: { children: ReactNode }) {
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
       config={{
         appearance: {
-          theme: 'dark',
-          accentColor: '#A23BEA',
-          logo: '/images/logo.svg',
+          theme: '#2E2D36',
+          accentColor: '#DAA7FE',
+          logo: '/images/text-logo.svg',
         },
+        loginMethods: ['email', 'wallet', 'google'],
         embeddedWallets: {
           createOnLogin: 'users-without-wallets',
         },
