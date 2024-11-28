@@ -1,32 +1,31 @@
 import Round from '@/views/Round';
-import { Metadata } from 'next';
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    metadataBase: new URL('https://acme.com'),
-    openGraph: {
-      title: 'Dumont',
-      description: 'Round ',
-      url: 'https://nextjs.org',
-      siteName: 'Next.js',
-      images: [
-        {
-          url: 'http://localhost:3000/api/og?title=Next.js', // Dynamic og route
-          width: 800,
-          height: 600,
-        },
-        {
-          url: 'http://localhost:3000/api/og?title=Next.js', // Dynamic og route
-          width: 1800,
-          height: 1600,
-          alt: 'My custom alt',
-        },
-      ],
-      locale: 'en_US',
-      type: 'website',
-    },
-  };
-}
+const website = 'https://app.dumont.gg';
+
+export const metadata = {
+  title: 'Ultimate Card Game Strategy Guide',
+  description:
+    'Master the art of card games with our expert guide. Learn strategies, rules, and tips to dominate any deck.',
+  openGraph: {
+    title: 'The Ultimate Guide to Card Game Mastery',
+    description:
+      'Dive into strategies, rules, and expert tips to become a card game champion. Perfect for players of all levels!',
+    type: 'article',
+    url: `${website}/rounds`,
+    images: [
+      {
+        url: `${website}/api/og?title=The Ultimate Guide to Card Game Mastery`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'The Ultimate Guide to Card Game Mastery',
+    description:
+      'Unlock pro-level skills in your favorite card games. Strategies, rules, and tips all in one guide!',
+    images: [`${website}/api/og?title=The Ultimate Guide to Card Game Mastery`],
+  },
+};
 
 export default function RoundPage() {
   return <Round />;

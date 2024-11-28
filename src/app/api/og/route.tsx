@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundImage: `url(http://localhost:3000/images/wavy.jpg)`,
+          backgroundImage: `url(https://app.dumont.gg/images/wavy.jpg)`,
           backgroundRepeat: 'no-repeat',
         }}
       >
