@@ -71,7 +71,6 @@ export const useNewRound = () => {
   const {
     data: receiptData,
     isSuccess: isConfirmed,
-    isError: isWaitGameError,
   } = useWaitForTransactionReceipt({
     hash: gameTx as `0x${string}`,
   });

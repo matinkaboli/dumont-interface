@@ -3,8 +3,9 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams, usePathname } from 'next/navigation';
-import { LinkedInOAuthWithMetadata, useLogin, usePrivy } from '@privy-io/react-auth';
-import { useAccount, useBalance, useConnect, useReadContract } from 'wagmi';
+import { usePrivy } from '@privy-io/react-auth';
+import { useAccount, useBalance, useReadContract } from 'wagmi';
+import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
 import { Button } from '@/components';
 import { AppDispatch } from '@/redux/store';
@@ -27,15 +28,9 @@ const ConnectWallet = () => {
   const params = useParams();
   const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
-  const { authenticated, ready, user } = usePrivy();
-  const { connect, connectors } = useConnect();
-
-  const addresses = user?.linkedAccounts.filter(
-    (account) => account.type === 'wallet',
-  ) as LinkedInOAuthWithMetadata[];
-  // @ts-ignore
-  const address = isEmpty(addresses) ? undefined : (addresses[0]?.address as `0x${string}`);
-
+  const { client } = useSmartWallets();
+  const { login, authenticated, ready } = usePrivy();
+  const address = client?.account?.address as `0x${string}`;
   const { details } = useTypedSelector((state) => state.config);
 
   const { isConnected, isConnecting } = useAccount();
@@ -46,14 +41,6 @@ const ConnectWallet = () => {
     query: {
       refetchInterval: 8000,
       enabled: !isEmpty(address),
-    },
-  });
-
-  const { login } = useLogin({
-    onComplete: (user, isNewUser, wasAlreadyAuthenticated, loginMethod) => {
-      if (loginMethod === 'email') {
-        connect({ connector: connectors[0] });
-      }
     },
   });
 
