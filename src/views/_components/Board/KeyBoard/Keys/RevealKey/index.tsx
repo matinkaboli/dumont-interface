@@ -1,21 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { useWaitForTransactionReceipt } from 'wagmi';
+import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
+import { encodeFunctionData } from 'viem';
 import clsx from 'clsx';
 
 import { swiperRef } from '@/components/Carousel';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { GameData, getGame } from '@/redux/features/gameSlice';
+import { getGame, GameData } from '@/redux/features/gameSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 import { MAX_GUESSABLE_CARDS } from '@/constants/static';
 import { usePolling } from '@/hooks/usePolling';
-
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
-import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 
 import KeyButton from '../KeyButton';
 import ConfirmReveal from './ConfirmReveal';
@@ -23,7 +22,6 @@ import RevealedCard from './RevealedCard';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-  // const [isLoading, setIsLoading] = useState(false);
   const { address } = useTypedSelector((state) => state.account.profile);
   const {
     data: game,
@@ -31,16 +29,12 @@ const RevealKey = ({ className }: { className?: string }) => {
     isExpired,
     guessedCardsCount,
   } = useTypedSelector((state) => state.game);
+  const { client } = useSmartWallets();
+  const [isRevealCardLoading, setIsRevealCardLoading] = useState(false);
+  const [revealCardTx, setRevealCardTx] = useState('');
 
-  const {
-    writeContract: writeRevealCard,
-    data: revealCardData,
-    isPending: isRevealCardLoading,
-    isError: isWriteRevealError,
-  } = useWriteContract();
-
-  const { isError: isWaitRevealError, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash: revealCardData,
+  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash: revealCardTx as `0x${string}`,
   });
 
   const isRevealLoading = usePolling(
@@ -72,61 +66,56 @@ const RevealKey = ({ className }: { className?: string }) => {
     }
   );
 
-  useEffect(() => {
-    if (isRevealCardLoading || isRevealLoading) {
-      dispatch(
-        openDialog({
-          dialogProps: { showCloseButton: false, disableEvents: true },
-          content: (
-            <AnimatedDialogContent key="loading">
-              <LoadingContent title="Waiting for the network" desc="This may take a few seconds" />
-            </AnimatedDialogContent>
-          ),
-        }),
-      );
-    }
-  }, [isRevealCardLoading, isRevealLoading]);
+  const onCloseDialog = () => {
+    dispatch(getGame(game!.id))
+      .unwrap()
+      .then(() => {
+        if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
+          // @ts-ignore
+          swiperRef?.current?.slideNext();
+        }
+      });
+  };
 
-  useEffect(() => {
-    if (isWriteRevealError || isWaitRevealError) onError();
-  }, [isWriteRevealError, isWaitRevealError]);
-
-  function onRequestFreeRevealCard() {
-    writeRevealCard?.({
-      address: game!.address,
-      abi: GAME_ABI,
-      functionName: 'requestFreeRevealCard',
-      args: [activeCardIndex - 1],
-    });
-  }
-
-  function onCloseDialog() {
+  const onRequestFreeRevealCard = async () => {
     dispatch(closeDialog());
-    if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
-      // @ts-ignore
-      swiperRef?.current?.slideNext();
+
+    setIsRevealCardLoading(true);
+    setRevealCardTx('');
+
+    if (!client) {
+      console.error('No smart account client found');
+      return;
     }
-  }
 
-  function onError() {
-    dispatch(
-      openDialog({
-        content: (
-          <AnimatedDialogContent key="error">
-            <ErrorContent title="Reveal was unsuccessful" onClick={onRequestFreeRevealCard} />
-          </AnimatedDialogContent>
-        ),
-      }),
-    );
-  }
+    try {
+      const tx = await client.sendTransaction({
+        account: client.account,
+        calls: [
+          {
+            to: game!.address,
+            data: encodeFunctionData({
+              abi: GAME_ABI,
+              functionName: 'requestFreeRevealCard',
+              args: [activeCardIndex - 1],
+            }),
+          },
+        ],
+      });
+      setRevealCardTx(tx);
+    } catch (error) {
+      console.error('Transaction failed:', error);
+    }
+    setIsRevealCardLoading(false);
+  };
 
-  function onReveal() {
+  const onReveal = () => {
     dispatch(
       openDialog({
         content: <ConfirmReveal onReveal={onRequestFreeRevealCard} />,
       }),
     );
-  }
+  };
 
   return (
     <KeyButton
@@ -139,7 +128,8 @@ const RevealKey = ({ className }: { className?: string }) => {
         game?.player.toLowerCase() !== address?.toLowerCase() ||
         game!.cards[activeCardIndex - 1]?.isFreeReveal ||
         game?.cards[activeCardIndex - 1]?.number !== -1 ||
-        +game!.freeRevealRequests === +game!.maxFreeReveals
+        +game!.freeRevealRequests === +game!.maxFreeReveals ||
+        isRevealCardLoading || isRevealLoading
       }
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>
