@@ -18,7 +18,7 @@ const CreateRound = ({
   desc = 'To start the game, you need to create a round',
 }: Props) => {
   const { onCreateRound, isCreateGameLoading, isApproveLoading } = useNewRound();
-  const { ready, authenticated } = usePrivy();
+  const { ready } = usePrivy();
 
   return (
     <div
