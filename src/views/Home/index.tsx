@@ -41,7 +41,7 @@ const Home = () => {
       });
   };
 
-  if (loading || (isConnected && isDecidingRedirect))
+  if (loading || (!isEmpty(address) && isDecidingRedirect))
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
