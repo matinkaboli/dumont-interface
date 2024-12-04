@@ -2,6 +2,7 @@ import clsx from 'clsx';
 
 import { Button } from '@/components';
 import { useNewRound } from '@/hooks/useNewRound';
+import { usePrivy } from '@privy-io/react-auth';
 
 import DemoCard from './DemoCard';
 
@@ -17,6 +18,7 @@ const CreateRound = ({
   desc = 'To start the game, you need to create a round',
 }: Props) => {
   const { onCreateRound, isCreateGameLoading, isApproveLoading } = useNewRound();
+  const { ready, authenticated } = usePrivy();
 
   return (
     <div
@@ -34,7 +36,7 @@ const CreateRound = ({
         radius="lg"
         onClick={onCreateRound}
         className="mt-4 mx-auto !font-bold md:w-auto w-full"
-        disabled={isCreateGameLoading || isApproveLoading}
+        disabled={isCreateGameLoading || isApproveLoading || !ready}
       >
         Create Round
       </Button>
