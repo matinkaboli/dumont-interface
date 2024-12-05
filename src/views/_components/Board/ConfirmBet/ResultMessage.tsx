@@ -21,25 +21,30 @@ const createMessage = (isWinner: boolean, totalAmount: string, montAmount: strin
   buttonText: isWinner ? 'Got it' : 'Try the next',
 });
 
-const ResultMessage = ({ onCloseDialog }: { onCloseDialog: () => void }) => {
-  const { guessedResult } = useTypedSelector((state) => state.bet);
+const ResultMessage = ({
+  onCloseDialog,
+  cardIndex,
+}: {
+  onCloseDialog: () => void;
+  cardIndex: number;
+}) => {
+  const { data } = useTypedSelector((state) => state.game);
 
-  if (!guessedResult) return null;
+  if (!data) return null;
 
-  const {
-    number,
-    totalAmount,
-    result: { isPlayerWinner, montAmount },
-  } = guessedResult;
-  const TOTALAmount = toFixedNumber(parseUnits(totalAmount, 6).toString(), 2);
-  const MONTAmount = toFixedNumber(parseUnits(montAmount, 18).toString(), 4);
+  const isPlayerWinner = data.cards[cardIndex].result!.isPlayerWinner;
+  const TOTALAmount = toFixedNumber(parseUnits(data.cards[cardIndex].totalAmount, 6).toString(), 2);
+  const MONTAmount = toFixedNumber(
+    parseUnits(data.cards[cardIndex].result!.montAmount, 18).toString(),
+    4,
+  );
 
   const message = createMessage(isPlayerWinner, TOTALAmount, MONTAmount);
 
   return (
     <>
       <Image
-        src={`/images/cards/${getCardInfo(number)}.png`}
+        src={`/images/cards/${getCardInfo(data.cards[cardIndex].number)}.png`}
         width={160}
         height={223}
         className="mx-auto"

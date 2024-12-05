@@ -7,8 +7,7 @@ import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { swiperRef } from '@/components/Carousel';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { postGuessedCard } from '@/redux/features/betSlice';
-import { Card, getGame } from '@/redux/features/gameSlice';
+import { Card, GameData, getGame } from '@/redux/features/gameSlice';
 import { showConfetti } from '@/redux/features/confettiSlice';
 import transformedRanks from '@/helpers/transformedRanks';
 import transformRanks from '@/helpers/transformedRanks';
@@ -89,7 +88,7 @@ export interface BetData {
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { guessedResult } = useTypedSelector((state) => state.bet);
+  const [isGuessResLoading, setIsGuessResLoading] = useState(false);
   const { address } = useTypedSelector((state) => state.account.profile);
   const {
     game,
@@ -149,8 +148,9 @@ const Board = () => {
   });
 
   useEffect(() => {
-    if (isGuessCardLoading || isApproveLoading || isWaitGuessCardLoading) {
-      let title = isGuessCardLoading ? 'Sign the transaction' : 'Waiting for the network';
+    if (isGuessCardLoading || isApproveLoading || isWaitGuessCardLoading || isGuessResLoading) {
+      let title =
+        isGuessCardLoading ? 'Sign the transaction' : 'Waiting for the network';
       let desc = isGuessCardLoading
         ? 'Sign this transaction in your wallet'
         : 'It will take a few seconds';
@@ -166,18 +166,68 @@ const Board = () => {
         }),
       );
     }
-  }, [isGuessCardLoading, isApproveLoading, isWaitGuessCardLoading]);
+  }, [isGuessCardLoading, isApproveLoading, isWaitGuessCardLoading, isGuessResLoading]);
 
   useEffect(() => {
-    if (isConfirmed) onGuessCardSuccess();
+    if (isConfirmed) {
+      let pollInterval: NodeJS.Timeout;
+      setIsGuessResLoading(true);
+
+      const onGuessCardSuccess = () => {
+        refetchAllowance();
+
+        dispatch(getGame(game!.id))
+          .unwrap()
+          .then((game: GameData) => {
+            if (game.cards[activeCardIndex - 1].number !== -1) {
+              setIsGuessResLoading(false);
+
+              dispatch(
+                openDialog({
+                  dialogProps: {
+                    onCloseButton: onCloseResultDialog,
+                    onClickOverlay: onCloseResultDialog,
+                  },
+                  content: (
+                    <AnimatedDialogContent key="result">
+                      <ResultMessage
+                        cardIndex={activeCardIndex - 1}
+                        onCloseDialog={onCloseResultDialog}
+                      />
+                    </AnimatedDialogContent>
+                  ),
+                }),
+              );
+
+              if (pollInterval) {
+                clearInterval(pollInterval);
+              }
+            }
+          });
+      };
+
+      onGuessCardSuccess(); // Initial fetch
+
+      pollInterval = setInterval(onGuessCardSuccess, 1000); // Set up polling if not yet revealed
+
+      return () => {
+        if (pollInterval) {
+          clearInterval(pollInterval);
+        }
+      };
+    }
   }, [isConfirmed]);
 
   useEffect(() => {
-    const result = guessedResult?.result;
-    const isWinner = result?.isPlayerWinner && !result?.isFreeReveal;
+    if(game) {
+      const currentCard = game.cards[activeCardIndex - 1];
+      const result = currentCard?.result;
 
-    if (isWinner) dispatch(showConfetti({ confettiProps: { key: guessedResult?._id } }));
-  }, [guessedResult]);
+      const isPlayerWinner = result?.isPlayerWinner && !currentCard.isFreeReveal;
+
+      if (isPlayerWinner) dispatch(showConfetti({ confettiProps: { key: currentCard.number } }));
+    }
+  }, [game]);
 
   useEffect(() => {
     if (isWriteGuessError || isWaitGuessError) onError();
@@ -203,51 +253,17 @@ const Board = () => {
   }
 
   function onCloseResultDialog() {
-    dispatch(getGame(game!.id))
-      .unwrap()
-      .then(() => {
-        reset();
-        dispatch(closeDialog());
-        if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
-          // @ts-ignore
-          swiperRef?.current?.slideNext();
-        }
-      });
+    reset();
+    dispatch(closeDialog());
+    if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
+      // @ts-ignore
+      swiperRef?.current?.slideNext();
+    }
   }
 
   function onCloseConfirmBet() {
     refetchAllowance();
     dispatch(closeDialog());
-  }
-
-  function onGuessCardSuccess() {
-    refetchAllowance();
-
-    dispatch(
-      postGuessedCard({
-        id: game!.id,
-        body: { index: activeCardIndex - 1 },
-      }),
-    )
-      .unwrap()
-      .then(() => {
-        dispatch(
-          openDialog({
-            dialogProps: {
-              onCloseButton: onCloseResultDialog,
-              onClickOverlay: onCloseResultDialog,
-            },
-            content: (
-              <AnimatedDialogContent key="result">
-                <ResultMessage onCloseDialog={onCloseResultDialog} />
-              </AnimatedDialogContent>
-            ),
-          }),
-        );
-      })
-      .catch(() => {
-        onError();
-      });
   }
 
   function onConfirmBet(data: BetData) {

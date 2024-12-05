@@ -12,6 +12,7 @@ interface Result {
 
 export interface Card {
   number: number;
+  totalAmount: string;
   hash: string;
   isFreeReveal: boolean;
   guessedNumbers: any[];
