@@ -50,19 +50,6 @@ interface State {
   isRefetching: boolean;
 }
 
-export const postGame = createAsyncThunk<GameData, Record<string, any>>(
-  'api/postGame',
-  async (requestData: any, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('games', requestData);
-      return response.data.result;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      return rejectWithValue(axiosError.message);
-    }
-  },
-);
-
 export const getGame = createAsyncThunk<GameData, string>(
   'api/getGame',
   async (id: string, { rejectWithValue }) => {
@@ -104,27 +91,14 @@ const gameSlice = createSlice({
     setGuessedCardsCount(state, action: PayloadAction<number>) {
       state.guessedCardsCount = action.payload;
     },
+    setIsGameCreated(state, action: PayloadAction<boolean>) {
+      state.isCreated = action.payload;
+    },
     resetGame() {
       return initialState;
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(postGame.pending, (state) => {
-        state.loading = true;
-        state.isCreated = false;
-        state.error = null;
-      })
-      .addCase(postGame.fulfilled, (state, action) => {
-        state.loading = false;
-        state.isCreated = true;
-        state.data = action.payload;
-      })
-      .addCase(postGame.rejected, (state, action) => {
-        state.loading = false;
-        state.isCreated = false;
-        state.error = action.payload as string;
-      });
     builder
       .addCase(getGame.pending, (state) => {
         if (state.data) {
@@ -153,5 +127,6 @@ export const {
   resetGame,
   setAllCardsGuessed,
   setGuessedCardsCount,
+  setIsGameCreated,
 } = gameSlice.actions;
 export default gameSlice.reducer;

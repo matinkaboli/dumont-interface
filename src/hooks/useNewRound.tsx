@@ -6,7 +6,7 @@ import BN from 'bignumber.js';
 
 import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
-import { expireGame, postGame } from '@/redux/features/gameSlice';
+import { expireGame, setIsGameCreated } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { useApproval } from '@/hooks/useApproval';
 import extractGameId from '@/helpers/extractGameId';
@@ -102,7 +102,8 @@ export const useNewRound = () => {
     if (isConfirmed && receiptData) {
       const id = extractGameId(receiptData.logs);
       setRedirectId(id);
-      onCreateGameSuccess(id);
+      onCreateGameSuccess();
+      dispatch(setIsGameCreated(true));
     }
   }, [isConfirmed, receiptData]);
 
@@ -125,16 +126,11 @@ export const useNewRound = () => {
     );
   }
 
-  function onCreateGameSuccess(id: number) {
+  function onCreateGameSuccess() {
     setActiveIndex(2);
 
     const timer = setTimeout(() => {
-      dispatch(postGame({ id }))
-        .unwrap()
-        .then(() => {
-          setActiveIndex(3);
-        })
-        .catch(() => onError('Game creation was unsuccessful', onCreateGame));
+      setActiveIndex(3);
     }, 5000);
 
     return () => clearTimeout(timer);

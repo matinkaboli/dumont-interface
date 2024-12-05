@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { redirect } from 'next/navigation';
+import { usePrivy } from '@privy-io/react-auth';
 
 import { Loading } from '@/components';
 import { getPlayerGames } from '@/redux/features/accountSlice';
@@ -19,10 +20,11 @@ const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     loading,
-    profile: { isConnected, address },
+    profile: { address },
   } = useTypedSelector((state) => state.account);
   const [activeRoundId, setActiveRoundId] = useState<string>('');
   const [isDecidingRedirect, setIsDecidingRedirect] = useState(true);
+  const { ready } = usePrivy();
 
   useEffect(() => {
     if (address) handlePlayerGames(address);
@@ -41,14 +43,14 @@ const Home = () => {
       });
   };
 
-  if (loading || (!isEmpty(address) && isDecidingRedirect))
+  if (loading || (!isEmpty(address) && isDecidingRedirect) || !ready)
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
       </div>
     );
 
-  if (isConnected) {
+  if (!isEmpty(address)) {
     if (activeRoundId) redirect(`${Routes.ROUND}/${activeRoundId}`);
 
     if (!activeRoundId) redirect(Routes.START);

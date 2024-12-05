@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
@@ -31,32 +31,24 @@ const Round = () => {
     isRefetching,
     areAllCardsGuessed,
   } = useTypedSelector((state) => state.game);
+  const [needsShuffling, setNeedsShuffling] = useState(false)
 
   useEffect(() => {
-    dispatch(getGame(id as string))
-      .unwrap()
-      .then(() => {
-        if (isCreated) {
-          toast(
-            <ToastContent
-              variant="neutral"
-              title="Good luck!"
-              description="You have successfully created the round."
-            />,
-            { position: 'bottom-right', toastId: 'welcome' },
-          );
-        }
-      });
+    handleGameInitialization();
   }, [id]);
 
   useEffect(() => {
-    if (isExpired) {
-      toast(
-        <ToastContent variant="neutral" title="Expired!" description="Your game has expired." />,
-        { position: 'bottom-right', toastId: 'expired' },
-      );
-    }
-  }, [isExpired]);
+    const interval = setInterval(() => {
+      if (!isEmpty(game)) {
+        clearInterval(interval);
+        return;
+      }
+
+      handleGameInitialization();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [id, game]);
 
   useEffect(() => {
     if (!game) return;
@@ -70,6 +62,34 @@ const Round = () => {
     }
   }, [game]);
 
+  useEffect(() => {
+    if (isExpired) {
+      toast(
+        <ToastContent variant="neutral" title="Expired!" description="Your game has expired." />,
+        { position: 'bottom-right', toastId: 'expired' },
+      );
+    }
+  }, [isExpired]);
+
+  const handleGameInitialization = () => {
+    setNeedsShuffling(false);
+    dispatch(getGame(id as string))
+      .unwrap()
+      .then(() => {
+        if (isCreated) {
+          setNeedsShuffling(true);
+          toast(
+            <ToastContent
+              variant="neutral"
+              title="Good luck!"
+              description="You have successfully created the round."
+            />,
+            { position: 'bottom-right', toastId: 'welcome' },
+          );
+        }
+      });
+  };
+
   if (
     (isEmpty(game) && isConnecting) ||
     (loading && !isRefetching && !areAllCardsGuessed && !isExpired)
@@ -81,12 +101,8 @@ const Round = () => {
     );
   }
 
-  if (isEmpty(game) && !isCreated) {
-    return <div className="text-white">There is no game with this id</div>;
-  }
-
   return (
-    <>
+    <div key={isRefetching ? 'refetch' : 'fetch'}>
       {!isEmpty(game) && !areAllCardsGuessed && (
         <div className="px-1.5">
           <ProgressbarTimer
@@ -99,16 +115,16 @@ const Round = () => {
       <div className="flex flex-col gap-4">
         <>
           {isEmpty(game) ? (
-            <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height"></div>
+            <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height" />
           ) : (
-            <CardDeck needsShuffling={isCreated} />
+            <CardDeck needsShuffling={needsShuffling} />
           )}
         </>
         <Board />
         <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
         <Toast />
       </div>
-    </>
+    </div>
   );
 };
 
