@@ -1,12 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import clsx from 'clsx';
 
 import { swiperRef } from '@/components/Carousel';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { getGame } from '@/redux/features/gameSlice';
-import { postGuessedCard } from '@/redux/features/betSlice';
+import { GameData, getGame } from '@/redux/features/gameSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
@@ -23,6 +22,7 @@ import RevealedCard from './RevealedCard';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [isLoading, setIsLoading] = useState(false);
   const { address } = useTypedSelector((state) => state.account.profile);
   const {
     data: game,
@@ -43,7 +43,7 @@ const RevealKey = ({ className }: { className?: string }) => {
   });
 
   useEffect(() => {
-    if (isRevealCardLoading) {
+    if (isRevealCardLoading || isLoading) {
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
@@ -55,10 +55,51 @@ const RevealKey = ({ className }: { className?: string }) => {
         }),
       );
     }
-  }, [isRevealCardLoading]);
+  }, [isRevealCardLoading, isLoading]);
 
   useEffect(() => {
-    if (isConfirmed) onRevealCardSuccess();
+    if (isConfirmed) {
+      let pollInterval: NodeJS.Timeout;
+      setIsLoading(true);
+
+      const onRevealCardSuccess = () => {
+        dispatch(getGame(game!.id))
+          .unwrap()
+          .then((game: GameData) => {
+            if (game.cards[activeCardIndex - 1].number !== -1) {
+              setIsLoading(false);
+
+              dispatch(
+                openDialog({
+                  dialogProps: {
+                    onCloseButton: onCloseDialog,
+                    onClickOverlay: onCloseDialog,
+                  },
+                  content: (
+                    <AnimatedDialogContent key="reveal">
+                      <RevealedCard cardIndex={activeCardIndex - 1} onCloseDialog={onCloseDialog} />
+                    </AnimatedDialogContent>
+                  ),
+                }),
+              );
+
+              if (pollInterval) {
+                clearInterval(pollInterval);
+              }
+            }
+          });
+      };
+
+      onRevealCardSuccess(); // Initial fetch
+
+      pollInterval = setInterval(onRevealCardSuccess, 1000); // Set up polling if not yet revealed
+
+      return () => {
+        if (pollInterval) {
+          clearInterval(pollInterval);
+        }
+      };
+    }
   }, [isConfirmed]);
 
   useEffect(() => {
@@ -75,43 +116,11 @@ const RevealKey = ({ className }: { className?: string }) => {
   }
 
   function onCloseDialog() {
-    dispatch(getGame(game!.id))
-      .unwrap()
-      .then(() => {
-        dispatch(closeDialog());
-        if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
-          // @ts-ignore
-          swiperRef?.current?.slideNext();
-        }
-      });
-  }
-
-  function onRevealCardSuccess() {
-    dispatch(
-      postGuessedCard({
-        id: game!.id,
-        body: { index: activeCardIndex - 1 },
-      }),
-    )
-      .unwrap()
-      .then(() => {
-        dispatch(
-          openDialog({
-            dialogProps: {
-              onCloseButton: onCloseDialog,
-              onClickOverlay: onCloseDialog,
-            },
-            content: (
-              <AnimatedDialogContent key="reveal">
-                <RevealedCard onCloseDialog={onCloseDialog} />
-              </AnimatedDialogContent>
-            ),
-          }),
-        );
-      })
-      .catch(() => {
-        onError();
-      });
+    dispatch(closeDialog());
+    if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
+      // @ts-ignore
+      swiperRef?.current?.slideNext();
+    }
   }
 
   function onError() {

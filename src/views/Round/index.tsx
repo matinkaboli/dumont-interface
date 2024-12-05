@@ -31,7 +31,7 @@ const Round = () => {
     isRefetching,
     areAllCardsGuessed,
   } = useTypedSelector((state) => state.game);
-  const [needsShuffling, setNeedsShuffling] = useState(false)
+  const [needsShuffling, setNeedsShuffling] = useState(false);
 
   useEffect(() => {
     handleGameInitialization();
@@ -102,9 +102,9 @@ const Round = () => {
   }
 
   return (
-    <div key={isRefetching ? 'refetch' : 'fetch'}>
+    <>
       {!isEmpty(game) && !areAllCardsGuessed && (
-        <div className="px-1.5">
+        <div className="px-1.5" key={isRefetching ? 'refetch' : 'fetch'}>
           <ProgressbarTimer
             duration={+game!.duration}
             initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}
@@ -113,18 +113,16 @@ const Round = () => {
       )}
 
       <div className="flex flex-col gap-4">
-        <>
-          {isEmpty(game) ? (
-            <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height" />
-          ) : (
-            <CardDeck needsShuffling={needsShuffling} />
-          )}
-        </>
+        {isEmpty(game) ? (
+          <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height" />
+        ) : (
+          <CardDeck needsShuffling={needsShuffling} />
+        )}
         <Board />
         <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
         <Toast />
       </div>
-    </div>
+    </>
   );
 };
 
