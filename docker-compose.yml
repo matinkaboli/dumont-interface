@@ -3,6 +3,6 @@ services:
   fluxity-interface:
     image: dumont-interface:latest
     pull_policy: never
-    restart: on-failure
+    restart: unless-stopped
     ports:
       - '3002:3002'
