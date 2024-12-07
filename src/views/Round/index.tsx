@@ -123,7 +123,7 @@ const Round = () => {
           <CardDeck needsShuffling={needsShuffling} />
         )}
         <Board />
-        <ActivityTab className="md:mt-16 mt-14" key={isRefetching ? 'refetch' : 'tab'} />
+        <ActivityTab className="md:mt-16 mt-14" />
         <Toast />
       </div>
     </>
