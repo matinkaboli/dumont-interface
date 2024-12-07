@@ -83,7 +83,7 @@ export const useNewRound = () => {
     if (activeIndex === 3) {
       const timer = setTimeout(() => {
         setActiveIndex(4);
-      }, 2000);
+      }, 500);
 
       return () => clearTimeout(timer);
     } else if (activeIndex === 4) {
@@ -92,7 +92,7 @@ export const useNewRound = () => {
         dispatch(expireGame(false));
         setActiveIndex(0);
         router.push(`${Routes.ROUND}/${redirectId}`);
-      }, 1000);
+      }, 500);
 
       return () => clearTimeout(redirectTimer);
     }
@@ -131,7 +131,7 @@ export const useNewRound = () => {
 
     const timer = setTimeout(() => {
       setActiveIndex(3);
-    }, 5000);
+    }, 500);
 
     return () => clearTimeout(timer);
   }

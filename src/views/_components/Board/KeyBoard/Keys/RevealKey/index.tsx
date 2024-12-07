@@ -92,7 +92,7 @@ const RevealKey = ({ className }: { className?: string }) => {
 
       onRevealCardSuccess(); // Initial fetch
 
-      pollInterval = setInterval(onRevealCardSuccess, 1000); // Set up polling if not yet revealed
+      pollInterval = setInterval(onRevealCardSuccess, 300); // Set up polling if not yet revealed
 
       return () => {
         if (pollInterval) {

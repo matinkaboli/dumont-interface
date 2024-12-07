@@ -45,7 +45,7 @@ const Round = () => {
       }
 
       handleGameInitialization();
-    }, 1000);
+    }, 500);
 
     return () => clearInterval(interval);
   }, [id, game]);

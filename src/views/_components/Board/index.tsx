@@ -208,7 +208,7 @@ const Board = () => {
 
       onGuessCardSuccess(); // Initial fetch
 
-      pollInterval = setInterval(onGuessCardSuccess, 1000); // Set up polling if not yet revealed
+      pollInterval = setInterval(onGuessCardSuccess, 300); // Set up polling if not yet revealed
 
       return () => {
         if (pollInterval) {
