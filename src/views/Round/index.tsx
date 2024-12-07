@@ -39,7 +39,7 @@ const Round = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isEmpty(game)) {
+      if (!isEmpty(game) || !isCreated) {
         clearInterval(interval);
         return;
       }
@@ -99,6 +99,10 @@ const Round = () => {
         <Loading />
       </div>
     );
+  }
+
+  if(isEmpty(game) && !isCreated) {
+    return <div className="text-white text-center mx-auto py-20">There is no game with this id</div>;
   }
 
   return (
