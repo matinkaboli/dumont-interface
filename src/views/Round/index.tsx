@@ -62,15 +62,6 @@ const Round = () => {
     }
   }, [game]);
 
-  useEffect(() => {
-    if (isExpired) {
-      toast(
-        <ToastContent variant="neutral" title="Expired!" description="Your game has expired." />,
-        { position: 'bottom-right', toastId: 'expired' },
-      );
-    }
-  }, [isExpired]);
-
   const handleGameInitialization = () => {
     setNeedsShuffling(false);
     dispatch(getGame(id as string))
@@ -101,8 +92,10 @@ const Round = () => {
     );
   }
 
-  if(isEmpty(game) && !isCreated) {
-    return <div className="text-white text-center mx-auto py-20">There is no game with this id</div>;
+  if (isEmpty(game) && !isCreated) {
+    return (
+      <div className="text-white text-center mx-auto py-20">There is no game with this id</div>
+    );
   }
 
   return (

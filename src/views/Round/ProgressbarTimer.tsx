@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 import clsx from 'clsx';
 
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
+import { ToastContent, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { expireGame } from '@/redux/features/gameSlice';
 import formatDurationFromSeconds from '@/helpers/formatDurationFromSeconds';
@@ -25,6 +26,10 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
     if (remainingTime <= -1) {
       clearInterval(timer);
       dispatch(expireGame(true));
+      toast(
+        <ToastContent variant="neutral" title="Expired!" description="Your game has expired." />,
+        { position: 'bottom-right', toastId: 'expired' },
+      );
     }
 
     return () => clearInterval(timer);
