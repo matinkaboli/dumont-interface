@@ -19,6 +19,7 @@ import { useApproval } from '@/hooks/useApproval';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 import { MAX_GUESSABLE_CARDS, TOTAL_CARDS_LENGTH } from '@/constants/static';
+import { usePolling } from '@/hooks/usePolling';
 
 import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
@@ -88,7 +89,7 @@ export interface BetData {
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [isGuessResLoading, setIsGuessResLoading] = useState(false);
+  // const [isGuessResLoading, setIsGuessResLoading] = useState(false);
   const { address } = useTypedSelector((state) => state.account.profile);
   const {
     game,
@@ -147,8 +148,39 @@ const Board = () => {
     hash: guessCardData,
   });
 
+  const isGuessResultLoading = usePolling(
+    isConfirmed,
+    () => dispatch(getGame(game!.id)).unwrap(),
+    (game: GameData) => {
+      const cardRevealed = game.cards[activeCardIndex - 1].number !== -1;
+
+      if (cardRevealed) {
+        refetchAllowance();
+
+        dispatch(
+          openDialog({
+            dialogProps: {
+              onCloseButton: onCloseResultDialog,
+              onClickOverlay: onCloseResultDialog,
+            },
+            content: (
+              <AnimatedDialogContent key="result">
+                <ResultMessage
+                  cardIndex={activeCardIndex - 1}
+                  onCloseDialog={onCloseResultDialog}
+                />
+              </AnimatedDialogContent>
+            ),
+          })
+        );
+      }
+
+      return cardRevealed;
+    }
+  );
+
   useEffect(() => {
-    if (isGuessCardLoading || isApproveLoading || isWaitGuessCardLoading || isGuessResLoading) {
+    if (isGuessCardLoading || isApproveLoading || isWaitGuessCardLoading || isGuessResultLoading) {
       let title =
         isGuessCardLoading ? 'Sign the transaction' : 'Waiting for the network';
       let desc = isGuessCardLoading
@@ -166,57 +198,7 @@ const Board = () => {
         }),
       );
     }
-  }, [isGuessCardLoading, isApproveLoading, isWaitGuessCardLoading, isGuessResLoading]);
-
-  useEffect(() => {
-    if (isConfirmed) {
-      let pollInterval: NodeJS.Timeout;
-      setIsGuessResLoading(true);
-
-      const onGuessCardSuccess = () => {
-        refetchAllowance();
-
-        dispatch(getGame(game!.id))
-          .unwrap()
-          .then((game: GameData) => {
-            if (game.cards[activeCardIndex - 1].number !== -1) {
-              setIsGuessResLoading(false);
-
-              dispatch(
-                openDialog({
-                  dialogProps: {
-                    onCloseButton: onCloseResultDialog,
-                    onClickOverlay: onCloseResultDialog,
-                  },
-                  content: (
-                    <AnimatedDialogContent key="result">
-                      <ResultMessage
-                        cardIndex={activeCardIndex - 1}
-                        onCloseDialog={onCloseResultDialog}
-                      />
-                    </AnimatedDialogContent>
-                  ),
-                }),
-              );
-
-              if (pollInterval) {
-                clearInterval(pollInterval);
-              }
-            }
-          });
-      };
-
-      onGuessCardSuccess(); // Initial fetch
-
-      pollInterval = setInterval(onGuessCardSuccess, 300); // Set up polling if not yet revealed
-
-      return () => {
-        if (pollInterval) {
-          clearInterval(pollInterval);
-        }
-      };
-    }
-  }, [isConfirmed]);
+  }, [isGuessCardLoading, isApproveLoading, isWaitGuessCardLoading, isGuessResultLoading]);
 
   useEffect(() => {
     if(game) {

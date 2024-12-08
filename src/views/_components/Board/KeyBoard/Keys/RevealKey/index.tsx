@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import clsx from 'clsx';
@@ -11,6 +11,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 import { MAX_GUESSABLE_CARDS } from '@/constants/static';
+import { usePolling } from '@/hooks/usePolling';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -22,7 +23,7 @@ import RevealedCard from './RevealedCard';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const { address } = useTypedSelector((state) => state.account.profile);
   const {
     data: game,
@@ -42,8 +43,37 @@ const RevealKey = ({ className }: { className?: string }) => {
     hash: revealCardData,
   });
 
+  const isRevealLoading = usePolling(
+    isConfirmed,
+    () => dispatch(getGame(game!.id)).unwrap(),
+    (game: GameData) => {
+      const cardRevealed = game.cards[activeCardIndex - 1].number !== -1;
+
+      if (cardRevealed) {
+        dispatch(
+          openDialog({
+            dialogProps: {
+              onCloseButton: onCloseDialog,
+              onClickOverlay: onCloseDialog,
+            },
+            content: (
+              <AnimatedDialogContent key="reveal">
+                <RevealedCard
+                  cardIndex={activeCardIndex - 1}
+                  onCloseDialog={onCloseDialog}
+                />
+              </AnimatedDialogContent>
+            ),
+          })
+        );
+      }
+
+      return cardRevealed;
+    }
+  );
+
   useEffect(() => {
-    if (isRevealCardLoading || isLoading) {
+    if (isRevealCardLoading || isRevealLoading) {
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
@@ -55,52 +85,7 @@ const RevealKey = ({ className }: { className?: string }) => {
         }),
       );
     }
-  }, [isRevealCardLoading, isLoading]);
-
-  useEffect(() => {
-    if (isConfirmed) {
-      let pollInterval: NodeJS.Timeout;
-      setIsLoading(true);
-
-      const onRevealCardSuccess = () => {
-        dispatch(getGame(game!.id))
-          .unwrap()
-          .then((game: GameData) => {
-            if (game.cards[activeCardIndex - 1].number !== -1) {
-              setIsLoading(false);
-
-              dispatch(
-                openDialog({
-                  dialogProps: {
-                    onCloseButton: onCloseDialog,
-                    onClickOverlay: onCloseDialog,
-                  },
-                  content: (
-                    <AnimatedDialogContent key="reveal">
-                      <RevealedCard cardIndex={activeCardIndex - 1} onCloseDialog={onCloseDialog} />
-                    </AnimatedDialogContent>
-                  ),
-                }),
-              );
-
-              if (pollInterval) {
-                clearInterval(pollInterval);
-              }
-            }
-          });
-      };
-
-      onRevealCardSuccess(); // Initial fetch
-
-      pollInterval = setInterval(onRevealCardSuccess, 300); // Set up polling if not yet revealed
-
-      return () => {
-        if (pollInterval) {
-          clearInterval(pollInterval);
-        }
-      };
-    }
-  }, [isConfirmed]);
+  }, [isRevealCardLoading, isRevealLoading]);
 
   useEffect(() => {
     if (isWriteRevealError || isWaitRevealError) onError();
