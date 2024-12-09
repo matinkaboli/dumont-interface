@@ -33,7 +33,7 @@ const ConnectWallet = () => {
     (account) => account.type === 'wallet',
   ) as LinkedInOAuthWithMetadata[];
   // @ts-ignore
-  const address = isEmpty(addresses) ? DEFAULT_ADDRESS : (addresses[0]?.address as `0x${string}`);
+  const address = isEmpty(addresses) ? undefined : (addresses[0]?.address as `0x${string}`);
 
   const { details } = useTypedSelector((state) => state.config);
 
