@@ -18,7 +18,6 @@ import VAULT_ABI from '@/abis/VAULT_ABI.json';
 import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
-import { DEFAULT_ADDRESS } from '@/constants/static';
 
 import RewardButton from './RewardButton';
 import AirdropButton from './AirdropButton';
