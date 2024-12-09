@@ -39,7 +39,7 @@ const Round = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isEmpty(game) && +game!.id === +id) {
+      if ((!isEmpty(game) && +game!.id === +id) || (isEmpty(game) && !isCreated)) {
         clearInterval(interval);
         return;
       }
@@ -84,7 +84,7 @@ const Round = () => {
   if (
     (isEmpty(game) && isConnecting) ||
     (loading && !isRefetching && !areAllCardsGuessed && !isExpired) ||
-    (!isEmpty(game) && (+game!.id !== +id))
+    (!isEmpty(game) && +game!.id !== +id)
   ) {
     return (
       <div className="min-h-[50vh] flex-center">
