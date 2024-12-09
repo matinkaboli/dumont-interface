@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams, usePathname } from 'next/navigation';
 import { useAccount, useBalance, useReadContract } from 'wagmi';
-import { usePrivy } from '@privy-io/react-auth';
+import { LinkedInOAuthWithMetadata, usePrivy } from '@privy-io/react-auth';
 
 import { Button } from '@/components';
 import { AppDispatch } from '@/redux/store';
@@ -18,6 +18,7 @@ import VAULT_ABI from '@/abis/VAULT_ABI.json';
 import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
+import { DEFAULT_ADDRESS } from '@/constants/static';
 
 import RewardButton from './RewardButton';
 import AirdropButton from './AirdropButton';
@@ -28,8 +29,12 @@ const ConnectWallet = () => {
   const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
   const { login, authenticated, ready, user } = usePrivy();
+  const addresses = user?.linkedAccounts.filter(
+    (account) => account.type === 'wallet',
+  ) as LinkedInOAuthWithMetadata[];
   // @ts-ignore
-  const address = user?.linkedAccounts[0]?.address as `0x${string}`;
+  const address = isEmpty(addresses) ? DEFAULT_ADDRESS : (addresses[0]?.address as `0x${string}`);
+
   const { details } = useTypedSelector((state) => state.config);
 
   const { isConnected, isConnecting } = useAccount();
