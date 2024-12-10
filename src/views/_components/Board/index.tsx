@@ -19,7 +19,7 @@ import formatDecimal from '@/helpers/formatDecimal';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
-import { DEFAULT_APPROVE_VALUE, TOTAL_CARDS_LENGTH, MAX_GUESSABLE_CARDS } from '@/constants/static';
+import { TOTAL_CARDS_LENGTH, MAX_GUESSABLE_CARDS } from '@/constants/static';
 import { usePolling } from '@/hooks/usePolling';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
@@ -27,6 +27,7 @@ import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ResultMessage from './ConfirmBet/ResultMessage';
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
+import { useHidePrivyError } from '@/hooks/useHidePrivyError';
 
 const calculateTotalOdds = (
   keys: string[],
@@ -100,6 +101,8 @@ const Board = () => {
     validCardNumbers,
     cardOccurrences,
   } = useCardData();
+
+  useHidePrivyError(isGuessCardLoading);
 
   const {
     control,
@@ -184,8 +187,6 @@ const Board = () => {
     }
 
     try {
-      const approveValue = formatUnits(DEFAULT_APPROVE_VALUE, 6).toString();
-
       const tx = await client.sendTransaction({
         account: client.account,
         calls: [
@@ -194,7 +195,7 @@ const Board = () => {
             data: encodeFunctionData({
               abi: ERC20_ABI,
               functionName: 'approve',
-              args: [game?.address, approveValue],
+              args: [game?.address, amount.toString()],
             }),
           },
           {
@@ -219,7 +220,7 @@ const Board = () => {
     if (!data.amount) return;
 
     onGuessCard(data);
-  }
+  };
 
   function onCloseResultDialog() {
     reset();

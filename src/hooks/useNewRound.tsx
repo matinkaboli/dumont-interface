@@ -13,6 +13,7 @@ import Routes from '@/constants/routes';
 import { DEFAULT_APPROVE_VALUE } from '@/constants/static';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
+import { useHidePrivyError } from './useHidePrivyError';
 import { setIsGameCreated } from '@/redux/features/gameSlice';
 
 export const useNewRound = () => {
@@ -24,6 +25,8 @@ export const useNewRound = () => {
   const [gameTx, setGameTx] = useState('');
   const { details } = useTypedSelector((state) => state.config);
   const { referralAddress } = useTypedSelector((state) => state.referral);
+
+  useHidePrivyError(isCreateGameLoading);
 
   const onCreateRound = async () => {
     setIsCreateGameLoading(true);
@@ -68,10 +71,7 @@ export const useNewRound = () => {
     setIsCreateGameLoading(false);
   };
 
-  const {
-    data: receiptData,
-    isSuccess: isConfirmed,
-  } = useWaitForTransactionReceipt({
+  const { data: receiptData, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: gameTx as `0x${string}`,
   });
 
@@ -91,4 +91,3 @@ export const useNewRound = () => {
     errorMessageGame,
   };
 };
-
