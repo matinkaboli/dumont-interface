@@ -1,6 +1,5 @@
 import { useBalance } from 'wagmi';
 import Image from 'next/image';
-import ethers from 'ethers';
 
 import humanizeAmount from '@/helpers/humanizeAmount';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
