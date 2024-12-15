@@ -9,9 +9,13 @@ import isEmpty from '@/helpers/isEmpty';
 import InputSection from './InputSection';
 
 const inputVariants = cva(
-  'px-2 bg-white border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100',
+  'px-2 border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100 placeholder:text-neutral-400 focus:border-neutral-800',
   {
     variants: {
+      variant: {
+        primary: 'bg-white border-neutral-300 text-neutral-800',
+        secondary: 'bg-neutral-600 border-neutral-550 text-neutral-50',
+      },
       size: {
         sm: 'h-10 text-sm',
         md: 'h-12 text-base',
@@ -19,6 +23,7 @@ const inputVariants = cva(
     },
     defaultVariants: {
       size: 'md',
+      variant: 'primary',
     },
   },
 );
@@ -62,12 +67,13 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
       disabled,
       description,
       name,
+      variant,
       errors = {},
       ...props
     },
     ref,
   ) => {
-    const inputClassName = inputVariants({ size, className });
+    const inputClassName = inputVariants({ size, className, variant });
 
     return (
       <div>
@@ -78,6 +84,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
             'relative',
             isEmpty(errors) ? '[&_.path]:fill-neutral-800' : '[&_.path]:fill-error-500',
             disabled && '[&_.path]:opacity-50',
+            variant,
           )}
         >
           <InputSection
@@ -91,9 +98,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
             className={clsx(
               leftSection ? 'pl-11' : 'pl-3',
               rightSection ? 'pr-11' : 'pr-3',
-              isEmpty(errors)
-                ? 'border-neutral-300 text-neutral-800 focus:border-neutral-800 placeholder:text-neutral-400'
-                : 'border-error-500 text-error-500 placeholder:text-error-500',
+              !isEmpty(errors) && '!border-error-500 !text-error-500 !placeholder:text-error-500',
               inputClassName,
             )}
             disabled={disabled}
