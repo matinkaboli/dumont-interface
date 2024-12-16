@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { useDisconnect } from 'wagmi';
 import Image from 'next/image';
@@ -9,8 +9,8 @@ import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import links from '@/constants/links';
 
-import CopyBox from '../Profile/CopyBox';
-import BalanceList from '../Profile/BalanceList';
+import CopyBox from '../CopyBox';
+import BalanceList from '../BalanceList';
 
 interface Props {
   onCloseDialog: () => void;
@@ -18,7 +18,11 @@ interface Props {
   setProcess: Dispatch<SetStateAction<'send' | 'receive'>>;
 }
 
-const ProfileDetail = ({ onCloseDialog, onNextSlide, setProcess }: Props) => {
+const ProfileDetail = ({
+  onCloseDialog,
+  onNextSlide,
+  setProcess,
+}: Props) => {
   const { address } = useTypedSelector((state) => state.account.profile);
   const { data: referralData } = useAxiosGet<{ id: number }>(`players/${address}/referrals`);
   const referralLink = referralData ? `${links.APP}/i/${referralData?.id}` : '';
@@ -44,7 +48,7 @@ const ProfileDetail = ({ onCloseDialog, onNextSlide, setProcess }: Props) => {
   };
 
   return (
-    <>
+    <div>
       <CopyBox
         className="w-full mt-8"
         copyText={address || ''}
@@ -86,7 +90,7 @@ const ProfileDetail = ({ onCloseDialog, onNextSlide, setProcess }: Props) => {
       >
         Disconnect
       </Button>
-    </>
+    </div>
   );
 };
 

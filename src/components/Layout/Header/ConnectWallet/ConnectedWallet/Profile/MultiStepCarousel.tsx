@@ -14,13 +14,13 @@ const MultiStepCarousel = ({
     <AnimatePresence initial={false} mode="wait">
       <motion.div
         key={currentIndex}
-        initial={{ opacity: 0, x: direction === 'next' ? 20 : -20  }}
+        initial={{ opacity: 0, x: direction === 'next' ? 15 : -15  }}
         animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: direction === 'next' ? -20 : 20  }}
+        exit={{ opacity: 0, x: direction === 'next' ? -15 : 15  }}
         transition={{
           x: {
             type: 'tween',
-            duration: 0.3,
+            duration: 0.2,
           },
           opacity: {
             duration: 0.3,

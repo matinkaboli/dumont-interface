@@ -5,14 +5,15 @@ import { Button, Icon, QRCode } from '@/components';
 import truncateString from '@/helpers/truncateString';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import CopyBox from '../Profile/CopyBox';
+import CopyBox from '../CopyBox';
 
 const Receive = () => {
   const { address } = useTypedSelector((state) => state.account.profile);
 
   return (
-    <>
+    <div>
       <QRCode value={address || ''} size={192} className="mx-auto mt-8" />
+
       <CopyBox
         className="mx-auto mt-6"
         copyText={address || ''}
@@ -35,7 +36,7 @@ const Receive = () => {
           </Link>
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

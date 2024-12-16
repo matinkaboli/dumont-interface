@@ -24,7 +24,7 @@ const tokens = [
   },
 ];
 
-const Send = () => {
+const Send = ({onNextSlide}: {onNextSlide : () => void}) => {
   const { balance } = useTypedSelector((state) => state.account);
   const {
     control,
@@ -40,6 +40,7 @@ const Send = () => {
 
   function onSubmit(data: FormData) {
     console.log(data);
+    onNextSlide();
   }
 
   const setMaxValue = () => {

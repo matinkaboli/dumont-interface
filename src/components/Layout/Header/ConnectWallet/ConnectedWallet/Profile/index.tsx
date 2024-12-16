@@ -1,86 +1,75 @@
-import Image from 'next/image';
-import { useDisconnect } from 'wagmi';
-import { usePrivy } from '@privy-io/react-auth';
+import { useState } from 'react';
+import clsx from 'clsx';
 
-import { Button, Icon, QRCode } from '@/components';
-import truncateString from '@/helpers/truncateString';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
-import useAxiosGet from '@/hooks/useAxiosGet';
-import links from '@/constants/links';
+import { Icon } from '@/components';
 
-import CopyBox from './CopyBox';
-import BalanceList from './BalanceList';
-import LinkButton from './LinkButton';
-
-interface ReferralData {
-  id: number;
-}
+import MultiStepCarousel from './MultiStepCarousel';
+import ProfileDetail from './steps/ProfileDetail';
+import ConfirmSend from './steps/ConfirmSend';
+import Receive from './steps/Receive';
+import Send from './steps/Send';
 
 const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
-  const { address } = useTypedSelector((state) => state.account.profile);
-  const { data: referralData } = useAxiosGet<ReferralData>(`players/${address}/referrals`);
-  const { logout } = usePrivy();
-  const { disconnectAsync } = useDisconnect();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
+  const [process, setProcess] = useState<'send' | 'receive'>('send');
 
+  const prevSlide = () => {
+    setDirection('prev');
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
 
-  const referralLink = referralData ? `${links.APP}/i/${referralData?.id}` : '';
+  const nextSlide = () => {
+    setDirection('next');
+    setCurrentIndex(currentIndex + 1);
+  };
 
-  const onDisconnect = async () => {
-    try {
-      await disconnectAsync();
-      await logout();
-      onOpenChange();
-    } catch (error) {}
+  const renderTitle = () => {
+    if (currentIndex === 0) {
+      return 'Profile';
+    } else if (process === 'send') {
+      if (currentIndex === 1) return 'Send';
+      if (currentIndex === 2) return 'Confirm Send';
+    } else if (process === 'receive' && currentIndex === 1) {
+      return 'Receive';
+    }
   };
 
   return (
     <>
-      <QRCode value={address || ''} size={192} className="mx-auto" />
+      <div className="grid grid-cols-3 -mt-[18px]">
+        <button
+          onClick={prevSlide}
+          className={clsx('mr-auto text-white', currentIndex > 0 ? 'visible' : 'invisible')}
+        >
+          <Icon name="arrow-left" color="#ADADB6" />
+        </button>
 
-      <div className="flex flex-col gap-6 mt-4">
-        <CopyBox
-          copyText={address || ''}
-          copyLabel={truncateString(address || '', { leftChars: 6, rightChars: 4 })}
-          copyIcon={<Image src="/images/metamask.png" width={24} height={24} alt="MetaMask" />}
-        />
-
-        <div className="flex flex-col gap-2">
-          <h6 className="text-sm text-neutral-300 font-semibold">Balance</h6>
-          <BalanceList />
-
-          <div className="flex gap-2">
-            <LinkButton link={links.BUY_CRYPTO}>
-              <Icon name="credit-card" />
-              Buy crypto
-            </LinkButton>
-
-            <LinkButton link={links.BRIDGE_ASSET}>
-              <Icon name="swap-coin" />
-              Bridge asset
-            </LinkButton>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h6 className="text-sm text-neutral-300 font-semibold">Invite Link</h6>
-          <CopyBox
-            copyText={referralLink}
-            copyLabel={referralLink}
-            copyIcon={<Icon name="link" />}
-          />
-        </div>
+        <h6 className="text-white text-center text-base font-semibold">{renderTitle()}</h6>
       </div>
 
-      <Button
-        fullWidth
-        variant="link"
-        radius="lg"
-        className="text-error-400 font-semibold text-base mt-8 mx-auto !px-0 hover:bg-neutral-600"
-        leftSection={<Icon name="arrow-right-from-bracket" />}
-        onClick={onDisconnect}
-      >
-        Disconnect
-      </Button>
+      {process === 'send' ? (
+        <MultiStepCarousel currentIndex={currentIndex} direction={direction}>
+          <ProfileDetail
+            onCloseDialog={onOpenChange}
+            setProcess={setProcess}
+            onNextSlide={nextSlide}
+          />
+          <Send onNextSlide={nextSlide} />
+          <ConfirmSend />
+        </MultiStepCarousel>
+      ) : (
+        <MultiStepCarousel currentIndex={currentIndex} direction={direction}>
+          <ProfileDetail
+            onCloseDialog={onOpenChange}
+            setProcess={setProcess}
+            onNextSlide={nextSlide}
+          />
+          <Receive />
+        </MultiStepCarousel>
+      )}
     </>
   );
 };

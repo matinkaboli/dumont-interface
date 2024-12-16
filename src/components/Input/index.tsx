@@ -9,12 +9,12 @@ import isEmpty from '@/helpers/isEmpty';
 import InputSection from './InputSection';
 
 const inputVariants = cva(
-  'px-2 border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100 placeholder:text-neutral-400 focus:border-neutral-800',
+  'px-2 border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100 placeholder:text-neutral-400',
   {
     variants: {
       variant: {
-        primary: 'bg-white border-neutral-300 text-neutral-800',
-        secondary: 'bg-neutral-600 border-neutral-550 text-neutral-50',
+        primary: 'bg-white border-neutral-300 text-neutral-800 focus:border-neutral-800',
+        secondary: 'bg-neutral-600 border-neutral-550 text-neutral-50 focus:border-neutral-500',
       },
       size: {
         sm: 'h-10 text-sm',

@@ -6,7 +6,6 @@ import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 
 import Profile from './Profile';
 import AddressButton from './AddressButton';
-import NewProfile from './NewProfile';
 
 const ConnectedWallet = () => {
   const dispatch = useDispatch();
@@ -20,18 +19,7 @@ const ConnectedWallet = () => {
       }),
     );
 
-  const onOpenProfileDialog =() => dispatch(
-    openDialog({
-      content: <NewProfile onOpenChange={onCloseDialog} />,
-    }),
-  );
-
-  return (
-    <div className="flex">
-      <AddressButton onOpenChange={onOpenDialog} />
-      <button className="bg-primary-600 text-white" onClick={onOpenProfileDialog}>new profile</button>
-    </div>
-  );
+  return <AddressButton onOpenChange={onOpenDialog} />;
 };
 
 export default ConnectedWallet;
