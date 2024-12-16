@@ -3,6 +3,8 @@ import Image from 'next/image';
 
 import { Button, Icon, Input } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { useState } from 'react';
+import clsx from 'clsx';
 
 interface FormData {
   amount: string;
@@ -24,13 +26,10 @@ const tokens = [
   },
 ];
 
-const Send = ({onNextSlide}: {onNextSlide : () => void}) => {
+const Send = ({ onNextSlide }: { onNextSlide: () => void }) => {
   const { balance } = useTypedSelector((state) => state.account);
-  const {
-    control,
-    handleSubmit,
-    setValue,
-  } = useForm<FormData>({
+  const [selectedToken, setSelectedToken] = useState(tokens[0].symbol);
+  const { control, handleSubmit, setValue } = useForm<FormData>({
     mode: 'onChange',
     defaultValues: {
       amount: '',
@@ -54,7 +53,13 @@ const Send = ({onNextSlide}: {onNextSlide : () => void}) => {
           <button
             type="button"
             key={token.symbol}
-            className="w-28 h-10 flex-center gap-2 text-white font-medium border border-neutral-550 text-sm rounded-xl"
+            onClick={() => setSelectedToken(token.symbol)}
+            className={clsx(
+              'w-28 h-10 flex-center gap-2 text-white font-medium border text-sm rounded-xl transition-all duration-300 ease-in-out',
+              selectedToken === token.symbol
+                ? 'border-primary-250 bg-primary-600'
+                : 'border-neutral-550 bg-transparent',
+            )}
           >
             <Image width={24} height={24} src={token.icon} alt="" />
             {token.symbol}
