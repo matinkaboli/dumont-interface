@@ -12,7 +12,7 @@ import Send from './steps/Send';
 export interface SendData {
   amount: string;
   address: string;
-  token: string;
+  token: 'USDC' | 'ETH' | 'MONT';
 }
 
 const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
