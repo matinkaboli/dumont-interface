@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams, usePathname } from 'next/navigation';
-import { useAccount, useBalance, useReadContract } from 'wagmi';
 import { LinkedInOAuthWithMetadata, usePrivy } from '@privy-io/react-auth';
+import { useAccount, useBalance, useConnect, useReadContract } from 'wagmi';
 
 import { Button } from '@/components';
 import { AppDispatch } from '@/redux/store';
@@ -28,6 +28,14 @@ const ConnectWallet = () => {
   const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
   const { login, authenticated, ready, user } = usePrivy();
+  const { connect, connectors } = useConnect();
+
+  useEffect(() => {
+    if (connectors.length > 0) {
+      connect({ connector: connectors[0] });
+    }
+  }, [connectors]);
+
   const addresses = user?.linkedAccounts.filter(
     (account) => account.type === 'wallet',
   ) as LinkedInOAuthWithMetadata[];

@@ -27,10 +27,7 @@ export const useApproval = (
     isError: isWriteApproveError,
   } = useWriteContract();
 
-  const {
-    isError: isWaitApproveError,
-    isSuccess: isConfirmed,
-  } = useWaitForTransactionReceipt({
+  const { isError: isWaitApproveError, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash,
   });
 
