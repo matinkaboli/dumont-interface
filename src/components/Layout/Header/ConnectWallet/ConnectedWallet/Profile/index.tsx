@@ -9,10 +9,12 @@ import ConfirmSend from './steps/ConfirmSend';
 import Receive from './steps/Receive';
 import Send from './steps/Send';
 
+export type Token = 'USDC' | 'ETH' | 'MONT';
+
 export interface SendData {
   amount: string;
   address: string;
-  token: 'USDC' | 'ETH' | 'MONT';
+  token: Token;
 }
 
 const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {

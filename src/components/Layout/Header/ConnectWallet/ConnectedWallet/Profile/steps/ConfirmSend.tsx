@@ -13,7 +13,7 @@ import { closeDialog } from '@/redux/features/dialogSlice';
 import { SendData } from '../.';
 
 const ConfirmSend = ({ sendData }: { sendData?: SendData }) => {
-  const { sendTransaction, user } = usePrivy();
+  const { sendTransaction } = usePrivy();
   const dispatch = useDispatch();
   const { details } = useTypedSelector((state) => state.config);
   console.log(sendData);

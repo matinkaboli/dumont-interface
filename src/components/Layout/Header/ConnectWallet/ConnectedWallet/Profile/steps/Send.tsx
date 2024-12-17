@@ -6,9 +6,14 @@ import clsx from 'clsx';
 import { Button, Icon, Input } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import { SendData } from '../.';
+import { SendData, Token } from '../.';
 
-const tokens = [
+interface TokenItem {
+  icon: string;
+  symbol: Token;
+}
+
+const tokens: TokenItem[] = [
   {
     icon: '/images/tokens/usdc.svg',
     symbol: 'USDC',
@@ -30,7 +35,7 @@ interface Props {
 
 const Send = ({ onNextSlide, setSendData }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
-  const [selectedToken, setSelectedToken] = useState(tokens[0].symbol);
+  const [selectedToken, setSelectedToken] = useState<Token>(tokens[0].symbol);
   const { control, handleSubmit, setValue } = useForm<SendData>({
     mode: 'onChange',
     defaultValues: {
@@ -51,7 +56,7 @@ const Send = ({ onNextSlide, setSendData }: Props) => {
     setValue('amount', balance ? `${balance}` : '0');
   };
 
-  const onSetToken = (token: string) => {
+  const onSetToken = (token: Token) => {
     setSelectedToken(token);
     setValue('token', token);
   };
