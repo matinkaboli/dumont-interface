@@ -9,10 +9,17 @@ import ConfirmSend from './steps/ConfirmSend';
 import Receive from './steps/Receive';
 import Send from './steps/Send';
 
+export interface SendData {
+  amount: string;
+  address: string;
+  token: string;
+}
+
 const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [process, setProcess] = useState<'send' | 'receive'>('send');
+  const [sendData, setSendData] = useState<SendData | undefined>(undefined);
 
   const prevSlide = () => {
     setDirection('prev');
@@ -57,8 +64,8 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
             setProcess={setProcess}
             onNextSlide={nextSlide}
           />
-          <Send onNextSlide={nextSlide} />
-          <ConfirmSend />
+          <Send onNextSlide={nextSlide} setSendData={setSendData} />
+          <ConfirmSend sendData={sendData} />
         </MultiStepCarousel>
       ) : (
         <MultiStepCarousel currentIndex={currentIndex} direction={direction}>

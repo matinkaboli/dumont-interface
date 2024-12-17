@@ -1,15 +1,12 @@
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Image from 'next/image';
+import clsx from 'clsx';
 
 import { Button, Icon, Input } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { useState } from 'react';
-import clsx from 'clsx';
 
-interface FormData {
-  amount: string;
-  address: string;
-}
+import { SendData } from '../.';
 
 const tokens = [
   {
@@ -26,24 +23,37 @@ const tokens = [
   },
 ];
 
-const Send = ({ onNextSlide }: { onNextSlide: () => void }) => {
+interface Props {
+  setSendData: Dispatch<SetStateAction<SendData | undefined>>;
+  onNextSlide: () => void;
+}
+
+const Send = ({ onNextSlide, setSendData }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const [selectedToken, setSelectedToken] = useState(tokens[0].symbol);
-  const { control, handleSubmit, setValue } = useForm<FormData>({
+  const { control, handleSubmit, setValue } = useForm<SendData>({
     mode: 'onChange',
     defaultValues: {
       amount: '',
       address: '',
+      token: selectedToken,
     },
   });
 
-  function onSubmit(data: FormData) {
-    console.log(data);
-    onNextSlide();
-  }
+  const onSubmit = (data: SendData) => {
+    if (data) {
+      setSendData(data);
+      onNextSlide();
+    }
+  };
 
   const setMaxValue = () => {
     setValue('amount', balance ? `${balance}` : '0');
+  };
+
+  const onSetToken = (token: string) => {
+    setSelectedToken(token);
+    setValue('token', token);
   };
 
   return (
@@ -53,7 +63,7 @@ const Send = ({ onNextSlide }: { onNextSlide: () => void }) => {
           <button
             type="button"
             key={token.symbol}
-            onClick={() => setSelectedToken(token.symbol)}
+            onClick={() => onSetToken(token.symbol)}
             className={clsx(
               'w-28 h-10 flex-center gap-2 text-white font-medium border text-sm rounded-xl transition-all duration-300 ease-in-out',
               selectedToken === token.symbol
