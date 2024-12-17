@@ -14,11 +14,13 @@ const Receive = () => {
     <div>
       <QRCode value={address || ''} size={192} className="mx-auto mt-8" />
 
-      <CopyBox
-        className="mx-auto mt-6"
-        copyText={address || ''}
-        copyLabel={truncateString(address || '', { leftChars: 8, rightChars: 8 })}
-      />
+      <div className="px-8">
+        <CopyBox
+          className="mx-auto mt-6 w-full"
+          copyText={address || ''}
+          copyLabel={truncateString(address || '', { leftChars: 7, rightChars: 7 })}
+        />
+      </div>
       <div className="-mx-6">
         <Button
           asChild

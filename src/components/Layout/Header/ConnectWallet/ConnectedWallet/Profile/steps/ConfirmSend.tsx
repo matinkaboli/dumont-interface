@@ -16,21 +16,18 @@ const ConfirmSend = ({ sendData }: { sendData?: SendData }) => {
   const { sendTransaction } = usePrivy();
   const dispatch = useDispatch();
   const { details } = useTypedSelector((state) => state.config);
-  console.log(sendData);
 
   const onConfirm = async () => {
     if (sendData!.token === 'USDC' || sendData!.token === 'MONT') {
       const amount = formatUnits(sendData!.amount, sendData!.token === 'USDC' ? 6 : 18).toString();
       const tx = await sendTransaction({
-        to: details?.usdt,
+        to: sendData!.token === 'USDC' ? details?.usdt : details?.mont,
         data: encodeFunctionData({
           abi: ERC20_ABI,
           functionName: 'transfer',
           args: [sendData?.address, amount],
         }),
       });
-
-      console.log(tx);
 
       if (tx) dispatch(closeDialog());
     }
@@ -40,8 +37,6 @@ const ConfirmSend = ({ sendData }: { sendData?: SendData }) => {
         to: sendData!.address,
         value: parseEther(sendData!.amount),
       });
-
-      console.log(tx);
 
       if (tx) dispatch(closeDialog());
     }
