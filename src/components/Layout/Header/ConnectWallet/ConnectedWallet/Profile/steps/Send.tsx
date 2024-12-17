@@ -33,10 +33,47 @@ interface Props {
   onNextSlide: () => void;
 }
 
+const validateAmount = (balance: number) => {
+  return {
+    required: 'Amount is required',
+    validate: {
+      noNonNumericChars: (value: string) => {
+        if (/[^0-9.]/.test(value)) return 'Only numbers and decimal point are allowed';
+
+        const numValue = Number(value);
+        if (isNaN(numValue)) return 'Please enter a valid number';
+
+        if (numValue <= 0) return 'Amount must be greater than 0';
+
+        if (numValue >= balance) return 'Amount exceeds available balance';
+
+        return true;
+      },
+    },
+  };
+};
+
+const validateAddress = {
+  required: 'Wallet address is required',
+  validate: {
+    startsWithZeroX: (value: string) => {
+      return value.startsWith('0x') || 'Address must start with 0x';
+    },
+    validFormat: (value: string) => {
+      return /^0x[a-fA-F0-9]{40}$/.test(value) || 'Invalid wallet address format';
+    },
+  },
+};
+
 const Send = ({ onNextSlide, setSendData }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const [selectedToken, setSelectedToken] = useState<Token>(tokens[0].symbol);
-  const { control, handleSubmit, setValue } = useForm<SendData>({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { isDirty, isValid, errors, touchedFields },
+  } = useForm<SendData>({
     mode: 'onChange',
     defaultValues: {
       amount: '',
@@ -97,21 +134,30 @@ const Send = ({ onNextSlide, setSendData }: Props) => {
       <Controller
         name="amount"
         control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field }) => <Input variant="secondary" placeholder="0.00" {...field} />}
+        rules={validateAmount(balance ? +balance : 0)}
+        render={({ field }) => (
+          <Input
+            variant="secondary"
+            placeholder="0.00"
+            errors={touchedFields.amount ? errors : {}}
+            {...field}
+          />
+        )}
       />
 
       <div className="mt-4">
         <Controller
           name="address"
           control={control}
-          rules={{
-            required: true,
-          }}
+          rules={validateAddress}
           render={({ field }) => (
-            <Input variant="secondary" label="To" placeholder="0x..." {...field} />
+            <Input
+              variant="secondary"
+              label="To"
+              placeholder="0x..."
+              errors={touchedFields.address ? errors : {}}
+              {...field}
+            />
           )}
         />
       </div>

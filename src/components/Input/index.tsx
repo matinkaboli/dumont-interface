@@ -98,7 +98,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
             className={clsx(
               leftSection ? 'pl-11' : 'pl-3',
               rightSection ? 'pr-11' : 'pr-3',
-              !isEmpty(errors) && '!border-error-500 !text-error-500 !placeholder:text-error-500',
+              !isEmpty(errors[name]) && '!border-error-500 !text-error-500 !placeholder:text-error-500',
               inputClassName,
             )}
             disabled={disabled}
