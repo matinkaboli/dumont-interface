@@ -5,13 +5,13 @@ import clsx from 'clsx';
 
 import { swiperRef } from '@/components/Carousel';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { getGame } from '@/redux/features/gameSlice';
-import { postGuessedCard } from '@/redux/features/betSlice';
+import { GameData, getGame } from '@/redux/features/gameSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 import { MAX_GUESSABLE_CARDS } from '@/constants/static';
+import { usePolling } from '@/hooks/usePolling';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
@@ -23,6 +23,7 @@ import RevealedCard from './RevealedCard';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
+  // const [isLoading, setIsLoading] = useState(false);
   const { address } = useTypedSelector((state) => state.account.profile);
   const {
     data: game,
@@ -42,8 +43,37 @@ const RevealKey = ({ className }: { className?: string }) => {
     hash: revealCardData,
   });
 
+  const isRevealLoading = usePolling(
+    isConfirmed,
+    () => dispatch(getGame(game!.id)).unwrap(),
+    (game: GameData) => {
+      const cardRevealed = game.cards[activeCardIndex - 1].number !== -1;
+
+      if (cardRevealed) {
+        dispatch(
+          openDialog({
+            dialogProps: {
+              onCloseButton: onCloseDialog,
+              onClickOverlay: onCloseDialog,
+            },
+            content: (
+              <AnimatedDialogContent key="reveal">
+                <RevealedCard
+                  cardIndex={activeCardIndex - 1}
+                  onCloseDialog={onCloseDialog}
+                />
+              </AnimatedDialogContent>
+            ),
+          })
+        );
+      }
+
+      return cardRevealed;
+    }
+  );
+
   useEffect(() => {
-    if (isRevealCardLoading) {
+    if (isRevealCardLoading || isRevealLoading) {
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
@@ -55,11 +85,7 @@ const RevealKey = ({ className }: { className?: string }) => {
         }),
       );
     }
-  }, [isRevealCardLoading]);
-
-  useEffect(() => {
-    if (isConfirmed) onRevealCardSuccess();
-  }, [isConfirmed]);
+  }, [isRevealCardLoading, isRevealLoading]);
 
   useEffect(() => {
     if (isWriteRevealError || isWaitRevealError) onError();
@@ -75,43 +101,11 @@ const RevealKey = ({ className }: { className?: string }) => {
   }
 
   function onCloseDialog() {
-    dispatch(getGame(game!.id))
-      .unwrap()
-      .then(() => {
-        dispatch(closeDialog());
-        if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
-          // @ts-ignore
-          swiperRef?.current?.slideNext();
-        }
-      });
-  }
-
-  function onRevealCardSuccess() {
-    dispatch(
-      postGuessedCard({
-        id: game!.id,
-        body: { index: activeCardIndex - 1 },
-      }),
-    )
-      .unwrap()
-      .then(() => {
-        dispatch(
-          openDialog({
-            dialogProps: {
-              onCloseButton: onCloseDialog,
-              onClickOverlay: onCloseDialog,
-            },
-            content: (
-              <AnimatedDialogContent key="reveal">
-                <RevealedCard onCloseDialog={onCloseDialog} />
-              </AnimatedDialogContent>
-            ),
-          }),
-        );
-      })
-      .catch(() => {
-        onError();
-      });
+    dispatch(closeDialog());
+    if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
+      // @ts-ignore
+      swiperRef?.current?.slideNext();
+    }
   }
 
   function onError() {

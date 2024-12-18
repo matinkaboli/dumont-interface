@@ -6,7 +6,7 @@ import BN from 'bignumber.js';
 
 import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
-import { expireGame, postGame } from '@/redux/features/gameSlice';
+import { expireGame, setIsGameCreated } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { useApproval } from '@/hooks/useApproval';
 import extractGameId from '@/helpers/extractGameId';
@@ -83,7 +83,7 @@ export const useNewRound = () => {
     if (activeIndex === 3) {
       const timer = setTimeout(() => {
         setActiveIndex(4);
-      }, 2000);
+      }, 500);
 
       return () => clearTimeout(timer);
     } else if (activeIndex === 4) {
@@ -92,7 +92,7 @@ export const useNewRound = () => {
         dispatch(expireGame(false));
         setActiveIndex(0);
         router.push(`${Routes.ROUND}/${redirectId}`);
-      }, 1000);
+      }, 500);
 
       return () => clearTimeout(redirectTimer);
     }
@@ -102,7 +102,8 @@ export const useNewRound = () => {
     if (isConfirmed && receiptData) {
       const id = extractGameId(receiptData.logs);
       setRedirectId(id);
-      onCreateGameSuccess(id);
+      onCreateGameSuccess();
+      dispatch(setIsGameCreated(true));
     }
   }, [isConfirmed, receiptData]);
 
@@ -125,17 +126,12 @@ export const useNewRound = () => {
     );
   }
 
-  function onCreateGameSuccess(id: number) {
+  function onCreateGameSuccess() {
     setActiveIndex(2);
 
     const timer = setTimeout(() => {
-      dispatch(postGame({ id }))
-        .unwrap()
-        .then(() => {
-          setActiveIndex(3);
-        })
-        .catch(() => onError('Game creation was unsuccessful', onCreateGame));
-    }, 5000);
+      setActiveIndex(3);
+    }, 500);
 
     return () => clearTimeout(timer);
   }

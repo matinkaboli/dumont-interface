@@ -4,15 +4,15 @@ import { Button, DialogDescription, DialogTitle } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import getCardInfo from '@/helpers/getCardInfo';
 
-const RevealedCard = ({ onCloseDialog }: { onCloseDialog: () => void }) => {
-  const { guessedResult } = useTypedSelector((state) => state.bet);
+const RevealedCard = ({ onCloseDialog, cardIndex }: { onCloseDialog: () => void, cardIndex: number }) => {
+  const { data } = useTypedSelector((state) => state.game);
 
   return (
     <>
       <Image
         width={160}
         height={223}
-        src={`/images/cards/${getCardInfo(guessedResult!.number)}.png`}
+        src={`/images/cards/${getCardInfo(data?.cards[cardIndex].number!)}.png`}
         className="mx-auto"
         alt=""
       />

@@ -1,6 +1,7 @@
 import './style.css';
 
-import { usePrivy } from '@privy-io/react-auth';
+import { useLogin, usePrivy } from '@privy-io/react-auth';
+import { useConnect } from 'wagmi';
 
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
 import { ButtonProps } from '@/components/Button';
@@ -13,7 +14,8 @@ interface Props extends ButtonProps {
 
 const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
   const { isCreated, data: game } = useTypedSelector((state) => state.game);
-  const { login, authenticated, ready } = usePrivy();
+  const { connect, connectors } = useConnect();
+  const { authenticated, ready } = usePrivy();
 
   const buttonProps: ButtonProps = {
     fullWidth: true,
@@ -21,6 +23,14 @@ const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
     radius: 'lg',
     size: size,
   };
+
+  const { login } = useLogin({
+    onComplete: (user, isNewUser, wasAlreadyAuthenticated, loginMethod) => {
+      if (loginMethod === 'email') {
+        connect({ connector: connectors[0] });
+      }
+    },
+  });
 
   return (
     <div className="relative w-full h-12">

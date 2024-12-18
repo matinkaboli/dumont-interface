@@ -167,11 +167,14 @@ const Activities = () => {
   };
 
   useEffect(() => {
-    handleFetchActivities();
     const intervalId = setInterval(handleFetchActivities, 5000);
 
     return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    handleFetchActivities();
+  }, [game]);
 
   const reversedActivities = useMemo(() => {
     if (!activities) return [];

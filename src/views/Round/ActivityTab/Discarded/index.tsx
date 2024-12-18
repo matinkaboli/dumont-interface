@@ -9,7 +9,7 @@ import isEmpty from '@/helpers/isEmpty';
 import EmptyDataMessage from '../EmptyDataMessage';
 
 const Discarded = () => {
-  const { cards, loading } = useTypedSelector((state) => state.discarded);
+  const { cards, loading, isRefetching } = useTypedSelector((state) => state.discarded);
 
   const sortedDiscarded = useMemo(() => {
     return [...cards].sort((a, b) => (a % 13) - (b % 13)) || [];
@@ -17,7 +17,7 @@ const Discarded = () => {
 
   return (
     <>
-      {loading ? (
+      {loading && !isRefetching ? (
         <div className="flex-center mt-14 mb-10">
           <Loading size={32} />
         </div>

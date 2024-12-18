@@ -6,12 +6,14 @@ import axios from '@/lib/axios';
 interface DiscardedCardsState {
   cards: number[];
   loading: boolean;
+  isRefetching: boolean;
   error: string | null;
 }
 
 const initialState: DiscardedCardsState = {
   cards: [],
   loading: false,
+  isRefetching: false,
   error: null,
 };
 
@@ -35,15 +37,21 @@ const discardedCardsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getDiscardedCards.pending, (state) => {
-        state.loading = true;
+        if (state.cards) {
+          state.isRefetching = true;
+        } else {
+          state.loading = true;
+        }
         state.error = null;
       })
       .addCase(getDiscardedCards.fulfilled, (state, action: PayloadAction<number[]>) => {
         state.loading = false;
+        state.isRefetching = false;
         state.cards = action.payload;
       })
       .addCase(getDiscardedCards.rejected, (state, action) => {
         state.loading = false;
+        state.isRefetching = false;
         state.error = action.payload as string;
       });
   },
