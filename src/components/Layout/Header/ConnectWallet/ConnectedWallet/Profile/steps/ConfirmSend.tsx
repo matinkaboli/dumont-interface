@@ -63,10 +63,6 @@ const ConfirmSend = ({ sendData }: { sendData?: SendData }) => {
         </div>
       </div>
 
-      <div className="flex-between px-4 py-2 mt-3 text-base text-neutral-300 font-medium bg-neutral-600 rounded-xl">
-        <div>Fee</div>
-        <div>$0.3</div>
-      </div>
       <Button fullWidth className="mt-6" radius="lg" onClick={onConfirm}>
         Confirm
       </Button>

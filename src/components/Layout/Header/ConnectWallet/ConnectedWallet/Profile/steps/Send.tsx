@@ -162,11 +162,6 @@ const Send = ({ onNextSlide, setSendData }: Props) => {
         />
       </div>
 
-      <div className="flex justify-between items-center mt-6">
-        <div className="text-white text-base font-medium">Fee</div>
-        <div className="text-neutral-300 text-base font-medium">$0.3</div>
-      </div>
-
       <Button type="submit" fullWidth className="mt-8" radius="lg">
         Send
       </Button>
