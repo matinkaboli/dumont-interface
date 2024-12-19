@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Button, Icon, Input } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import { SendData, Token } from '../.';
+import { Balance, SendData, Token } from '../.';
 
 interface TokenItem {
   icon: string;
@@ -31,6 +31,7 @@ const tokens: TokenItem[] = [
 interface Props {
   setSendData: Dispatch<SetStateAction<SendData | undefined>>;
   onNextSlide: () => void;
+  balances: Balance;
 }
 
 const validateAmount = (balance: number) => {
@@ -65,7 +66,7 @@ const validateAddress = {
   },
 };
 
-const Send = ({ onNextSlide, setSendData }: Props) => {
+const Send = ({ onNextSlide, setSendData, balances }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const [selectedToken, setSelectedToken] = useState<Token>(tokens[0].symbol);
   const {
@@ -90,7 +91,14 @@ const Send = ({ onNextSlide, setSendData }: Props) => {
   };
 
   const setMaxValue = () => {
-    setValue('amount', balance ? `${balance}` : '0');
+    const tokenBalances = {
+      ETH: balances.eth,
+      MONT: balances.mont,
+      USDC: balances.usdc
+    };
+
+    const amount = tokenBalances[selectedToken] ?? '0';
+    setValue('amount', amount);
   };
 
   const onSetToken = (token: Token) => {

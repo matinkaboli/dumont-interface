@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useBalance } from 'wagmi';
 import clsx from 'clsx';
 
 import { Icon } from '@/components';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import MultiStepCarousel from './MultiStepCarousel';
 import ProfileDetail from './steps/ProfileDetail';
@@ -17,11 +19,30 @@ export interface SendData {
   token: Token;
 }
 
+export interface Balance {
+  eth?: string;
+  mont?: string;
+  usdc?: string;
+}
+
 const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
+  const {
+    balance,
+    profile: { address },
+  } = useTypedSelector((state) => state.account);
+  const { details } = useTypedSelector((state) => state.config);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [process, setProcess] = useState<'send' | 'receive'>('send');
   const [sendData, setSendData] = useState<SendData | undefined>(undefined);
+
+  const { data: montBalance } = useBalance({ address, token: details?.mont });
+  const { data: ethBalance } = useBalance({ address });
+  const accountBalance: Balance = {
+    usdc: balance,
+    mont: montBalance?.formatted,
+    eth: ethBalance?.formatted,
+  };
 
   const prevSlide = () => {
     setDirection('prev');
@@ -62,16 +83,18 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
       {process === 'send' ? (
         <MultiStepCarousel currentIndex={currentIndex} direction={direction}>
           <ProfileDetail
+            accountBalance={accountBalance}
             onCloseDialog={onOpenChange}
             setProcess={setProcess}
             onNextSlide={nextSlide}
           />
-          <Send onNextSlide={nextSlide} setSendData={setSendData} />
+          <Send balances={accountBalance} onNextSlide={nextSlide} setSendData={setSendData} />
           <ConfirmSend sendData={sendData} />
         </MultiStepCarousel>
       ) : (
         <MultiStepCarousel currentIndex={currentIndex} direction={direction}>
           <ProfileDetail
+            accountBalance={accountBalance}
             onCloseDialog={onOpenChange}
             setProcess={setProcess}
             onNextSlide={nextSlide}

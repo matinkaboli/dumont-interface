@@ -11,18 +11,16 @@ import links from '@/constants/links';
 
 import CopyBox from '../CopyBox';
 import BalanceList from '../BalanceList';
+import { Balance } from '../../Profile';
 
 interface Props {
   onCloseDialog: () => void;
   onNextSlide: () => void;
   setProcess: Dispatch<SetStateAction<'send' | 'receive'>>;
+  accountBalance: Balance;
 }
 
-const ProfileDetail = ({
-  onCloseDialog,
-  onNextSlide,
-  setProcess,
-}: Props) => {
+const ProfileDetail = ({ accountBalance, onCloseDialog, onNextSlide, setProcess }: Props) => {
   const { address } = useTypedSelector((state) => state.account.profile);
   const { data: referralData } = useAxiosGet<{ id: number }>(`players/${address}/referrals`);
   const referralLink = referralData ? `${links.APP}/i/${referralData?.id}` : '';
@@ -73,7 +71,7 @@ const ProfileDetail = ({
 
       <div className="flex flex-col gap-2 mt-6">
         <h6 className="text-sm text-neutral-300 font-semibold">Balance</h6>
-        <BalanceList />
+        <BalanceList accountBalance={accountBalance} />
       </div>
 
       <div className="flex flex-col gap-2 mt-10">
