@@ -71,7 +71,7 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm<SendData>({
     mode: 'onChange',
     defaultValues: {
