@@ -9,6 +9,7 @@ const links = {
   GET_REWARD: 'https://docs.dumont.gg/usdmont-token/reward-program',
   TUTORIAL_VIDEO: 'https://www.youtube.com/watch?v=VDU1sxo-HqA',
   AIRDROP: 'https://x.com/dumontgg/status/1846604245673345484',
+  MOONPAY: 'https://www.moonpay.com/'
 };
 
 const network = process.env.NEXT_PUBLIC_NETWORK as Networks;

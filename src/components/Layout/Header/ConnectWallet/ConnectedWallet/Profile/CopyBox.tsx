@@ -18,7 +18,7 @@ const CopyBox = ({ copyText, copyLabel, copyIcon, className }: Props) => {
     <CopyToClipboard copyText={copyText} className={clsx(parentClassName, className)}>
       <span className="flex gap-2">
         {copyIcon}
-        <span className="text-neutral-100 font-medium text-base">{copyLabel}</span>
+        <span className="text-neutral-100 font-medium text-base whitespace-nowrap">{copyLabel}</span>
       </span>
     </CopyToClipboard>
   );
