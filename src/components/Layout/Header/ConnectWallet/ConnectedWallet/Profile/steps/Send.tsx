@@ -4,7 +4,6 @@ import Image from 'next/image';
 import clsx from 'clsx';
 
 import { Button, Icon, Input } from '@/components';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import { Balance, SendData, Token } from '../.';
 
@@ -46,7 +45,7 @@ const validateAmount = (balance: number) => {
 
         if (numValue <= 0) return 'Amount must be greater than 0';
 
-        if (numValue >= balance) return 'Amount exceeds available balance';
+        if (numValue > balance) return 'Amount exceeds available balance';
 
         return true;
       },
@@ -67,7 +66,6 @@ const validateAddress = {
 };
 
 const Send = ({ onNextSlide, setSendData, balances }: Props) => {
-  const { balance } = useTypedSelector((state) => state.account);
   const [selectedToken, setSelectedToken] = useState<Token>(tokens[0].symbol);
   const {
     control,
@@ -83,6 +81,12 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
     },
   });
 
+  const tokenBalances = {
+    ETH: balances.eth,
+    MONT: balances.mont,
+    USDC: balances.usdc,
+  };
+
   const onSubmit = (data: SendData) => {
     if (data) {
       setSendData(data);
@@ -91,12 +95,6 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
   };
 
   const setMaxValue = () => {
-    const tokenBalances = {
-      ETH: balances.eth,
-      MONT: balances.mont,
-      USDC: balances.usdc
-    };
-
     const amount = tokenBalances[selectedToken] ?? '0';
     setValue('amount', amount);
   };
@@ -142,14 +140,9 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
       <Controller
         name="amount"
         control={control}
-        rules={validateAmount(balance ? +balance : 0)}
+        rules={validateAmount(+tokenBalances[selectedToken]!)}
         render={({ field }) => (
-          <Input
-            variant="secondary"
-            placeholder="0.00"
-            errors={touchedFields.amount ? errors : {}}
-            {...field}
-          />
+          <Input variant="secondary" placeholder="0.00" errors={errors} {...field} />
         )}
       />
 
@@ -159,13 +152,7 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
           control={control}
           rules={validateAddress}
           render={({ field }) => (
-            <Input
-              variant="secondary"
-              label="To"
-              placeholder="0x..."
-              errors={touchedFields.address ? errors : {}}
-              {...field}
-            />
+            <Input variant="secondary" label="To" placeholder="0x..." errors={errors} {...field} />
           )}
         />
       </div>
