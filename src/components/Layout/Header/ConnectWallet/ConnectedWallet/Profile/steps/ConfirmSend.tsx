@@ -1,7 +1,7 @@
 import Image from 'next/image';
+import { parseEther } from 'viem';
 import { useDispatch } from 'react-redux';
-import { usePrivy } from '@privy-io/react-auth';
-import { encodeFunctionData, parseEther } from 'viem';
+import { useSendTransaction, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { Button, Icon } from '@/components';
 import truncateString from '@/helpers/truncateString';
@@ -10,37 +10,99 @@ import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import formatUnits from '@/helpers/formatUnits';
 import { closeDialog } from '@/redux/features/dialogSlice';
 
+import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
+import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+
+import SuccessModal from './SuccessModal';
 import { SendData } from '../.';
 
-const ConfirmSend = ({ sendData }: { sendData?: SendData }) => {
-  const { sendTransaction } = usePrivy();
+const ConfirmSend = ({
+  sendData,
+  removeSlideTitle,
+}: {
+  sendData?: SendData;
+  removeSlideTitle: () => void;
+}) => {
   const dispatch = useDispatch();
   const { details } = useTypedSelector((state) => state.config);
 
-  const onConfirm = async () => {
+  const {
+    data: ethHash,
+    isPending: isEthLoading,
+    sendTransaction,
+    isError: isEthError,
+  } = useSendTransaction();
+
+  const {
+    isLoading: isWaitEthLoading,
+    isSuccess: isEthConfirmed,
+    isError: isWaitEthError,
+  } = useWaitForTransactionReceipt({
+    hash: ethHash,
+  });
+
+  const {
+    writeContract: writeSend,
+    data: hash,
+    isPending: isSendLoading,
+    isError: isSendError,
+  } = useWriteContract();
+
+  const {
+    isLoading: isWaitSendLoading,
+    isSuccess: isConfirmed,
+    isError: isWaitSendError,
+  } = useWaitForTransactionReceipt({
+    hash,
+  });
+
+  const onConfirm = () => {
+    removeSlideTitle();
     if (sendData!.token === 'USDC' || sendData!.token === 'MONT') {
       const amount = formatUnits(sendData!.amount, sendData!.token === 'USDC' ? 6 : 18).toString();
-      const tx = await sendTransaction({
-        to: sendData!.token === 'USDC' ? details?.usdt : details?.mont,
-        data: encodeFunctionData({
-          abi: ERC20_ABI,
-          functionName: 'transfer',
-          args: [sendData?.address, amount],
-        }),
+      const address = sendData!.token === 'USDC' ? details!.usdt : details!.mont;
+      writeSend?.({
+        address,
+        abi: ERC20_ABI,
+        functionName: 'transfer',
+        args: [sendData?.address, amount],
       });
-
-      if (tx) dispatch(closeDialog());
     }
 
     if (sendData!.token === 'ETH') {
-      const tx = await sendTransaction({
-        to: sendData!.address,
+      sendTransaction({
+        to: sendData!.address as `0x${string}`,
         value: parseEther(sendData!.amount),
       });
-
-      if (tx) dispatch(closeDialog());
     }
   };
+
+  const onCloseDialog = () => dispatch(closeDialog());
+
+  if (isSendLoading || isWaitSendLoading || isEthLoading || isWaitEthLoading) {
+    return (
+      <AnimatedDialogContent key="loading">
+        <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+      </AnimatedDialogContent>
+    );
+  }
+
+  if (isSendError || isWaitSendError || isEthError || isWaitEthError) {
+    return (
+      <AnimatedDialogContent key="error">
+        <ErrorContent title="Send was unsuccessful" onClick={onCloseDialog} />
+      </AnimatedDialogContent>
+    );
+  }
+
+  if (isConfirmed || isEthConfirmed) {
+    return (
+      <AnimatedDialogContent key="confirm">
+        <SuccessModal sendData={sendData} />
+      </AnimatedDialogContent>
+    );
+  }
 
   return (
     <div>

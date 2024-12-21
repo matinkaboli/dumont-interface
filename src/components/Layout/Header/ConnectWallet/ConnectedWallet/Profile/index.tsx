@@ -35,6 +35,7 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [process, setProcess] = useState<'send' | 'receive'>('send');
   const [sendData, setSendData] = useState<SendData | undefined>(undefined);
+  const [removeSlideTitle, setRemoveSlideTitle] = useState(false);
 
   const { data: montBalance } = useBalance({ address, token: details?.mont });
   const { data: ethBalance } = useBalance({ address });
@@ -56,6 +57,8 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
     setCurrentIndex(currentIndex + 1);
   };
 
+  const onRemoveSlideTitle = () => setRemoveSlideTitle(true);
+
   const renderTitle = () => {
     if (currentIndex === 0) {
       return 'Profile';
@@ -69,16 +72,18 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
 
   return (
     <>
-      <div className="grid grid-cols-3 -mt-[18px]">
-        <button
-          onClick={prevSlide}
-          className={clsx('mr-auto text-white', currentIndex > 0 ? 'visible' : 'invisible')}
-        >
-          <Icon name="arrow-left" color="#ADADB6" />
-        </button>
+      {!removeSlideTitle ? (
+        <div className="grid grid-cols-3 -mt-[18px]">
+          <button
+            onClick={prevSlide}
+            className={clsx('mr-auto text-white', currentIndex > 0 ? 'visible' : 'invisible')}
+          >
+            <Icon name="arrow-left" color="#ADADB6" />
+          </button>
 
-        <h6 className="text-white text-center text-base font-semibold">{renderTitle()}</h6>
-      </div>
+          <h6 className="text-white text-center text-base font-semibold">{renderTitle()}</h6>
+        </div>
+      ) : null}
 
       {process === 'send' ? (
         <MultiStepCarousel currentIndex={currentIndex} direction={direction}>
@@ -89,7 +94,7 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
             onNextSlide={nextSlide}
           />
           <Send balances={accountBalance} onNextSlide={nextSlide} setSendData={setSendData} />
-          <ConfirmSend sendData={sendData} />
+          <ConfirmSend removeSlideTitle={onRemoveSlideTitle} sendData={sendData} />
         </MultiStepCarousel>
       ) : (
         <MultiStepCarousel currentIndex={currentIndex} direction={direction}>
