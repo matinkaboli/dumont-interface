@@ -8,7 +8,7 @@ import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 import { swiperRef } from '@/components/Carousel';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { Card, getGame, GameData } from '@/redux/features/gameSlice';
+import { Card, GameData, getGame } from '@/redux/features/gameSlice';
 import { showConfetti } from '@/redux/features/confettiSlice';
 import transformedRanks from '@/helpers/transformedRanks';
 import transformRanks from '@/helpers/transformedRanks';
@@ -17,17 +17,18 @@ import formatUnits from '@/helpers/formatUnits';
 import isEmpty from '@/helpers/isEmpty';
 import formatDecimal from '@/helpers/formatDecimal';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { usePolling } from '@/hooks/usePolling';
+import { useHidePrivyError } from '@/hooks/useHidePrivyError';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
-import { TOTAL_CARDS_LENGTH, MAX_GUESSABLE_CARDS } from '@/constants/static';
-import { usePolling } from '@/hooks/usePolling';
+import { TOTAL_CARDS_LENGTH } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
+import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 
 import ResultMessage from './ConfirmBet/ResultMessage';
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
-import { useHidePrivyError } from '@/hooks/useHidePrivyError';
 
 const calculateTotalOdds = (
   keys: string[],
@@ -97,7 +98,6 @@ const Board = () => {
     activeCardIndex,
     isExpired,
     areAllCardsGuessed,
-    guessedCardsCount,
     validCardNumbers,
     cardOccurrences,
   } = useCardData();
@@ -133,7 +133,7 @@ const Board = () => {
     hash: guessCardTx as `0x${string}`,
   });
 
-  const isGuessResultLoading = usePolling(
+  const isGuessCardConfirming = usePolling(
     isConfirmed,
     () => dispatch(getGame(game!.id)).unwrap(),
     (game: GameData) => {
@@ -154,16 +154,16 @@ const Board = () => {
                 />
               </AnimatedDialogContent>
             ),
-          })
+          }),
         );
       }
 
       return cardRevealed;
-    }
+    },
   );
 
   useEffect(() => {
-    if(game) {
+    if (game) {
       const currentCard = game.cards[activeCardIndex - 1];
       const result = currentCard?.result;
 
@@ -181,10 +181,7 @@ const Board = () => {
     setIsGuessCardLoading(true);
     setGuessCardTx('');
 
-    if (!client) {
-      console.error('No smart account client found');
-      return;
-    }
+    if (!client) return;
 
     try {
       const tx = await client.sendTransaction({
@@ -211,7 +208,15 @@ const Board = () => {
 
       setGuessCardTx(tx);
     } catch (error) {
-      console.error('Transaction failed:', error);
+      dispatch(
+        openDialog({
+          content: (
+            <AnimatedDialogContent key="error">
+              <ErrorContent title="Something went wrong" />
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
     }
     setIsGuessCardLoading(false);
   };
@@ -225,10 +230,8 @@ const Board = () => {
   function onCloseResultDialog() {
     reset();
     dispatch(closeDialog());
-    if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
-      // @ts-ignore
-      swiperRef?.current?.slideNext();
-    }
+    // @ts-ignore
+    swiperRef?.current?.slideNext();
   }
 
   function disabledButtonLabel() {
@@ -255,7 +258,8 @@ const Board = () => {
     isExpired ||
     game?.cards[activeCardIndex - 1]?.number !== -1 ||
     game?.player.toLowerCase() !== address?.toLowerCase() ||
-    isGuessCardLoading || isGuessResultLoading;
+    isGuessCardLoading ||
+    isGuessCardConfirming;
 
   return (
     <form

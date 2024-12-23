@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { useWaitForTransactionReceipt } from 'wagmi';
 import { encodeFunctionData } from 'viem';
+import { useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
 import { AppDispatch } from '@/redux/store';
+import { setIsGameCreated } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import extractGameId from '@/helpers/extractGameId';
 import formatUnits from '@/helpers/formatUnits';
@@ -13,31 +14,28 @@ import Routes from '@/constants/routes';
 import { DEFAULT_APPROVE_VALUE } from '@/constants/static';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
+
 import { useHidePrivyError } from './useHidePrivyError';
-import { setIsGameCreated } from '@/redux/features/gameSlice';
 
 export const useNewRound = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { client } = useSmartWallets();
+  const { details } = useTypedSelector((state) => state.config);
+  const { referralAddress } = useTypedSelector((state) => state.referral);
   const [isCreateGameLoading, setIsCreateGameLoading] = useState(false);
   const [errorMessageGame, setErrorMessageGame] = useState('');
   const [gameTx, setGameTx] = useState('');
-  const { details } = useTypedSelector((state) => state.config);
-  const { referralAddress } = useTypedSelector((state) => state.referral);
 
   useHidePrivyError(isCreateGameLoading);
 
   const onCreateRound = async () => {
     setIsCreateGameLoading(true);
     setGameTx('');
-    if (!client) {
-      console.error('No smart account client found');
-      return;
-    }
+
+    if (!client) return;
 
     setErrorMessageGame('');
-
     try {
       const approveValue = formatUnits(DEFAULT_APPROVE_VALUE, 6).toString();
 
@@ -65,7 +63,6 @@ export const useNewRound = () => {
 
       setGameTx(tx);
     } catch (error) {
-      console.error('Transaction failed:', error);
       setErrorMessageGame('Transaction failed. Please try again.');
     }
     setIsCreateGameLoading(false);
@@ -76,14 +73,14 @@ export const useNewRound = () => {
   });
 
   useEffect(() => {
-    if (isConfirmed && receiptData) {
+    if (isConfirmed) {
       const id = extractGameId(receiptData.logs);
-      if(id) {
+      if (id) {
         router.push(`${Routes.ROUND}/${id}`);
         dispatch(setIsGameCreated(true));
       }
     }
-  }, [isConfirmed, receiptData]);
+  }, [isConfirmed]);
 
   return {
     onCreateRound,
