@@ -40,9 +40,7 @@ const calculateTotalOdds = (
   const transformedKeys = transformRanks(keys);
   const total = transformedKeys.reduce((sum, key) => sum + (cardOccurrences[key] || 0), 0);
 
-  const result = (TOTAL_CARDS_LENGTH - cardsLength) / total;
-
-  return result;
+  return (TOTAL_CARDS_LENGTH - cardsLength) / total;
 };
 
 const useCardData = () => {
