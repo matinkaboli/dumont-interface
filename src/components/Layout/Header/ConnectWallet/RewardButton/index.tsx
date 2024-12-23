@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { useDispatch } from 'react-redux';
-import { useReadContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { encodeFunctionData } from 'viem';
+import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
+import { useReadContract, useWaitForTransactionReceipt } from 'wagmi';
 
 import { Icon } from '@/components';
-import { openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
+import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
 import { showConfetti } from '@/redux/features/confettiSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import parseUnits from '@/helpers/parseUnits';
 import MONT_REWARD_MANAGER_ABI from '@/abis/MONT_REWARD_MANAGER_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 
 import ClaimReward from './ClaimReward';
@@ -19,9 +20,12 @@ import Claimed from './Claimed';
 
 const RewardButton = () => {
   const dispatch = useDispatch();
+  const { client } = useSmartWallets();
   const [claimed, setClaimed] = useState(false);
   const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
+  const [isClaimLoading, setIsClaimLoading] = useState(false);
+  const [rewardTx, setRewardTx] = useState('');
 
   const { data: balancesData, refetch: refetetchBalances } = useReadContract({
     address: details?.montRewardManager,
@@ -30,91 +34,36 @@ const RewardButton = () => {
     args: [address],
   });
 
-  const {
-    writeContract: writeClaim,
-    data: claimData,
-    isPending: isClaimLoading,
-    isError: isWriteClaimError,
-  } = useWriteContract();
-
-  const {
-    isLoading: isWaitClaimLoading,
-    isSuccess: isConfirmed,
-    isError: isWaitClaimError,
-  } = useWaitForTransactionReceipt({
-    hash: claimData,
+  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash: rewardTx as `0x${string}`,
   });
 
   useEffect(() => {
-    if (isClaimLoading || isWaitClaimLoading) {
-      let title = isClaimLoading ? 'Sign the transaction' : 'Claiming the reward';
-      let desc = isClaimLoading
-        ? 'Sign this transaction in your wallet'
-        : 'It will take a few seconds';
+    if (isConfirmed) {
+      setClaimed(true);
+
+      const claimValue = parseUnits(balancesData as string, 18).toNumber();
 
       dispatch(
         openDialog({
-          dialogProps: { showCloseButton: false, disableEvents: true },
-          content: (
-            <AnimatedDialogContent key="loading">
-              <LoadingContent title={title} desc={desc} />
-            </AnimatedDialogContent>
-          ),
+          content: <Claimed amount={claimValue} />,
         }),
       );
     }
-  }, [isClaimLoading, isWaitClaimLoading]);
-
-  useEffect(() => {
-    if (isConfirmed) onSuccess();
   }, [isConfirmed]);
-
-  useEffect(() => {
-    if (isWriteClaimError || isWaitClaimError) onError();
-  }, [isWriteClaimError, isWaitClaimError]);
 
   useEffect(() => {
     if (claimed) dispatch(showConfetti({ confettiProps: { onConfettiComplete } }));
   }, [claimed]);
 
-  function onClaim() {
-    writeClaim?.({
-      address: details!.montRewardManager,
-      abi: MONT_REWARD_MANAGER_ABI,
-      functionName: 'claim',
-    });
-  }
+  const onConfettiComplete = () => setClaimed(false);
 
-  function onSuccess() {
-    setClaimed(true);
-
-    const claimValue = parseUnits(balancesData as string, 18).toNumber();
-
-    dispatch(
-      openDialog({
-        content: <Claimed amount={claimValue} />,
-      }),
-    );
-  }
-
-  function onError() {
-    dispatch(
-      openDialog({
-        content: (
-          <AnimatedDialogContent key="error">
-            <ErrorContent title="Claim was unsuccessful" onClick={onClaim} />
-          </AnimatedDialogContent>
-        ),
-      }),
-    );
-  }
-
-  function onOpenDialog() {
+  const onOpenDialog = () => {
     const initialValue = parseUnits(balancesData as BigNumber, 18);
 
     dispatch(
       openDialog({
-        content: <ClaimReward claimValue={initialValue.toString()} onClaim={onClaim} />,
+        content: <ClaimReward claimValue={initialValue.toString()} onClaim={onClaimReward} />,
       }),
     );
 
@@ -122,15 +71,49 @@ const RewardButton = () => {
       if (balancesData !== newBalance.data) {
         const newValue = parseUnits(newBalance.data as BigNumber, 18);
         dispatch(
-          updateDialogContent(<ClaimReward claimValue={newValue.toString()} onClaim={onClaim} />),
+          updateDialogContent(
+            <ClaimReward claimValue={newValue.toString()} onClaim={onClaimReward} />,
+          ),
         );
       }
     });
-  }
+  };
 
-  function onConfettiComplete() {
-    setClaimed(false);
-  }
+  const onClaimReward = async () => {
+    dispatch(closeDialog());
+
+    setIsClaimLoading(true);
+    setRewardTx('');
+
+    if (!client) return;
+
+    try {
+      const tx = await client.sendTransaction({
+        account: client.account,
+        calls: [
+          {
+            to: details!.montRewardManager,
+            data: encodeFunctionData({
+              abi: MONT_REWARD_MANAGER_ABI,
+              functionName: 'claim',
+            }),
+          },
+        ],
+      });
+      setRewardTx(tx);
+    } catch (error) {
+      dispatch(
+        openDialog({
+          content: (
+            <AnimatedDialogContent key="error">
+              <ErrorContent title="Something went wrong" />
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
+    }
+    setIsClaimLoading(false);
+  };
 
   return (
     <div className="border-primary-gradiant rounded-lg">
@@ -138,11 +121,11 @@ const RewardButton = () => {
         type="button"
         className="flex-center-v bg-primary-800 rounded-lg px-2 h-10"
         onClick={onOpenDialog}
+        disabled={isClaimLoading}
       >
         <Icon name="gift-rainbow" />
       </button>
     </div>
   );
 };
-
 export default RewardButton;
