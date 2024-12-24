@@ -16,7 +16,7 @@ import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 
 import ClaimReward from './ClaimReward';
-import Claimed from './Claimed';
+import Claimed from '../Claimed';
 
 const RewardButton = () => {
   const dispatch = useDispatch();
