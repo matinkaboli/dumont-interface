@@ -59,7 +59,7 @@ const ConfirmSend = ({
   };
 
   const getTXArgs = () => {
-    const amount = formatUnits(sendData!.amount, sendData!.token === 'USDC' ? 6 : 18).toString();
+    const amount = formatUnits(sendData!.amount, sendData!.token === 'USDC' ? 6 : 18).toFixed();
     const address = sendData!.token === 'USDC' ? details!.usdt : details!.mont;
 
     if (sendData!.token === 'ETH') {
