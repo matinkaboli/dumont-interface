@@ -17,7 +17,7 @@ const CreateRound = ({
   title = 'Let’s start your round',
   desc = 'To start the game, you need to create a round',
 }: Props) => {
-  const { onCreateRound, isCreateGameLoading, isApproveLoading } = useNewRound();
+  const { onCreateRound, isCreateGameLoading } = useNewRound();
   const { ready } = usePrivy();
 
   return (
@@ -36,7 +36,7 @@ const CreateRound = ({
         radius="lg"
         onClick={onCreateRound}
         className="mt-4 mx-auto !font-bold md:w-auto w-full"
-        disabled={isCreateGameLoading || isApproveLoading || !ready}
+        disabled={isCreateGameLoading || !ready}
       >
         Create Round
       </Button>

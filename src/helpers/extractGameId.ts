@@ -7,7 +7,7 @@ const extractGameId = (logs: Log[]): number => {
     throw new Error('Invalid logs format');
   }
 
-  const lastLog = logs[logs.length - 1];
+  const lastLog = logs[logs.length - 2];
   const address = lastLog.topics[1];
   const id = Number(address);
 

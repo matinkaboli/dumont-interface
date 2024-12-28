@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import BN from 'bignumber.js';
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { useWaitForTransactionReceipt } from 'wagmi';
+import { encodeFunctionData } from 'viem';
+import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
 import { swiperRef } from '@/components/Carousel';
 import { AppDispatch } from '@/redux/store';
@@ -15,21 +16,19 @@ import guessArrayToNumber from '@/helpers/guessArrayToNumber';
 import formatUnits from '@/helpers/formatUnits';
 import isEmpty from '@/helpers/isEmpty';
 import formatDecimal from '@/helpers/formatDecimal';
-import { useApproval } from '@/hooks/useApproval';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import GAME_ABI from '@/abis/GAME_ABI.json';
-import { MAX_GUESSABLE_CARDS, TOTAL_CARDS_LENGTH } from '@/constants/static';
 import { usePolling } from '@/hooks/usePolling';
+import { useHidePrivyError } from '@/hooks/useHidePrivyError';
+import GAME_ABI from '@/abis/GAME_ABI.json';
+import ERC20_ABI from '@/abis/ERC20_ABI.json';
+import { TOTAL_CARDS_LENGTH } from '@/constants/static';
 
-import ApproveAllowance from '@/views/_components/Dialog/ApproveAllowance';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 
+import ResultMessage from './ConfirmBet/ResultMessage';
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
-import ConfirmBet from './ConfirmBet';
-import ResultMessage from './ConfirmBet/ResultMessage';
 
 const calculateTotalOdds = (
   keys: string[],
@@ -41,9 +40,7 @@ const calculateTotalOdds = (
   const transformedKeys = transformRanks(keys);
   const total = transformedKeys.reduce((sum, key) => sum + (cardOccurrences[key] || 0), 0);
 
-  const result = (TOTAL_CARDS_LENGTH - cardsLength) / total;
-
-  return result;
+  return (TOTAL_CARDS_LENGTH - cardsLength) / total;
 };
 
 const useCardData = () => {
@@ -89,18 +86,21 @@ export interface BetData {
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  // const [isGuessResLoading, setIsGuessResLoading] = useState(false);
   const { address } = useTypedSelector((state) => state.account.profile);
+  const { details } = useTypedSelector((state) => state.config);
+  const { client } = useSmartWallets();
+  const [isGuessCardLoading, setIsGuessCardLoading] = useState(false);
+  const [guessCardTx, setGuessCardTx] = useState('');
   const {
     game,
     activeCardIndex,
     isExpired,
     areAllCardsGuessed,
-    guessedCardsCount,
     validCardNumbers,
     cardOccurrences,
   } = useCardData();
-  const [betData, setBetData] = useState<BetData>({ amount: '', keys: [] });
+
+  useHidePrivyError(isGuessCardLoading);
 
   const {
     control,
@@ -127,36 +127,17 @@ const Board = () => {
 
   const formattedPayout = formatDecimal({ amount: totalAmount, decimalPlaces: 2 });
 
-  const { allowanceData, sendApprove, isApproveLoading, refetchAllowance } = useApproval(
-    game?.address,
-    onApproveSuccess,
-    onError,
-  );
-
-  const {
-    writeContract: writeGuessCard,
-    data: guessCardData,
-    isPending: isGuessCardLoading,
-    isError: isWriteGuessError,
-  } = useWriteContract();
-
-  const {
-    isLoading: isWaitGuessCardLoading,
-    isSuccess: isConfirmed,
-    isError: isWaitGuessError,
-  } = useWaitForTransactionReceipt({
-    hash: guessCardData,
+  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash: guessCardTx as `0x${string}`,
   });
 
-  const isGuessResultLoading = usePolling(
+  const isGuessCardConfirming = usePolling(
     isConfirmed,
     () => dispatch(getGame(game!.id)).unwrap(),
     (game: GameData) => {
       const cardRevealed = game.cards[activeCardIndex - 1].number !== -1;
 
       if (cardRevealed) {
-        refetchAllowance();
-
         dispatch(
           openDialog({
             dialogProps: {
@@ -171,37 +152,16 @@ const Board = () => {
                 />
               </AnimatedDialogContent>
             ),
-          })
+          }),
         );
       }
 
       return cardRevealed;
-    }
+    },
   );
 
   useEffect(() => {
-    if (isGuessCardLoading || isApproveLoading || isWaitGuessCardLoading || isGuessResultLoading) {
-      let title =
-        isGuessCardLoading ? 'Sign the transaction' : 'Waiting for the network';
-      let desc = isGuessCardLoading
-        ? 'Sign this transaction in your wallet'
-        : 'It will take a few seconds';
-
-      dispatch(
-        openDialog({
-          dialogProps: { showCloseButton: false, disableEvents: true },
-          content: (
-            <AnimatedDialogContent key="loading">
-              <LoadingContent title={title} desc={desc} />
-            </AnimatedDialogContent>
-          ),
-        }),
-      );
-    }
-  }, [isGuessCardLoading, isApproveLoading, isWaitGuessCardLoading, isGuessResultLoading]);
-
-  useEffect(() => {
-    if(game) {
+    if (game) {
       const currentCard = game.cards[activeCardIndex - 1];
       const result = currentCard?.result;
 
@@ -211,97 +171,65 @@ const Board = () => {
     }
   }, [game]);
 
-  useEffect(() => {
-    if (isWriteGuessError || isWaitGuessError) onError();
-  }, [isWriteGuessError, isWaitGuessError]);
+  const onGuessCard = async (data: BetData) => {
+    const keys = transformedRanks(data.keys);
+    const guessNumber = guessArrayToNumber(keys);
+    const amount = formatUnits(data.amount, 6).toNumber();
 
-  function onApproveSuccess() {
-    dispatch(
-      openDialog({
-        dialogProps: {
-          onCloseButton: onCloseConfirmBet,
-          onClickOverlay: onCloseConfirmBet,
-        },
-        content: (
-          <ConfirmBet
-            bet={betData}
-            totalOdds={totalOdds}
-            payout={formattedPayout}
-            onConfirm={() => onConfirmBet(betData)}
-          />
-        ),
-      }),
-    );
-  }
+    setIsGuessCardLoading(true);
+    setGuessCardTx('');
+
+    if (!client) return;
+
+    try {
+      const tx = await client.sendTransaction({
+        account: client.account,
+        calls: [
+          {
+            to: details!.usdt,
+            data: encodeFunctionData({
+              abi: ERC20_ABI,
+              functionName: 'approve',
+              args: [game?.address, amount.toString()],
+            }),
+          },
+          {
+            to: game!.address,
+            data: encodeFunctionData({
+              abi: GAME_ABI,
+              functionName: 'guessCard',
+              args: [activeCardIndex - 1, amount, guessNumber],
+            }),
+          },
+        ],
+      });
+
+      setGuessCardTx(tx);
+    } catch (error) {
+      dispatch(
+        openDialog({
+          content: (
+            <AnimatedDialogContent key="error">
+              <ErrorContent title="Something went wrong" />
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
+    }
+    setIsGuessCardLoading(false);
+  };
+
+  const onSubmit = (data: BetData) => {
+    if (!data.amount) return;
+
+    onGuessCard(data);
+  };
 
   function onCloseResultDialog() {
     reset();
     dispatch(closeDialog());
-    if (guessedCardsCount < MAX_GUESSABLE_CARDS - 1) {
-      // @ts-ignore
-      swiperRef?.current?.slideNext();
-    }
-  }
-
-  function onCloseConfirmBet() {
-    refetchAllowance();
-    dispatch(closeDialog());
-  }
-
-  function onConfirmBet(data: BetData) {
-    const keys = transformedRanks(data.keys);
-    const guessNumber = guessArrayToNumber(keys);
-    const amount = formatUnits(data.amount, 6).toNumber();
-    writeGuessCard?.({
-      address: game!.address,
-      abi: GAME_ABI,
-      functionName: 'guessCard',
-      args: [activeCardIndex - 1, amount, guessNumber],
-    });
-  }
-
-  function onBet(data: BetData) {
-    const isApproved = new BN(allowanceData as string).isGreaterThanOrEqualTo(
-      formatUnits(data.amount, 6),
-    );
-
-    dispatch(
-      openDialog({
-        dialogProps: {
-          onCloseButton: onCloseConfirmBet,
-          onClickOverlay: onCloseConfirmBet,
-        },
-        content: isApproved ? (
-          <ConfirmBet
-            bet={data}
-            totalOdds={totalOdds}
-            payout={formattedPayout}
-            onConfirm={() => onConfirmBet(data)}
-          />
-        ) : (
-          <ApproveAllowance onApprove={() => sendApprove(data.amount)} />
-        ),
-      }),
-    );
-  }
-
-  function onError() {
-    dispatch(
-      openDialog({
-        content: (
-          <AnimatedDialogContent key="error">
-            <ErrorContent title="Bet was unsuccessful" onClick={() => onConfirmBet(betData)} />
-          </AnimatedDialogContent>
-        ),
-      }),
-    );
-  }
-
-  function onSubmit(data: BetData) {
-    if (!data.amount) return;
-
-    setBetData(data);
-    onBet(data);
+    // @ts-ignore
+    swiperRef?.current?.slideNext();
   }
 
   function disabledButtonLabel() {
@@ -327,7 +255,9 @@ const Board = () => {
     isEmpty(keys) ||
     isExpired ||
     game?.cards[activeCardIndex - 1]?.number !== -1 ||
-    game?.player.toLowerCase() !== address?.toLowerCase();
+    game?.player.toLowerCase() !== address?.toLowerCase() ||
+    isGuessCardLoading ||
+    isGuessCardConfirming;
 
   return (
     <form

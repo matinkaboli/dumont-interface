@@ -3,11 +3,7 @@ import { ReactNode } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 
-interface Props {
-  children: ReactNode;
-}
-
-const Layout = ({ children }: Props) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="relative lg:pb-0 pb-24">
       <div className="absolute -z-10 top-0 left-0 right-0 bg-gradiant-layout blur-[20px] w-screen h-[243px]" />

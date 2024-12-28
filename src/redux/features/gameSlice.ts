@@ -94,6 +94,7 @@ const gameSlice = createSlice({
     },
     setIsGameCreated(state, action: PayloadAction<boolean>) {
       state.isCreated = action.payload;
+      state.isExpired = false;
     },
     resetGame() {
       return initialState;
