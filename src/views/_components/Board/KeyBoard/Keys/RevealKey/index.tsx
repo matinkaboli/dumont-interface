@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
@@ -20,6 +20,7 @@ import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import KeyButton from '../KeyButton';
 import ConfirmReveal from './ConfirmReveal';
 import RevealedCard from './RevealedCard';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -58,6 +59,21 @@ const RevealKey = ({ className }: { className?: string }) => {
       return cardRevealed;
     },
   );
+
+  useEffect(() => {
+    if(isRevealCardLoading) {
+      dispatch(
+        openDialog({
+          dialogProps: { showCloseButton: false, disableEvents: true },
+          content: (
+            <AnimatedDialogContent key="loading">
+              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
+    }
+  }, [isRevealCardLoading]);
 
   const onCloseDialog = () => dispatch(closeDialog());
 
