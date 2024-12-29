@@ -16,11 +16,11 @@ import GAME_ABI from '@/abis/GAME_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import KeyButton from '../KeyButton';
 import ConfirmReveal from './ConfirmReveal';
 import RevealedCard from './RevealedCard';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();

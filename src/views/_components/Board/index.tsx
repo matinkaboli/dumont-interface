@@ -29,6 +29,7 @@ import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import ResultMessage from './ConfirmBet/ResultMessage';
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 const calculateTotalOdds = (
   keys: string[],
@@ -170,6 +171,21 @@ const Board = () => {
       if (isPlayerWinner) dispatch(showConfetti({ confettiProps: { key: currentCard.number } }));
     }
   }, [game]);
+
+  useEffect(() => {
+    if(isGuessCardLoading) {
+      dispatch(
+        openDialog({
+          dialogProps: { showCloseButton: false, disableEvents: true },
+          content: (
+            <AnimatedDialogContent key="loading">
+              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
+    }
+  }, [isGuessCardLoading]);
 
   const onGuessCard = async (data: BetData) => {
     const keys = transformedRanks(data.keys);
