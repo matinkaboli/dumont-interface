@@ -1,6 +1,6 @@
 import { Card } from '@/redux/features/gameSlice';
 
-const demoCards:  Card[] = [
+const demoCards: Card[] = [
   {
     number: -1,
     hash: 'hash_1',
@@ -8,6 +8,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_1',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -16,6 +17,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_2',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -24,6 +26,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_3',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -32,6 +35,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_4',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -40,6 +44,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_5',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -48,6 +53,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_6',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -56,6 +62,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_7',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -64,6 +71,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_8',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -72,6 +80,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_9',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -80,6 +89,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_10',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -88,6 +98,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_11',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -96,6 +107,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_12',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -104,6 +116,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_13',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -112,6 +125,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_14',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -120,6 +134,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_15',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -128,6 +143,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_16',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -136,6 +152,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_17',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -144,6 +161,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_18',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -152,6 +170,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_19',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -160,6 +179,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_20',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -168,6 +188,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_21',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -176,6 +197,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_22',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -184,6 +206,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_23',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -192,6 +215,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_24',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -200,6 +224,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_25',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -208,6 +233,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_26',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -216,6 +242,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_27',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -224,6 +251,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_28',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -232,6 +260,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_29',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -240,6 +269,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_30',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -248,6 +278,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_31',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -256,6 +287,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_32',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -264,6 +296,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_33',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -272,6 +305,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_34',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -280,6 +314,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_35',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -288,6 +323,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_36',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -296,6 +332,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_37',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -304,6 +341,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_38',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -312,6 +350,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_39',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -320,6 +359,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_40',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -328,6 +368,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_41',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -336,6 +377,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_42',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -344,6 +386,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_43',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -352,6 +395,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_44',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -360,6 +404,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_45',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -368,6 +413,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_46',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -376,6 +422,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_47',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -384,6 +431,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_48',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -392,6 +440,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_49',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -400,6 +449,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_50',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -408,6 +458,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_51',
+    totalAmount: "0",
   },
   {
     number: -1,
@@ -416,6 +467,7 @@ const demoCards:  Card[] = [
     guessedNumbers: [],
     status: 'hidden',
     _id: 'id_52',
+    totalAmount: "0",
   },
 ];
 
