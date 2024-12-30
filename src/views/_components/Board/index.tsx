@@ -18,7 +18,6 @@ import isEmpty from '@/helpers/isEmpty';
 import formatDecimal from '@/helpers/formatDecimal';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { usePolling } from '@/hooks/usePolling';
-import { useHidePrivyError } from '@/hooks/useHidePrivyError';
 import GAME_ABI from '@/abis/GAME_ABI.json';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import { TOTAL_CARDS_LENGTH } from '@/constants/static';
@@ -101,8 +100,6 @@ const Board = () => {
     validCardNumbers,
     cardOccurrences,
   } = useCardData();
-
-  useHidePrivyError(isGuessCardLoading);
 
   const {
     control,
