@@ -14,6 +14,7 @@ import { openDialog } from '@/redux/features/dialogSlice';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import SuccessModal from './SuccessModal';
 import { SendData } from '../.';
@@ -31,7 +32,7 @@ const ConfirmSend = ({
   const [isTransferLoading, setIsTransferLoading] = useState(false);
   const [transferTx, setTransferTx] = useState('');
 
-  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: transferTx as `0x${string}`,
   });
 
@@ -89,6 +90,14 @@ const ConfirmSend = ({
     const txArgs = getTXArgs();
     onTransfer(txArgs);
   };
+
+  if (isTransferLoading || isWaitTXLoading) {
+    return (
+      <AnimatedDialogContent key="loading">
+        <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+      </AnimatedDialogContent>
+    );
+  }
 
   if (isConfirmed) {
     return (
