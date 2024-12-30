@@ -14,6 +14,7 @@ import MONT_REWARD_MANAGER_ABI from '@/abis/MONT_REWARD_MANAGER_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import ClaimReward from './ClaimReward';
 import Claimed from '../Claimed';
@@ -34,9 +35,28 @@ const RewardButton = () => {
     args: [address],
   });
 
-  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: rewardTx as `0x${string}`,
   });
+
+  useEffect(() => {
+    if (isClaimLoading || isWaitTXLoading) {
+      dispatch(
+        openDialog({
+          dialogProps: { showCloseButton: false, disableEvents: true },
+          content: (
+            <AnimatedDialogContent key="loading">
+              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
+    }
+  }, [isClaimLoading, isWaitTXLoading]);
+
+  useEffect(() => {
+    if (claimed) dispatch(showConfetti({ confettiProps: { onConfettiComplete } }));
+  }, [claimed]);
 
   useEffect(() => {
     if (isConfirmed) {
@@ -52,14 +72,10 @@ const RewardButton = () => {
     }
   }, [isConfirmed]);
 
-  useEffect(() => {
-    if (claimed) dispatch(showConfetti({ confettiProps: { onConfettiComplete } }));
-  }, [claimed]);
-
   const onConfettiComplete = () => setClaimed(false);
 
   const onOpenDialog = () => {
-    const initialValue = parseUnits(balancesData as BigNumber, 18);
+    let initialValue = parseUnits(balancesData as BigNumber, 18);
 
     dispatch(
       openDialog({
@@ -121,7 +137,7 @@ const RewardButton = () => {
         type="button"
         className="flex-center-v bg-primary-800 rounded-lg px-2 h-10"
         onClick={onOpenDialog}
-        disabled={isClaimLoading}
+        disabled={isClaimLoading || isWaitTXLoading}
       >
         <Icon name="gift-rainbow" />
       </button>

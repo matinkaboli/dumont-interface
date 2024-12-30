@@ -133,7 +133,7 @@ const ConfirmSend = ({
         className="mt-6"
         radius="lg"
         onClick={onConfirm}
-        disabled={isTransferLoading}
+        disabled={isTransferLoading || isWaitTXLoading}
       >
         Confirm
       </Button>
