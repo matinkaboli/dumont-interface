@@ -30,7 +30,7 @@ const RevealKey = ({ className }: { className?: string }) => {
   const [isRevealCardLoading, setIsRevealCardLoading] = useState(false);
   const [revealCardTx, setRevealCardTx] = useState('');
 
-  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: revealCardTx as `0x${string}`,
   });
 
@@ -61,7 +61,7 @@ const RevealKey = ({ className }: { className?: string }) => {
   );
 
   useEffect(() => {
-    if(isRevealCardLoading) {
+    if (isRevealCardLoading || isWaitTXLoading) {
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
@@ -73,7 +73,7 @@ const RevealKey = ({ className }: { className?: string }) => {
         }),
       );
     }
-  }, [isRevealCardLoading]);
+  }, [isRevealCardLoading, isWaitTXLoading]);
 
   const onCloseDialog = () => dispatch(closeDialog());
 
@@ -141,7 +141,8 @@ const RevealKey = ({ className }: { className?: string }) => {
         game?.cards[activeCardIndex - 1]?.number !== -1 ||
         +game!.freeRevealRequests === +game!.maxFreeReveals ||
         isRevealCardLoading ||
-        isRevealConfirming
+        isRevealConfirming ||
+        isWaitTXLoading
       }
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>

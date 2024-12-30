@@ -25,11 +25,12 @@ import { TOTAL_CARDS_LENGTH } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import ResultMessage from './ConfirmBet/ResultMessage';
 import KeyBoard from './KeyBoard';
 import Amount from './Amount';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
+import ConfirmBet from './ConfirmBet';
 
 const calculateTotalOdds = (
   keys: string[],
@@ -128,7 +129,7 @@ const Board = () => {
 
   const formattedPayout = formatDecimal({ amount: totalAmount, decimalPlaces: 2 });
 
-  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: guessCardTx as `0x${string}`,
   });
 
@@ -173,7 +174,7 @@ const Board = () => {
   }, [game]);
 
   useEffect(() => {
-    if(isGuessCardLoading) {
+    if (isGuessCardLoading || isWaitTXLoading) {
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
@@ -185,7 +186,7 @@ const Board = () => {
         }),
       );
     }
-  }, [isGuessCardLoading]);
+  }, [isGuessCardLoading, isWaitTXLoading]);
 
   const onGuessCard = async (data: BetData) => {
     const keys = transformedRanks(data.keys);
@@ -238,17 +239,28 @@ const Board = () => {
   const onSubmit = (data: BetData) => {
     if (!data.amount) return;
 
-    onGuessCard(data);
+    dispatch(
+      openDialog({
+        content: (
+          <ConfirmBet
+            bet={data}
+            totalOdds={totalOdds}
+            payout={formattedPayout}
+            onConfirm={() => onGuessCard(data)}
+          />
+        ),
+      }),
+    );
   };
 
-  function onCloseResultDialog() {
+  const onCloseResultDialog = () => {
     reset();
     dispatch(closeDialog());
     // @ts-ignore
     swiperRef?.current?.slideNext();
-  }
+  };
 
-  function disabledButtonLabel() {
+  const disabledButtonLabel = () => {
     if (!game) return 'Bet';
 
     const card = game.cards?.[activeCardIndex - 1];
@@ -263,7 +275,7 @@ const Board = () => {
     if (isCardRevealed) return 'Revealed Card';
 
     return 'Bet';
-  }
+  };
 
   const isDisabled =
     !isValid ||
@@ -273,7 +285,8 @@ const Board = () => {
     game?.cards[activeCardIndex - 1]?.number !== -1 ||
     game?.player.toLowerCase() !== address?.toLowerCase() ||
     isGuessCardLoading ||
-    isGuessCardConfirming;
+    isGuessCardConfirming ||
+    isWaitTXLoading;
 
   return (
     <form
