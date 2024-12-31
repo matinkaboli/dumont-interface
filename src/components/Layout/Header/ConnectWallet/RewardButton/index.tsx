@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import BigNumber from 'bignumber.js';
 import { useDispatch } from 'react-redux';
 import { encodeFunctionData } from 'viem';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 import { useReadContract, useWaitForTransactionReceipt } from 'wagmi';
 
 import { Icon } from '@/components';
-import { closeDialog, openDialog, updateDialogContent } from '@/redux/features/dialogSlice';
+import { openDialog } from '@/redux/features/dialogSlice';
 import { showConfetti } from '@/redux/features/confettiSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import parseUnits from '@/helpers/parseUnits';
@@ -22,13 +21,12 @@ import Claimed from '../Claimed';
 const RewardButton = () => {
   const dispatch = useDispatch();
   const { client } = useSmartWallets();
-  const [claimed, setClaimed] = useState(false);
   const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
   const [isClaimLoading, setIsClaimLoading] = useState(false);
   const [rewardTx, setRewardTx] = useState('');
 
-  const { data: balancesData, refetch: refetetchBalances } = useReadContract({
+  const { data: balancesData } = useReadContract({
     address: details?.montRewardManager,
     abi: MONT_REWARD_MANAGER_ABI,
     functionName: 'balances',
@@ -55,49 +53,31 @@ const RewardButton = () => {
   }, [isClaimLoading, isWaitTXLoading]);
 
   useEffect(() => {
-    if (claimed) dispatch(showConfetti({ confettiProps: { onConfettiComplete } }));
-  }, [claimed]);
-
-  useEffect(() => {
     if (isConfirmed) {
-      setClaimed(true);
-
+      dispatch(showConfetti({}));
       const claimValue = parseUnits(balancesData as string, 18).toNumber();
 
       dispatch(
         openDialog({
-          content: <Claimed amount={claimValue} />,
+          content: (
+            <AnimatedDialogContent key="claimed">
+              <Claimed amount={claimValue} />
+            </AnimatedDialogContent>
+          ),
         }),
       );
     }
   }, [isConfirmed]);
 
-  const onConfettiComplete = () => setClaimed(false);
-
   const onOpenDialog = () => {
-    let initialValue = parseUnits(balancesData as BigNumber, 18);
-
     dispatch(
       openDialog({
-        content: <ClaimReward claimValue={initialValue.toString()} onClaim={onClaimReward} />,
+        content: <ClaimReward onClaim={onClaimReward} />,
       }),
     );
-
-    refetetchBalances().then((newBalance) => {
-      if (balancesData !== newBalance.data) {
-        const newValue = parseUnits(newBalance.data as BigNumber, 18);
-        dispatch(
-          updateDialogContent(
-            <ClaimReward claimValue={newValue.toString()} onClaim={onClaimReward} />,
-          ),
-        );
-      }
-    });
   };
 
   const onClaimReward = async () => {
-    dispatch(closeDialog());
-
     setIsClaimLoading(true);
     setRewardTx('');
 

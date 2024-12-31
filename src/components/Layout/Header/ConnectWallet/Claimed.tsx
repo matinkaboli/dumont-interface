@@ -1,16 +1,11 @@
 import { useDispatch } from 'react-redux';
 
 import { Button, DialogTitle, Icon } from '@/components';
-import { AppDispatch } from '@/redux/store';
 import { closeDialog } from '@/redux/features/dialogSlice';
 import humanizeAmount from '@/helpers/humanizeAmount';
 
-type ClaimedProps = {
-  amount: number;
-};
-
-const Claimed = ({ amount }: ClaimedProps) => {
-  const dispatch = useDispatch<AppDispatch>();
+const Claimed = ({ amount }: { amount: number }) => {
+  const dispatch = useDispatch();
   const onCloseDialog = () => dispatch(closeDialog());
 
   return (
