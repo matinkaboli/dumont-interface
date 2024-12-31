@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { encodeFunctionData } from 'viem';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
-import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
 import { setIsGameCreated } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -17,9 +17,9 @@ import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 import ConfirmNewRound from '@/views/_components/ConfirmNewRound';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 
 export const useNewRound = () => {
   const router = useRouter();
@@ -27,39 +27,46 @@ export const useNewRound = () => {
   const { client } = useSmartWallets();
   const { details } = useTypedSelector((state) => state.config);
   const { referralAddress } = useTypedSelector((state) => state.referral);
+  const [loadingIndex, setLoadingIndex] = useState(0);
   const [isCreateGameLoading, setIsCreateGameLoading] = useState(false);
   const [errorMessageGame, setErrorMessageGame] = useState('');
   const [gameTx, setGameTx] = useState('');
 
-  const { data: receiptData, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const {
+    data: receiptData,
+    isLoading: isWaitTXLoading,
+    isSuccess: isConfirmed,
+  } = useWaitForTransactionReceipt({
     hash: gameTx as `0x${string}`,
   });
 
   useEffect(() => {
-    if (isCreateGameLoading) {
+    if (isCreateGameLoading || isWaitTXLoading) {
       dispatch(
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
             <AnimatedDialogContent key="loading">
-              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+              <LongLoadingContent activeIndex={loadingIndex} setActiveIndex={setLoadingIndex} />
             </AnimatedDialogContent>
           ),
         }),
       );
     }
-  }, [isCreateGameLoading]);
+  }, [isCreateGameLoading, isWaitTXLoading, loadingIndex]);
 
   useEffect(() => {
-    if (isConfirmed) {
+    if (isConfirmed && loadingIndex === 4) {
+      setLoadingIndex(0);
       const id = extractGameId(receiptData.logs);
+
       if (id) {
         router.push(`${Routes.ROUND}/${id}`);
         dispatch(setIsGameCreated(true));
         dispatch(closeDialog());
       }
     }
-  }, [isConfirmed]);
+  }, [isConfirmed, loadingIndex]);
 
   const onCreate = async () => {
     setIsCreateGameLoading(true);
