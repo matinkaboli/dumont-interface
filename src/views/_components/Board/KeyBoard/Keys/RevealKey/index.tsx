@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
@@ -16,6 +16,7 @@ import GAME_ABI from '@/abis/GAME_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import KeyButton from '../KeyButton';
 import ConfirmReveal from './ConfirmReveal';
@@ -29,7 +30,7 @@ const RevealKey = ({ className }: { className?: string }) => {
   const [isRevealCardLoading, setIsRevealCardLoading] = useState(false);
   const [revealCardTx, setRevealCardTx] = useState('');
 
-  const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: revealCardTx as `0x${string}`,
   });
 
@@ -58,6 +59,21 @@ const RevealKey = ({ className }: { className?: string }) => {
       return cardRevealed;
     },
   );
+
+  useEffect(() => {
+    if (isRevealCardLoading || isWaitTXLoading) {
+      dispatch(
+        openDialog({
+          dialogProps: { showCloseButton: false, disableEvents: true },
+          content: (
+            <AnimatedDialogContent key="loading">
+              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
+    }
+  }, [isRevealCardLoading, isWaitTXLoading]);
 
   const onCloseDialog = () => dispatch(closeDialog());
 
@@ -125,7 +141,8 @@ const RevealKey = ({ className }: { className?: string }) => {
         game?.cards[activeCardIndex - 1]?.number !== -1 ||
         +game!.freeRevealRequests === +game!.maxFreeReveals ||
         isRevealCardLoading ||
-        isRevealConfirming
+        isRevealConfirming ||
+        isWaitTXLoading
       }
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>

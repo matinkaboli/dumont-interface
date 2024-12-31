@@ -1,25 +1,35 @@
 import Link from 'next/link';
+import BigNumber from 'bignumber.js';
+import { useReadContract } from 'wagmi';
 
 import { Button, Icon } from '@/components';
 import humanizeAmount from '@/helpers/humanizeAmount';
 import Links from '@/constants/links';
-import BigNumber from 'bignumber.js';
+import MONT_REWARD_MANAGER_ABI from '@/abis/MONT_REWARD_MANAGER_ABI.json';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
+import parseUnits from '@/helpers/parseUnits';
 
-interface Props {
-  claimValue: string;
-  onClaim: () => void;
-}
+const ClaimReward = ({ onClaim }: { onClaim: () => void }) => {
+  const { details } = useTypedSelector((state) => state.config);
+  const { address } = useTypedSelector((state) => state.account.profile);
 
-const ClaimReward = ({ claimValue, onClaim }: Props) => {
-  const isClaimAmountZero = new BigNumber(claimValue).isZero();
+  const { data: balancesData } = useReadContract({
+    address: details?.montRewardManager,
+    abi: MONT_REWARD_MANAGER_ABI,
+    functionName: 'balances',
+    args: [address],
+  });
+
+  const claimAmount = parseUnits(balancesData as string, 18).toNumber();
+  const isClaimAmountZero = new BigNumber(claimAmount).isZero();
 
   return (
     <div className="text-center">
       <h6 className="text-md text-white">Reward to claim</h6>
       <h2 className="font-bold text-4xl text-white mt-2">
         <span className="bg-gradiant-text text-transparent bg-clip-text">
-          {humanizeAmount(claimValue)}
-        </span>{' '}
+          {humanizeAmount(claimAmount)}{' '}
+        </span>
         MONT
       </h2>
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 
@@ -15,7 +16,28 @@ const items = [
   'Finalizing round creation',
 ];
 
-function LongLoadingContent({ activeIndex }: { activeIndex: number }) {
+interface Props {
+  activeIndex: number;
+  setActiveIndex: Dispatch<SetStateAction<number>>;
+}
+
+function LongLoadingContent({ activeIndex, setActiveIndex }: Props) {
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => {
+        if (prevIndex < 4) {
+          return prevIndex + 1;
+        } else {
+          clearInterval(interval);
+          return prevIndex;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <DialogTitle className="text-center">Creating the round</DialogTitle>

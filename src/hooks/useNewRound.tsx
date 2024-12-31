@@ -5,6 +5,7 @@ import { encodeFunctionData } from 'viem';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
 import { setIsGameCreated } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -15,7 +16,10 @@ import { DEFAULT_APPROVE_VALUE } from '@/constants/static';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 
-import { useHidePrivyError } from './useHidePrivyError';
+import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
+import ConfirmNewRound from '@/views/_components/ConfirmNewRound';
+import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
 
 export const useNewRound = () => {
   const router = useRouter();
@@ -23,13 +27,48 @@ export const useNewRound = () => {
   const { client } = useSmartWallets();
   const { details } = useTypedSelector((state) => state.config);
   const { referralAddress } = useTypedSelector((state) => state.referral);
+  const [loadingIndex, setLoadingIndex] = useState(0);
   const [isCreateGameLoading, setIsCreateGameLoading] = useState(false);
   const [errorMessageGame, setErrorMessageGame] = useState('');
   const [gameTx, setGameTx] = useState('');
 
-  useHidePrivyError(isCreateGameLoading);
+  const {
+    data: receiptData,
+    isLoading: isWaitTXLoading,
+    isSuccess: isConfirmed,
+  } = useWaitForTransactionReceipt({
+    hash: gameTx as `0x${string}`,
+  });
 
-  const onCreateRound = async () => {
+  useEffect(() => {
+    if (isCreateGameLoading || isWaitTXLoading) {
+      dispatch(
+        openDialog({
+          dialogProps: { showCloseButton: false, disableEvents: true },
+          content: (
+            <AnimatedDialogContent key="loading">
+              <LongLoadingContent activeIndex={loadingIndex} setActiveIndex={setLoadingIndex} />
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
+    }
+  }, [isCreateGameLoading, isWaitTXLoading, loadingIndex]);
+
+  useEffect(() => {
+    if (isConfirmed && loadingIndex === 4) {
+      setLoadingIndex(0);
+      const id = extractGameId(receiptData.logs);
+
+      if (id) {
+        router.push(`${Routes.ROUND}/${id}`);
+        dispatch(setIsGameCreated(true));
+        dispatch(closeDialog());
+      }
+    }
+  }, [isConfirmed, loadingIndex]);
+
+  const onCreate = async () => {
     setIsCreateGameLoading(true);
     setGameTx('');
 
@@ -64,23 +103,26 @@ export const useNewRound = () => {
       setGameTx(tx);
     } catch (error) {
       setErrorMessageGame('Transaction failed. Please try again.');
+      dispatch(
+        openDialog({
+          content: (
+            <AnimatedDialogContent key="error">
+              <ErrorContent title="Something went wrong" />
+            </AnimatedDialogContent>
+          ),
+        }),
+      );
     }
     setIsCreateGameLoading(false);
   };
 
-  const { data: receiptData, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-    hash: gameTx as `0x${string}`,
-  });
-
-  useEffect(() => {
-    if (isConfirmed) {
-      const id = extractGameId(receiptData.logs);
-      if (id) {
-        router.push(`${Routes.ROUND}/${id}`);
-        dispatch(setIsGameCreated(true));
-      }
-    }
-  }, [isConfirmed]);
+  const onCreateRound = () => {
+    dispatch(
+      openDialog({
+        content: <ConfirmNewRound onCreateGame={onCreate} />,
+      }),
+    );
+  };
 
   return {
     onCreateRound,

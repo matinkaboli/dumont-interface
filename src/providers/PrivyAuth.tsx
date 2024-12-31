@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { PrivyProvider } from '@privy-io/react-auth';
 import { base, baseSepolia } from 'wagmi/chains';
 import { SmartWalletsProvider } from '@privy-io/react-auth/smart-wallets';
+
 import { Networks } from '@/types';
 
 const network = process.env.NEXT_PUBLIC_NETWORK as Networks;
@@ -22,6 +23,7 @@ export default function Privy({ children }: { children: ReactNode }) {
         loginMethods: ['email', 'wallet', 'google'],
         embeddedWallets: {
           createOnLogin: 'all-users',
+          showWalletUIs: false,
         },
         defaultChain: baseSepolia,
         supportedChains: [network === 'baseSepolia' ? baseSepolia : base],

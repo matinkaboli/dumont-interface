@@ -20,7 +20,7 @@ const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {
     loading,
-    profile: { address },
+    profile: { address, isConnected, isConnecting },
   } = useTypedSelector((state) => state.account);
   const [activeRoundId, setActiveRoundId] = useState<string>('');
   const [isDecidingRedirect, setIsDecidingRedirect] = useState(true);
@@ -32,25 +32,27 @@ const Home = () => {
 
   const handlePlayerGames = (addr: `0x${string}`) => {
     dispatch(resetGame());
-    setIsDecidingRedirect(true);
     setActiveRoundId('');
+    setIsDecidingRedirect(true);
 
     dispatch(getPlayerGames(addr))
       .unwrap()
       .then((result) => {
         setActiveRoundId(isEmpty(result) ? '' : result[0].id);
+      })
+      .finally(() => {
         setIsDecidingRedirect(false);
       });
   };
 
-  if (loading || (!isEmpty(address) && isDecidingRedirect) || !ready)
+  if (loading || !ready || isConnecting || (isConnected && isDecidingRedirect))
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
       </div>
     );
 
-  if (!isEmpty(address)) {
+  if (isConnected) {
     if (activeRoundId) redirect(`${Routes.ROUND}/${activeRoundId}`);
 
     if (!activeRoundId) redirect(Routes.START);
