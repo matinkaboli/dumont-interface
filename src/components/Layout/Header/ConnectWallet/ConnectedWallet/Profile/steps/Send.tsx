@@ -28,9 +28,9 @@ const tokens: TokenItem[] = [
 ];
 
 interface Props {
-  setSendData: Dispatch<SetStateAction<SendData | undefined>>;
-  onNextSlide: () => void;
   balances: Balance;
+  onNextSlide: () => void;
+  setSendData: Dispatch<SetStateAction<SendData | undefined>>;
 }
 
 const validateAmount = (balance: number) => {
@@ -71,6 +71,7 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
     control,
     handleSubmit,
     setValue,
+    trigger,
     formState: { isDirty, isValid, errors },
   } = useForm<SendData>({
     mode: 'onChange',
@@ -97,11 +98,14 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
   const setMaxValue = () => {
     const amount = tokenBalances[selectedToken] ?? '0';
     setValue('amount', amount);
+    trigger('amount');
   };
 
-  const onSetToken = (token: Token) => {
+  const onSetToken = async (token: Token) => {
     setSelectedToken(token);
     setValue('token', token);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    trigger('amount');
   };
 
   return (
