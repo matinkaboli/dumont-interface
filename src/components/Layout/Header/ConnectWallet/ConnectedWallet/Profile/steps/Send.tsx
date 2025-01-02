@@ -71,7 +71,7 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { isDirty, isValid, errors },
   } = useForm<SendData>({
     mode: 'onChange',
     defaultValues: {
@@ -157,7 +157,7 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
         />
       </div>
 
-      <Button type="submit" fullWidth className="mt-8" radius="lg">
+      <Button type="submit" fullWidth className="mt-8" radius="lg" disabled={!isValid || !isDirty}>
         Send
       </Button>
     </form>
