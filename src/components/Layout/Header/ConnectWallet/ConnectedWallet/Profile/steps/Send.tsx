@@ -28,9 +28,9 @@ const tokens: TokenItem[] = [
 ];
 
 interface Props {
-  setSendData: Dispatch<SetStateAction<SendData | undefined>>;
-  onNextSlide: () => void;
   balances: Balance;
+  onNextSlide: () => void;
+  setSendData: Dispatch<SetStateAction<SendData | undefined>>;
 }
 
 const validateAmount = (balance: number) => {
@@ -71,7 +71,8 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    trigger,
+    formState: { isDirty, isValid, errors },
   } = useForm<SendData>({
     mode: 'onChange',
     defaultValues: {
@@ -97,11 +98,14 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
   const setMaxValue = () => {
     const amount = tokenBalances[selectedToken] ?? '0';
     setValue('amount', amount);
+    trigger('amount');
   };
 
-  const onSetToken = (token: Token) => {
+  const onSetToken = async (token: Token) => {
     setSelectedToken(token);
     setValue('token', token);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    trigger('amount');
   };
 
   return (
@@ -157,7 +161,7 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
         />
       </div>
 
-      <Button type="submit" fullWidth className="mt-8" radius="lg">
+      <Button type="submit" fullWidth className="mt-8" radius="lg" disabled={!isValid || !isDirty}>
         Send
       </Button>
     </form>
