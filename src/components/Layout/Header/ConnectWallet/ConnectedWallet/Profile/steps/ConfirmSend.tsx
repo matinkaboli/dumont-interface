@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
-import { Button, Icon } from '@/components';
+import { Button, CopyToClipboard, Icon } from '@/components';
 import truncateString from '@/helpers/truncateString';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
@@ -122,10 +122,14 @@ const ConfirmSend = ({
 
         <Icon name="arrow-down" color="#ADADB6" className="mx-auto my-4" />
 
-        <div className="flex gap-2 bg-neutral-700 rounded-xl px-4 py-2.5 font-medium text-md text-white w-fit mx-auto">
+        <CopyToClipboard
+          showIcon={false}
+          copyText={sendData!.address}
+          className="flex gap-2 bg-neutral-700 rounded-xl px-4 py-2.5 font-medium text-md text-white w-fit mx-auto"
+        >
           <Image src="/images/account.svg" width={24} height={24} alt="account" />
           {truncateString(sendData!.address, { leftChars: 8, rightChars: 8 })}
-        </div>
+        </CopyToClipboard>
       </div>
 
       <Button
