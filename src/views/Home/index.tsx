@@ -45,14 +45,19 @@ const Home = () => {
       });
   };
 
-  if (loading || !ready || isConnecting || (isConnected && isDecidingRedirect))
+  if (
+    loading ||
+    !ready ||
+    isConnecting ||
+    ((isConnected || !isEmpty(address)) && isDecidingRedirect)
+  )
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
       </div>
     );
 
-  if (isConnected) {
+  if (isConnected || !isEmpty(address)) {
     if (activeRoundId) redirect(`${Routes.ROUND}/${activeRoundId}`);
 
     if (!activeRoundId) redirect(Routes.START);
