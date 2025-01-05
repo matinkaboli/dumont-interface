@@ -18,10 +18,6 @@ const tokens: TokenItem[] = [
     symbol: 'USDC',
   },
   {
-    icon: '/images/tokens/eth.svg',
-    symbol: 'ETH',
-  },
-  {
     icon: '/images/tokens/mont.svg',
     symbol: 'MONT',
   },
@@ -83,7 +79,6 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
   });
 
   const tokenBalances = {
-    ETH: balances.eth,
     MONT: balances.mont,
     USDC: balances.usdc,
   };
@@ -108,6 +103,14 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
     trigger('amount');
   };
 
+  const handlePaste = async () => {
+    if (navigator.clipboard) {
+      const text = await navigator.clipboard.readText();
+      setValue('address', text);
+      trigger('address');
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex gap-3 mb-8 mt-6">
@@ -117,7 +120,7 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
             key={token.symbol}
             onClick={() => onSetToken(token.symbol)}
             className={clsx(
-              'w-28 h-10 flex-center gap-2 text-white font-medium border text-sm rounded-xl transition-all duration-300 ease-in-out',
+              'w-1/2 h-10 flex-center gap-2 text-white font-medium border text-sm rounded-xl transition-all duration-300 ease-in-out',
               selectedToken === token.symbol
                 ? 'border-primary-250 bg-primary-600'
                 : 'border-neutral-550 bg-transparent',
@@ -129,7 +132,33 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
         ))}
       </div>
 
-      <div className="flex justify-between mb-2">
+      <Controller
+        name="address"
+        control={control}
+        rules={validateAddress}
+        render={({ field }) => (
+          <Input
+            variant="secondary"
+            label="To"
+            placeholder="0x..."
+            className="!pr-12"
+            rightSection={
+              <button
+                type="button"
+                onClick={handlePaste}
+                className="text-neutral-400 text-sm font-medium"
+              >
+                Paste
+              </button>
+            }
+            rightSectionPointerEvents="auto"
+            errors={errors}
+            {...field}
+          />
+        )}
+      />
+
+      <div className="flex justify-between mt-4 mb-2">
         <div className="font-medium text-sm text-white">Amount</div>
         <button
           type="button"
@@ -140,7 +169,6 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
           <Icon name="caret-up" />
         </button>
       </div>
-
       <Controller
         name="amount"
         control={control}
@@ -149,17 +177,6 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
           <Input variant="secondary" placeholder="0.00" errors={errors} {...field} />
         )}
       />
-
-      <div className="mt-4">
-        <Controller
-          name="address"
-          control={control}
-          rules={validateAddress}
-          render={({ field }) => (
-            <Input variant="secondary" label="To" placeholder="0x..." errors={errors} {...field} />
-          )}
-        />
-      </div>
 
       <Button type="submit" fullWidth className="mt-8" radius="lg" disabled={!isValid || !isDirty}>
         Send
