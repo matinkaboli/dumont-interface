@@ -12,11 +12,6 @@ const BalanceList = ({ accountBalance }: { accountBalance: Balance }) => {
       value: accountBalance.usdc ?? '0',
     },
     {
-      icon: '/images/tokens/eth.svg',
-      symbol: 'ETH',
-      value: accountBalance.eth ?? '0',
-    },
-    {
       icon: '/images/tokens/mont.svg',
       symbol: 'MONT',
       value: accountBalance.mont ?? '0',
