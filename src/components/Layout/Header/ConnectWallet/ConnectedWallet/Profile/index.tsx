@@ -11,7 +11,7 @@ import ConfirmSend from './steps/ConfirmSend';
 import Receive from './steps/Receive';
 import Send from './steps/Send';
 
-export type Token = 'USDC' | 'ETH' | 'MONT';
+export type Token = 'USDC' | 'MONT';
 
 export interface SendData {
   amount: string;

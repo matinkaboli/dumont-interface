@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import { encodeFunctionData, parseEther } from 'viem';
-import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import Image from 'next/image';
+import { encodeFunctionData } from 'viem';
+import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
@@ -59,18 +59,13 @@ const ConfirmSend = ({
     setIsTransferLoading(false);
   };
 
-  const getTXArgs = () => {
+  const onConfirm = () => {
+    removeSlideTitle();
+
     const amount = formatUnits(sendData!.amount, sendData!.token === 'USDC' ? 6 : 18).toFixed();
     const address = sendData!.token === 'USDC' ? details!.usdt : details!.mont;
 
-    if (sendData!.token === 'ETH') {
-      return {
-        to: sendData!.address as `0x${string}`,
-        value: parseEther(sendData!.amount),
-      };
-    }
-
-    return {
+    onTransfer({
       account: client!.account,
       calls: [
         {
@@ -82,13 +77,7 @@ const ConfirmSend = ({
           }),
         },
       ],
-    };
-  };
-
-  const onConfirm = () => {
-    removeSlideTitle();
-    const txArgs = getTXArgs();
-    onTransfer(txArgs);
+    });
   };
 
   if (isTransferLoading || isWaitTXLoading) {
