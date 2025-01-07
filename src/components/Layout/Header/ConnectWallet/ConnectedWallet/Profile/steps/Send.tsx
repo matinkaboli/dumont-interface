@@ -68,6 +68,7 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
     handleSubmit,
     setValue,
     trigger,
+    getValues,
     formState: { isDirty, isValid, errors },
   } = useForm<SendData>({
     mode: 'onChange',
@@ -99,8 +100,11 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
   const onSetToken = async (token: Token) => {
     setSelectedToken(token);
     setValue('token', token);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    trigger('amount');
+    const amount = getValues('amount');
+    if (amount) {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      trigger('amount');
+    }
   };
 
   const handlePaste = async () => {
