@@ -10,7 +10,6 @@ import { Networks } from '@/types';
 const network = process.env.NEXT_PUBLIC_NETWORK as Networks;
 
 export default function Privy({ children }: { children: ReactNode }) {
-
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
@@ -25,13 +24,11 @@ export default function Privy({ children }: { children: ReactNode }) {
           createOnLogin: 'all-users',
           showWalletUIs: false,
         },
-        defaultChain: baseSepolia,
+        defaultChain: network === 'baseSepolia' ? baseSepolia : base,
         supportedChains: [network === 'baseSepolia' ? baseSepolia : base],
       }}
     >
-      <SmartWalletsProvider>
-        {children}
-      </SmartWalletsProvider>
+      <SmartWalletsProvider>{children}</SmartWalletsProvider>
     </PrivyProvider>
   );
 }
