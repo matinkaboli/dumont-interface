@@ -1,11 +1,30 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
+import toFixedNumber from '@/helpers/toFixedNumber';
+import parseUnits from '@/helpers/parseUnits';
+
 export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
-  const postTitle = searchParams.get('title') || 'default one';
+  const gameId = searchParams.get('gameId') || '0';
+  const cardId = searchParams.get('cardId') || '0';
+
+  const apiEndpoint = `https://testapi.dumont.gg/games/${gameId}/activities`;
+  const gameData = await fetch(apiEndpoint)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Failed to fetch data for gameId: ${gameId}, cardId: ${cardId}`);
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
+
+  const card = gameData?.result[cardId];
 
   const interRegularFontP = fetch(
     new URL('../../../../public/fonts/Inter-Regular.ttf', import.meta.url),
@@ -77,7 +96,7 @@ export async function GET(req: NextRequest) {
             whiteSpace: 'pre-wrap',
           }}
         >
-          ${postTitle}
+          ${toFixedNumber(parseUnits(card?.totalAmount, 6))}
         </div>
         <div
           style={{
@@ -94,7 +113,7 @@ export async function GET(req: NextRequest) {
             marginTop: 'auto',
           }}
         >
-          ODDS 100x
+          ODDS {toFixedNumber(card?.result?.rate)}x
         </div>
       </div>
     ),
