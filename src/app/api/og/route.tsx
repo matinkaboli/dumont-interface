@@ -7,20 +7,23 @@ export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const postTitle = searchParams.get('title') || 'default one';
 
-  async function loadGoogleFont (font: string, text: string) {
-    const url = `https://fonts.googleapis.com/css2?family=${font}&text=${encodeURIComponent(text)}`
-    const css = await (await fetch(url)).text()
-    const resource = css.match(/src: url\((.+)\) format\('(opentype|truetype)'\)/)
+  const interRegularFontP = fetch(
+    new URL('../../../../public/fonts/Inter-Regular.ttf', import.meta.url),
+  ).then((res) => res.arrayBuffer());
 
-    if (resource) {
-      const response = await fetch(resource[1])
-      if (response.status == 200) {
-        return await response.arrayBuffer()
-      }
-    }
+  const interBoldFontP = fetch(
+    new URL('../../../../public/fonts/Inter-Bold.ttf', import.meta.url),
+  ).then((res) => res.arrayBuffer());
 
-    throw new Error('failed to load font data')
-  }
+  const interItalicFontP = fetch(
+    new URL('../../../../public/fonts/Inter-MediumItalic.ttf', import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
+  const [interRegularFont, interBoldFont, interItalicFont] = await Promise.all([
+    interRegularFontP,
+    interBoldFontP,
+    interItalicFontP,
+  ]);
 
   return new ImageResponse(
     (
@@ -28,40 +31,94 @@ export async function GET(req: NextRequest) {
         style={{
           height: '100%',
           width: '100%',
+          backgroundSize: '100% 100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundImage: `url(https://app.dumont.gg/images/wavy.jpg)`,
+          backgroundImage: `url(http://localhost:3000/images/social-preview.png)`,
           backgroundRepeat: 'no-repeat',
+          padding: '5% 0',
         }}
       >
+        <img
+          width="280"
+          height="181"
+          src="http://localhost:3000/images/share-logo.svg"
+          alt="dumont"
+        />
         <div
           style={{
             marginLeft: 190,
             marginRight: 190,
             display: 'flex',
-            fontSize: 140,
+            fontSize: 110,
+            fontFamily: 'Inter',
+            color: 'black',
+            lineHeight: '120px',
+            whiteSpace: 'pre-wrap',
+            marginTop: '30px',
+          }}
+        >
+          <i style={{ fontStyle: 'italic' }}>YAAY!</i>
+          <b style={{ fontWeight: 'bold', fontStyle: 'normal' }}> I won</b>
+        </div>
+        <div
+          style={{
+            marginLeft: 190,
+            marginRight: 190,
+            display: 'flex',
+            fontSize: 130,
             fontFamily: 'Inter',
             fontStyle: 'normal',
-            color: 'white',
+            color: 'black',
+            fontWeight: 'bold',
             lineHeight: '120px',
             whiteSpace: 'pre-wrap',
           }}
         >
-          {postTitle}
+          ${postTitle}
+        </div>
+        <div
+          style={{
+            marginLeft: 190,
+            marginRight: 190,
+            display: 'flex',
+            background: 'white',
+            alignItems: 'center',
+            fontSize: 100,
+            fontFamily: 'Inter',
+            fontStyle: 'italic',
+            padding: '0 50px',
+            border: '4px solid black',
+            marginTop: 'auto',
+          }}
+        >
+          ODDS 100x
         </div>
       </div>
     ),
-    // ImageResponse options
     {
       width: 1920,
       height: 1080,
       fonts: [
         {
-          name: "inter",
-          data: await loadGoogleFont('Inter', postTitle),
-          style: "normal",
+          name: 'Inter',
+          data: interRegularFont,
+          style: 'normal',
+          weight: 400,
+        },
+        {
+          name: 'Inter',
+          data: interBoldFont,
+          style: 'normal',
+          weight: 700,
+        },
+        {
+          name: 'Inter',
+          data: interItalicFont,
+          style: 'italic',
+          weight: 400,
         },
       ],
     },
