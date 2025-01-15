@@ -6,6 +6,8 @@ import parseUnits from '@/helpers/parseUnits';
 
 export const runtime = 'edge';
 
+const website = 'https://app.dumont.gg';
+
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const gameId = searchParams.get('gameId') || '0';
@@ -44,6 +46,27 @@ export async function GET(req: NextRequest) {
     interItalicFontP,
   ]);
 
+  if (!card?.result.isPlayerWinner) {
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            backgroundSize: '100% 100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundImage: `url(${website}/images/default-social-preview.png)`,
+            backgroundRepeat: 'no-repeat',
+            padding: '5% 0',
+          }}
+        />
+      ),
+    );
+  }
+
   return new ImageResponse(
     (
       <div
@@ -55,17 +78,12 @@ export async function GET(req: NextRequest) {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundImage: `url(http://localhost:3000/images/social-preview.png)`,
+          backgroundImage: `url(${website}/images/social-preview.png)`,
           backgroundRepeat: 'no-repeat',
           padding: '5% 0',
         }}
       >
-        <img
-          width="280"
-          height="181"
-          src="http://localhost:3000/images/share-logo.svg"
-          alt="dumont"
-        />
+        <img width="280" height="181" src={`${website}/images/share-logo.svg`} alt="dumont" />
         <div
           style={{
             marginLeft: 190,
