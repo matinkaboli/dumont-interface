@@ -10,28 +10,26 @@ export async function generateMetadata({
 }) {
   const { gameId, cardId } = searchParams;
 
+  const title = 'Dumont - Make Gambling Great Again';
+  const description =
+    'Bet on exciting games like leverageable sports markets and card games in a cheat-proof, verifiable environment powered by blockchain';
+  const url = `https://app.dumont.gg/guess-result?gameId=${gameId}&cardId=${cardId}`;
+
   return {
-    title: 'Social Metadata - Cruip Tutorials',
-    description:
-      "A guide on how to optimize SEO with static and dynamic metatags using Next.js 13's new Metadata API.",
+    title,
+    description,
     openGraph: {
-      title: 'Generate Dynamic Open Graph and Twitter Images in Next.js',
-      description:
-        "A guide on how to optimize SEO with static and dynamic metatags using Next.js 13's new Metadata API.",
+      title,
+      description,
       type: 'article',
-      url: `https://app.dumont.gg/guess-result?gameId=${gameId}&cardId=${cardId}`,
-      images: [
-        {
-          url: `https://app.dumont.gg/api/og?gameId=${gameId}&cardId=${cardId}`,
-        },
-      ],
+      url,
+      images: [{ url }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Generate Dynamic Open Graph and Twitter Images in Next.js',
-      description:
-        "A guide on how to optimize SEO with static and dynamic metatags using Next.js 13's new Metadata API.",
-      images: [`https://app.dumont.gg/api/og?gameId=${gameId}&cardId=${cardId}`],
+      title,
+      description,
+      images: [url],
     },
   };
 }

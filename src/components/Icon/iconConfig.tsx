@@ -47,6 +47,8 @@ import CheckRainbow from './svgs/CheckRainbow';
 import XMarkCircleFill from './svgs/XMarkCircleFill';
 import AirBalloonRainbow from './svgs/AirBalloonRainbow';
 import AirBalloon from './svgs/AirBalloon';
+import Share from './svgs/Share';
+import Twitter from './svgs/Twitter';
 
 export interface SvgProps {
   width?: string;
@@ -97,7 +99,9 @@ export type IconName =
   | 'check-rainbow'
   | 'xmark-circle-fill'
   | 'air-balloon'
-  | 'air-balloon-rainbow';
+  | 'air-balloon-rainbow'
+  | 'share'
+  | 'twitter';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -141,4 +145,6 @@ export const iconMap: Record<IconName, ReactElement> = {
   'xmark-circle-fill': <XMarkCircleFill />,
   'air-balloon': <AirBalloon />,
   'air-balloon-rainbow': <AirBalloonRainbow />,
+  share: <Share />,
+  twitter: <Twitter />,
 };
