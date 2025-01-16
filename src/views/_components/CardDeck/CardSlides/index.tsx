@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Carousel, CarouselItem } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { Card, setActiveCardIndex } from '@/redux/features/gameSlice';
 
 import Slide from './Slide';
+import { Swiper } from 'swiper/types';
 
 interface Props {
   slides?: Card[];
@@ -13,19 +15,29 @@ interface Props {
 
 const CardSlides = ({ slides = [] }: Props) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { activeCardIndex, data: game } = useTypedSelector((state) => state.game);
 
   const initialSlide = useMemo(() => {
+    const id = searchParams.get('cardId');
+    if(id) return +id;
+
     const index = game?.cards.findIndex((card) => card.number === -1);
     return index && index !== -1 ? index + 1 : 1;
   }, [game]);
+
+  const onActiveIndexChange = (s: Swiper) => {
+    dispatch(setActiveCardIndex(s.activeIndex));
+    router.push(`?cardId=${s.activeIndex}`);
+  };
 
   return (
     <Carousel
       initialSlide={initialSlide}
       allowSlidePrev={activeCardIndex > 1}
       prevELClassName={activeCardIndex === 1 ? '!bg-neutral-700 [&_.path]:!fill-neutral-500' : ''}
-      onActiveIndexChange={(s) => dispatch(setActiveCardIndex(s.activeIndex))}
+      onActiveIndexChange={onActiveIndexChange}
     >
       <CarouselItem>
         {({ isActive }) => (
