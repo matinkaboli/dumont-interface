@@ -11,9 +11,10 @@ const SocialShare = ({ gameId, cardIndex }: { gameId: number; cardIndex: number 
   const totalAmount = toFixedNumber(parseUnits(card?.totalAmount, 6));
   const odds = toFixedNumber(card?.result?.rate as string);
 
-  const payoutUrl = `https://basescan.org/tx/${card?.hash}`;
-  const text = `Won $${totalAmount} with ${odds}x odds on @dumontgg \n\nPayout transaction:\n${payoutUrl}`;
-  const url = `https://app.dumont.gg/guess-result?gameId=${gameId}&cardId=${cardIndex}`;
+  // const payoutUrl = `https://basescan.org/tx/${card?.hash}`;
+  // const text = `Won $${totalAmount} with ${odds}x odds on @dumontgg \n\nPayout transaction:\n${payoutUrl}`;
+  const text = `Won $${totalAmount} with ${odds}x odds on @dumontgg`;
+  const url = `https://app.dumont.gg/rounds/${gameId}?cardId=${cardIndex}`;
 
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
     text,
