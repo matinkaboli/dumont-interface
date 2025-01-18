@@ -20,8 +20,15 @@ const CardSlides = ({ slides = [] }: Props) => {
   const { activeCardIndex, data: game } = useTypedSelector((state) => state.game);
 
   const initialSlide = useMemo(() => {
-    const id = searchParams.get('cardId');
-    if(id) return +id;
+    const cardIdParam = searchParams.get('cardId');
+
+    if (typeof cardIdParam === 'string' && !isNaN(parseInt(cardIdParam))) {
+      const cardId = parseInt(cardIdParam, 10);
+
+      if (cardId >= 1 && cardId <= 52) {
+        return cardId;
+      }
+    }
 
     const index = game?.cards.findIndex((card) => card.number === -1);
     return index && index !== -1 ? index + 1 : 1;
