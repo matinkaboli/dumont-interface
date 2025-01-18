@@ -10,14 +10,16 @@ const website = 'https://app.dumont.gg';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
-  const gameId = searchParams.get('gameId') || '0';
-  const cardId = searchParams.get('cardId') || '0';
+  const gameId = searchParams.get('gameId') || 0;
+  const cardId = searchParams.get('cardId');
 
-  const apiEndpoint = `https://testapi.dumont.gg/games/${gameId}/activities`;
+  const cardIndex = cardId ? parseInt(cardId, 10) - 1 : 0;
+
+  const apiEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/games/${gameId}/activities`;
   const gameData = await fetch(apiEndpoint)
     .then((res) => {
       if (!res.ok) {
-        throw new Error(`Failed to fetch data for gameId: ${gameId}, cardId: ${cardId}`);
+        throw new Error(`Failed to fetch data for gameId: ${gameId}, cardId: ${cardIndex}`);
       }
       return res.json();
     })
@@ -26,7 +28,7 @@ export async function GET(req: NextRequest) {
       return null;
     });
 
-  const card = gameData?.result[cardId];
+  const card = gameData?.result[cardIndex];
 
   const interRegularFontP = fetch(
     new URL('../../../../public/fonts/Inter-Regular.ttf', import.meta.url),
