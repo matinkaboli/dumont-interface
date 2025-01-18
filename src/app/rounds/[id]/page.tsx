@@ -1,29 +1,38 @@
 import Round from '@/views/Round';
-import { Metadata } from 'next';
 
-export async function generateMetadata(): Promise<Metadata> {
+type GuessResultSearchParams = {
+  gameId?: string;
+  cardId?: string;
+};
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: GuessResultSearchParams;
+}) {
+  const { gameId, cardId } = searchParams;
+
+  const title = 'Dumont - Make Gambling Great Again';
+  const description =
+    'Bet on exciting games like leverageable sports markets and card games in a cheat-proof, verifiable environment powered by blockchain';
+  const url = `https://app.dumont.gg/rounds/${gameId}?cardId=${cardId}`;
+  const imageUrl = `https://app.dumont.gg/api/og?gameId=${gameId}&cardId=${cardId}`;
+
   return {
-    metadataBase: new URL('https://acme.com'),
+    title,
+    description,
     openGraph: {
-      title: 'Dumont',
-      description: 'Round ',
-      url: 'https://nextjs.org',
-      siteName: 'Next.js',
-      images: [
-        {
-          url: 'http://localhost:3000/api/og?title=Next.js', // Dynamic og route
-          width: 800,
-          height: 600,
-        },
-        {
-          url: 'http://localhost:3000/api/og?title=Next.js', // Dynamic og route
-          width: 1800,
-          height: 1600,
-          alt: 'My custom alt',
-        },
-      ],
-      locale: 'en_US',
-      type: 'website',
+      title,
+      description,
+      type: 'article',
+      url,
+      images: [{ url: imageUrl }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [imageUrl],
     },
   };
 }

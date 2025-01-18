@@ -11,6 +11,7 @@ interface Activity {
   betAmount: string;
   totalAmount: string;
   revelationHash?: string;
+  hash: string;
   result?: {
     isPlayerWinner: boolean;
     isFreeReveal: boolean;
