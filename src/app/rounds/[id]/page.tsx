@@ -7,10 +7,17 @@ type GuessResultSearchParams = {
 
 export async function generateMetadata({
   searchParams,
+  params,
 }: {
+  params: any;
   searchParams: GuessResultSearchParams;
 }) {
-  const { gameId, cardId } = searchParams;
+  const { cardId } = searchParams;
+
+  const gameId = params.id;
+
+  console.log(gameId);
+  console.log(cardId);
 
   const title = 'Dumont - Make Gambling Great Again';
   const description =
