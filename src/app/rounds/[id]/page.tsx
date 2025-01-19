@@ -15,8 +15,8 @@ export async function generateMetadata({
   const title = 'Dumont - Make Gambling Great Again';
   const description =
     'Bet on exciting games like leverageable sports markets and card games in a cheat-proof, verifiable environment powered by blockchain';
-  const url = `https://app.dumont.gg/rounds/${gameId}?cardId=${cardId}`;
-  const imageUrl = `https://app.dumont.gg/api/og?gameId=${gameId}&cardId=${cardId}`;
+  const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/rounds/${gameId}?cardId=${cardId}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/og?gameId=${gameId}&cardId=${cardId}`;
 
   return {
     title,
