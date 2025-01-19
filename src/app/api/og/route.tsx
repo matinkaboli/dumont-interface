@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
       return null;
     });
 
-  const card = gameData?.result[cardIndex];
+  const card = gameData?.result.find((x: any) => x.index === cardIndex);
 
   const interRegularFontP = fetch(
     new URL('../../../../public/fonts/Inter-Regular.ttf', import.meta.url),
