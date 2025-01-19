@@ -6,7 +6,7 @@ import parseUnits from '@/helpers/parseUnits';
 
 export const runtime = 'edge';
 
-const website = 'https://app.dumont.gg';
+const website = process.env.NEXT_PUBLIC_WEBSITE_URL;
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
