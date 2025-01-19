@@ -1,24 +1,14 @@
 import Round from '@/views/Round';
 
-type GuessResultSearchParams = {
-  gameId?: string;
-  cardId?: string;
-};
-
 export async function generateMetadata({
   searchParams,
   params,
 }: {
-  params: any;
-  searchParams: GuessResultSearchParams;
+  params: { id: string };
+  searchParams: { cardId?: string };
 }) {
   const { cardId } = searchParams;
-
   const gameId = params.id;
-
-  console.log(gameId);
-  console.log(cardId);
-
   const title = 'Dumont - Make Gambling Great Again';
   const description =
     'Bet on exciting games like leverageable sports markets and card games in a cheat-proof, verifiable environment powered by blockchain';
