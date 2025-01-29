@@ -5,7 +5,7 @@ const MaxButton = ({ children, className, ...props }: ButtonProps) => {
   return (
     <button
       type="button"
-      className={clsx('flex items-center gap-0.5 font-medium md:text-xs text-sm text-primary-250', className)}
+      className={clsx('flex items-center gap-0.5 font-medium md:text-xs text-sm text-primary-400', className)}
       {...props}
     >
       Max
