@@ -7,9 +7,9 @@ import { Icon } from '@/components';
 const dialogIconVariants = cva('flex-center w-14 h-14 rounded-full mx-auto', {
   variants: {
     variant: {
-      default: 'bg-neutral-600',
+      default: 'bg-neutral-700',
       success: 'bg-success-100',
-      error: 'bg-error-100',
+      error: 'bg-error-800',
     },
     defaultVariants: {
       variant: 'default',

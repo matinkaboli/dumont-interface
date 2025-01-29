@@ -5,7 +5,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 
 import { Icon } from '@/components';
 
-const contentVariants = cva('fixed z-50 bg-neutral-700 rounded-xl w-3/4 px-6 py-8', {
+const contentVariants = cva('fixed z-50 bg-neutral-750 rounded-xl w-3/4 px-6 py-8', {
   variants: {
     size: {
       sm: 'md:w-[340px]',
