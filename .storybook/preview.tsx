@@ -2,7 +2,8 @@ import type { Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
 
 import Redux from '../src/providers/Redux';
-import Wagmi from '@/providers/Wagmi';
+import Wagmi from '../src/providers/Wagmi';
+import Privy from '../src/providers/PrivyAuth';
 import '../src/app/globals.css';
 
 const preview: Preview = {
@@ -34,9 +35,11 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <Redux>
-        <Wagmi>
-          <Story />
-        </Wagmi>
+        <Privy>
+          <Wagmi>
+            <Story />
+          </Wagmi>
+        </Privy>
       </Redux>
     ),
   ],

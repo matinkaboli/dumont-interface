@@ -120,7 +120,7 @@ const ConnectWallet = () => {
           radius="lg"
           onClick={login}
           disabled={!ready}
-          className="text-primary-250 bg-primary-500 hover:bg-primary-400 !font-bold"
+          className="text-white bg-primary-400 hover:bg-primary-300 !font-bold"
         >
           Connect Wallet
         </Button>
