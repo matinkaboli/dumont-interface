@@ -13,7 +13,10 @@ const TabsList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
-    className={clsx('inline-flex gap-10 items-center justify-center', className)}
+    className={clsx(
+      'inline-flex gap-1 items-center justify-center border-b-2 border-primary-800',
+      className,
+    )}
     {...props}
   />
 ));
@@ -26,13 +29,13 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={clsx(
-      'text-md text-neutral-300 transition ease-in duration-200 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-primary-250 [&_.border-active]:data-[state=active]:bg-primary-250',
+      'text-md text-center text-neutral-300 transition ease-in duration-200 min-w-[120px] disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-primary-400 [&_.border-active]:data-[state=active]:bg-primary-400 [&_.border-active]:data-[state=inactive]:bg-transparent',
       className,
     )}
     {...props}
   >
     {children}
-    <div className="h-0.5 bg-neutral-800 border-active mt-1.5 rounded-3xl transition ease-in duration-200" />
+    <div className="h-0.5 bg-neutral-800 border-active mt-1.5 -mb-0.5 rounded-3xl transition ease-in duration-200" />
   </TabsPrimitive.Trigger>
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;

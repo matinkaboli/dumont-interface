@@ -28,7 +28,7 @@ const Slide = ({ isActive, index, slide, number = -1, isPlayerWinner, isFreeReve
       <div className="fade-in animate-in duration-1000">
         <div
           className={clsx(
-            isActive ? 'bg-primary-300' : '',
+            isActive ? 'bg-primary-400' : '',
             'text-center p-1 font-bold text-base text-white rounded-full -mb-20 mx-auto',
           )}
           style={{
@@ -43,7 +43,7 @@ const Slide = ({ isActive, index, slide, number = -1, isPlayerWinner, isFreeReve
           className={clsx(
             cardSizeStyles.width.card,
             cardSizeStyles.height.card,
-            isActive && 'bg-gradiant-slide p-1',
+            isActive && 'bg-primary-400 p-1',
             'rounded-2xl flex items-center justify-center mx-auto',
           )}
         >

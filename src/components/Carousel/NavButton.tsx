@@ -13,11 +13,11 @@ const NavButton = ({ type = 'button', className, dir, ...props }: Props) => {
       {...props}
       type={type}
       className={clsx(
-        'min-w-[40px] w-10 h-10 rounded-full md:flex hidden items-center justify-center hover:bg-neutral-700 border border-neutral-600 disabled:bg-neutral-700 [&_.path]:disabled:fill-neutral-500',
+        'min-w-[40px] w-10 h-10 rounded-full md:flex hidden items-center justify-center hover:bg-neutral-700 border border-neutral-700 disabled:bg-neutral-700 [&_.path]:disabled:fill-neutral-550',
         className,
       )}
     >
-      <Icon name={`angle-${dir}`} color="#DBDBE2" />
+      <Icon name={`angle-${dir}`} color="#F2F2F2" />
     </button>
   );
 };

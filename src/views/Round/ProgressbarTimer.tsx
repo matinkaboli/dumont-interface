@@ -44,7 +44,7 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
 
   return (
     <div className="relative cursor-pointer" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
-      <div className="h-0.5 rounded-xl w-full bg-neutral-500 overflow-hidden">
+      <div className="h-0.5 rounded-xl w-full bg-neutral-600 overflow-hidden">
         <motion.div
           initial={{ width: `${progressBarWidth}%` }}
           animate={{ width: '0%' }}
@@ -63,7 +63,7 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
               initial={{ right: `${100 - progressBarWidth}%` }}
               animate={{ right: '100%' }}
               transition={{ duration: initialTime }}
-              className="absolute h-full rounded-full bg-primary-250 -mr-3"
+              className="absolute h-full rounded-full bg-primary-400 -mr-3"
               style={{
                 width: circleSize,
                 height: circleSize,

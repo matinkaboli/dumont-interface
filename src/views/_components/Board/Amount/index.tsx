@@ -167,7 +167,7 @@ const Amount = ({
                 !isEmpty(inputErrors) && touchedFields?.amount ? 'mt-1' : 'mt-4',
               )}
               labelClassName="text-white"
-              valueClassName="text-white opacity-50"
+              valueClassName="text-neutral-400"
             />
           </div>
 

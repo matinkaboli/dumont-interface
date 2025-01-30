@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="relative md:pl-6 md:pr-4 px-4 w-full overflow-auto bg-neutral-750 rounded-lg">
+    <div className="relative md:pl-6 md:pr-4 px-4 w-full overflow-auto bg-neutral-800 rounded-lg border border-neutral-700">
       <table ref={ref} className={clsx('w-full caption-bottom text-sm', className)} {...props} />
     </div>
   ),
@@ -14,7 +14,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={clsx('[&>tr]:!border-b-0', className)} {...props} />
+  <thead ref={ref} className={clsx('[&>tr]:!border-neutral-700', className)} {...props} />
 ));
 TableHeader.displayName = 'TableHeader';
 
