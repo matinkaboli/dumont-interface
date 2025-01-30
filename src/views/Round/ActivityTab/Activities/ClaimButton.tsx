@@ -4,7 +4,6 @@ import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { openDialog } from '@/redux/features/dialogSlice';
 import GAME_ABI from '@/abis/GAME_ABI.json';
-import { Icon } from '@/components';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
@@ -98,11 +97,10 @@ const ClaimButton = ({ gameAddress, cardIndex, refetch }: Props) => {
   return (
     <button
       type="button"
-      className="flex items-center gap-0.5 text-primary-250"
+      className="flex items-center gap-0.5 text-primary-200"
       onClick={onOpenDialog}
     >
       Claim
-      <Icon name="angle-right" width="16" height="16" color="#EA00FF" />
     </button>
   );
 };
