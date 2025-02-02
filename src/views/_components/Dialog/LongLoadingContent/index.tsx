@@ -63,7 +63,6 @@ function LongLoadingContent({ activeIndex, setActiveIndex }: Props) {
             </motion.div>
           ))}
         </motion.div>
-        <div className="bg-gradiant-inside-horiz absolute inset-0 pointer-events-none" />
       </div>
     </>
   );

@@ -31,7 +31,7 @@ const CopyToClipboard = ({ copyText, showIcon = true, copyLabel, children, class
   return (
     <>
       {showIcon ? (
-        <button type="button" className={clsx('flex-between group', className)} onClick={onCopyText}>
+        <button type="button" className={clsx('flex items-center gap-1 group', className)} onClick={onCopyText}>
           {children || copyLabel}
           <CopiedTooltip isCopied={isCopied}>
             <div>

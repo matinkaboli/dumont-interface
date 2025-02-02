@@ -7,7 +7,7 @@ const truncateDecimals = (num: number, decimalPlaces: number): number => {
 };
 
 const toFixedNumber = (num: string | number | BigNumber, decimals: number = 2) => {
-  return truncateDecimals(Number(num.toString()), decimals).toString();
+  return truncateDecimals(Number(num?.toString()), decimals).toString();
 };
 
 export default toFixedNumber;

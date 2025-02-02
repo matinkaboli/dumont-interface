@@ -14,7 +14,7 @@ const ConfirmNewRound = ({ onCreateGame }: { onCreateGame: () => void }) => {
       <div className="flex flex-col gap-4 mt-8">
         {balance && (
           <Button fullWidth size="md" radius="lg" onClick={onCreateGame} disabled={balance === '0'}>
-            {balance === '0' ? 'Insufficient Balance' : 'Create'}
+            {balance === '0' ? 'Insufficient USDC balance' : 'Create'}
           </Button>
         )}
 

@@ -13,7 +13,7 @@ const ClaimedWin = () => {
       <div className="w-14 h-14 rounded-full bg-neutral-600 flex-center mx-auto">
         <Icon name="check-rainbow" />
       </div>
-      <DialogTitle className="mt-5 mb-2 text-center">The claim was successful</DialogTitle>
+      <DialogTitle className="mt-5 mb-2 text-center">Success</DialogTitle>
       <p className="text-base text-neutral-300 text-center">
         You successfully claimed <span className="text-white font-semibold">2,340 USDC</span>
       </p>

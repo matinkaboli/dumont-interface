@@ -17,7 +17,7 @@ const ConfirmReveal = ({ onReveal }: Props) => {
 
   return (
     <>
-      <div className="w-14 h-14 rounded-full bg-neutral-600 flex-center mx-auto">
+      <div className="w-14 h-14 rounded-full bg-neutral-700 flex-center mx-auto">
         <Icon name="eye-rainbow" />
       </div>
       <DialogTitle className="mt-5 mb-2 text-center">
@@ -26,8 +26,7 @@ const ConfirmReveal = ({ onReveal }: Props) => {
       <p className="text-base text-neutral-300 text-center">
         See the card’s face without placing a bet
       </p>
-      <hr className="border-t border-neutral-600 my-6 -mx-6" />
-      <div className="flex gap-4">
+      <div className="flex gap-4 mt-12">
         <Button fullWidth variant="secondary" radius="lg" onClick={onCloseDialog}>
           Cancel
         </Button>

@@ -11,7 +11,7 @@ interface Props {
 }
 
 const parentClassName =
-  'bg-neutral-600 px-4 h-10 rounded-lg border border-neutral-600 hover:border-primary-250 transition ease-in-out';
+  'bg-neutral-700 px-4 py-2.5 rounded-lg border border-neutral-700 hover:border-primary-400 transition ease-in-out';
 
 const CopyBox = ({ copyText, copyLabel, copyIcon, className }: Props) => {
   return (

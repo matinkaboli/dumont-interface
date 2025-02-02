@@ -9,12 +9,12 @@ import isEmpty from '@/helpers/isEmpty';
 import InputSection from './InputSection';
 
 const inputVariants = cva(
-  'px-2 border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100 placeholder:text-neutral-400',
+  'px-2 border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100',
   {
     variants: {
       variant: {
-        primary: 'bg-white border-neutral-300 text-neutral-800 focus:border-neutral-800',
-        secondary: 'bg-neutral-600 border-neutral-550 text-neutral-50 focus:border-neutral-500',
+        primary: 'bg-neutral-600 border-neutral-550 text-neutral-800 focus:border-neutral-200 placeholder:text-neutral-400',
+        secondary: 'bg-neutral-700 border-neutral-600 text-neutral-50 focus:border-neutral-500 placeholder:text-neutral-500',
       },
       size: {
         sm: 'h-10 text-sm',
@@ -82,7 +82,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
         <div
           className={clsx(
             'relative',
-            isEmpty(errors) ? '[&_.path]:fill-neutral-800' : '[&_.path]:fill-error-500',
+            isEmpty(errors) ? '[&_.path]:fill-neutral-700' : '[&_.path]:fill-error-400',
             disabled && '[&_.path]:opacity-50',
             variant,
           )}
@@ -98,7 +98,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
             className={clsx(
               leftSection ? 'pl-11' : 'pl-3',
               rightSection ? 'pr-11' : 'pr-3',
-              !isEmpty(errors[name]) && '!border-error-500 !text-error-500 !placeholder:text-error-500',
+              !isEmpty(errors[name]) && '!border-error-400 !text-error-400 !placeholder:text-error-400',
               inputClassName,
             )}
             disabled={disabled}
@@ -120,7 +120,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
             render={({ message }) => (
               <p
                 className={clsx(
-                  'text-xs text-error-500 font-medium',
+                  'text-xs text-error-400 font-medium',
                   description ? 'mt-1' : 'mt-2',
                 )}
               >

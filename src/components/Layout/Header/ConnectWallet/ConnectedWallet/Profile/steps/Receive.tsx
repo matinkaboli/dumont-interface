@@ -17,7 +17,7 @@ const Receive = () => {
 
       <div className="px-8">
         <CopyBox
-          className="mx-auto mt-6 w-full"
+          className="mx-auto mt-6 !px-6 w-fit !border-neutral-550 hover:!border-primary-400"
           copyText={address || ''}
           copyLabel={truncateString(address || '', { leftChars: 7, rightChars: 7 })}
         />
@@ -28,7 +28,7 @@ const Receive = () => {
           fullWidth
           radius="lg"
           variant="link"
-          className="mt-14 -mb-8 h-14 !font-medium text-base text-white bg-neutral-600 flex justify-between"
+          className="mt-14 -mb-8 h-14 !font-medium text-base text-white bg-neutral-700 flex justify-between"
         >
           <Link href={links.MOONPAY} target="_blank">
             <span className="flex items-center gap-2">

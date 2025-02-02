@@ -106,8 +106,6 @@ const config: Config = {
         'gradiant-border':
           'linear-gradient(135deg, #c319c3 0.05%, rgba(122, 16, 197, 0.04) 52.13%, #c319c3 100.05%)',
         'gradiant-glow': 'radial-gradient(#C472FF, #7A10C5 80%)',
-        'gradiant-inside-horiz':
-          'linear-gradient(180deg, #2E2D36, transparent 30%, transparent 70%, #2E2D36)',
         'gradiant-blur':
           'linear-gradient(247.35deg, rgba(250, 0, 255, 0.17) 1.52%, rgba(255, 255, 255, 0) 101.92%)',
         'gradiant-text':

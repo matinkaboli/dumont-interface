@@ -76,7 +76,7 @@ const ProfileDetail = ({ accountBalance, onCloseDialog, onNextSlide, setProcess 
 
       <div className="flex flex-col gap-2 mt-10">
         <h6 className="text-sm text-neutral-300 font-semibold">Invite Link</h6>
-        <CopyBox copyText={referralLink} copyLabel={referralLink} copyIcon={<Icon name="link" />} />
+        <CopyBox className="justify-between" copyText={referralLink} copyLabel={referralLink} copyIcon={<Icon name="link" />} />
       </div>
       <Button
         fullWidth
