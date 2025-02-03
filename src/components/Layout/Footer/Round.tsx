@@ -5,9 +5,9 @@ interface Props {
 }
 
 const Round = ({ roundTime }: Props) => {
-  const iconStyles = roundTime ? 'bg-primary-200' : 'bg-neutral-500';
+  const iconStyles = roundTime ? 'bg-primary-400' : 'bg-neutral-500';
   const textStyles = roundTime ? 'text-white' : 'text-neutral-200';
-  const labelText = roundTime ? roundTime : 'No rounds created';
+  const labelText = roundTime ? roundTime : 'There is no round';
 
   return (
     <div className="flex-center-v gap-1">

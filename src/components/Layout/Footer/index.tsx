@@ -13,9 +13,7 @@ import Round from './Round';
 
 const formatTime = (duration: string, createdAt: Date) => {
   const time = +duration - timeLeftInSeconds(createdAt);
-  if (time <= 0) {
-    return 'There is no time';
-  }
+  if (time <= 0) return '';
 
   return formatDurationFromSeconds(time);
 };
