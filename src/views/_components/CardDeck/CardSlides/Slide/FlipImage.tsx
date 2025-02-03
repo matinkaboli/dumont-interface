@@ -1,8 +1,9 @@
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import clsx from 'clsx';
-import { Icon } from '@/components';
 import { CSSProperties } from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import clsx from 'clsx';
+
+import { Icon } from '@/components';
 
 const imgWidth = 200;
 const imgHeight = 0;
