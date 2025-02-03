@@ -13,7 +13,7 @@ const inputVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-neutral-600 border-neutral-550 text-neutral-800 focus:border-neutral-200 placeholder:text-neutral-400',
+        primary: 'bg-white border-neutral-300 text-neutral-800 focus:border-neutral-800 placeholder:text-neutral-400',
         secondary: 'bg-neutral-700 border-neutral-600 text-neutral-50 focus:border-neutral-500 placeholder:text-neutral-500',
       },
       size: {
