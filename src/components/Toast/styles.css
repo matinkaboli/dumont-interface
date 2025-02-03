@@ -1,10 +1,10 @@
 :root {
-    --toastify-color-progress-dark: #75757C;
+    --toastify-color-progress-dark: #55545D;
 }
 
 .Toastify__progress-bar--wrp {
     top: 0 !important;
     bottom: initial !important;
     border-radius: 0 !important;
-    height: 2px !important;
+    height: 1px !important;
 }

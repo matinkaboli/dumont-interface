@@ -9,14 +9,14 @@ interface Props {
   bgColor?: string;
 }
 
-const InfoTooltip = ({ label, tooltipText, className, bgColor = '#111117' }: Props) => {
+const InfoTooltip = ({ label, tooltipText, className, bgColor = '#252525' }: Props) => {
   return (
     <div className="flex items-center gap-0.5">
       <div className={className}>{label}</div>
       <TooltipProvider delayDuration={100}>
         <Tooltip>
           <TooltipTrigger onFocus={(event) => event.preventDefault()}>
-            <Icon name="circle-exclamation-fill" />
+            <Icon name="circle-exclamation-fill" color="#75757C" />
           </TooltipTrigger>
           <TooltipContent bgColor={bgColor}>{tooltipText}</TooltipContent>
         </Tooltip>

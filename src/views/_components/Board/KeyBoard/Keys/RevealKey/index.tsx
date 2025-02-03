@@ -130,7 +130,7 @@ const RevealKey = ({ className }: { className?: string }) => {
 
   return (
     <KeyButton
-      className="flex flex-col gap-0.5 [&>div]:disabled:text-neutral-500"
+      className="flex flex-col gap-0.5 [&>div]:disabled:text-neutral-500 group"
       borderClassName={clsx('col-span-2', className)}
       onClick={onReveal}
       disabled={
@@ -147,7 +147,7 @@ const RevealKey = ({ className }: { className?: string }) => {
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>
       {!isEmpty(game) ? (
-        <div className="text-neutral-500 text-sm">
+        <div className="text-neutral-500 text-sm group-hover:text-neutral-300 transition ease-in-out">
           {3 - (game?.freeRevealRequests || 0)} remaining
         </div>
       ) : null}

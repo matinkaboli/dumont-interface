@@ -225,7 +225,7 @@ const Activities = () => {
         {table.getRowModel().rows.map((row) => (
           <TableRow key={row.id}>
             {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id} className="text-neutral-200">
+              <TableCell key={cell.id} className="text-neutral-300">
                 {flexRender(cell.column.columnDef.cell, {
                   ...cell.getContext(),
                   claimableAfter: game?.claimableAfter,

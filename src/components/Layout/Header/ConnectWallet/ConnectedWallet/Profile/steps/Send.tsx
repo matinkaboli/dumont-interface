@@ -126,8 +126,8 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
             className={clsx(
               'w-1/2 h-10 flex-center gap-2 text-white font-medium border text-sm rounded-xl transition-all duration-300 ease-in-out',
               selectedToken === token.symbol
-                ? 'border-primary-250 bg-primary-600'
-                : 'border-neutral-550 bg-transparent',
+                ? 'border-primary-300 bg-primary-700'
+                : 'border-neutral-550 bg-neutral-700',
             )}
           >
             <Image width={24} height={24} src={token.icon} alt="" />
@@ -166,11 +166,11 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
         <div className="font-medium text-sm text-white">Amount</div>
         <button
           type="button"
-          className="flex items-center gap-0.5 font-medium text-xs text-primary-250"
+          className="flex items-center gap-0.5 font-medium text-xs text-primary-300"
           onClick={setMaxValue}
         >
           Max
-          <Icon name="caret-up" />
+          <Icon name="caret-up" color="#CD3FCD" />
         </button>
       </div>
       <Controller
@@ -178,7 +178,13 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
         control={control}
         rules={validateAmount(+tokenBalances[selectedToken]!)}
         render={({ field }) => (
-          <Input variant="secondary" placeholder="0.00" errors={errors} {...field} />
+          <Input
+            variant="secondary"
+            placeholder="0.00"
+            rightSection={<p className="text-neutral-400 text-sm font-medium">USDC</p>}
+            errors={errors}
+            {...field}
+          />
         )}
       />
 

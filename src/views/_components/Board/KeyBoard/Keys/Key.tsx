@@ -4,6 +4,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import KeyButton from './KeyButton';
 import { KeyType } from '../index';
+import clsx from 'clsx';
 
 export interface KeyProps extends Partial<KeyType> {
   weight: number;
@@ -24,10 +25,19 @@ const Key = memo(({ value, weight, className, isSelected = false, onClick }: Key
       borderClassName={className}
       onClick={onClick}
       disabled={isDisabled}
-      className="flex-col"
+      className="flex-col group"
     >
-      <span className="text-2xl font-bold text-white">{value}</span>
-      <span className="text-sm text-neutral-400">{weightDisplay}</span>
+      <span className={clsx('text-2xl font-bold', isSelected ? 'text-primary-400' : 'text-white')}>
+        {value}
+      </span>
+      <span
+        className={clsx(
+          'text-sm weight transition ease-in-out',
+          isSelected ? 'text-primary-400' : 'text-neutral-500 group-hover:text-neutral-300',
+        )}
+      >
+        {weightDisplay}
+      </span>
     </KeyButton>
   );
 });

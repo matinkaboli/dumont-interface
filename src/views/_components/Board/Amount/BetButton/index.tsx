@@ -33,7 +33,7 @@ const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
                 {...buttonProps}
                 type="submit"
                 disabled={disabled}
-                className={disabled ? '' : 'btn-gradiant'}
+                className={disabled ? 'bg-neutral-700 text-neutral-400 border-neutral-700' : 'btn-gradiant'}
               >
                 {disabled ? disabledButtonLabel : 'Bet'}
               </Button>

@@ -41,7 +41,7 @@ const ClaimReward = ({ onClaim }: { onClaim: () => void }) => {
         onClick={onClaim}
         disabled={isClaimAmountZero}
       >
-        Claim Reward
+        Claim
       </Button>
       <Button
         asChild

@@ -34,22 +34,22 @@ const config: Config = {
           500: '#75757C',
           550: '#55545D',
           600: '#3B3A45',
-          700: '#2E2D36',
+          700: '#252525',
           750: '#1A1A1A',
-          800: '#111117',
+          780: '#131214',
+          800: '#0B0113',
         },
         primary: {
-          50: '#F9F1FF',
-          100: '#DAA7FE',
-          200: '#A23BEA',
-          250: '#EA00FF',
-          300: '#7A10C5',
-          400: '#570393',
-          500: '#3B0065',
-          600: '#3F2057',
-          650: '#4B405A',
-          700: '#260141',
-          800: '#2D0D4D',
+          50: '#FEECFE',
+          100: '#F4BAF4',
+          200: '#D766D7',
+          300: '#CD3FCD',
+          400: '#C319C3',
+          500: '#A215A2',
+          600: '#821182',
+          700: '#620C62',
+          800: '#300336',
+          900: '#200420',
         },
         secondary: {
           50: '#EDEFFE',
@@ -59,6 +59,7 @@ const config: Config = {
           400: '#5100FE',
           500: '#3D05B5',
           600: '#1E0258',
+          900: '#0D0017',
         },
         warning: {
           50: '#FFF8EB',
@@ -100,17 +101,15 @@ const config: Config = {
       },
       backgroundImage: {
         'gradiant-layout':
-          'radial-gradient(102.76% 214.4% at 50% -78.19%, rgba(122, 16, 197, 0.32) 32.53%, rgba(17, 4, 20, 0.00) 100%)',
-        'gradiant-body': 'linear-gradient(180deg, #050505 0%, #110015 100%)',
+          'radial-gradient(102.43% 214.4% at 50% -78.19%, rgba(181, 16, 197, 0.12) 32.53%, rgba(17, 4, 20, 0) 100%)',
         'gradiant-box': 'linear-gradient(180deg, #1A1A1A 20.43%, #220A3B 100%)',
         'gradiant-border':
-          'linear-gradient(135deg, #7A10C5 0.05%, rgba(122, 16, 197, 0.04) 52.13%, #7A10C5 100.05%)',
+          'linear-gradient(135deg, #c319c3 0.05%, rgba(122, 16, 197, 0.04) 52.13%, #c319c3 100.05%)',
         'gradiant-glow': 'radial-gradient(#C472FF, #7A10C5 80%)',
-        'gradiant-slide': 'linear-gradient(180deg, #7A10C5 0%, #DD04F1 100%)',
-        'gradiant-inside-horiz':
-          'linear-gradient(180deg, #2E2D36, transparent 30%, transparent 70%, #2E2D36)',
-        'gradiant-blur': 'linear-gradient(247.35deg, rgba(250, 0, 255, 0.17) 1.52%, rgba(255, 255, 255, 0) 101.92%)',
-        'gradiant-text': 'linear-gradient(118.71deg, #FAFF00 28.61%, #FF5BCF 58.83%, #5100FE 103.65%, #52008C 120.05%)',
+        'gradiant-blur':
+          'linear-gradient(247.35deg, rgba(250, 0, 255, 0.17) 1.52%, rgba(255, 255, 255, 0) 101.92%)',
+        'gradiant-text':
+          'linear-gradient(118.71deg, #FAFF00 28.61%, #FF5BCF 58.83%, #5100FE 103.65%, #52008C 120.05%)',
       },
       fontSize: {
         xs: ['12px', '18px'],
@@ -126,11 +125,12 @@ const config: Config = {
       },
       boxShadow: {
         checkbox: '0px 0px 0px 3px rgba(0, 127, 103, 0.10)',
-        label: 'inset -2px -2px 100px rgba(255, 255, 255, 0.1), inset 2px 2px 100px rgba(66, 66, 66, 0.1)'
+        label:
+          'inset -2px -2px 100px rgba(255, 255, 255, 0.1), inset 2px 2px 100px rgba(66, 66, 66, 0.1)',
       },
       transitionProperty: {
-        'height': 'height'
-      }
+        height: 'height',
+      },
     },
   },
   plugins: [require('tailwindcss-animate'), backfaceVisibility],

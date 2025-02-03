@@ -26,7 +26,7 @@ const Discarded = () => {
           {isEmpty(cards) ? (
             <EmptyDataMessage message="Nothing discarded" />
           ) : (
-            <div className="md:bg-neutral-750 bg-transparent rounded-lg md:p-6 p-0">
+            <div className="md:bg-neutral-800 md:border md:border-neutral-750 border-0 bg-transparent rounded-lg md:p-6 p-0">
               <h3 className="text-sm text-neutral-300">
                 <span className="text-white font-bold">{cards?.length} cards </span>
                 have been discarded so far, arranged in

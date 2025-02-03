@@ -14,9 +14,17 @@ interface Props {
   className?: string;
   children?: ReactNode;
   showIcon?: boolean;
+  checkIconColor?: string;
 }
 
-const CopyToClipboard = ({ copyText, showIcon = true, copyLabel, children, className }: Props) => {
+const CopyToClipboard = ({
+  copyText,
+  showIcon = true,
+  copyLabel,
+  children,
+  className,
+  checkIconColor,
+}: Props) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const onCopyText = () => {
@@ -31,12 +39,17 @@ const CopyToClipboard = ({ copyText, showIcon = true, copyLabel, children, class
   return (
     <>
       {showIcon ? (
-        <button type="button" className={clsx('flex-between group', className)} onClick={onCopyText}>
+        <button
+          type="button"
+          className={clsx('flex items-center gap-1 group', className)}
+          onClick={onCopyText}
+        >
           {children || copyLabel}
           <CopiedTooltip isCopied={isCopied}>
             <div>
               <Icon
                 name={isCopied ? 'check' : 'copy'}
+                color={isCopied ? checkIconColor || '#ADADB6' : '#ADADB6'}
                 className="transition ease-in-out group-hover:[&_.path]:fill-primary-250"
               />
             </div>

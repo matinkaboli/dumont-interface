@@ -15,7 +15,7 @@ interface Props {
 
 const BetDetailList = ({ items, className }: Props) => {
   return (
-    <ul className={clsx('flex flex-col gap-6', className)}>
+    <ul className={clsx('flex flex-col', className)}>
       {items.map((item, index) => (
         <ListItem key={index} label={item.label} value={item.value} tooltip={item.tooltip} />
       ))}

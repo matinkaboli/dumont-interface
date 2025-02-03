@@ -20,7 +20,7 @@
 }
 
 .btn-gradiant:hover:before {
-    background-image: conic-gradient(rgba(0, 0, 0, 0), #DAA7FE, rgba(0, 0, 0, 0) 10%);
+    background-image: conic-gradient(rgba(0, 0, 0, 0), #81007B, rgba(0, 0, 0, 0) 10%);
     animation: glow 5s linear infinite;
 }
 
@@ -29,11 +29,11 @@
 }
 
 .btn-gradiant:after {
-    @apply content-[''] absolute top-px left-px border border-primary-200 rounded-lg;
+    @apply content-[''] absolute top-px left-px border border-primary-300 rounded-lg;
     z-index: -1;
     width: calc(100% - 3px);
     height: calc(100% - 3px);
-    background: linear-gradient(90deg, #AC5AE6, #4D0283 51%, #AC5AE6) var(--bg-x, 0) / 200%;
+    background: linear-gradient(90deg, #E45AE6, #830270 51%, #E45AE6) var(--bg-x, 0) / 200%;
     transition: 0.5s;
 }
 

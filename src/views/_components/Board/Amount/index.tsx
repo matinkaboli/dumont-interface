@@ -136,7 +136,7 @@ const Amount = ({
     <>
       {/* Desktop View */}
       <div className="md:block hidden bg-gradiant-border bg-primary-800 bg-origin-border border border-transparent rounded-lg w-full h-full">
-        <div className="flex flex-col justify-between bg-primary-800 px-4 py-6 rounded-lg w-full h-full">
+        <div className="flex flex-col justify-between bg-primary-900 px-4 py-6 rounded-lg w-full h-full">
           <div>
             <div className="flex justify-between mb-2">
               <div className="font-medium text-xs text-white">Amount</div>
@@ -167,7 +167,7 @@ const Amount = ({
                 !isEmpty(inputErrors) && touchedFields?.amount ? 'mt-1' : 'mt-4',
               )}
               labelClassName="text-white"
-              valueClassName="text-white opacity-50"
+              valueClassName="text-neutral-400"
             />
           </div>
 

@@ -6,7 +6,7 @@ interface Props {
   className?: string;
 }
 
-const Loading = ({ size = 52, color = '#A23BEA', className }: Props) => {
+const Loading = ({ size = 52, color = '#C319C3', className }: Props) => {
   return (
     <div
       style={{ width: `${size}px`, height: `${size}px`, borderColor: color }}

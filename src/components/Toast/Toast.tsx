@@ -12,7 +12,7 @@ const contextClass = {
   error: 'bg-error-600',
   info: 'bg-secondary-600',
   warning: 'bg-warning-600',
-  default: 'bg-neutral-600',
+  default: 'bg-neutral-750',
 };
 
 interface Props extends Omit<ToastContainerProps, 'closeButton'> {}
@@ -20,7 +20,7 @@ interface Props extends Omit<ToastContainerProps, 'closeButton'> {}
 const Toast = ({ theme = 'dark', bodyClassName, toastClassName, ...props }: Props) => {
   const CloseButton = ({ closeToast }: any) => (
     <button className="p-0 h-fit w-fit absolute top-2 right-2" onClick={closeToast}>
-      <Icon name="xmark" width="16" height="16" color="#75757C" />
+      <Icon name="xmark" width="16" height="16" color="#C4C4CC" />
     </button>
   );
 
