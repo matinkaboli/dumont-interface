@@ -52,6 +52,7 @@ const Slide = ({ isActive, index, slide, number = -1, isPlayerWinner, isFreeReve
             isRevealed={number !== -1}
             isPlayerWinner={isPlayerWinner}
             isFreeReveal={isFreeReveal}
+            isActive={isActive}
             backSrc={
               number !== -1 ? `/images/cards/${getCardInfo(number)}.png` : '/images/card.png'
             }
