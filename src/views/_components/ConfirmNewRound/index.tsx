@@ -7,7 +7,7 @@ const ConfirmNewRound = ({ onCreateGame }: { onCreateGame: () => void }) => {
   return (
     <>
       <DialogIcon name="game-objects-rainbow" variant="default" />
-      <DialogTitle className="text-center mt-5">Confirm round</DialogTitle>
+      <DialogTitle className="text-center mt-5">Create game</DialogTitle>
       <DialogDescription className="text-neutral-300 text-base text-center mt-1">
         You need to pay <span className="font-semibold text-white">$1</span> to create the round.
       </DialogDescription>

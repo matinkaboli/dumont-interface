@@ -39,7 +39,7 @@ const CreateRound = ({
           className="mt-4 mx-auto !font-bold md:w-auto w-full"
           disabled={isCreateGameLoading || !ready}
         >
-          Create Round
+          Create game
         </Button>
 
         <div className="flex justify-center items-end gap-4 mt-10 -mb-2">

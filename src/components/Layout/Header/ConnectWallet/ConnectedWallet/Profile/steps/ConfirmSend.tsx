@@ -50,7 +50,7 @@ const ConfirmSend = ({
         openDialog({
           content: (
             <AnimatedDialogContent key="error">
-              <ErrorContent title="Something went wrong" />
+              <ErrorContent title="Something went wrong!" />
             </AnimatedDialogContent>
           ),
         }),

@@ -9,11 +9,11 @@ import { DialogTitle, Icon } from '@/components';
 const moveSize = 40;
 
 const items = [
-  'Sending transaction',
-  'Confirming transaction',
-  'Pending operator’s action',
-  'Confirming cards data',
-  'Finalizing round creation',
+  'Sending your request',
+  'Confirming your request',
+  'Sending the card data',
+  'Confirming the card data',
+  'Finalizing the game creation',
 ];
 
 interface Props {
