@@ -1,8 +1,8 @@
+import { usePrivy } from '@privy-io/react-auth';
 import clsx from 'clsx';
 
 import { Button } from '@/components';
 import { useNewRound } from '@/hooks/useNewRound';
-import { usePrivy } from '@privy-io/react-auth';
 
 import DemoCard from './DemoCard';
 
@@ -14,8 +14,8 @@ interface Props {
 
 const CreateRound = ({
   className = '',
-  title = 'Let’s start your round',
-  desc = 'To start the game, you need to create a round',
+  title = 'Start the game',
+  desc = 'To begin the game, you need to create a round',
 }: Props) => {
   const { onCreateRound, isCreateGameLoading } = useNewRound();
   const { ready } = usePrivy();
@@ -23,29 +23,33 @@ const CreateRound = ({
   return (
     <div
       className={clsx(
-        'bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height',
+        'relative bg-neutral-800 border-[1.5px] border-neutral-700 rounded-lg md:px-8 px-1.5 pt-8 text-center overflow-hidden',
         className,
       )}
     >
-      <h1 className="text-2xl text-white font-bold">{title}</h1>
-      <p className="text-sm text-neutral-200 mt-1">{desc}</p>
+      <div className="relative z-10">
+        <h1 className="text-2xl text-white font-bold">{title}</h1>
+        <p className="text-sm text-neutral-200 mt-1">{desc}</p>
 
-      <Button
-        variant="primary"
-        size="sm"
-        radius="lg"
-        onClick={onCreateRound}
-        className="mt-4 mx-auto !font-bold md:w-auto w-full"
-        disabled={isCreateGameLoading || !ready}
-      >
-        Create Round
-      </Button>
+        <Button
+          variant="primary"
+          size="sm"
+          radius="lg"
+          onClick={onCreateRound}
+          className="mt-4 mx-auto !font-bold md:w-auto w-full"
+          disabled={isCreateGameLoading || !ready}
+        >
+          Create Round
+        </Button>
 
-      <div className="flex justify-center items-end gap-4 mt-10">
-        <DemoCard width={190} height={163} className="hidden md:block" />
-        <DemoCard width={212} height={178} />
-        <DemoCard width={190} height={163} className="hidden md:block" />
+        <div className="flex justify-center items-end gap-4 mt-10 -mb-2">
+          <DemoCard width={190} height={163} className="hidden md:block" />
+          <DemoCard width={212} height={178} />
+          <DemoCard width={190} height={163} className="hidden md:block" />
+        </div>
       </div>
+
+      <div className="bg-gradiant-box absolute inset-x-0 bottom-0 w-full md:h-[186px] h-full" />
     </div>
   );
 };
