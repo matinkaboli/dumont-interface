@@ -1,25 +1,21 @@
 import Link from 'next/link';
+import { useEffect } from 'react';
 import BigNumber from 'bignumber.js';
-import { useReadContract } from 'wagmi';
 
 import { Button, Icon } from '@/components';
 import links from '@/constants/links';
-import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
-import parseUnits from '@/helpers/parseUnits';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-const ClaimAirdrop = ({ onClaim }: { onClaim: () => void }) => {
-  const { details } = useTypedSelector((state) => state.config);
-  const { address } = useTypedSelector((state) => state.account.profile);
+interface Props {
+  claimAmount: number;
+  onClaim: () => void;
+  refetch: () => void;
+}
 
-  const { data: balancesData } = useReadContract({
-    address: details?.airdrop,
-    abi: AIRDROP_ABI,
-    functionName: 'claimers',
-    args: [address],
-  });
+const ClaimAirdrop = ({ claimAmount, refetch, onClaim }:  Props) => {
+  useEffect(() => {
+    refetch();
+  }, []);
 
-  const claimAmount = parseUnits(balancesData as string, 18).toNumber();
   const isClaimAmountZero = new BigNumber(claimAmount).isZero();
 
   return (

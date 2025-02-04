@@ -17,7 +17,6 @@ interface InitialState {
   games: GameData[];
   loading: boolean;
   error: string | null;
-  isAirdropEligible: string;
 }
 
 const initialState: InitialState = {
@@ -26,7 +25,6 @@ const initialState: InitialState = {
   games: [],
   loading: false,
   error: null,
-  isAirdropEligible: '0',
 };
 
 export const getPlayerGames = createAsyncThunk<GameData[], string>(
@@ -54,9 +52,6 @@ const accountSlice = createSlice({
     setBalance: (state, action: PayloadAction<string | undefined>) => {
       state.balance = action.payload;
     },
-    setIsAirdropEligible: (state, action: PayloadAction<string>) => {
-      state.isAirdropEligible = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -75,5 +70,5 @@ const accountSlice = createSlice({
   },
 });
 
-export const { setAccount, setBalance, setIsAirdropEligible } = accountSlice.actions;
+export const { setAccount, setBalance } = accountSlice.actions;
 export default accountSlice.reducer;

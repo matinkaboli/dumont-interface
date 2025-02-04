@@ -12,11 +12,10 @@ import { AppDispatch } from '@/redux/store';
 import { getConfig } from '@/redux/features/configSlice';
 import { fetchReferralAddress } from '@/redux/features/referralSlice';
 import { setMaxBetAmount, setMinBetAmount } from '@/redux/features/betSlice';
-import { setAccount, setBalance, setIsAirdropEligible } from '@/redux/features/accountSlice';
+import { setAccount, setBalance } from '@/redux/features/accountSlice';
 
 import parseUnits from '@/helpers/parseUnits';
 import VAULT_ABI from '@/abis/VAULT_ABI.json';
-import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
@@ -59,13 +58,6 @@ const ConnectWallet = () => {
     functionName: 'getMinimumBetAmount',
   });
 
-  const { data: isAirdropEligible } = useReadContract({
-    address: details?.airdrop,
-    abi: AIRDROP_ABI,
-    functionName: 'claimers',
-    args: [address],
-  });
-
   useEffect(() => {
     dispatch(getConfig());
   }, []);
@@ -79,15 +71,6 @@ const ConnectWallet = () => {
       dispatch(setBalance(balance?.formatted));
     }
   }, [balance, isConnected]);
-
-  useEffect(() => {
-    if (isAirdropEligible !== undefined) {
-      const claimableAmountBigInt = isAirdropEligible as BigInt;
-      const claimableAmount = claimableAmountBigInt.toString();
-
-      dispatch(setIsAirdropEligible(claimableAmount));
-    }
-  }, [address, isAirdropEligible]);
 
   useEffect(() => {
     if (minBetAmount) dispatch(setMinBetAmount(parseUnits(minBetAmount as number, 6).toNumber()));
