@@ -27,7 +27,7 @@ body {
 }
 
 .border-primary-gradiant {
-    @apply bg-gradient-to-r from-primary-400 to-primary-800 p-px hover:from-[#9A25EC] hover:to-[#7612BD63] transition ease-linear duration-500
+    @apply bg-gradient-to-r from-primary-400 to-primary-800 p-px hover:from-[#A215A2] hover:to-[#620C62] transition ease-linear duration-500
 }
 
 .card-deck-height {
