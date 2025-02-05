@@ -22,6 +22,7 @@ import isEmpty from '@/helpers/isEmpty';
 import RewardButton from './RewardButton';
 import AirdropButton from './AirdropButton';
 import ConnectedWallet from './ConnectedWallet';
+import clsx from 'clsx';
 
 const ConnectWallet = () => {
   const params = useParams();
@@ -103,7 +104,12 @@ const ConnectWallet = () => {
           radius="lg"
           onClick={login}
           disabled={!ready}
-          className="text-white bg-primary-400 hover:bg-primary-300 !font-bold"
+          className={clsx(
+            'font-bold',
+            ready
+              ? 'bg-primary-400 text-white hover:bg-primary-300'
+              : 'bg-neutral-700 text-neutral-400 border-neutral-700',
+          )}
         >
           Connect Wallet
         </Button>
