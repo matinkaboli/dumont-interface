@@ -9,7 +9,7 @@ import { clsx } from 'clsx';
 import { Icon } from '@/components';
 
 const rootVariants = cva(
-  'rounded-md border border-neutral-200 data-[state=checked]:bg-success-700 data-[state=checked]:border-success-700 enabled:hover:shadow-checkbox enabled:hover:border-rgba-success-700 disabled:bg-black/[0.05] transition ease-in-out',
+  'rounded-md border-[1.5px] border-neutral-200 data-[state=checked]:bg-success-700 data-[state=checked]:border-success-700 enabled:hover:shadow-checkbox enabled:hover:border-rgba-success-700 disabled:bg-black/[0.05] transition ease-in-out',
   {
     variants: {
       size: { sm: 'h-4 w-4', md: 'h-5 w-5', lg: 'h-6 w-6' },

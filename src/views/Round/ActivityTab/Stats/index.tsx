@@ -56,8 +56,8 @@ const Stats = () => {
   }
 
   return (
-    <div className="md:bg-neutral-800 md:border md:border-neutral-750 border-0 bg-transparent md:px-6 px-4 md:pt-6 pt-4 md:pb-10 pb-8 rounded-lg">
-      <div className="border border-neutral-600 px-4 py-3 rounded-lg w-fit">
+    <div className="md:bg-neutral-800 md:border-[1.5px] md:border-neutral-750 border-0 bg-transparent md:px-6 px-4 md:pt-6 pt-4 md:pb-10 pb-8 rounded-lg">
+      <div className="border-[1.5px] border-neutral-600 px-4 py-3 rounded-lg w-fit">
         <div>
           <span className="text-base text-white">PNL</span>
           <span className="text-neutral-300 text-xs pl-1">(Profit and Loss)</span>

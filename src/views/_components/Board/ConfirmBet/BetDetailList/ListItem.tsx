@@ -3,7 +3,7 @@ import { BetInfo } from './index';
 
 const ListItem = ({ label, value, tooltip }: BetInfo) => {
   return (
-    <li className="flex justify-between border-b border-neutral-600 pt-6 pb-4 last:!border-b-0">
+    <li className="flex justify-between border-b-[1.5px] border-neutral-600 pt-6 pb-4 last:!border-b-0">
       {tooltip ? (
         <InfoTooltip
           label={label}

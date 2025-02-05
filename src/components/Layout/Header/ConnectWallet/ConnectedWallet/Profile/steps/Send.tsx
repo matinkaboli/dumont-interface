@@ -124,7 +124,7 @@ const Send = ({ onNextSlide, setSendData, balances }: Props) => {
             key={token.symbol}
             onClick={() => onSetToken(token.symbol)}
             className={clsx(
-              'w-1/2 h-10 flex-center gap-2 text-white font-medium border text-sm rounded-xl transition-all duration-300 ease-in-out',
+              'w-1/2 h-10 flex-center gap-2 text-white font-medium border-[1.5px] text-sm rounded-xl transition-all duration-300 ease-in-out',
               selectedToken === token.symbol
                 ? 'border-primary-300 bg-primary-700'
                 : 'border-neutral-550 bg-neutral-700',

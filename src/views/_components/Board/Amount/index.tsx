@@ -207,7 +207,7 @@ const Amount = ({
             <button
               type="button"
               onClick={handleToggle}
-              className="bg-neutral-800 border border-neutral-600 h-12 w-12 rounded-lg"
+              className="bg-neutral-800 border-[1.5px] border-neutral-600 h-12 w-12 rounded-lg"
             >
               <motion.span
                 className="block"

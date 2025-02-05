@@ -12,9 +12,9 @@ const buttonVariants = cva('font-semibold flex gap-2 items-center', {
     },
     variant: {
       primary:
-        'bg-primary-400 text-white [&_.path]:fill-white hover:bg-primary-500 border border-primary-400 hover:border-primary-500 active:border-primary-600 active:bg-primary-600 active:text-primary-100 disabled:bg-neutral-700 disabled:text-neutral-400 disabled:border-neutral-700 [&_.path]:disabled:fill-neutral-400',
+        'bg-primary-400 text-white [&_.path]:fill-white hover:bg-primary-500 border-[1.5px] border-primary-400 hover:border-primary-500 active:border-primary-600 active:bg-primary-600 active:text-primary-100 disabled:bg-neutral-700 disabled:text-neutral-400 disabled:border-neutral-700 [&_.path]:disabled:fill-neutral-400',
       secondary:
-        'bg-transparent text-primary-200 border border-primary-200 [&_.path]:fill-primary-200 [&_.path]:hover:fill-primary-300 hover:text-primary-300 hover:border-primary-300 [&_.path]:active:fill-primary-500 active:text-primary-500 active:border-primary-500 disabled:bg-transparent disabled:text-neutral-400 disabled:border-neutral-600 [&_.path]:disabled:fill-neutral-400',
+        'bg-transparent text-primary-200 border-[1.5px] border-primary-200 [&_.path]:fill-primary-200 [&_.path]:hover:fill-primary-300 hover:text-primary-300 hover:border-primary-300 [&_.path]:active:fill-primary-500 active:text-primary-500 active:border-primary-500 disabled:bg-transparent disabled:text-neutral-400 disabled:border-neutral-600 [&_.path]:disabled:fill-neutral-400',
       warning:
         'bg-warning-600 text-white [&_.path]:fill-white hover:bg-warning-700 active:bg-warning-800 disabled:bg-neutral-700 disabled:text-neutral-400 disabled:border-neutral-700 [&_.path]:disabled:fill-neutral-400',
       neutral:

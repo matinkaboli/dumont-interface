@@ -17,7 +17,7 @@ const KeyButton = ({
     <div
       className={clsx(
         borderClassName,
-        'border border-transparent',
+        'border-[1.5px] border-transparent',
         isSelected && 'bg-gradiant-border bg-primary-800 bg-origin-border rounded-lg',
       )}
     >
@@ -26,7 +26,7 @@ const KeyButton = ({
         className={clsx(
           className,
           isSelected ? 'bg-primary-800 !text-primary-250' : 'bg-neutral-800 hover:bg-neutral-750',
-          'sm:h-[84px] h-[65px] w-full flex justify-center items-center gap-0.5 border border-neutral-700 rounded-lg disabled:bg-neutral-800 disabled:border-neutral-750 transition ease-in-out',
+          'sm:h-[84px] h-[65px] w-full flex justify-center items-center gap-0.5 border-[1.5px] border-neutral-700 rounded-lg disabled:bg-neutral-800 disabled:border-neutral-750 transition ease-in-out',
         )}
         {...props}
       >
