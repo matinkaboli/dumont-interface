@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { encodeFunctionData } from 'viem';
-import { useWaitForTransactionReceipt } from 'wagmi';
+import { useReadContract, useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
 import { Icon } from '@/components';
@@ -20,11 +20,26 @@ import Claimed from '../Claimed';
 
 const AirdropButton = () => {
   const dispatch = useDispatch();
-  const { details } = useTypedSelector((state) => state.config);
-  const { isAirdropEligible } = useTypedSelector((state) => state.account);
   const { client } = useSmartWallets();
+  const { details } = useTypedSelector((state) => state.config);
+  const { address } = useTypedSelector((state) => state.account.profile);
   const [isClaimLoading, setIsClaimLoading] = useState(false);
   const [claimTx, setClaimTx] = useState('');
+
+  const { data: isAirdropEligible, refetch } = useReadContract({
+    address: details?.airdrop,
+    abi: AIRDROP_ABI,
+    functionName: 'claimers',
+    args: [address],
+    query: {
+      refetchInterval: 15000,
+    }
+  });
+
+  const claimValue = useMemo(
+    () => parseUnits(isAirdropEligible as string, 18).toNumber(),
+    [isAirdropEligible],
+  );
 
   const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: claimTx as `0x${string}`,
@@ -48,13 +63,12 @@ const AirdropButton = () => {
   useEffect(() => {
     if (isConfirmed) {
       dispatch(showConfetti({}));
-      const claimValue = parseUnits(isAirdropEligible, 18).toNumber();
 
       dispatch(
         openDialog({
           content: (
             <AnimatedDialogContent key="claimed">
-              <Claimed amount={claimValue} />
+              <Claimed refetch={refetch} amount={claimValue} />
             </AnimatedDialogContent>
           ),
         }),
@@ -65,7 +79,7 @@ const AirdropButton = () => {
   const onOpenDialog = () => {
     dispatch(
       openDialog({
-        content: <ClaimAirdrop onClaim={onClaim} />,
+        content: <ClaimAirdrop claimAmount={claimValue} refetch={refetch} onClaim={onClaim} />,
       }),
     );
   };
@@ -95,7 +109,7 @@ const AirdropButton = () => {
         openDialog({
           content: (
             <AnimatedDialogContent key="error">
-              <ErrorContent title="Something went wrong" />
+              <ErrorContent title="Something went wrong!" />
             </AnimatedDialogContent>
           ),
         }),
@@ -112,7 +126,11 @@ const AirdropButton = () => {
         disabled={isClaimLoading || isWaitTXLoading}
         className="flex-center bg-primary-800 rounded-lg w-10 h-10"
       >
-        <Icon name="air-balloon-rainbow" />
+        {claimValue === 0 ? (
+          <Icon name="air-balloon" color="#821182" />
+        ) : (
+          <Icon name="air-balloon-rainbow" />
+        )}
       </button>
     </div>
   );

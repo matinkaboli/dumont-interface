@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="relative w-full overflow-auto bg-neutral-800 rounded-lg border border-neutral-700">
+    <div className="relative w-full overflow-auto bg-neutral-800 rounded-lg border-[1.5px] border-neutral-700">
       <table ref={ref} className={clsx('w-full caption-bottom text-sm', className)} {...props} />
     </div>
   ),
@@ -32,7 +32,7 @@ const TableFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
-    className={clsx('border-t border-neutral-700 font-medium [&>tr]:last:border-b-0', className)}
+    className={clsx('border-t-[1.5px] border-neutral-700 font-medium [&>tr]:last:border-b-0', className)}
     {...props}
   />
 ));
@@ -40,7 +40,7 @@ TableFooter.displayName = 'TableFooter';
 
 const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableRowElement>>(
   ({ className, ...props }, ref) => (
-    <tr ref={ref} className={clsx('border-b border-neutral-700', className)} {...props} />
+    <tr ref={ref} className={clsx('border-b-[1.5px] border-neutral-700', className)} {...props} />
   ),
 );
 TableRow.displayName = 'TableRow';
@@ -52,7 +52,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={clsx(
-      'first:md:pl-6 first:pl-0.5 text-xs font-medium md:h-14 h-12 text-left align-middle [&:has([role=checkbox])]:pr-0',
+      'first:md:pl-6 first:pl-1 sm:pr-0 pr-3 text-xs whitespace-nowrap font-medium md:h-14 h-12 text-left align-middle [&:has([role=checkbox])]:pr-0',
       className,
     )}
     {...props}
@@ -67,7 +67,7 @@ const TableCell = React.forwardRef<
   <td
     ref={ref}
     className={clsx(
-      'first:md:pl-6 first:pl-0.5 text-sm font-medium md:h-14 h-12 align-middle [&:has([role=checkbox])]:pr-0',
+      'first:md:pl-6 first:pl-1 sm:pr-0 pr-3 text-sm whitespace-nowrap font-medium md:h-14 h-12 align-middle [&:has([role=checkbox])]:pr-0',
       className,
     )}
     {...props}

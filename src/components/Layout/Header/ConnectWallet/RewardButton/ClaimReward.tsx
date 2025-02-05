@@ -1,26 +1,22 @@
 import Link from 'next/link';
+import { useEffect } from 'react';
 import BigNumber from 'bignumber.js';
-import { useReadContract } from 'wagmi';
 
 import { Button, Icon } from '@/components';
 import humanizeAmount from '@/helpers/humanizeAmount';
 import Links from '@/constants/links';
-import MONT_REWARD_MANAGER_ABI from '@/abis/MONT_REWARD_MANAGER_ABI.json';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
-import parseUnits from '@/helpers/parseUnits';
 
-const ClaimReward = ({ onClaim }: { onClaim: () => void }) => {
-  const { details } = useTypedSelector((state) => state.config);
-  const { address } = useTypedSelector((state) => state.account.profile);
+interface Props {
+  claimAmount: number;
+  onClaim: () => void;
+  refetch: () => void;
+}
 
-  const { data: balancesData } = useReadContract({
-    address: details?.montRewardManager,
-    abi: MONT_REWARD_MANAGER_ABI,
-    functionName: 'balances',
-    args: [address],
-  });
+const ClaimReward = ({ onClaim, refetch, claimAmount }: Props) => {
+  useEffect(() => {
+    refetch();
+  }, []);
 
-  const claimAmount = parseUnits(balancesData as string, 18).toNumber();
   const isClaimAmountZero = new BigNumber(claimAmount).isZero();
 
   return (

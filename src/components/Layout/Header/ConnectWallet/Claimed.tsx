@@ -4,9 +4,17 @@ import { Button, DialogTitle, Icon } from '@/components';
 import { closeDialog } from '@/redux/features/dialogSlice';
 import humanizeAmount from '@/helpers/humanizeAmount';
 
-const Claimed = ({ amount }: { amount: number }) => {
+interface Props {
+  amount: number;
+  refetch: () => void;
+}
+
+const Claimed = ({ amount, refetch }: Props) => {
   const dispatch = useDispatch();
-  const onCloseDialog = () => dispatch(closeDialog());
+  const onCloseDialog = () => {
+    refetch();
+    dispatch(closeDialog());
+  };
 
   return (
     <>

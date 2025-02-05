@@ -12,6 +12,7 @@ import links from '@/constants/links';
 import CopyBox from '../CopyBox';
 import BalanceList from '../BalanceList';
 import { Balance } from '../../Profile';
+import InfoTooltip from '@/views/_components/InfoTooltip';
 
 interface Props {
   onCloseDialog: () => void;
@@ -75,8 +76,17 @@ const ProfileDetail = ({ accountBalance, onCloseDialog, onNextSlide, setProcess 
       </div>
 
       <div className="flex flex-col gap-2 mt-10">
-        <h6 className="text-sm text-neutral-300 font-semibold">Invite Link</h6>
-        <CopyBox className="justify-between" copyText={referralLink} copyLabel={referralLink} copyIcon={<Icon name="link" />} />
+        <InfoTooltip
+          label="Invite Link"
+          tooltipText="Get a 10% cut of your inviter's rewards"
+          className="text-sm text-neutral-300 font-semibold"
+        />
+        <CopyBox
+          className="justify-between"
+          copyText={referralLink}
+          copyLabel={referralLink}
+          copyIcon={<Icon name="link" />}
+        />
       </div>
       <Button
         fullWidth

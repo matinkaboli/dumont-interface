@@ -6,7 +6,13 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
 
-import { ToastContent, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components';
+import {
+  ToastContent,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { expireGame } from '@/redux/features/gameSlice';
 import formatDurationFromSeconds from '@/helpers/formatDurationFromSeconds';
@@ -75,7 +81,7 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
           <TooltipContent className="text-sm font-medium flex items-center gap-1">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary-250" />
             <span className={remainingTime <= -1 ? 'text-neutral-300' : 'text-primary-250'}>
-              {formatDurationFromSeconds(remainingTime)}
+              {remainingTime <= -1 ? 'No time ' : formatDurationFromSeconds(remainingTime)}
             </span>
             <span className="text-neutral-300">has left</span>
           </TooltipContent>

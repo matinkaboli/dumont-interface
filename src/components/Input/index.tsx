@@ -9,7 +9,7 @@ import isEmpty from '@/helpers/isEmpty';
 import InputSection from './InputSection';
 
 const inputVariants = cva(
-  'px-2 border font-medium rounded-lg w-full outline-none disabled:bg-neutral-100',
+  'px-2 border-[1.5px] font-medium rounded-lg w-full outline-none disabled:bg-neutral-100',
   {
     variants: {
       variant: {

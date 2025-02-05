@@ -99,10 +99,12 @@ const config: Config = {
         },
         'rgba-success-700': 'rgba(0, 127, 103, 0.20)',
       },
+
       backgroundImage: {
         'gradiant-layout':
           'radial-gradient(102.43% 214.4% at 50% -78.19%, rgba(181, 16, 197, 0.12) 32.53%, rgba(17, 4, 20, 0) 100%)',
-        'gradiant-box': 'linear-gradient(180deg, #1A1A1A 20.43%, #220A3B 100%)',
+        'gradiant-box':
+          'linear-gradient(360deg, rgba(181, 16, 197, 0.12) 13.7%, rgba(17, 4, 20, 0) 100%)',
         'gradiant-border':
           'linear-gradient(135deg, #c319c3 0.05%, rgba(122, 16, 197, 0.04) 52.13%, #c319c3 100.05%)',
         'gradiant-glow': 'radial-gradient(#C472FF, #7A10C5 80%)',

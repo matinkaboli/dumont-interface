@@ -12,17 +12,17 @@ import { AppDispatch } from '@/redux/store';
 import { getConfig } from '@/redux/features/configSlice';
 import { fetchReferralAddress } from '@/redux/features/referralSlice';
 import { setMaxBetAmount, setMinBetAmount } from '@/redux/features/betSlice';
-import { setAccount, setBalance, setIsAirdropEligible } from '@/redux/features/accountSlice';
+import { setAccount, setBalance } from '@/redux/features/accountSlice';
 
 import parseUnits from '@/helpers/parseUnits';
 import VAULT_ABI from '@/abis/VAULT_ABI.json';
-import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
 import RewardButton from './RewardButton';
 import AirdropButton from './AirdropButton';
 import ConnectedWallet from './ConnectedWallet';
+import clsx from 'clsx';
 
 const ConnectWallet = () => {
   const params = useParams();
@@ -59,13 +59,6 @@ const ConnectWallet = () => {
     functionName: 'getMinimumBetAmount',
   });
 
-  const { data: isAirdropEligible } = useReadContract({
-    address: details?.airdrop,
-    abi: AIRDROP_ABI,
-    functionName: 'claimers',
-    args: [address],
-  });
-
   useEffect(() => {
     dispatch(getConfig());
   }, []);
@@ -79,15 +72,6 @@ const ConnectWallet = () => {
       dispatch(setBalance(balance?.formatted));
     }
   }, [balance, isConnected]);
-
-  useEffect(() => {
-    if (isAirdropEligible !== undefined) {
-      const claimableAmountBigInt = isAirdropEligible as BigInt;
-      const claimableAmount = claimableAmountBigInt.toString();
-
-      dispatch(setIsAirdropEligible(claimableAmount));
-    }
-  }, [address, isAirdropEligible]);
 
   useEffect(() => {
     if (minBetAmount) dispatch(setMinBetAmount(parseUnits(minBetAmount as number, 6).toNumber()));
@@ -120,7 +104,12 @@ const ConnectWallet = () => {
           radius="lg"
           onClick={login}
           disabled={!ready}
-          className="text-white bg-primary-400 hover:bg-primary-300 !font-bold"
+          className={clsx(
+            'font-bold',
+            ready
+              ? 'bg-primary-400 text-white hover:bg-primary-300'
+              : 'bg-neutral-700 text-neutral-400 border-neutral-700',
+          )}
         >
           Connect Wallet
         </Button>

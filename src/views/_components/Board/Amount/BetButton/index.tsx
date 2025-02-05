@@ -7,6 +7,8 @@ import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from
 
 import './style.css';
 
+const disabledClass = 'bg-neutral-700 text-neutral-400 border-neutral-700';
+
 interface Props extends ButtonProps {
   disabledButtonLabel: string;
 }
@@ -33,7 +35,7 @@ const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
                 {...buttonProps}
                 type="submit"
                 disabled={disabled}
-                className={disabled ? 'bg-neutral-700 text-neutral-400 border-neutral-700' : 'btn-gradiant'}
+                className={disabled ? disabledClass : 'btn-gradiant'}
               >
                 {disabled ? disabledButtonLabel : 'Bet'}
               </Button>
@@ -45,7 +47,7 @@ const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
                   <Button
                     {...buttonProps}
                     disabled={disabled}
-                    className={disabled ? '' : 'btn-gradiant'}
+                    className={disabled ? disabledClass : 'btn-gradiant'}
                   >
                     Bet
                   </Button>

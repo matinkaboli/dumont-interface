@@ -111,7 +111,7 @@ const RevealKey = ({ className }: { className?: string }) => {
         openDialog({
           content: (
             <AnimatedDialogContent key="error">
-              <ErrorContent title="Something went wrong" />
+              <ErrorContent title="Something went wrong!" />
             </AnimatedDialogContent>
           ),
         }),
@@ -128,26 +128,32 @@ const RevealKey = ({ className }: { className?: string }) => {
     );
   };
 
+  const disabled =
+    isEmpty(game) ||
+    isExpired ||
+    game?.player.toLowerCase() !== address?.toLowerCase() ||
+    game!.cards[activeCardIndex - 1]?.isFreeReveal ||
+    game?.cards[activeCardIndex - 1]?.number !== -1 ||
+    +game!.freeRevealRequests === +game!.maxFreeReveals ||
+    isRevealCardLoading ||
+    isRevealConfirming ||
+    isWaitTXLoading;
+
   return (
     <KeyButton
       className="flex flex-col gap-0.5 [&>div]:disabled:text-neutral-500 group"
       borderClassName={clsx('col-span-2', className)}
       onClick={onReveal}
-      disabled={
-        isEmpty(game) ||
-        isExpired ||
-        game?.player.toLowerCase() !== address?.toLowerCase() ||
-        game!.cards[activeCardIndex - 1]?.isFreeReveal ||
-        game?.cards[activeCardIndex - 1]?.number !== -1 ||
-        +game!.freeRevealRequests === +game!.maxFreeReveals ||
-        isRevealCardLoading ||
-        isRevealConfirming ||
-        isWaitTXLoading
-      }
+      disabled={disabled}
     >
       <div className="text-md text-white font-bold">Reveal {`->`}</div>
       {!isEmpty(game) ? (
-        <div className="text-neutral-500 text-sm group-hover:text-neutral-300 transition ease-in-out">
+        <div
+          className={clsx(
+            !disabled && 'group-hover:text-neutral-300',
+            'text-neutral-500 text-sm transition ease-in-out',
+          )}
+        >
           {3 - (game?.freeRevealRequests || 0)} remaining
         </div>
       ) : null}

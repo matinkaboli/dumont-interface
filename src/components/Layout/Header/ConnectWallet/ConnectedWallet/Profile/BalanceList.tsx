@@ -23,7 +23,7 @@ const BalanceList = ({ accountBalance }: { accountBalance: Balance }) => {
       {tokens.map((token) => (
         <li
           key={token.symbol}
-          className="px-4 h-12 flex-between border-b border-neutral-750 last:border-b-0"
+          className="px-4 h-12 flex-between border-b-[1.5px] border-neutral-750 last:border-b-0"
         >
           <div className="text-white text-base font-medium flex items-center gap-2">
             <Image width={24} height={24} src={token.icon} alt="" />

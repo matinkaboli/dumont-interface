@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { encodeFunctionData } from 'viem';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
@@ -26,12 +26,20 @@ const RewardButton = () => {
   const [isClaimLoading, setIsClaimLoading] = useState(false);
   const [rewardTx, setRewardTx] = useState('');
 
-  const { data: balancesData } = useReadContract({
+  const { data: balancesData, refetch } = useReadContract({
     address: details?.montRewardManager,
     abi: MONT_REWARD_MANAGER_ABI,
     functionName: 'balances',
     args: [address],
+    query: {
+      refetchInterval: 15000,
+    }
   });
+
+  const claimValue = useMemo(
+    () => parseUnits(balancesData as string, 18).toNumber(),
+    [balancesData],
+  );
 
   const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: rewardTx as `0x${string}`,
@@ -55,13 +63,12 @@ const RewardButton = () => {
   useEffect(() => {
     if (isConfirmed) {
       dispatch(showConfetti({}));
-      const claimValue = parseUnits(balancesData as string, 18).toNumber();
 
       dispatch(
         openDialog({
           content: (
             <AnimatedDialogContent key="claimed">
-              <Claimed amount={claimValue} />
+              <Claimed refetch={refetch} amount={claimValue} />
             </AnimatedDialogContent>
           ),
         }),
@@ -72,7 +79,7 @@ const RewardButton = () => {
   const onOpenDialog = () => {
     dispatch(
       openDialog({
-        content: <ClaimReward onClaim={onClaimReward} />,
+        content: <ClaimReward claimAmount={claimValue} refetch={refetch} onClaim={onClaimReward} />,
       }),
     );
   };
@@ -102,7 +109,7 @@ const RewardButton = () => {
         openDialog({
           content: (
             <AnimatedDialogContent key="error">
-              <ErrorContent title="Something went wrong" />
+              <ErrorContent title="Something went wrong!" />
             </AnimatedDialogContent>
           ),
         }),
@@ -119,7 +126,11 @@ const RewardButton = () => {
         onClick={onOpenDialog}
         disabled={isClaimLoading || isWaitTXLoading}
       >
-        <Icon name="gift-rainbow" />
+        {claimValue === 0 ? (
+          <Icon name="gift-fill" color="#821182" />
+        ) : (
+          <Icon name="gift-rainbow" />
+        )}
       </button>
     </div>
   );
