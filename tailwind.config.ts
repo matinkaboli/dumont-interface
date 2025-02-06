@@ -112,6 +112,7 @@ const config: Config = {
           'linear-gradient(247.35deg, rgba(250, 0, 255, 0.17) 1.52%, rgba(255, 255, 255, 0) 101.92%)',
         'gradiant-text':
           'linear-gradient(118.71deg, #FAFF00 28.61%, #FF5BCF 58.83%, #5100FE 103.65%, #52008C 120.05%)',
+        'gradiant-black': 'linear-gradient(180deg, #050505 0%, #110015 100%)',
       },
       fontSize: {
         xs: ['12px', '18px'],
