@@ -1,4 +1,4 @@
-import Start from '@/views/Start';
+import Start from '@/views/card/Start';
 import { constructMetadata } from '@/app/metadata.config';
 
 export const metadata = constructMetadata();

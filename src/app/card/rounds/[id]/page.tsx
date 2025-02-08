@@ -1,4 +1,4 @@
-import Round from '@/views/Round';
+import Round from '@/views/card/Round';
 
 export async function generateMetadata({
   searchParams,
