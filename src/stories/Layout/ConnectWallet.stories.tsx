@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ConnectWallet from '@/components/Layout/Header/ConnectWallet';
+import ConnectWallet from '../../components/Layout/ConnectWallet';
 
 const meta = {
   title: 'Layout/ConnectWallet',

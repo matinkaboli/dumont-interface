@@ -5,7 +5,7 @@ import { closeDialog } from '@/redux/features/dialogSlice';
 import { Button, DialogTitle, Icon } from '@/components';
 import humanizeAmount from '@/helpers/humanizeAmount';
 
-import { SendData } from '../.';
+import { SendData } from '../index';
 
 const SuccessModal = ({ sendData }: { sendData?: SendData }) => {
   const dispatch = useDispatch<AppDispatch>();

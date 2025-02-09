@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import humanizeAmount from '@/helpers/humanizeAmount';
 
-import { Balance } from './.';
+import { Balance } from './index';
 
 const BalanceList = ({ accountBalance }: { accountBalance: Balance }) => {
   const tokens = [

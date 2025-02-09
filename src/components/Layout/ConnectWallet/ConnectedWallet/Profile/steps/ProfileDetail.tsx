@@ -11,7 +11,7 @@ import links from '@/constants/links';
 
 import CopyBox from '../CopyBox';
 import BalanceList from '../BalanceList';
-import { Balance } from '../../Profile';
+import { Balance } from '../index';
 import InfoTooltip from '@/views/_components/InfoTooltip';
 
 interface Props {

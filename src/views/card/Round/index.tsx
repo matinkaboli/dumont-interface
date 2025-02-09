@@ -17,7 +17,8 @@ import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
 
 import ActivityTab from './ActivityTab';
-import ProgressbarTimer from './ProgressbarTimer';
+import ProgressbarTimer from './Header/ProgressbarTimer';
+import Header from './Header';
 
 const Round = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -103,14 +104,12 @@ const Round = () => {
     <>
       {!isEmpty(game) && !areAllCardsGuessed && (
         <div className="px-1.5" key={isRefetching ? 'refetch' : 'fetch'}>
-          <ProgressbarTimer
-            duration={+game!.duration}
-            initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}
-          />
+          <Header />
+
         </div>
       )}
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 mt-8">
         {isEmpty(game) ? (
           <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height" />
         ) : (

@@ -17,7 +17,7 @@ import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import SuccessModal from './SuccessModal';
-import { SendData } from '../.';
+import { SendData } from '../index';
 
 const ConfirmSend = ({
   sendData,

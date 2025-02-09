@@ -2,6 +2,7 @@
 
 import { useDispatch } from 'react-redux';
 
+import { Button, Icon } from '@/components';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import delayedPromise from '@/helpers/delayedPromise';
@@ -21,9 +22,15 @@ const Tutorial = () => {
   };
 
   return (
-    <button type="button" onClick={onOpenDialog}>
-      Tutorial
-    </button>
+    <Button
+      variant="neutral"
+      size="sm"
+      radius="lg"
+      className="w-10 h-10 !p-0"
+      onClick={onOpenDialog}
+    >
+      <Icon name="graduation-cap" />
+    </Button>
   );
 };
 

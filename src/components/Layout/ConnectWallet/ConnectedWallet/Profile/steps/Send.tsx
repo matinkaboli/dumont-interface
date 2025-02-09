@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { Button, Icon, Input } from '@/components';
 
-import { Balance, SendData, Token } from '../.';
+import { Balance, SendData, Token } from '../index';
 
 interface TokenItem {
   icon: string;
