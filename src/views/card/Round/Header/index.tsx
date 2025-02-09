@@ -14,7 +14,7 @@ const Header = () => {
       <div className="flex items-center gap-2">
         <h1 className="font-bold text-2xl">Card Game</h1>
         {!isEmpty(game) && !areAllCardsGuessed && (
-          <div key={isRefetching ? 'refetch' : 'fetch'} className="w-28">
+          <div key={isRefetching ? 'refetch' : 'fetch'}>
             <ProgressbarTimer
               duration={+game!.duration}
               initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}

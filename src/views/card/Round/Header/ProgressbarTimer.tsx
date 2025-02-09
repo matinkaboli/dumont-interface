@@ -6,18 +6,10 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
 
-import {
-  ToastContent,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components';
+import { ToastContent } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { expireGame } from '@/redux/features/gameSlice';
 import formatDurationFromSeconds from '@/helpers/formatDurationFromSeconds';
-
-const circleSize = 12;
 
 const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initialTime: number }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -41,16 +33,21 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
     return () => clearInterval(timer);
   }, [remainingTime]);
 
-  const showTooltip = () => setIsHovered(true);
-  const hideTooltip = () => setIsHovered(false);
-
   const progressBarWidth = useMemo(() => {
     return initialTime <= 0 ? 0 : (remainingTime / duration) * 100;
   }, [initialTime, remainingTime, duration]);
 
   return (
-    <div className="relative cursor-pointer" onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
-      <div className="h-0.5 rounded-xl w-full bg-neutral-600 overflow-hidden">
+    <div className="relative bg-neutral-800 flex-center h-10 w-32 border-[1.5px] border-neutral-700 rounded-md overflow-hidden">
+      <div className="text-sm text-center">
+        <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary-250" />
+        <span className={remainingTime <= -1 ? 'text-neutral-400' : 'text-primary-250'}>
+          {remainingTime <= -1 ? 'No time ' : <b>{formatDurationFromSeconds(remainingTime)}</b>}
+        </span>
+        <span className="text-neutral-400"> has left</span>
+      </div>
+
+      <div className="h-0.5 rounded-xl w-full bg-neutral-600 overflow-hidden absolute bottom-0 inset-x-0">
         <motion.div
           initial={{ width: `${progressBarWidth}%` }}
           animate={{ width: '0%' }}
@@ -61,32 +58,6 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
           )}
         />
       </div>
-
-      <TooltipProvider delayDuration={100}>
-        <Tooltip open={isHovered}>
-          <TooltipTrigger asChild>
-            <motion.div
-              initial={{ right: `${100 - progressBarWidth}%` }}
-              animate={{ right: '100%' }}
-              transition={{ duration: initialTime }}
-              className="absolute h-full rounded-full bg-primary-400 -mr-3"
-              style={{
-                width: circleSize,
-                height: circleSize,
-                top: -(circleSize / 2),
-              }}
-            />
-          </TooltipTrigger>
-
-          <TooltipContent className="text-sm font-medium flex items-center gap-1">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary-250" />
-            <span className={remainingTime <= -1 ? 'text-neutral-300' : 'text-primary-250'}>
-              {remainingTime <= -1 ? 'No time ' : formatDurationFromSeconds(remainingTime)}
-            </span>
-            <span className="text-neutral-300">has left</span>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
     </div>
   );
 };
