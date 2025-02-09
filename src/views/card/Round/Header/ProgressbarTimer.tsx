@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import clsx from 'clsx';
 
 import { ToastContent } from '@/components';
 import { AppDispatch } from '@/redux/store';
@@ -13,7 +12,6 @@ import formatDurationFromSeconds from '@/helpers/formatDurationFromSeconds';
 
 const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initialTime: number }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [isHovered, setIsHovered] = useState(false);
   const [remainingTime, setRemainingTime] = useState(initialTime);
 
   useEffect(() => {
@@ -52,10 +50,7 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
           initial={{ width: `${progressBarWidth}%` }}
           animate={{ width: '0%' }}
           transition={{ duration: initialTime }}
-          className={clsx(
-            'absolute top-0 left-0 w-full rounded-xl bg-primary-300 transition-height ease-in-out duration-150',
-            isHovered ? 'h-[3px]' : 'h-0.5',
-          )}
+          className="absolute top-0 left-0 w-full rounded-xl bg-primary-300 transition-height ease-in-out duration-150"
         />
       </div>
     </div>
