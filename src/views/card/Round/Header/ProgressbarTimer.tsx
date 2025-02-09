@@ -50,7 +50,7 @@ const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initial
           initial={{ width: `${progressBarWidth}%` }}
           animate={{ width: '0%' }}
           transition={{ duration: initialTime }}
-          className="absolute top-0 left-0 w-full rounded-xl bg-primary-300 transition-height ease-in-out duration-150"
+          className="absolute top-0 left-0 h-0.5 w-full rounded-xl bg-primary-300 transition-height ease-in-out duration-150"
         />
       </div>
     </div>
