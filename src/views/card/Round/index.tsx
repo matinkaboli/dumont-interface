@@ -9,7 +9,6 @@ import { Loading, Toast, ToastContent } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { getGame, setAllCardsGuessed, setGuessedCardsCount } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import isEmpty from '@/helpers/isEmpty';
 import { MAX_GUESSABLE_CARDS } from '@/constants/static';
 
@@ -17,7 +16,6 @@ import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
 
 import ActivityTab from './ActivityTab';
-import ProgressbarTimer from './Header/ProgressbarTimer';
 import Header from './Header';
 
 const Round = () => {
@@ -102,12 +100,7 @@ const Round = () => {
 
   return (
     <>
-      {!isEmpty(game) && !areAllCardsGuessed && (
-        <div className="px-1.5" key={isRefetching ? 'refetch' : 'fetch'}>
-          <Header />
-
-        </div>
-      )}
+      <Header />
 
       <div className="flex flex-col gap-4 mt-8">
         {isEmpty(game) ? (
