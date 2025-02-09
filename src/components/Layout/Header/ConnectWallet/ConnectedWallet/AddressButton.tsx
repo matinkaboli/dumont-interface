@@ -30,7 +30,7 @@ const AddressButton = ({ onOpenChange }: Props) => {
                 })
               : 0}
           </span>
-          <span>USDC</span>
+          <span className="sm:inline-block hidden">USDC</span>
         </div>
         <div className="text-primary-400 text-sm">
           {truncateString(address || '', { leftChars: 6, rightChars: 4 })}

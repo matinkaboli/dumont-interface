@@ -1,12 +1,14 @@
 'use client';
 
-import { memo } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 
 import { Icon } from '@/components';
-import Routes from '@/constants/routes';
+import { IconName } from '@/components/Icon/iconConfig';
 import { useActivePath } from '@/hooks/useActivePath';
+import Routes from '@/constants/routes';
+
+import DesktopNavItem from './DesktopNavItem';
+import MobileNavItem from './MobileNavItem';
 
 interface IconImage {
   type: 'image';
@@ -21,9 +23,9 @@ interface IconComponent {
   name: string;
 }
 
-type IconType = IconImage | IconComponent;
+export type IconType = IconImage | IconComponent;
 
-interface NavigationItem {
+export interface NavigationItem {
   id: string;
   label: string;
   link: string;
@@ -41,7 +43,7 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
       src: '/images/logo.svg',
       width: 32,
       height: 28,
-      alt: 'dumont'
+      alt: 'dumont',
     },
     disabled: false,
   },
@@ -51,7 +53,7 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
     link: '/',
     icon: {
       type: 'icon',
-      name: 'game-card'
+      name: 'game-card',
     },
     disabled: false,
   },
@@ -61,69 +63,48 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
     link: Routes.START,
     icon: {
       type: 'icon',
-      name: 'ball'
+      name: 'ball',
     },
     disabled: true,
   },
 ];
 
-interface NavItemProps {
-  item: NavigationItem;
-  isActive: boolean;
-}
+export const renderIcon = (icon: IconType) => {
+  if (icon.type === 'image') {
+    return <Image width={icon.width} height={icon.height} src={icon.src} alt={icon.alt} />;
+  }
 
-const NavItem = memo(({ item, isActive }: NavItemProps) => {
-  const baseItemStyles = "min-h-[72px] w-[60px] border-transparent rounded-md";
-  const activeStyles = isActive && !item.disabled ? "border bg-gradiant-border bg-primary-800 bg-origin-border" : "";
-  const disabledStyles = item.disabled ? "pointer-events-none" : "";
-
-  const baseLinkStyles = "min-h-[72px] flex flex-col items-center justify-center gap-1 bg-neutral-800 text-neutral-400 rounded-md text-sm p-3 transition duration-200 hover:bg-neutral-750";
-
-  const renderIcon = (icon: IconType) => {
-    if (icon.type === 'image') {
-      return (
-        <Image
-          width={icon.width}
-          height={icon.height}
-          src={icon.src}
-          alt={icon.alt}
-        />
-      );
-    }
-    // @ts-ignore
-    return <Icon name={icon.name} />;
-  };
-
-  return (
-    <div className={`${baseItemStyles} ${activeStyles} ${disabledStyles}`}>
-      <Link href={item.link} className={baseLinkStyles}>
-        {renderIcon(item.icon)}
-        <span>{item.label}</span>
-        {item.disabled && (
-          <span className="text-sm text-neutral-200 px-3 py-0.5 block rounded-xl border-[1.5px] border-neutral-700">
-            Soon
-          </span>
-        )}
-      </Link>
-    </div>
-  );
-});
-
-NavItem.displayName = 'NavItem';
+  return <Icon name={icon.name as IconName} />;
+};
 
 const SideNavs = () => {
   const isActivePath = useActivePath();
 
   return (
-    <nav className="flex flex-col gap-0.5 px-2.5 border-x-[1.5px] border-neutral-750 bg-neutral-800 min-h-screen">
-      {NAVIGATION_ITEMS.map((item) => (
-        <NavItem
-          key={item.id}
-          item={item}
-          isActive={isActivePath(item.link)}
-        />
-      ))}
-    </nav>
+    <>
+      {/* Desktop Navigation */}
+      <nav className="sm:flex hidden flex-col gap-0.5 px-2.5 border-x-[1.5px] border-neutral-750 bg-neutral-800 sm:min-h-screen min-h-auto">
+        {NAVIGATION_ITEMS.map((item) => (
+          <DesktopNavItem key={item.id} item={item} isActive={isActivePath(item.link)} />
+        ))}
+      </nav>
+
+      {/* Mobile Navigation */}
+      <nav className="sm:hidden flex justify-between fixed inset-x-0 bottom-0 z-[999] bg-gradiant-black px-8 py-2.5">
+        {NAVIGATION_ITEMS.map(
+          (item) =>
+            item.icon.type !== 'image' && (
+              <MobileNavItem
+                key={item.id}
+                itemType="link"
+                item={item}
+                isActive={isActivePath(item.link)}
+              />
+            ),
+        )}
+        <MobileNavItem itemType="link" />
+      </nav>
+    </>
   );
 };
 
