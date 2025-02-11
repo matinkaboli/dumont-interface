@@ -29,6 +29,7 @@ export interface NavigationItem {
   id: string;
   label: string;
   link: string;
+  targetLink: string;
   icon: IconType;
   disabled: boolean;
 }
@@ -38,6 +39,7 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
     id: 'home',
     label: '',
     link: Routes.HOME,
+    targetLink: Routes.HOME,
     icon: {
       type: 'image',
       src: '/images/logo.svg',
@@ -50,7 +52,8 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
   {
     id: 'card',
     label: 'Card',
-    link: '/',
+    link: Routes.HOME,
+    targetLink: Routes.ROUND,
     icon: {
       type: 'icon',
       name: 'game-card',
@@ -60,7 +63,8 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
   {
     id: 'sport',
     label: 'Sport',
-    link: Routes.START,
+    link: '/sport',
+    targetLink: '/sport',
     icon: {
       type: 'icon',
       name: 'ball',
@@ -69,12 +73,16 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
   },
 ];
 
-export const renderIcon = (icon: IconType) => {
+export const renderIcon = (icon: IconType, isActive?: boolean, disabled?: boolean) => {
   if (icon.type === 'image') {
     return <Image width={icon.width} height={icon.height} src={icon.src} alt={icon.alt} />;
   }
 
-  return <Icon name={icon.name as IconName} />;
+  return <Icon name={icon.name as IconName} color={!isActive || disabled ? '#ADADB6' : '#fff'} />;
+};
+
+export const generateNavColor = (isActive: boolean, disabled: boolean) => {
+  return !isActive || disabled ? 'text-neutral-400 pointer-events-none' : 'text-white';
 };
 
 const SideNavs = () => {
@@ -85,7 +93,7 @@ const SideNavs = () => {
       {/* Desktop Navigation */}
       <nav className="sm:flex hidden flex-col gap-0.5 px-2.5 border-x-[1.5px] border-neutral-750 bg-neutral-800 sm:min-h-screen min-h-auto">
         {NAVIGATION_ITEMS.map((item) => (
-          <DesktopNavItem key={item.id} item={item} isActive={isActivePath(item.link)} />
+          <DesktopNavItem key={item.id} item={item} isActive={isActivePath(item.targetLink)} />
         ))}
       </nav>
 
@@ -98,7 +106,7 @@ const SideNavs = () => {
                 key={item.id}
                 itemType="link"
                 item={item}
-                isActive={isActivePath(item.link)}
+                isActive={isActivePath(item.targetLink)}
               />
             ),
         )}

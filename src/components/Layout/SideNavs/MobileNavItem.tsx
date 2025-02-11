@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { Icon } from '@/components';
 
-import { NavigationItem, renderIcon } from './index';
+import { generateNavColor, NavigationItem, renderIcon } from './index';
 
 interface Props {
   item?: NavigationItem;
@@ -13,17 +13,14 @@ interface Props {
 
 const className = 'text-sm font-medium flex flex-col justify-between items-center gap-1';
 
-const MobileNavItem = ({ item, itemType }: Props) => {
+const MobileNavItem = ({ item, itemType, isActive = false }: Props) => {
   if (item && itemType === 'link')
     return (
       <Link
         href={item!.link}
-        className={clsx(
-          className,
-          item!.disabled ? 'pointer-events-none text-neutral-400' : 'text-white',
-        )}
+        className={clsx(className, generateNavColor(isActive, item.disabled))}
       >
-        {renderIcon(item.icon)}
+        {renderIcon(item.icon, isActive, item.disabled)}
         {item!.label}
       </Link>
     );

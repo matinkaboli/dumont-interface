@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import Link from 'next/link';
 
-import { NavigationItem, renderIcon } from './index';
+import { generateNavColor, NavigationItem, renderIcon } from './index';
 
 interface Props {
   item: NavigationItem;
@@ -15,13 +15,15 @@ const DesktopNavItem = memo(({ item, isActive }: Props) => {
   const disabledStyles = item.disabled ? 'pointer-events-none' : '';
 
   const baseLinkStyles =
-    'min-h-[72px] flex flex-col items-center justify-center gap-1 bg-neutral-800 text-neutral-400 rounded-md text-sm p-3 transition duration-200 hover:bg-neutral-750';
+    'min-h-[72px] flex flex-col items-center justify-center gap-1 bg-neutral-800 rounded-md text-sm p-3 transition duration-200 hover:bg-neutral-750';
 
   return (
     <div className={`${baseItemStyles} ${activeStyles} ${disabledStyles}`}>
       <Link href={item.link} className={baseLinkStyles}>
-        {renderIcon(item.icon)}
-        <span>{item.label}</span>
+        {renderIcon(item.icon, isActive, item.disabled)}
+        <span className={generateNavColor(isActive, item.disabled)}>
+          {item.label}
+        </span>
         {item.disabled && (
           <span className="text-sm text-neutral-200 px-3 py-0.5 block rounded-xl border-[1.5px] border-neutral-700">
             Soon

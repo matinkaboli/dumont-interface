@@ -11,7 +11,13 @@ const NewGame = () => {
 
   if (ready && authenticated) {
     return (
-      <Button variant="neutral" size="sm" radius="lg" onClick={onCreateRound}>
+      <Button
+        variant="neutral"
+        size="sm"
+        radius="lg"
+        onClick={onCreateRound}
+        className="whitespace-nowrap"
+      >
         New game
       </Button>
     );

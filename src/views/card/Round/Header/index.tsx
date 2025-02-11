@@ -10,9 +10,9 @@ const Header = () => {
   const { data: game, areAllCardsGuessed, isRefetching } = useTypedSelector((state) => state.game);
 
   return (
-    <div className="flex justify-between items-center text-white">
-      <div className="flex items-center gap-2">
-        <h1 className="font-bold text-2xl">Card Game</h1>
+    <div className="flex justify-between items-center text-white gap-1">
+      <div className="flex items-center sm:gap-2 gap-1">
+        <h1 className="font-bold md:text-2xl sm:text-xl whitespace-nowrap">Card Game</h1>
         {!isEmpty(game) && !areAllCardsGuessed && (
           <div key={isRefetching ? 'refetch' : 'fetch'}>
             <ProgressbarTimer
@@ -22,7 +22,7 @@ const Header = () => {
           </div>
         )}
       </div>
-      <div className="flex gap-3">
+      <div className="flex sm:gap-3 gap-1">
         <Tutorial />
         <NewGame />
       </div>
