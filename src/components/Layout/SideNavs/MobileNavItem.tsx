@@ -1,36 +1,34 @@
+import { memo } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 
-import { Icon } from '@/components';
+import { NavigationItem } from '@/constants/nav';
 
-import { generateNavColor, NavigationItem, renderIcon } from './index';
+import { generateNavColor, renderIcon } from './index';
 
 interface Props {
-  item?: NavigationItem;
-  isActive?: boolean;
-  itemType: 'link' | 'button';
+  item: NavigationItem;
+  isActive: boolean;
 }
 
 const className = 'text-sm font-medium flex flex-col justify-between items-center gap-1';
 
-const MobileNavItem = ({ item, itemType, isActive = false }: Props) => {
-  if (item && itemType === 'link')
-    return (
-      <Link
-        href={item!.link}
-        className={clsx(className, generateNavColor(isActive, item.disabled))}
-      >
-        {renderIcon(item.icon, isActive, item.disabled)}
-        {item!.label}
-      </Link>
-    );
-
+const MobileNavItem =  memo(({ item, isActive = false }: Props) => {
   return (
-    <button type="button" className={clsx('text-neutral-400', className)}>
-      <Icon name="ellipsis-vertical" color="#ADADB6" />
-      More
-    </button>
+    <Link
+      href={item!.link}
+      className={clsx(
+        className,
+        generateNavColor(isActive, item.disabled),
+        item.disabled && 'pointer-events-none',
+      )}
+    >
+      {renderIcon(item.icon, isActive, item.disabled)}
+      {item!.label}
+    </Link>
   );
-};
+});
+
+MobileNavItem.displayName = 'MobileNavItem'
 
 export default MobileNavItem;

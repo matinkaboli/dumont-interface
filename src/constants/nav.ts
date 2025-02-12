@@ -1,0 +1,77 @@
+import { IconName } from '@/components/Icon/iconConfig';
+import Routes from '@/constants/routes';
+
+interface IconImage {
+  type: 'image';
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+interface IconComponent {
+  type: 'icon';
+  name: string;
+}
+
+export type IconType = IconImage | IconComponent;
+
+export interface NavigationItem {
+  id: string;
+  label: string;
+  link: string;
+  targetLink: string;
+  icon: IconType;
+  disabled: boolean;
+}
+
+export interface FooterItem {
+  id: string;
+  link: string;
+  icon: IconName;
+  label: string;
+}
+
+export const NAVIGATION_ITEMS: NavigationItem[] = [
+  {
+    id: 'home',
+    label: '',
+    link: Routes.HOME,
+    targetLink: Routes.HOME,
+    icon: {
+      type: 'image',
+      src: '/images/logo.svg',
+      width: 32,
+      height: 28,
+      alt: 'dumont',
+    },
+    disabled: false,
+  },
+  {
+    id: 'card',
+    label: 'Card',
+    link: Routes.HOME,
+    targetLink: '/card',
+    icon: {
+      type: 'icon',
+      name: 'game-card',
+    },
+    disabled: false,
+  },
+  {
+    id: 'sport',
+    label: 'Sport',
+    link: '/sport',
+    targetLink: '/sport',
+    icon: {
+      type: 'icon',
+      name: 'ball',
+    },
+    disabled: true,
+  },
+];
+
+export const FOOTER_ITEMS: FooterItem[] = [
+  { id: 'white-paper', link: '', icon: 'memo', label: 'Whitepaper' },
+  { id: 'twitter', link: '', icon: 'twitter', label: 'Follow on X' },
+];

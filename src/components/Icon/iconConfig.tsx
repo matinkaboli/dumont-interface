@@ -52,6 +52,7 @@ import Twitter from './svgs/Twitter';
 import Ball from './svgs/Ball';
 import GameCard from './svgs/GameCard';
 import GraduationCap from './svgs/GraduationCap';
+import Memo from './svgs/Memo';
 
 export interface SvgProps {
   width?: string;
@@ -107,7 +108,8 @@ export type IconName =
   | 'twitter'
   | 'ball'
   | 'game-card'
-  | 'graduation-cap';
+  | 'graduation-cap'
+  | 'memo';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -156,4 +158,5 @@ export const iconMap: Record<IconName, ReactElement> = {
   ball: <Ball />,
   'game-card': <GameCard />,
   'graduation-cap': <GraduationCap />,
+  memo: <Memo />,
 };
