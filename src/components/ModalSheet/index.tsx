@@ -22,7 +22,7 @@ const ModalSheet = React.forwardRef<React.ElementRef<typeof Sheet>, ModalSheetPr
         detent="content-height"
         {...props}
       >
-        <Sheet.Container className="!h-auto !bg-neutral-700 !rounded-se-3xl !rounded-ss-3xl">
+        <Sheet.Container className="!h-auto !bg-neutral-750 !rounded-se-3xl !rounded-ss-3xl">
           <Sheet.Header>
             <div className="mt-3.5 h-[5px] w-[77px] bg-neutral-500 rounded-full mx-auto" />
           </Sheet.Header>
