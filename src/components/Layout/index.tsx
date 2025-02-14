@@ -1,18 +1,25 @@
 import { ReactNode } from 'react';
 
-import Header from './Header';
-import Footer from './Footer';
+import ConnectWallet from './ConnectWallet';
+import SideNavs from './SideNavs';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="relative lg:pb-0 pb-24">
-      <div className="absolute -z-10 top-0 left-0 right-0 bg-gradiant-layout blur-[20px] w-screen h-[243px]" />
+    <div className="flex h-screen overflow-y-hidden">
+      <SideNavs />
 
-      <div className="lg:w-[840px] w-full mx-auto flex flex-col min-h-screen lg:px-0 px-5 pt-10 pb-6">
-        <Header />
-        <main className="pt-10 md:pb-16 pb-2">{children}</main>
-        <Footer className="mt-auto" />
-      </div>
+      <main className="flex-1 h-screen overflow-y-auto overflow-x-hidden sm:pb-10 pb-44">
+        <div className="py-4 sm:px-14 px-1 bg-gradiant-black border-b-[1.5px] border-neutral-750 sticky top-0 right-0 z-40">
+          <div className="min-h-[40px] w-fit ml-auto">
+            <ConnectWallet />
+          </div>
+        </div>
+
+        <div className="relative pt-14 px-2 max-w-[856px] mx-auto">
+          <div className="absolute -z-10 top-0 left-0 right-0 bg-gradiant-layout blur-[20px] w-screen h-[243px]" />
+          {children}
+        </div>
+      </main>
     </div>
   );
 };

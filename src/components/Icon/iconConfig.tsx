@@ -49,6 +49,10 @@ import AirBalloonRainbow from './svgs/AirBalloonRainbow';
 import AirBalloon from './svgs/AirBalloon';
 import Share from './svgs/Share';
 import Twitter from './svgs/Twitter';
+import Ball from './svgs/Ball';
+import GameCard from './svgs/GameCard';
+import GraduationCap from './svgs/GraduationCap';
+import Memo from './svgs/Memo';
 
 export interface SvgProps {
   width?: string;
@@ -101,7 +105,11 @@ export type IconName =
   | 'air-balloon'
   | 'air-balloon-rainbow'
   | 'share'
-  | 'twitter';
+  | 'twitter'
+  | 'ball'
+  | 'game-card'
+  | 'graduation-cap'
+  | 'memo';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement> = {
@@ -147,4 +155,8 @@ export const iconMap: Record<IconName, ReactElement> = {
   'air-balloon-rainbow': <AirBalloonRainbow />,
   share: <Share />,
   twitter: <Twitter />,
+  ball: <Ball />,
+  'game-card': <GameCard />,
+  'graduation-cap': <GraduationCap />,
+  memo: <Memo />,
 };

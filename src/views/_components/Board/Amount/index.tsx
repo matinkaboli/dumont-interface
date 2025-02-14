@@ -234,9 +234,9 @@ const Amount = ({
           />
         </motion.div>
 
-        <div className="bg-neutral-750 px-5 pt-6 pb-8 fixed -bottom-px right-0 left-0 rounded-t-2xl z-10">
+        <div className="bg-neutral-750 px-5 sm:pt-6 sm:pb-8 py-6 fixed sm:-bottom-px bottom-[76px] right-0 left-0 rounded-t-2xl z-10">
           <BetButton
-            size="lg"
+            size="md"
             disabled={disabledButton}
             disabledButtonLabel={disabledButtonLabel}
           />
