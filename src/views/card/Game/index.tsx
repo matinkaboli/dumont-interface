@@ -18,7 +18,7 @@ import Board from '@/views/_components/Board';
 import ActivityTab from './ActivityTab';
 import Header from './Header';
 
-const Round = () => {
+const Game = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams();
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
@@ -116,4 +116,4 @@ const Round = () => {
   );
 };
 
-export default Round;
+export default Game;
