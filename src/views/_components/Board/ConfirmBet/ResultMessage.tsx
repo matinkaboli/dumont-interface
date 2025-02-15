@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Button, Icon } from '@/components';
+import { Button } from '@/components';
 import parseUnits from '@/helpers/parseUnits';
 import getCardInfo from '@/helpers/getCardInfo';
 import toFixedNumber from '@/helpers/toFixedNumber';
@@ -15,8 +15,8 @@ const createMessage = (isWinner: boolean, totalAmount: string, montAmount: strin
   title: isWinner ? 'You won! 🎉' : 'No luck this time 💔',
   content: isWinner ? (
     <p className="text-neutral-300 text-base px-6">
-      You’ll receive <b className="text-success-400">${totalAmount} win</b> in your wallet
-      after in ~ 10 sec.
+      You’ll receive <b className="text-success-400">${totalAmount} win</b> in your wallet after in
+      ~ 10 sec.
     </p>
   ) : (
     <p className="text-sm text-neutral-300 px-0 md:px-5">
@@ -84,16 +84,16 @@ const ResultMessage = ({
         {message.buttonText}
       </Button>
 
-      {isPlayerWinner && (
-        <button
-          type="button"
-          className="text-neutral-400 text-base flex-center gap-2 font-semibold mt-7 w-fit mx-auto"
-          onClick={onShare}
-        >
-          <Icon name="share" />
-          Share in social
-        </button>
-      )}
+      {/*{isPlayerWinner && (*/}
+      {/*  <button*/}
+      {/*    type="button"*/}
+      {/*    className="text-neutral-400 text-base flex-center gap-2 font-semibold mt-7 w-fit mx-auto"*/}
+      {/*    onClick={onShare}*/}
+      {/*  >*/}
+      {/*    <Icon name="share" />*/}
+      {/*    Share in social*/}
+      {/*  </button>*/}
+      {/*)}*/}
     </>
   );
 };
