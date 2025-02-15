@@ -39,13 +39,6 @@ const FlipImage = ({
   return (
     <div className="relative w-full h-full">
       <div className="w-full h-full" style={parentStyle}>
-        {!isActive && (
-          <div
-            className="absolute z-20 inset-0 rounded-2xl"
-            style={{ background: 'rgba(0, 0, 0, 0.56)' }}
-          />
-        )}
-
         <motion.div
           animate={{ rotateY: isRevealed ? -180 : 0 }}
           transition={spring}
@@ -65,6 +58,12 @@ const FlipImage = ({
           transition={spring}
           className={clsx(imgParentClassnames, isRevealed ? 'z-10' : 'z-0', 'relative')}
         >
+          {!isActive && (
+            <div
+              className="absolute z-20 inset-0 rounded-2xl"
+              style={{ background: 'rgba(0, 0, 0, 0.56)' }}
+            />
+          )}
           <Image
             width={imgWidth}
             height={imgHeight}
