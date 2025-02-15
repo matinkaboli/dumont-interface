@@ -63,7 +63,7 @@ const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
           <Button
             {...buttonProps}
             type="button"
-            className="btn-gradiant"
+            className={ready ? 'btn-gradiant' : disabledClass}
             disabled={!ready}
             onClick={login}
           >
