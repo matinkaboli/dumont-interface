@@ -1,7 +1,7 @@
 const Routes = {
   HOME: '/',
   CREATE_ROUND: '/',
-  ROUND: '/card/rounds',
+  ROUND: '/card/games',
   START: '/card/start',
   MORE_INFO: '/more-info',
 };

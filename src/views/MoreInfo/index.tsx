@@ -11,6 +11,7 @@ const MoreInfo = () => {
         <Link
           key={item.id}
           href={item.link}
+          target="_blank"
           className="w-full first:pb-6 last:pt-6 block flex-between border-b border-neutral-600 last:border-transparent"
         >
           <span className="flex items-center gap-1.5 text-white text-base">

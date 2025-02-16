@@ -20,7 +20,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
 import RewardButton from './RewardButton';
-import AirdropButton from './AirdropButton';
+// import AirdropButton from './AirdropButton';
 import ConnectedWallet from './ConnectedWallet';
 import clsx from 'clsx';
 
@@ -93,7 +93,7 @@ const ConnectWallet = () => {
     <>
       {ready && authenticated ? (
         <div className="flex items-center gap-2">
-          <AirdropButton />
+          {/*<AirdropButton />*/}
           <RewardButton />
           <ConnectedWallet />
         </div>

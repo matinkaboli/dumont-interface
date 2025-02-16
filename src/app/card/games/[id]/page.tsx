@@ -1,4 +1,4 @@
-import Round from '@/views/card/Round';
+import Game from '@/views/card/Game';
 
 export async function generateMetadata({
   searchParams,
@@ -12,7 +12,7 @@ export async function generateMetadata({
   const title = 'Dumont - Make Gambling Great Again';
   const description =
     'Bet on exciting games like leverageable sports markets and card games in a cheat-proof, verifiable environment powered by blockchain';
-  const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/rounds/${gameId}?cardId=${cardId}`;
+  const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/games/${gameId}?cardId=${cardId}`;
   const imageUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/og?gameId=${gameId}&cardId=${cardId}`;
 
   return {
@@ -34,6 +34,6 @@ export async function generateMetadata({
   };
 }
 
-export default function RoundPage() {
-  return <Round />;
+export default function GamePage() {
+  return <Game />;
 }

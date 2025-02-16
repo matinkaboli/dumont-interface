@@ -62,7 +62,12 @@ const SideNavs = () => {
         </div>
         <div className="flex-col gap-2">
           {FOOTER_ITEMS.map((item) => (
-            <Link key={item.id} href={item.link} className="w-12 h-12 block flex-center">
+            <Link
+              key={item.id}
+              href={item.link}
+              target="_blank"
+              className="w-12 h-12 block flex-center"
+            >
               <Icon name={item.icon as IconName} color="#ADADB6" />
             </Link>
           ))}

@@ -1,5 +1,6 @@
 import { IconName } from '@/components/Icon/iconConfig';
 import Routes from '@/constants/routes';
+import links from '@/constants/links';
 
 interface IconImage {
   type: 'image';
@@ -72,6 +73,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
 ];
 
 export const FOOTER_ITEMS: FooterItem[] = [
-  { id: 'white-paper', link: '', icon: 'memo', label: 'Whitepaper' },
-  { id: 'twitter', link: '', icon: 'twitter', label: 'Follow on X' },
+  { id: 'white-paper', link: links.APP_DOC, icon: 'memo', label: 'Whitepaper' },
+  { id: 'twitter', link: links.TWITTER, icon: 'twitter', label: 'Follow on X' },
 ];

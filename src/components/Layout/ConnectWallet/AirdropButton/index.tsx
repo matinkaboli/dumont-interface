@@ -33,13 +33,13 @@ const AirdropButton = () => {
     args: [address],
     query: {
       refetchInterval: 15000,
-    }
+    },
   });
 
-  const claimValue = useMemo(
-    () => parseUnits(isAirdropEligible as string, 18).toNumber(),
-    [isAirdropEligible],
-  );
+  const claimValue = useMemo(() => {
+    const parsedValue = parseUnits(isAirdropEligible as string, 18);
+    return parsedValue.isNaN() ? 0 : parsedValue.toNumber();
+  }, [isAirdropEligible]);
 
   const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: claimTx as `0x${string}`,
