@@ -66,9 +66,12 @@ const SideNavs = () => {
               key={item.id}
               href={item.link}
               target="_blank"
-              className="w-12 h-12 block flex-center"
+              className="w-12 h-12 block flex-center group"
             >
-              <Icon name={item.icon as IconName} color="#ADADB6" />
+              <Icon
+                name={item.icon as IconName}
+                className="[&>path]:fill-neutral-400 group-hover:[&>path]:fill-primary-400 transition ease-in-out"
+              />
             </Link>
           ))}
         </div>
