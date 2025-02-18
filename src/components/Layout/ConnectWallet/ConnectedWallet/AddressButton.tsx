@@ -5,11 +5,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import humanizeAmount from '@/helpers/humanizeAmount';
 import formatDecimal from '@/helpers/formatDecimal';
 
-interface Props {
-  onOpenChange: () => void;
-}
-
-const AddressButton = ({ onOpenChange }: Props) => {
+const AddressButton = ({ onOpenChange }: { onOpenChange: () => void }) => {
   const { address } = useTypedSelector((state) => state.account.profile);
   const balance = useTypedSelector((state) => state.account.balance);
 
@@ -24,10 +20,12 @@ const AddressButton = ({ onOpenChange }: Props) => {
           <Image width={20} height={20} src="/images/USDC.png" alt="" />
           <span className="font-bold">
             {balance
-              ? formatDecimal({
-                  amount: +humanizeAmount(balance),
-                  decimalPlaces: 3,
-                })
+              ? humanizeAmount(
+                  formatDecimal({
+                    amount: Number(balance),
+                    decimalPlaces: 3,
+                  }),
+                )
               : 0}
           </span>
           <span className="sm:inline-block hidden">USDC</span>
