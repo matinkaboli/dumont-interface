@@ -15,9 +15,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
           </div>
         </div>
 
-        <div className="relative pt-14 px-2 max-w-[856px] mx-auto">
-          <div className="absolute -z-10 top-0 left-0 right-0 bg-gradiant-layout blur-[20px] w-screen h-[243px]" />
-          {children}
+        <div className="relative pt-14 px-2">
+          <div className="absolute -z-10 top-0 left-0 right-0 bg-gradiant-layout blur-[20px] w-full h-[243px]" />
+          <div className="max-w-[856px] mx-auto">{children}</div>
         </div>
       </main>
     </div>
