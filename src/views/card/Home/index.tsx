@@ -18,17 +18,15 @@ import Board from '@/views/_components/Board';
 import CardDeck from '@/views/_components/CardDeck';
 
 const Home = () => {
-  const { ready } = usePrivy();
+  const { ready, user } = usePrivy();
   const dispatch = useDispatch<AppDispatch>();
-  const {
-    loading,
-    profile: { address, isConnected, isConnecting },
-  } = useTypedSelector((state) => state.account);
+  const { loading } = useTypedSelector((state) => state.account);
   const [activeRoundId, setActiveRoundId] = useState<string>('');
   const [isDecidingRedirect, setIsDecidingRedirect] = useState(true);
+  const address = user?.smartWallet?.address;
 
   useEffect(() => {
-    if (address) handlePlayerGames(address);
+    if (address) handlePlayerGames(address as `0x${string}`);
   }, [address]);
 
   const handlePlayerGames = (addr: `0x${string}`) => {
@@ -52,19 +50,14 @@ const Home = () => {
       });
   };
 
-  if (
-    loading ||
-    !ready ||
-    isConnecting ||
-    ((isConnected || !isEmpty(address)) && isDecidingRedirect)
-  )
+  if (loading || !ready || (!isEmpty(address) && isDecidingRedirect))
     return (
       <div className="min-h-[50vh] flex-center">
         <Loading />
       </div>
     );
 
-  if (isConnected || !isEmpty(address)) {
+  if (!isEmpty(address)) {
     if (activeRoundId) redirect(`${Routes.ROUND}/${activeRoundId}`);
     if (!activeRoundId) redirect(Routes.START);
   }
