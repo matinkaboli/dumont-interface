@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
 
 export const siteConfig = {
-  name: 'Dumont - Make Gambling Great Again',
+  name: 'A provably fair gambling platform',
   description:
-    'Bet on exciting games like leverageable sports markets and card games in a cheat-proof, verifiable environment powered by blockchain',
+    'Dumont is a blockchain-based gambling platform that guarantees a provably fair experience for players',
   url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
   ogImage: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/images/default-social-preview.png`,
 } as const;
