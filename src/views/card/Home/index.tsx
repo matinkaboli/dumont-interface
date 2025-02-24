@@ -16,6 +16,7 @@ import Routes from '@/constants/routes';
 
 import Board from '@/views/_components/Board';
 import CardDeck from '@/views/_components/CardDeck';
+import Header from '@/views/_components/Header';
 
 const Home = () => {
   const { ready, user } = usePrivy();
@@ -63,10 +64,14 @@ const Home = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <CardDeck />
-      <Board />
-    </div>
+    <>
+      <Header />
+
+      <div className="flex flex-col gap-4 sm:mt-8 mt-4">
+        <CardDeck />
+        <Board />
+      </div>
+    </>
   );
 };
 

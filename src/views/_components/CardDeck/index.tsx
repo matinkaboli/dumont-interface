@@ -33,7 +33,7 @@ const PlayCards = ({
   return (
     <div
       className={clsx(
-        'overflow-hidden sm:bg-neutral-800 bg-transparent border-[1.5px] border-neutral-700 sm:mx-0 -mx-5 lg:px-7 md:px-2 px-0 pt-4 pb-5 rounded-lg card-deck-height',
+        'overflow-hidden sm:bg-neutral-800 bg-transparent sm:border-[1.5px] border-0 border-neutral-700 sm:mx-0 -mx-5 lg:px-7 md:px-2 px-0 pt-4 pb-5 rounded-lg card-deck-height',
         className,
       )}
     >
