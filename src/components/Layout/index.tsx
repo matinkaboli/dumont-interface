@@ -10,7 +10,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
       <main className="flex-1 h-screen overflow-y-auto overflow-x-hidden sm:pb-10 pb-44">
         <div className="py-4 sm:px-14 px-1 bg-gradiant-black border-b-[1.5px] border-neutral-750 sticky top-0 right-0 z-40">
-          <div className="min-h-[40px] w-fit ml-auto">
+          <div className="min-h-[40px] ml-auto">
             <ConnectWallet />
           </div>
         </div>
