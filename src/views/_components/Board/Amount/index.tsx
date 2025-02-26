@@ -31,7 +31,7 @@ interface Props {
   isKeySelected: boolean;
   isSubmitted: boolean;
   touchedFields: Partial<{ amount?: boolean | undefined; keys?: boolean[] | undefined }>;
-  resetField: UseFormResetField<BetData>,
+  resetField: UseFormResetField<BetData>;
 }
 
 const Amount = ({
@@ -113,8 +113,11 @@ const Amount = ({
         )}
 
         <div
+          className={clsx(
+            'bg-primary-900 px-5 pb-6 fixed md:-bottom-px bottom-[76px] right-0 left-0 rounded-t-3xl z-50',
+            isExpanded ? 'pt-3.5' : 'pt-6',
+          )}
           onClick={(e) => e.stopPropagation()}
-          className="bg-neutral-750 px-5 md:pt-6 sm:pb-8 py-6 fixed md:-bottom-px bottom-[76px] right-0 left-0 rounded-t-2xl z-50"
         >
           <AnimatePresence>
             {isExpanded && (
@@ -130,24 +133,29 @@ const Amount = ({
                 }}
                 className="overflow-hidden"
               >
-                <div className="rounded-lg bg-neutral-750">
-                  <AmountInput
-                    control={control}
-                    touchedFields={touchedFields}
-                    inputErrors={inputErrors}
-                    totalOdds={totalOdds}
-                    setValue={setValue}
-                    setAmount={setAmount}
-                  />
+                <button
+                  type="button"
+                  onClick={onCloseDetail}
+                  className="h-[5px] w-14 block mx-auto bg-primary-700 rounded-full"
+                />
 
-                  <AmountInfo
-                    odd={totalOdds}
-                    payout={formattedPayout}
-                    className="bg-neutral-750 gap-3 pt-8 pb-10"
-                    labelClassName="text-white text-base"
-                    valueClassName="text-white text-base"
-                  />
-                </div>
+                <AmountInput
+                  className="mt-6"
+                  control={control}
+                  touchedFields={touchedFields}
+                  inputErrors={inputErrors}
+                  totalOdds={totalOdds}
+                  setValue={setValue}
+                  setAmount={setAmount}
+                />
+
+                <AmountInfo
+                  odd={totalOdds}
+                  payout={formattedPayout}
+                  className="gap-3 pt-8 pb-10"
+                  labelClassName="text-white text-base"
+                  valueClassName="text-white text-base"
+                />
               </motion.div>
             )}
           </AnimatePresence>

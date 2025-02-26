@@ -2,6 +2,7 @@ import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { Control, Controller, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import Image from 'next/image';
 import BigNumber from 'bignumber.js';
+import clsx from 'clsx';
 
 import { Icon, Input } from '@/components';
 import { Props as InputProps } from '@/components/Input';
@@ -23,6 +24,7 @@ const inputProps: InputProps = {
 };
 
 interface Props {
+  className?: string;
   control: Control<BetData>;
   touchedFields: Partial<{ amount?: boolean | undefined; keys?: boolean[] | undefined }>;
   inputErrors?: FieldErrors<BetData>;
@@ -32,6 +34,7 @@ interface Props {
 }
 
 const AmountInput = ({
+  className = '',
   touchedFields,
   control,
   inputErrors,
@@ -104,7 +107,7 @@ const AmountInput = ({
 
   return (
     <>
-      <div className="flex justify-between mb-2">
+      <div className={clsx('flex justify-between mb-2', className)}>
         <div className="font-medium text-xs text-white">Amount</div>
         <MaxButton onClick={setMaxValue}>
           <Icon name="caret-up" />

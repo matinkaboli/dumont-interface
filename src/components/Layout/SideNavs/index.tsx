@@ -78,7 +78,7 @@ const SideNavs = () => {
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden flex justify-between fixed inset-x-0 bottom-0 z-40 bg-gradiant-black px-8 py-2.5">
+      <nav className="md:hidden flex justify-between fixed inset-x-0 bottom-0 z-50 bg-gradiant-black px-8 py-2.5">
         {NAVIGATION_ITEMS.map(
           (item) =>
             item.icon.type !== 'image' && (
