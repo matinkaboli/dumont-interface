@@ -62,6 +62,8 @@ const Amount = ({
     setValue('amount', '', { shouldDirty: true, shouldValidate: true });
   };
 
+  console.log(inputErrors);
+
   return (
     <>
       {/* Desktop View */}
@@ -71,6 +73,7 @@ const Amount = ({
             <AmountInput
               control={control}
               touchedFields={touchedFields}
+              inputErrors={inputErrors}
               totalOdds={totalOdds}
               setValue={setValue}
               setAmount={setAmount}
@@ -100,12 +103,12 @@ const Amount = ({
       {/* Mobile View */}
       <div className="md:hidden flex flex-col gap-2">
         {isExpanded && (
-          <div className="fixed inset-0 bg-black opacity-75 z-10" onClick={onCloseDetail} />
+          <div className="fixed inset-0 bg-black opacity-75 z-40" onClick={onCloseDetail} />
         )}
 
         <div
           onClick={(e) => e.stopPropagation()}
-          className="bg-neutral-750 px-5 sm:pt-6 sm:pb-8 py-6 fixed sm:-bottom-px bottom-[76px] right-0 left-0 rounded-t-2xl z-10"
+          className="bg-neutral-750 px-5 sm:pt-6 sm:pb-8 py-6 fixed sm:-bottom-px bottom-[76px] right-0 left-0 rounded-t-2xl z-50"
         >
           <AnimatePresence>
             {isExpanded && (
@@ -125,6 +128,7 @@ const Amount = ({
                   <AmountInput
                     control={control}
                     touchedFields={touchedFields}
+                    inputErrors={inputErrors}
                     totalOdds={totalOdds}
                     setValue={setValue}
                     setAmount={setAmount}
