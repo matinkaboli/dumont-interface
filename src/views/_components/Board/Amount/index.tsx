@@ -21,14 +21,14 @@ import { BetData } from '../index';
 
 interface Props {
   control: Control<BetData>;
-  disabledButton: boolean;
+  isFormValid: boolean;
   inputErrors?: FieldErrors<BetData>;
   setValue: UseFormSetValue<BetData>;
   payout: number;
   totalOdds: number;
   trigger: UseFormTrigger<BetData>;
   disabledButtonLabel: string;
-  isKeySelected: boolean;
+  isButtonDisabled: boolean;
   isSubmitted: boolean;
   touchedFields: Partial<{ amount?: boolean | undefined; keys?: boolean[] | undefined }>;
   resetField: UseFormResetField<BetData>;
@@ -41,8 +41,8 @@ const Amount = ({
   payout,
   totalOdds,
   trigger,
-  disabledButton,
-  isKeySelected,
+  isFormValid,
+  isButtonDisabled,
   disabledButtonLabel,
   touchedFields,
   isSubmitted,
@@ -100,7 +100,7 @@ const Amount = ({
           <BetButton
             type="submit"
             size="md"
-            disabled={disabledButton}
+            disabled={isFormValid}
             disabledButtonLabel={disabledButtonLabel}
           />
         </div>
@@ -163,7 +163,7 @@ const Amount = ({
           <BetButton
             size="md"
             type={isExpanded ? 'submit' : 'button'}
-            disabled={isExpanded ? disabledButton : !isKeySelected}
+            disabled={isExpanded ? isFormValid : isButtonDisabled}
             disabledButtonLabel={disabledButtonLabel}
             label={isExpanded ? 'Bet' : `Bet (x${toFixedNumber(totalOdds)})`}
             onClick={onExpandDetail}
