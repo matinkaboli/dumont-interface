@@ -1,7 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Control, FieldErrors, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
+import {
+  Control,
+  FieldErrors,
+  UseFormResetField,
+  UseFormSetValue,
+  UseFormTrigger,
+} from 'react-hook-form';
 import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
 
@@ -25,6 +31,7 @@ interface Props {
   isKeySelected: boolean;
   isSubmitted: boolean;
   touchedFields: Partial<{ amount?: boolean | undefined; keys?: boolean[] | undefined }>;
+  resetField: UseFormResetField<BetData>,
 }
 
 const Amount = ({
@@ -39,6 +46,7 @@ const Amount = ({
   disabledButtonLabel,
   touchedFields,
   isSubmitted,
+  resetField,
 }: Props) => {
   const [amount, setAmount] = useState();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -59,10 +67,8 @@ const Amount = ({
 
   const onCloseDetail = () => {
     setIsExpanded(false);
-    setValue('amount', '', { shouldDirty: true, shouldValidate: true });
+    resetField('amount');
   };
-
-  console.log(inputErrors);
 
   return (
     <>
@@ -108,7 +114,7 @@ const Amount = ({
 
         <div
           onClick={(e) => e.stopPropagation()}
-          className="bg-neutral-750 px-5 sm:pt-6 sm:pb-8 py-6 fixed sm:-bottom-px bottom-[76px] right-0 left-0 rounded-t-2xl z-50"
+          className="bg-neutral-750 px-5 md:pt-6 sm:pb-8 py-6 fixed md:-bottom-px bottom-[76px] right-0 left-0 rounded-t-2xl z-50"
         >
           <AnimatePresence>
             {isExpanded && (

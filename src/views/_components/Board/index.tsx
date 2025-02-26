@@ -108,6 +108,7 @@ const Board = () => {
     reset,
     watch,
     trigger,
+    resetField,
     formState: { isDirty, isValid, isSubmitted, errors, touchedFields },
   } = useForm<BetData>({
     mode: 'onChange',
@@ -310,6 +311,7 @@ const Board = () => {
           disabledButton={isDisabled}
           isKeySelected={!isEmpty(keys)}
           isSubmitted={isSubmitted}
+          resetField={resetField}
           disabledButtonLabel={disabledButtonLabel()}
         />
       </div>

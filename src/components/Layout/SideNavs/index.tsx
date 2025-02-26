@@ -49,7 +49,7 @@ const SideNavs = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="sm:flex hidden flex-col justify-between items-center gap-0.5 px-2.5 pb-6 border-x-[1.5px] border-neutral-750 bg-neutral-800 sm:min-h-screen min-h-auto">
+      <nav className="md:flex hidden flex-col justify-between items-center gap-0.5 px-2.5 pb-6 border-x-[1.5px] border-neutral-750 bg-neutral-800 md:min-h-screen min-h-auto">
         <div>
           {NAVIGATION_ITEMS.map((item, index) => (
             <DesktopNavItem
@@ -78,7 +78,7 @@ const SideNavs = () => {
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className="sm:hidden flex justify-between fixed inset-x-0 bottom-0 z-40 bg-gradiant-black px-8 py-2.5">
+      <nav className="md:hidden flex justify-between fixed inset-x-0 bottom-0 z-40 bg-gradiant-black px-8 py-2.5">
         {NAVIGATION_ITEMS.map(
           (item) =>
             item.icon.type !== 'image' && (
