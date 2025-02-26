@@ -117,9 +117,9 @@ const AmountInput = ({
         rules={inputValidation}
         render={({ field }) => (
           <Input
-            errors={touchedFields?.amount ? inputErrors : {}}
-            {...inputProps}
             {...field}
+            {...inputProps}
+            errors={touchedFields?.amount ? inputErrors : {}}
             onChange={(e) => handleInputChange(e, field.onChange)}
           />
         )}

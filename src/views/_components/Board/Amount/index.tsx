@@ -6,12 +6,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import clsx from 'clsx';
 
 import isEmpty from '@/helpers/isEmpty';
+import toFixedNumber from '@/helpers/toFixedNumber';
 
 import AmountInfo from './Info';
 import BetButton from './BetButton';
 import AmountInput from './AmountInput';
 import { BetData } from '../index';
-import toFixedNumber from '@/helpers/toFixedNumber';
 
 interface Props {
   control: Control<BetData>;
@@ -57,6 +57,11 @@ const Amount = ({
     if (!isExpanded) setIsExpanded(true);
   };
 
+  const onCloseDetail = () => {
+    setIsExpanded(false);
+    setValue('amount', '', { shouldDirty: true, shouldValidate: true });
+  };
+
   return (
     <>
       {/* Desktop View */}
@@ -94,7 +99,14 @@ const Amount = ({
 
       {/* Mobile View */}
       <div className="md:hidden flex flex-col gap-2">
-        <div className="bg-neutral-750 px-5 sm:pt-6 sm:pb-8 py-6 fixed sm:-bottom-px bottom-[76px] right-0 left-0 rounded-t-2xl z-10">
+        {isExpanded && (
+          <div className="fixed inset-0 bg-black opacity-75 z-10" onClick={onCloseDetail} />
+        )}
+
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="bg-neutral-750 px-5 sm:pt-6 sm:pb-8 py-6 fixed sm:-bottom-px bottom-[76px] right-0 left-0 rounded-t-2xl z-10"
+        >
           <AnimatePresence>
             {isExpanded && (
               <motion.div
