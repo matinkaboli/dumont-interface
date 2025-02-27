@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import { Icon } from '@/components';
 import { IconName } from '@/components/Icon/iconConfig';
-import { useActivePath } from '@/hooks/useActivePath';
 import Routes from '@/constants/routes';
 import { FOOTER_ITEMS, IconType, NAVIGATION_ITEMS, NavigationItem } from '@/constants/nav';
 
@@ -21,7 +21,7 @@ const moreItem: NavigationItem = {
   id: 'more',
   label: 'More',
   link: Routes.MORE_INFO,
-  targetLink: '/more',
+  targetLink: Routes.MORE_INFO,
   icon: {
     type: 'icon',
     name: 'ellipsis-vertical',
@@ -44,7 +44,11 @@ export const generateNavColor = (isActive: boolean, disabled: boolean) => {
 };
 
 const SideNavs = () => {
-  const isActivePath = useActivePath();
+  const searchParams = useSearchParams();
+  const mode = searchParams.get('mode');
+  const pathname = usePathname();
+
+  const isLinkActive = (targetLink: string) => mode === targetLink || pathname === targetLink;
 
   return (
     <>
@@ -56,7 +60,7 @@ const SideNavs = () => {
               key={item.id}
               index={index}
               item={item}
-              isActive={isActivePath(item.targetLink)}
+              isActive={isLinkActive(item.targetLink)}
             />
           ))}
         </div>
@@ -82,10 +86,10 @@ const SideNavs = () => {
         {NAVIGATION_ITEMS.map(
           (item) =>
             item.icon.type !== 'image' && (
-              <MobileNavItem key={item.id} item={item} isActive={isActivePath(item.targetLink)} />
+              <MobileNavItem key={item.id} item={item} isActive={isLinkActive(item.targetLink)} />
             ),
         )}
-        <MobileNavItem item={moreItem} isActive={isActivePath(Routes.MORE_INFO)} />
+        <MobileNavItem item={moreItem} isActive={pathname === moreItem.targetLink} />
       </nav>
     </>
   );
