@@ -12,8 +12,8 @@ export async function generateMetadata({
   const title = 'A provably fair gambling platform';
   const description =
     'Dumont is a blockchain-based gambling platform that guarantees a provably fair experience for players';
-  const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/games/${gameId}?cardId=${cardId}`;
-  const imageUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/og?gameId=${gameId}&cardId=${cardId}`;
+  const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/games/${gameId}?cardId=${cardId}&mode=card`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/api/og?gameId=${gameId}&cardId=${cardId}&mode=card`;
 
   return {
     title,
