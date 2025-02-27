@@ -19,11 +19,11 @@ const AmountInfo = ({
 }: Props) => {
   return (
     <ul className={clsx('flex flex-col', className)}>
-      <li className="text-sm font-medium flex-between">
+      <li className="font-medium flex-between">
         <span className={labelClassName}>Total odds</span>
         <span className={valueClassName}>x{toFixedNumber(odd)}</span>
       </li>
-      <li className="text-sm font-medium flex-between">
+      <li className="font-medium flex-between">
         <span className={labelClassName}>Possible payout</span>
         <span className={valueClassName}>${payout}</span>
       </li>

@@ -14,9 +14,9 @@ import { MAX_GUESSABLE_CARDS } from '@/constants/static';
 
 import CardDeck from '@/views/_components/CardDeck';
 import Board from '@/views/_components/Board';
+import Header from '@/views/_components/Header';
 
 import ActivityTab from './ActivityTab';
-import Header from './Header';
 
 const Game = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -100,7 +100,7 @@ const Game = () => {
 
   return (
     <>
-      <Header />
+      <Header showTitleInMobile={false} />
 
       <div className="flex flex-col gap-4 mt-8">
         {isEmpty(game) ? (

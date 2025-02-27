@@ -2,6 +2,9 @@
 
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import clsx from 'clsx';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { usePrivy } from '@privy-io/react-auth';
 import { useAccount, useBalance, useReadContract } from 'wagmi';
@@ -13,16 +16,15 @@ import { getConfig } from '@/redux/features/configSlice';
 import { fetchReferralAddress } from '@/redux/features/referralSlice';
 import { setMaxBetAmount, setMinBetAmount } from '@/redux/features/betSlice';
 import { setAccount, setBalance } from '@/redux/features/accountSlice';
-
 import parseUnits from '@/helpers/parseUnits';
 import VAULT_ABI from '@/abis/VAULT_ABI.json';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
+import Routes from '@/constants/routes';
 
 import RewardButton from './RewardButton';
 // import AirdropButton from './AirdropButton';
 import ConnectedWallet from './ConnectedWallet';
-import clsx from 'clsx';
 
 const ConnectWallet = () => {
   const params = useParams();
@@ -92,10 +94,15 @@ const ConnectWallet = () => {
   return (
     <>
       {ready && authenticated ? (
-        <div className="flex items-center gap-2">
-          {/*<AirdropButton />*/}
-          <RewardButton />
-          <ConnectedWallet />
+        <div className="flex items-center justify-between w-full">
+          <Link href={Routes.HOME} className="sm:hidden block">
+            <Image width={36} height={31} src="/images/logo.svg" alt="dumont" />
+          </Link>
+          <div className="flex items-center gap-2 ml-auto">
+            {/*<AirdropButton />*/}
+            <RewardButton />
+            <ConnectedWallet />
+          </div>
         </div>
       ) : (
         <Button
@@ -105,7 +112,7 @@ const ConnectWallet = () => {
           onClick={login}
           disabled={!ready}
           className={clsx(
-            'font-bold',
+            'font-bold ml-auto',
             ready
               ? 'bg-primary-400 text-white hover:bg-primary-300'
               : 'bg-neutral-700 text-neutral-400 border-neutral-700',

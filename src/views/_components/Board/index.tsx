@@ -108,7 +108,8 @@ const Board = () => {
     reset,
     watch,
     trigger,
-    formState: { isDirty, isValid, errors, touchedFields },
+    resetField,
+    formState: { isDirty, isValid, isSubmitted, errors, touchedFields },
   } = useForm<BetData>({
     mode: 'onChange',
     defaultValues: {
@@ -274,16 +275,16 @@ const Board = () => {
     return 'Bet';
   };
 
-  const isDisabled =
-    !isValid ||
-    !isDirty ||
+  const isButtonDisabled =
     isEmpty(keys) ||
-    isExpired ||
-    game?.cards[activeCardIndex - 1]?.number !== -1 ||
-    game?.player.toLowerCase() !== address?.toLowerCase() ||
     isGuessCardLoading ||
     isGuessCardConfirming ||
-    isWaitTXLoading;
+    isWaitTXLoading ||
+    isExpired ||
+    game?.cards[activeCardIndex - 1]?.number !== -1 ||
+    game?.player.toLowerCase() !== address?.toLowerCase();
+
+  const isFormValid = !isValid || !isDirty || isButtonDisabled;
 
   return (
     <form
@@ -307,7 +308,10 @@ const Board = () => {
           control={control}
           trigger={trigger}
           touchedFields={touchedFields}
-          disabledButton={isDisabled}
+          isFormValid={isFormValid}
+          isButtonDisabled={isButtonDisabled}
+          isSubmitted={isSubmitted}
+          resetField={resetField}
           disabledButtonLabel={disabledButtonLabel()}
         />
       </div>

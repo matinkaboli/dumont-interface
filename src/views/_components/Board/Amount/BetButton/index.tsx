@@ -11,9 +11,17 @@ const disabledClass = 'bg-neutral-700 text-neutral-400 border-neutral-700';
 
 interface Props extends ButtonProps {
   disabledButtonLabel: string;
+  label?: string;
 }
 
-const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
+const BetButton = ({
+  size,
+  disabled,
+  disabledButtonLabel,
+  label = 'Bet',
+  type,
+  onClick,
+}: Props) => {
   const { isCreated, data: game } = useTypedSelector((state) => state.game);
   const { login, authenticated, ready } = usePrivy();
 
@@ -22,6 +30,8 @@ const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
     variant: 'link',
     radius: 'lg',
     size: size,
+    type: type,
+    onClick: onClick,
   };
 
   return (
@@ -33,11 +43,10 @@ const BetButton = ({ size, disabled, disabledButtonLabel }: Props) => {
               <div className="btn-glow" />
               <Button
                 {...buttonProps}
-                type="submit"
                 disabled={disabled}
                 className={disabled ? disabledClass : 'btn-gradiant'}
               >
-                {disabled ? disabledButtonLabel : 'Bet'}
+                {disabled ? disabledButtonLabel : label}
               </Button>
             </>
           ) : (
