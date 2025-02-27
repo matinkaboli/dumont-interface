@@ -36,7 +36,7 @@ const CardSlides = ({ slides = [] }: Props) => {
 
   const onActiveIndexChange = (s: Swiper) => {
     dispatch(setActiveCardIndex(s.activeIndex));
-    router.push(`?cardId=${s.activeIndex}`);
+    router.push(`?cardId=${s.activeIndex}&mode=card`);
   };
 
   return (
