@@ -38,13 +38,18 @@ export async function GET(req: NextRequest) {
     new URL('../../../../public/fonts/Inter-Bold.ttf', import.meta.url),
   ).then((res) => res.arrayBuffer());
 
+  const interExtraBoldFontP = fetch(
+    new URL('../../../../public/fonts/Inter-ExtraBold.ttf', import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
   const interItalicFontP = fetch(
     new URL('../../../../public/fonts/Inter-MediumItalic.ttf', import.meta.url),
   ).then((res) => res.arrayBuffer());
 
-  const [interRegularFont, interBoldFont, interItalicFont] = await Promise.all([
+  const [interRegularFont, interBoldFont, interExtraBold, interItalicFont] = await Promise.all([
     interRegularFontP,
     interBoldFontP,
+    interExtraBoldFontP,
     interItalicFontP,
   ]);
 
@@ -91,28 +96,28 @@ export async function GET(req: NextRequest) {
             marginLeft: 190,
             marginRight: 190,
             display: 'flex',
-            fontSize: 110,
+            fontSize: 150,
             fontFamily: 'Inter',
             color: 'black',
-            lineHeight: '120px',
+            lineHeight: '150px',
             whiteSpace: 'pre-wrap',
-            marginTop: '30px',
+            marginTop: '50px',
           }}
         >
-          <i style={{ fontStyle: 'italic' }}>YAAY!</i>
-          <b style={{ fontWeight: 'bold', fontStyle: 'normal' }}> I won</b>
+          <i style={{ fontWeight: '500', fontStyle: 'italic' }}>YAAY!</i>
+          <b style={{ fontWeight: '900', fontStyle: 'normal' }}> I won</b>
         </div>
         <div
           style={{
             marginLeft: 190,
             marginRight: 190,
             display: 'flex',
-            fontSize: 130,
+            fontSize: 150,
             fontFamily: 'Inter',
             fontStyle: 'normal',
             color: 'black',
-            fontWeight: 'bold',
-            lineHeight: '120px',
+            fontWeight: '900',
+            lineHeight: '150px',
             whiteSpace: 'pre-wrap',
           }}
         >
@@ -125,7 +130,7 @@ export async function GET(req: NextRequest) {
             display: 'flex',
             background: 'white',
             alignItems: 'center',
-            fontSize: 100,
+            fontSize: 102,
             fontFamily: 'Inter',
             fontStyle: 'italic',
             padding: '0 50px',
@@ -149,15 +154,21 @@ export async function GET(req: NextRequest) {
         },
         {
           name: 'Inter',
+          data: interItalicFont,
+          style: 'italic',
+          weight: 400,
+        },
+        {
+          name: 'Inter',
           data: interBoldFont,
           style: 'normal',
           weight: 700,
         },
         {
           name: 'Inter',
-          data: interItalicFont,
-          style: 'italic',
-          weight: 400,
+          data: interExtraBold,
+          style: 'normal',
+          weight: 900,
         },
       ],
     },
