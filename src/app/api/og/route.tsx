@@ -90,34 +90,34 @@ export async function GET(req: NextRequest) {
           padding: '5% 0',
         }}
       >
-        <img width="280" height="181" src={`${website}/images/share-logo.svg`} alt="dumont" />
+        <img width="330" height="207" src={`${website}/images/share-logo.svg`} alt="dumont" />
         <div
           style={{
             marginLeft: 190,
             marginRight: 190,
             display: 'flex',
-            fontSize: 150,
+            fontSize: 190,
             fontFamily: 'Inter',
             color: 'black',
-            lineHeight: '150px',
+            lineHeight: '190px',
             whiteSpace: 'pre-wrap',
             marginTop: '50px',
           }}
         >
           <i style={{ fontWeight: '500', fontStyle: 'italic' }}>YAAY!</i>
-          <b style={{ fontWeight: '900', fontStyle: 'normal' }}> I won</b>
+          <b style={{ fontWeight: '900', fontStyle: 'normal' }}> I WON</b>
         </div>
         <div
           style={{
             marginLeft: 190,
             marginRight: 190,
             display: 'flex',
-            fontSize: 150,
+            fontSize: 190,
             fontFamily: 'Inter',
             fontStyle: 'normal',
             color: 'black',
             fontWeight: '900',
-            lineHeight: '150px',
+            lineHeight: '190px',
             whiteSpace: 'pre-wrap',
           }}
         >
@@ -138,7 +138,7 @@ export async function GET(req: NextRequest) {
             marginTop: 'auto',
           }}
         >
-          ODDS {toFixedNumber(card?.result?.rate)}x
+          ODDS {toFixedNumber(card?.result?.rate)}X
         </div>
       </div>
     ),
