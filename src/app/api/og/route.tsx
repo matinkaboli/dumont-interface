@@ -102,6 +102,7 @@ export async function GET(req: NextRequest) {
             lineHeight: '190px',
             whiteSpace: 'pre-wrap',
             marginTop: '50px',
+            letterSpacing: '-0.025em',
           }}
         >
           <i style={{ fontWeight: '500', fontStyle: 'italic' }}>YAAY!</i>
@@ -119,6 +120,7 @@ export async function GET(req: NextRequest) {
             fontWeight: '900',
             lineHeight: '190px',
             whiteSpace: 'pre-wrap',
+            letterSpacing: '-0.025em',
           }}
         >
           ${toFixedNumber(parseUnits(card?.totalAmount, 6))}
@@ -136,6 +138,7 @@ export async function GET(req: NextRequest) {
             padding: '0 50px',
             border: '4px solid black',
             marginTop: 'auto',
+            letterSpacing: '-0.025em',
           }}
         >
           ODDS {toFixedNumber(card?.result?.rate)}X
