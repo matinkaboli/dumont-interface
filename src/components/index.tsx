@@ -12,6 +12,7 @@ export { default as Status } from './Status';
 export { default as Confetti } from './Confetti';
 export { default as Carousel } from './Carousel';
 export { default as CarouselItem } from './Carousel/CarouselItem';
+export { default as PulsingCircle } from './PulsingCircle';
 export * from './Dialog';
 export * from './Tooltip';
 export * from './Table';
