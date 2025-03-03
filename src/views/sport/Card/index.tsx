@@ -6,7 +6,7 @@ import ProgressBar from './ProgressBar';
 
 const Card = ({ isActive = false }: { isActive?: boolean }) => {
   return (
-    <div className="relative border-[1.5px] border-neutral-700 bg-neutral-800 rounded-lg w-full pt-4 pb-6 px-2">
+    <div className="relative border-[1.5px] border-neutral-700 bg-neutral-800 rounded-lg w-full sm:pt-4 sm:pb-6 sm:px-2 p-3 cursor-pointer">
       {isActive && <PulsingCircle size="sm" className="absolute top-2 left-2" />}
       <div className="text-center text-xs text-neutral-400">Match time</div>
       <div className="text-center text-sm text-neutral-100 mt-0.5">23 Aug - 23:30</div>
