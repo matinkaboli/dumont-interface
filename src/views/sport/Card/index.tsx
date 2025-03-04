@@ -11,15 +11,27 @@ const Card = ({ isActive = false }: { isActive?: boolean }) => {
       <div className="text-center text-xs text-neutral-400">Match time</div>
       <div className="text-center text-sm text-neutral-100 mt-0.5">23 Aug - 23:30</div>
 
-      <h6 className="text-base text-white font-bold mt-3 whitespace-nowrap w-fit mx-auto">
-        <span className="inline-flex gap-2 items-center">
+      <h6 className="flex items-center text-base text-white font-bold mt-3 whitespace-nowrap w-fit mx-auto">
+        <span className="inline-flex items-center gap-2">
           Real Madrid
-          <Image width={0} height={0} className="h-6 w-auto" src="/images/real-madrid.svg" alt="" />
+          <Image
+            width={0}
+            height={0}
+            className="h-6 w-auto"
+            src="/images/teams/real-madrid.svg"
+            alt=""
+          />
         </span>
         <span className="px-2">-</span>
-        <span className="inline-flex gap-2 items-center">
+        <span className="inline-flex items-center gap-2">
+          <Image
+            width={0}
+            height={0}
+            className="h-6 w-auto"
+            src="/images/teams/barcelona.svg"
+            alt=""
+          />
           Barcelona
-          <Image width={0} height={0} className="h-6 w-auto" src="/images/barcelona.svg" alt="" />
         </span>
       </h6>
 
