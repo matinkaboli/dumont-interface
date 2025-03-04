@@ -4,7 +4,25 @@ import { Icon, PulsingCircle } from '@/components';
 
 import ProgressBar from './ProgressBar';
 
-const Card = ({ isActive = false }: { isActive?: boolean }) => {
+interface ILeague {
+  name: string;
+  logo: string;
+}
+
+interface ITeam {
+  name: string;
+  shortName: string;
+  logo: string;
+}
+
+interface Props {
+  isActive?: boolean;
+  league?: ILeague;
+  homeTeam?: ITeam;
+  awayTeam?: ITeam;
+}
+
+const Card = ({ isActive = false }: Props) => {
   return (
     <div className="relative border-[1.5px] border-neutral-700 bg-neutral-800 rounded-lg w-full sm:pt-4 sm:pb-6 sm:px-2 p-3 cursor-pointer">
       {isActive && <PulsingCircle size="sm" className="absolute top-2 left-2" />}
