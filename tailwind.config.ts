@@ -99,7 +99,6 @@ const config: Config = {
         },
         'rgba-success-700': 'rgba(0, 127, 103, 0.20)',
       },
-
       backgroundImage: {
         'gradiant-layout':
           'radial-gradient(102.43% 214.4% at 50% -78.19%, rgba(181, 16, 197, 0.12) 32.53%, rgba(17, 4, 20, 0) 100%)',
