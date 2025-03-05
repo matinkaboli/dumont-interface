@@ -1,0 +1,169 @@
+'use client';
+
+import { MouseEvent, useRef, useState } from 'react';
+import {
+  Line,
+  LineChart,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import { CategoricalChartState } from 'recharts/types/chart/types';
+
+interface Data {
+  time: string;
+
+  [key: string]: number | string;
+}
+
+interface TeamChartProps {
+  teams: { name: string; label: string }[];
+  data: Data[];
+}
+
+const colors = ['#A215A2', '#BD7E06', '#5100FE'];
+const lineColor = '#252525';
+const axisColor = '#858585';
+
+const TeamChart = ({ teams, data }: TeamChartProps) => {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const [activePayload, setActivePayload] = useState<any>(null);
+  const [cursorX, setCursorX] = useState(0);
+
+  const formattedTeams = teams.map((team, index) => ({
+    ...team,
+    color: colors[index],
+  }));
+
+  const CustomDot = (props: any) => {
+    const { cx, cy, payload, dataKey } = props;
+    const colors = Object.fromEntries(formattedTeams.map((t) => [t.name, t.color]));
+
+    // Only render the dot at the last data point
+    if (payload.time === data[data.length - 1].time) {
+      return <circle cx={cx} cy={cy} r={4.5} fill={colors[dataKey]} />;
+    }
+    return null;
+  };
+
+  const onMouseLeaveRef = () => setActivePayload(null);
+
+  const onMouseMoveRef = (e: MouseEvent<HTMLDivElement>) => {
+    if (chartRef.current) {
+      const rect = chartRef.current.getBoundingClientRect();
+      setCursorX(e.clientX - rect.left);
+    }
+  };
+
+  const onMouseMoveLineChart = (e: CategoricalChartState) => {
+    if (e.activePayload && e.activeLabel) {
+      const filteredPayload = e.activePayload?.filter(
+        (entry: any) => entry.color !== 'transparent',
+      );
+      setActivePayload(filteredPayload);
+    }
+  };
+
+  return (
+    <div className="bg-secondary-900 border-[1.5px] border-neutral-700 px-6 py-5 rounded-lg">
+      <div className="flex gap-10">
+        {formattedTeams.map((team) => (
+          <div key={team.name} className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: team.color }} />
+            <span className="text-sm font-medium text-neutral-200">{team.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="relative h-[300px] mt-5">
+        <div
+          ref={chartRef}
+          className="w-full h-full"
+          onMouseLeave={onMouseLeaveRef}
+          onMouseMove={onMouseMoveRef}
+        >
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={data}
+              margin={{ top: 8, right: 0, left: 8, bottom: 0 }}
+              onMouseMove={onMouseMoveLineChart}
+            >
+              {[20, 25, 30, 35, 40, 45, 50, 55].map((tick) => (
+                <ReferenceLine
+                  key={`line-${tick}`}
+                  y={tick}
+                  stroke={lineColor}
+                  strokeDasharray="3 3"
+                  strokeWidth={1}
+                />
+              ))}
+
+              <XAxis
+                dataKey="time"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: axisColor, fontSize: 12 }}
+                tickMargin={10}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tickCount={8}
+                tick={{ fill: axisColor, fontSize: 12 }}
+                domain={[20, 55]}
+                orientation="right"
+                tickFormatter={(value) => `${value}%`}
+              />
+              <Tooltip content={() => null} cursor={{ stroke: lineColor, strokeWidth: 1 }} />
+
+              {formattedTeams.map((team) => (
+                <Line
+                  key={team.name}
+                  type="monotone"
+                  dataKey={team.name}
+                  stroke={team.color}
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{ r: 5, fill: team.color, stroke: '#fff', strokeWidth: 1 }}
+                  name={team.name}
+                  animationDuration={1000}
+                  isAnimationActive={true}
+                />
+              ))}
+
+              {formattedTeams.map((team) => (
+                <Line
+                  key={`dot-${team.name}`}
+                  dataKey={team.name}
+                  stroke="transparent"
+                  dot={<CustomDot />}
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {activePayload?.map((entry: any, index: number) => {
+          const dataKey = entry.dataKey;
+          const team = formattedTeams.find((t) => t.name === dataKey);
+
+          if (!team) return null;
+
+          return (
+            <div
+              key={`tooltip-${index}`}
+              className="absolute px-2 py-0.5 rounded-full text-neutral-100 text-xs font-medium whitespace-nowrap pointer-events-none"
+              style={{ backgroundColor: team.color, left: cursorX + 20, top: 20 + index * 30 }}
+            >
+              {`${entry.value}% ${team.label}`}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+export default TeamChart;
