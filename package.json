@@ -43,6 +43,7 @@
     "react-player": "^2.15.1",
     "react-redux": "^9.0.4",
     "react-toastify": "^10.0.4",
+    "recharts": "^2.15.1",
     "swiper": "^11.0.5",
     "viem": "^2.21.57",
     "wagmi": "^2.12.5"

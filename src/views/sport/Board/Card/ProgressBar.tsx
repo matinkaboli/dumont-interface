@@ -13,8 +13,8 @@ const ProgressBar = ({ className, name, percentage = 100, bgColor = '#3B3A45' }:
         style={{ width: `${percentage}%`, backgroundColor: bgColor }}
       />
       <div className="sm:text-xs text-sm mt-1">
-        <span className="text-white font-bold">{percentage}% </span>
-        <span className="text-neutral-400 font-medium">{name}</span>
+        <span className="text-white font-medium">{percentage}% </span>
+        <span className="text-neutral-400">{name}</span>
       </div>
     </div>
   );

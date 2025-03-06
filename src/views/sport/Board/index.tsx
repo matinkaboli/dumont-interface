@@ -19,7 +19,7 @@ const CHAMPIONS_LEAGUE = {
   logo: '',
 };
 
-const Sport = () => {
+const GameBoard = () => {
   return (
     <>
       <div className="flex-between">
@@ -48,4 +48,4 @@ const Sport = () => {
   );
 };
 
-export default Sport;
+export default GameBoard;

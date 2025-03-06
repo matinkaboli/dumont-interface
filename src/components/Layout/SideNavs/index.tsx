@@ -53,7 +53,7 @@ const SideNavs = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="md:flex hidden flex-col justify-between items-center gap-0.5 px-2.5 pb-6 border-x-[1.5px] border-neutral-750 bg-neutral-800 md:min-h-screen min-h-auto">
+      <nav className="md:flex hidden flex-col justify-between items-center gap-0.5 px-2.5 pb-6 border-x-[1.5px] border-neutral-750 bg-secondary-900 md:min-h-screen min-h-auto">
         <div>
           {NAVIGATION_ITEMS.map((item, index) => (
             <DesktopNavItem
