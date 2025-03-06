@@ -1,6 +1,7 @@
 'use client';
 
 import { MouseEvent, useRef, useState } from 'react';
+import { CategoricalChartState } from 'recharts/types/chart/types';
 import {
   Line,
   LineChart,
@@ -10,15 +11,35 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { CategoricalChartState } from 'recharts/types/chart/types';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface Data {
-  time: string;
+  time: number;
 
   [key: string]: number | string;
 }
 
-interface TeamChartProps {
+interface FormattedTeam {
+  name: string;
+  label: string;
+  color: string;
+}
+
+interface CustomDotProps {
+  cx?: number;
+  cy?: number;
+  payload?: Data;
+  dataKey?: string;
+  data: Data[];
+  teams: FormattedTeam[];
+}
+
+interface Props {
   teams: { name: string; label: string }[];
   data: Data[];
 }
@@ -27,7 +48,22 @@ const colors = ['#A215A2', '#BD7E06', '#5100FE'];
 const lineColor = '#252525';
 const axisColor = '#858585';
 
-const TeamChart = ({ teams, data }: TeamChartProps) => {
+const formatAxisTime = (timestamp: string) => dayjs(timestamp).format('h:mm a');
+
+const formatTooltipTime = (timestamp: string) => dayjs(timestamp).format('MMM D, YYYY h:mm a');
+
+const CustomDot = (props: CustomDotProps) => {
+  const { cx, cy, payload, dataKey, data, teams } = props;
+  const colors = Object.fromEntries(teams.map((t: FormattedTeam) => [t.name, t.color]));
+
+  // Only render the dot at the last data point
+  if (payload!.time === data[data.length - 1].time) {
+    return <circle cx={cx} cy={cy} r={4.5} fill={colors[dataKey!]} />;
+  }
+  return null;
+};
+
+const TeamChart = ({ teams, data }: Props) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const [activePayload, setActivePayload] = useState<any>(null);
   const [cursorX, setCursorX] = useState(0);
@@ -36,17 +72,6 @@ const TeamChart = ({ teams, data }: TeamChartProps) => {
     ...team,
     color: colors[index],
   }));
-
-  const CustomDot = (props: any) => {
-    const { cx, cy, payload, dataKey } = props;
-    const colors = Object.fromEntries(formattedTeams.map((t) => [t.name, t.color]));
-
-    // Only render the dot at the last data point
-    if (payload.time === data[data.length - 1].time) {
-      return <circle cx={cx} cy={cy} r={4.5} fill={colors[dataKey]} />;
-    }
-    return null;
-  };
 
   const onMouseLeaveRef = () => setActivePayload(null);
 
@@ -106,6 +131,7 @@ const TeamChart = ({ teams, data }: TeamChartProps) => {
                 tickLine={false}
                 tick={{ fill: axisColor, fontSize: 12 }}
                 tickMargin={10}
+                tickFormatter={(value) => `${formatAxisTime(value)}`}
               />
               <YAxis
                 axisLine={false}
@@ -138,12 +164,21 @@ const TeamChart = ({ teams, data }: TeamChartProps) => {
                   key={`dot-${team.name}`}
                   dataKey={team.name}
                   stroke="transparent"
-                  dot={<CustomDot />}
+                  dot={<CustomDot teams={formattedTeams} data={data} />}
                 />
               ))}
             </LineChart>
           </ResponsiveContainer>
         </div>
+
+        {activePayload && activePayload.length > 0 && (
+          <div
+            className="absolute text-neutral-400 text-xs font-medium whitespace-nowrap"
+            style={{ left: cursorX + 20, top: -2 }}
+          >
+            {formatTooltipTime(activePayload[0].payload.time)}
+          </div>
+        )}
 
         {activePayload?.map((entry: any, index: number) => {
           const dataKey = entry.dataKey;
