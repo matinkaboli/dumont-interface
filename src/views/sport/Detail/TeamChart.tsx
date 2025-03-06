@@ -73,6 +73,10 @@ const TeamChart = ({ teams, data }: Props) => {
     color: colors[index],
   }));
 
+  const allValues = data.flatMap((d) => teams.flatMap((team) => d[team.name] as number));
+  const minDomainValue = Math.min(...allValues);
+  const maxDomainValue = Math.max(...allValues);
+
   const onMouseLeaveRef = () => setActivePayload(null);
 
   const onMouseMoveRef = (e: MouseEvent<HTMLDivElement>) => {
@@ -138,7 +142,7 @@ const TeamChart = ({ teams, data }: Props) => {
                 tickLine={false}
                 tickCount={8}
                 tick={{ fill: axisColor, fontSize: 12 }}
-                domain={[20, 55]}
+                domain={[minDomainValue, maxDomainValue]}
                 orientation="right"
                 tickFormatter={(value) => `${value}%`}
               />
@@ -156,6 +160,7 @@ const TeamChart = ({ teams, data }: Props) => {
                   name={team.name}
                   animationDuration={1000}
                   isAnimationActive={true}
+                  connectNulls={true}
                 />
               ))}
 
