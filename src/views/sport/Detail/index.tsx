@@ -1,4 +1,7 @@
+import clsx from 'clsx';
+
 import TeamChart from './TeamChart';
+import Match from './Match';
 
 const createTimestamp = (minutes: number, startDate?: Date) => {
   if (!startDate) startDate = new Date(2024, 0, 1, 0, 0, 0);
@@ -30,6 +33,25 @@ const sampleData = [
   { time: createTimestamp(90), homeTeam: 55, draw: 50, awayTeam: 56 },
 ];
 
+const darkLayoutStyle = 'bg-secondary-900 border-[1.5px] border-neutral-700 rounded-lg';
+
+const homeTeam = {
+  name: 'Barcelona',
+  shortName: 'FCB',
+  logo: '/images/teams/barcelona.svg',
+};
+
+const awayTeam = {
+  name: 'Real Madrid',
+  shortName: 'RMD',
+  logo: '/images/teams/real-madrid.svg',
+};
+
+const LEAGUE = {
+  name: 'Spain- LaLiga',
+  logo: '',
+};
+
 const Detail = () => {
   const teams = [
     { name: 'homeTeam', label: 'Real Madrid' },
@@ -37,7 +59,25 @@ const Detail = () => {
     { name: 'awayTeam', label: 'Barcelona' },
   ];
 
-  return <TeamChart teams={teams} data={sampleData} />;
+  return (
+    <>
+      <Match
+        homeTeam={homeTeam}
+        awayTeam={awayTeam}
+        league={LEAGUE}
+        matchTime="23 Aug - 23:30"
+        className={clsx(darkLayoutStyle, 'p-4')}
+      />
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-4 mt-4">
+        <TeamChart
+          className={clsx(darkLayoutStyle, 'col-span-2 px-6 py-5')}
+          teams={teams}
+          data={sampleData}
+        />
+        <div className="bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1"></div>
+      </div>
+    </>
+  );
 };
 
 export default Detail;

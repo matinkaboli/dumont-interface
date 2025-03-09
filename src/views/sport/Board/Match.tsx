@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { Icon, PulsingCircle } from '@/components';
 
-import ProgressBar from './ProgressBar';
+import ProgressBar from '@/views/sport/_components/ProgressBar';
 
 interface ILeague {
   name: string;
@@ -23,7 +23,7 @@ interface Props {
   matchTime: string;
 }
 
-const Card = ({ isActive, league, homeTeam, awayTeam, matchTime }: Props) => {
+const Match = ({ isActive, league, homeTeam, awayTeam, matchTime }: Props) => {
   return (
     <div className="relative border-[1.5px] border-neutral-700 bg-neutral-800 rounded-lg w-full sm:pt-4 sm:pb-6 sm:px-2 p-3 cursor-pointer">
       {isActive && <PulsingCircle size="sm" className="absolute top-2 left-2" />}
@@ -56,4 +56,4 @@ const Card = ({ isActive, league, homeTeam, awayTeam, matchTime }: Props) => {
   );
 };
 
-export default Card;
+export default Match;
