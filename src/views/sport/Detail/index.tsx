@@ -74,7 +74,9 @@ const Detail = () => {
           teams={teams}
           data={sampleData}
         />
-        <div className="bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1"></div>
+        <div className="bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1">
+
+        </div>
       </div>
     </>
   );

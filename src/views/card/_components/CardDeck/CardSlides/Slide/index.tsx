@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import getCardInfo from '@/helpers/getCardInfo';
 
 import FlipImage from './FlipImage';
-import { cardSizeStyles } from '../../.';
+import { cardSizeStyles } from '../../index';
 
 const circleSize = 112;
 

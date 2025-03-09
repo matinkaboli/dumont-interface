@@ -17,9 +17,9 @@ import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import ConfirmNewRound from '@/views/_components/ConfirmNewRound';
-import ErrorContent from '@/views/_components/Dialog/ErrorContent';
-import LongLoadingContent from '@/views/_components/Dialog/LongLoadingContent';
+import ConfirmNewRound from '../views/card/_components/ConfirmNewRound';
+import ErrorContent from '../views/_components/Dialog/ErrorContent';
+import LongLoadingContent from '@/views/card/_components/Dialog/LongLoadingContent';
 
 export const useNewRound = () => {
   const router = useRouter();

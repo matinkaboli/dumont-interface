@@ -12,8 +12,8 @@ import parseUnits from '@/helpers/parseUnits';
 import MONT_REWARD_MANAGER_ABI from '@/abis/MONT_REWARD_MANAGER_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import ErrorContent from '@/views/_components/Dialog/ErrorContent';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
+import ErrorContent from '../../../../views/_components/Dialog/ErrorContent';
+import LoadingContent from '../../../../views/_components/Dialog/LoadingContent';
 
 import ClaimReward from './ClaimReward';
 import Claimed from '../Claimed';

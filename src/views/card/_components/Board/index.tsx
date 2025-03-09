@@ -23,8 +23,8 @@ import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import { TOTAL_CARDS_LENGTH } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import ErrorContent from '@/views/_components/Dialog/ErrorContent';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
+import ErrorContent from '../../../_components/Dialog/ErrorContent';
+import LoadingContent from '../../../_components/Dialog/LoadingContent';
 
 import ResultMessage from './ConfirmBet/ResultMessage';
 import KeyBoard from './KeyBoard';

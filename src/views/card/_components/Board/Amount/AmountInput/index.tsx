@@ -12,7 +12,7 @@ import humanizeAmount from '@/helpers/humanizeAmount';
 import formatDecimal from '@/helpers/formatDecimal';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import { BetData } from '@/views/_components/Board';
+import { BetData } from '@/views/card/_components/Board';
 
 import MaxButton from './MaxButton';
 

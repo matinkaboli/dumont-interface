@@ -12,8 +12,8 @@ import { showConfetti } from '@/redux/features/confettiSlice';
 import parseUnits from '@/helpers/parseUnits';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import ErrorContent from '@/views/_components/Dialog/ErrorContent';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
+import ErrorContent from '../../../../views/_components/Dialog/ErrorContent';
+import LoadingContent from '../../../../views/_components/Dialog/LoadingContent';
 
 import ClaimAirdrop from './ClaimAirdrop';
 import Claimed from '../Claimed';

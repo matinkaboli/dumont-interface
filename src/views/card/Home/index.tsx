@@ -14,9 +14,9 @@ import isEmpty from '@/helpers/isEmpty';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import Routes from '@/constants/routes';
 
-import Board from '@/views/_components/Board';
-import CardDeck from '@/views/_components/CardDeck';
-import Header from '@/views/_components/Header';
+import Board from '@/views/card/_components/Board';
+import CardDeck from '@/views/card/_components/CardDeck';
+import Header from '@/views/card/_components/Header';
 
 const Home = () => {
   const { ready, user } = usePrivy();
