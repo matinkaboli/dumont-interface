@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   render: () => (
     <Select defaultValue="option1">
-      <SelectTrigger className="w-[200px]">
+      <SelectTrigger className="w-32">
         <SelectValue placeholder="Select a option" />
       </SelectTrigger>
       <SelectContent>
@@ -45,7 +45,7 @@ export const Basic: Story = {
 export function WithSeparator() {
   return (
     <Select>
-      <SelectTrigger className="w-[200px]">Select an option</SelectTrigger>
+      <SelectTrigger className="w-40">Select an option</SelectTrigger>
       <SelectContent>
         <SelectScrollUpButton />
         <SelectGroup>
@@ -66,7 +66,7 @@ export function WithSeparator() {
 export function Disabled() {
   return (
     <Select disabled>
-      <SelectTrigger className="w-[200px]">Disabled</SelectTrigger>
+      <SelectTrigger className="w-32">Disabled</SelectTrigger>
       <SelectContent>
         <SelectItem value="option1">Option 1</SelectItem>
         <SelectItem value="option2">Option 2</SelectItem>

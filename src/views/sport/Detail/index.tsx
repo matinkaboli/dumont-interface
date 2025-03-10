@@ -2,10 +2,19 @@
 
 import clsx from 'clsx';
 
-import { Slider } from '@/components';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Slider,
+} from '@/components';
 
 import TeamChart from './TeamChart';
 import Match from './Match';
+import Image from 'next/image';
 
 const createTimestamp = (minutes: number, startDate?: Date) => {
   if (!startDate) startDate = new Date(2024, 0, 1, 0, 0, 0);
@@ -79,7 +88,57 @@ const Detail = () => {
           data={sampleData}
         />
         <div className="bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4">
-          <Slider defaultValue={[2]} max={30} step={1} />
+          <Select defaultValue="option1">
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a option" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="option1">
+                  <div className="flex items-center gap-1">
+                    <Image
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      className="h-6 w-auto"
+                      src={homeTeam.logo}
+                      alt=""
+                    />
+                    {homeTeam.name}
+                    <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
+                      $0.43
+                    </div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="option2">
+                  <div className="flex items-center gap-1">
+                    <span className="block w-4 h-0.5 bg-neutral-200" />
+                    Draw
+                    <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
+                      $0.22
+                    </div>
+                  </div>
+                </SelectItem>
+                <SelectItem value="option3">
+                  <div className="flex items-center gap-1">
+                    <Image
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      className="h-6 w-auto"
+                      src={awayTeam.logo}
+                      alt=""
+                    />
+                    {awayTeam.name}
+                    <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
+                      $0.35
+                    </div>
+                  </div>
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Slider className="mt-4" defaultValue={[2]} max={30} step={1} />
         </div>
       </div>
     </>
