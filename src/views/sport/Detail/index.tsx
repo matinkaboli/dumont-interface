@@ -1,4 +1,8 @@
+'use client';
+
 import clsx from 'clsx';
+
+import { Slider } from '@/components';
 
 import TeamChart from './TeamChart';
 import Match from './Match';
@@ -74,8 +78,8 @@ const Detail = () => {
           teams={teams}
           data={sampleData}
         />
-        <div className="bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1">
-
+        <div className="bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4">
+          <Slider defaultValue={[2]} max={30} step={1} />
         </div>
       </div>
     </>

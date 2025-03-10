@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import {
   Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
-  SelectContent,
-  SelectItem,
-  SelectGroup,
-  SelectLabel,
-  SelectSeparator,
-  SelectScrollUpButton,
-  SelectScrollDownButton, Icon,
 } from '@/components';
 
 const meta = {
