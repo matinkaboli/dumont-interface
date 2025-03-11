@@ -14,7 +14,8 @@ import clsx from 'clsx';
 import isEmpty from '@/helpers/isEmpty';
 import toFixedNumber from '@/helpers/toFixedNumber';
 
-import AmountInfo from './Info';
+import AmountDetails from '@/views/_components/AmountDetails';
+
 import BetButton from './BetButton';
 import AmountInput from './AmountInput';
 import { BetData } from '../index';
@@ -53,6 +54,11 @@ const Amount = ({
   const formattedPayout =
     isEmpty(inputErrors) || inputErrors?.amount?.type === 'validate' ? payout : 0;
 
+  const amountDetails = [
+    { id: '1', label: 'Total odds', value: `x${toFixedNumber(totalOdds)}` },
+    { id: '2', label: 'Possible payout', value: `$${formattedPayout}` },
+  ];
+
   useEffect(() => {
     if (totalOdds > 0 && amount) trigger('amount');
   }, [totalOdds, amount]);
@@ -85,15 +91,9 @@ const Amount = ({
               setAmount={setAmount}
             />
 
-            <AmountInfo
-              odd={totalOdds}
-              payout={formattedPayout}
-              className={clsx(
-                'gap-3',
-                !isEmpty(inputErrors) && touchedFields?.amount ? 'mt-1' : 'mt-4',
-              )}
-              labelClassName="text-white text-sm"
-              valueClassName="text-neutral-400 text-sm"
+            <AmountDetails
+              details={amountDetails}
+              className={!isEmpty(inputErrors) && touchedFields?.amount ? 'mt-1' : 'mt-4'}
             />
           </div>
 
@@ -149,12 +149,10 @@ const Amount = ({
                   setAmount={setAmount}
                 />
 
-                <AmountInfo
-                  odd={totalOdds}
-                  payout={formattedPayout}
-                  className="gap-3 pt-8 pb-10"
-                  labelClassName="text-white text-base"
-                  valueClassName="text-white text-base"
+                <AmountDetails
+                  isDesktopView={false}
+                  details={amountDetails}
+                  className="pt-8 pb-10"
                 />
               </motion.div>
             )}

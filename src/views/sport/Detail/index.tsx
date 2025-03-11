@@ -1,6 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import {
   Select,
@@ -12,9 +13,10 @@ import {
   Slider,
 } from '@/components';
 
+import AmountDetails from '@/views/_components/AmountDetails';
+
 import TeamChart from './TeamChart';
 import Match from './Match';
-import Image from 'next/image';
 
 const createTimestamp = (minutes: number, startDate?: Date) => {
   if (!startDate) startDate = new Date(2024, 0, 1, 0, 0, 0);
@@ -64,6 +66,12 @@ const LEAGUE = {
   name: 'Spain- LaLiga',
   logo: '',
 };
+
+const amountDetails = [
+  { id: '1', label: 'Total size', value: '0.00' },
+  { id: '2', label: 'Fee per minute', value: '0.00' },
+  { id: '3', label: 'Liquidation price', value: '0.00' },
+];
 
 const Detail = () => {
   const teams = [
@@ -139,6 +147,7 @@ const Detail = () => {
             </SelectContent>
           </Select>
           <Slider className="mt-4" defaultValue={[2]} max={30} step={1} />
+          <AmountDetails className="mt-12" details={amountDetails} />
         </div>
       </div>
     </>
