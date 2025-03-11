@@ -42,6 +42,7 @@ interface CustomDotProps {
 interface Props {
   teams: { name: string; label: string }[];
   data: Data[];
+  className?: string;
 }
 
 const colors = ['#A215A2', '#BD7E06', '#5100FE'];
@@ -63,7 +64,7 @@ const CustomDot = (props: CustomDotProps) => {
   return null;
 };
 
-const TeamChart = ({ teams, data }: Props) => {
+const TeamChart = ({ teams, data, className }: Props) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const [activePayload, setActivePayload] = useState<any>(null);
   const [cursorX, setCursorX] = useState(0);
@@ -96,7 +97,7 @@ const TeamChart = ({ teams, data }: Props) => {
   };
 
   return (
-    <div className="bg-secondary-900 border-[1.5px] border-neutral-700 px-6 py-5 rounded-lg">
+    <div className={className}>
       <div className="flex gap-10">
         {formattedTeams.map((team) => (
           <div key={team.name} className="flex items-center gap-2">

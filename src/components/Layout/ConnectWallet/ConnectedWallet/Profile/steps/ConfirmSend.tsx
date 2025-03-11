@@ -13,8 +13,8 @@ import formatUnits from '@/helpers/formatUnits';
 import { openDialog } from '@/redux/features/dialogSlice';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import ErrorContent from '@/views/_components/Dialog/ErrorContent';
-import LoadingContent from '@/views/_components/Dialog/LoadingContent';
+import ErrorContent from '../../../../../../views/_components/Dialog/ErrorContent';
+import LoadingContent from '../../../../../../views/_components/Dialog/LoadingContent';
 
 import SuccessModal from './SuccessModal';
 import { SendData } from '../index';

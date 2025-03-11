@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 import {
   Control,
   FieldErrors,
@@ -9,14 +10,15 @@ import {
   UseFormTrigger,
 } from 'react-hook-form';
 import { AnimatePresence, motion } from 'framer-motion';
-import clsx from 'clsx';
 
 import isEmpty from '@/helpers/isEmpty';
 import toFixedNumber from '@/helpers/toFixedNumber';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import AmountInfo from './Info';
-import BetButton from './BetButton';
-import AmountInput from './AmountInput';
+import AmountDetails from '@/views/_components/AmountDetails';
+import BetButton from '@/views/_components/BetButton';
+import AmountInput from '@/views/_components/AmountInput';
+
 import { BetData } from '../index';
 
 interface Props {
@@ -48,10 +50,16 @@ const Amount = ({
   isSubmitted,
   resetField,
 }: Props) => {
+  const { isCreated, data: game } = useTypedSelector((state) => state.game);
   const [amount, setAmount] = useState();
   const [isExpanded, setIsExpanded] = useState(false);
   const formattedPayout =
     isEmpty(inputErrors) || inputErrors?.amount?.type === 'validate' ? payout : 0;
+
+  const amountDetails = [
+    { id: '1', label: 'Total odds', value: `x${toFixedNumber(totalOdds)}` },
+    { id: '2', label: 'Possible payout', value: `$${formattedPayout}` },
+  ];
 
   useEffect(() => {
     if (totalOdds > 0 && amount) trigger('amount');
@@ -85,21 +93,17 @@ const Amount = ({
               setAmount={setAmount}
             />
 
-            <AmountInfo
-              odd={totalOdds}
-              payout={formattedPayout}
-              className={clsx(
-                'gap-3',
-                !isEmpty(inputErrors) && touchedFields?.amount ? 'mt-1' : 'mt-4',
-              )}
-              labelClassName="text-white text-sm"
-              valueClassName="text-neutral-400 text-sm"
+            <AmountDetails
+              details={amountDetails}
+              className={!isEmpty(inputErrors) && touchedFields?.amount ? 'mt-1' : 'mt-4'}
             />
           </div>
 
           <BetButton
             type="submit"
             size="md"
+            showTooltip={!isCreated && isEmpty(game)}
+            tooltipContent="No game created yet"
             disabled={isFormValid}
             disabledButtonLabel={disabledButtonLabel}
           />
@@ -149,12 +153,10 @@ const Amount = ({
                   setAmount={setAmount}
                 />
 
-                <AmountInfo
-                  odd={totalOdds}
-                  payout={formattedPayout}
-                  className="gap-3 pt-8 pb-10"
-                  labelClassName="text-white text-base"
-                  valueClassName="text-white text-base"
+                <AmountDetails
+                  isDesktopView={false}
+                  details={amountDetails}
+                  className="pt-8 pb-10"
                 />
               </motion.div>
             )}
@@ -165,6 +167,8 @@ const Amount = ({
             type={isExpanded ? 'submit' : 'button'}
             disabled={isExpanded ? isFormValid : isButtonDisabled}
             disabledButtonLabel={disabledButtonLabel}
+            showTooltip={!isCreated && isEmpty(game)}
+            tooltipContent="No game created yet"
             label={isExpanded ? 'Bet' : `Bet (x${toFixedNumber(totalOdds)})`}
             onClick={onExpandDetail}
           />

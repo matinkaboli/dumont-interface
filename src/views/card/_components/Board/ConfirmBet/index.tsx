@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { Button } from '@/components';
 
-import { BetData } from '@/views/_components/Board';
+import { BetData } from '@/views/card/_components/Board';
 
 import SelectedKey from './SelectedKey';
 import BetDetailList from './BetDetailList';

@@ -3,8 +3,8 @@
 import { Loading } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import Board from '@/views/_components/Board';
-import CreateRound from '@/views/_components/CreateRound';
+import Board from '@/views/card/_components/Board';
+import CreateRound from '@/views/card/_components/CreateRound';
 
 const Start = () => {
   const {

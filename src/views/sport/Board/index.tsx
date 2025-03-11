@@ -1,6 +1,6 @@
 import { PulsingCircle } from '@/components';
 
-import Card from './Card';
+import Match from './Match';
 
 const BARCELONA = {
   name: 'Barcelona',
@@ -34,7 +34,7 @@ const GameBoard = () => {
       </div>
       <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-3 sm:mt-8 mt-6">
         {[0, 1, 2, 3, 4, 5].map((item) => (
-          <Card
+          <Match
             key={item}
             homeTeam={BARCELONA}
             awayTeam={REAL_MADRID}
