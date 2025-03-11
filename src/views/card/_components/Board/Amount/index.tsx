@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 import {
   Control,
   FieldErrors,
@@ -9,14 +10,14 @@ import {
   UseFormTrigger,
 } from 'react-hook-form';
 import { AnimatePresence, motion } from 'framer-motion';
-import clsx from 'clsx';
 
 import isEmpty from '@/helpers/isEmpty';
 import toFixedNumber from '@/helpers/toFixedNumber';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import AmountDetails from '@/views/_components/AmountDetails';
+import BetButton from '@/views/_components/BetButton';
 
-import BetButton from './BetButton';
 import AmountInput from './AmountInput';
 import { BetData } from '../index';
 
@@ -49,6 +50,7 @@ const Amount = ({
   isSubmitted,
   resetField,
 }: Props) => {
+  const { isCreated, data: game } = useTypedSelector((state) => state.game);
   const [amount, setAmount] = useState();
   const [isExpanded, setIsExpanded] = useState(false);
   const formattedPayout =
@@ -100,6 +102,8 @@ const Amount = ({
           <BetButton
             type="submit"
             size="md"
+            showTooltip={!isCreated && isEmpty(game)}
+            tooltipContent="No game created yet"
             disabled={isFormValid}
             disabledButtonLabel={disabledButtonLabel}
           />
@@ -163,6 +167,8 @@ const Amount = ({
             type={isExpanded ? 'submit' : 'button'}
             disabled={isExpanded ? isFormValid : isButtonDisabled}
             disabledButtonLabel={disabledButtonLabel}
+            showTooltip={!isCreated && isEmpty(game)}
+            tooltipContent="No game created yet"
             label={isExpanded ? 'Bet' : `Bet (x${toFixedNumber(totalOdds)})`}
             onClick={onExpandDetail}
           />

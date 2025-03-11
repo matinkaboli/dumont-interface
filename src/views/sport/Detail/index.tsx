@@ -14,6 +14,7 @@ import {
 } from '@/components';
 
 import AmountDetails from '@/views/_components/AmountDetails';
+import BetButton from '@/views/_components/BetButton';
 
 import TeamChart from './TeamChart';
 import Match from './Match';
@@ -95,7 +96,7 @@ const Detail = () => {
           teams={teams}
           data={sampleData}
         />
-        <div className="bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4">
+        <div className="flex flex-col justify-between gap-4 bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4">
           <Select defaultValue="option1">
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a option" />
@@ -146,8 +147,9 @@ const Detail = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Slider className="mt-4" defaultValue={[2]} max={30} step={1} />
-          <AmountDetails className="mt-12" details={amountDetails} />
+          <Slider defaultValue={[2]} max={30} step={1} />
+          <AmountDetails details={amountDetails} />
+          <BetButton disabledButtonLabel="Bet" />
         </div>
       </div>
     </>
