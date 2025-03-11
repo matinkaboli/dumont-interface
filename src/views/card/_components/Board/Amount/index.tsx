@@ -17,8 +17,8 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import AmountDetails from '@/views/_components/AmountDetails';
 import BetButton from '@/views/_components/BetButton';
+import AmountInput from '@/views/_components/AmountInput';
 
-import AmountInput from './AmountInput';
 import { BetData } from '../index';
 
 interface Props {

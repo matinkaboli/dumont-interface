@@ -12,8 +12,6 @@ import humanizeAmount from '@/helpers/humanizeAmount';
 import formatDecimal from '@/helpers/formatDecimal';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import { BetData } from '@/views/card/_components/Board';
-
 import MaxButton from './MaxButton';
 
 const inputProps: InputProps = {
@@ -25,11 +23,11 @@ const inputProps: InputProps = {
 
 interface Props {
   className?: string;
-  control: Control<BetData>;
+  control: Control<any>;
   touchedFields: Partial<{ amount?: boolean | undefined; keys?: boolean[] | undefined }>;
-  inputErrors?: FieldErrors<BetData>;
+  inputErrors?: FieldErrors<any>;
   totalOdds: number;
-  setValue: UseFormSetValue<BetData>;
+  setValue: UseFormSetValue<any>;
   setAmount: Dispatch<SetStateAction<any>>;
 }
 

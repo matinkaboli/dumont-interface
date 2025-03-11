@@ -1,22 +1,7 @@
-'use client';
-
 import clsx from 'clsx';
-import Image from 'next/image';
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Slider,
-} from '@/components';
-
-import AmountDetails from '@/views/_components/AmountDetails';
-import BetButton from '@/views/_components/BetButton';
 
 import TeamChart from './TeamChart';
+import BetForm from './BetForm';
 import Match from './Match';
 
 const createTimestamp = (minutes: number, startDate?: Date) => {
@@ -49,15 +34,19 @@ const sampleData = [
   { time: createTimestamp(90), homeTeam: 55, draw: 50, awayTeam: 56 },
 ];
 
-const darkLayoutStyle = 'bg-secondary-900 border-[1.5px] border-neutral-700 rounded-lg';
+const teams = [
+  { name: 'homeTeam', label: 'Real Madrid' },
+  { name: 'draw', label: 'Draw' },
+  { name: 'awayTeam', label: 'Barcelona' },
+];
 
-const homeTeam = {
+export const homeTeam = {
   name: 'Barcelona',
   shortName: 'FCB',
   logo: '/images/teams/barcelona.svg',
 };
 
-const awayTeam = {
+export const awayTeam = {
   name: 'Real Madrid',
   shortName: 'RMD',
   logo: '/images/teams/real-madrid.svg',
@@ -68,19 +57,9 @@ const LEAGUE = {
   logo: '',
 };
 
-const amountDetails = [
-  { id: '1', label: 'Total size', value: '0.00' },
-  { id: '2', label: 'Fee per minute', value: '0.00' },
-  { id: '3', label: 'Liquidation price', value: '0.00' },
-];
+const darkLayoutStyle = 'bg-secondary-900 border-[1.5px] border-neutral-700 rounded-lg';
 
 const Detail = () => {
-  const teams = [
-    { name: 'homeTeam', label: 'Real Madrid' },
-    { name: 'draw', label: 'Draw' },
-    { name: 'awayTeam', label: 'Barcelona' },
-  ];
-
   return (
     <>
       <Match
@@ -96,61 +75,7 @@ const Detail = () => {
           teams={teams}
           data={sampleData}
         />
-        <div className="flex flex-col justify-between gap-4 bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4">
-          <Select defaultValue="option1">
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a option" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="option1">
-                  <div className="flex items-center gap-1">
-                    <Image
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="h-6 w-auto"
-                      src={homeTeam.logo}
-                      alt=""
-                    />
-                    {homeTeam.name}
-                    <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
-                      $0.43
-                    </div>
-                  </div>
-                </SelectItem>
-                <SelectItem value="option2">
-                  <div className="flex items-center gap-1">
-                    <span className="block w-4 h-0.5 bg-neutral-200" />
-                    Draw
-                    <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
-                      $0.22
-                    </div>
-                  </div>
-                </SelectItem>
-                <SelectItem value="option3">
-                  <div className="flex items-center gap-1">
-                    <Image
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="h-6 w-auto"
-                      src={awayTeam.logo}
-                      alt=""
-                    />
-                    {awayTeam.name}
-                    <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
-                      $0.35
-                    </div>
-                  </div>
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <Slider defaultValue={[2]} max={30} step={1} />
-          <AmountDetails details={amountDetails} />
-          <BetButton disabledButtonLabel="Bet" />
-        </div>
+        <BetForm />
       </div>
     </>
   );
