@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import TeamChart from './TeamChart';
 import BetForm from './BetForm';
 import Match from './Match';
+import ActivityTab from './ActivityTab';
 
 const createTimestamp = (minutes: number, startDate?: Date) => {
   if (!startDate) startDate = new Date(2024, 0, 1, 0, 0, 0);
@@ -77,6 +78,8 @@ const Detail = () => {
         />
         <BetForm />
       </div>
+
+      <ActivityTab className="mt-16" />
     </>
   );
 };
