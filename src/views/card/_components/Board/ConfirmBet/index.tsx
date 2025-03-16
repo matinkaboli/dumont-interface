@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import { Button } from '@/components';
 
 import { BetData } from '@/views/card/_components/Board';
+import toFixedNumber from '@/helpers/toFixedNumber';
 
 import SelectedKey from './SelectedKey';
 import BetDetailList from './BetDetailList';
-import toFixedNumber from '@/helpers/toFixedNumber';
 
 const sortKeys = (keys: string[]): string[] => {
   return [...keys].sort((a: string, b: string) => {
