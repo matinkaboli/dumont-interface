@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -13,12 +14,17 @@ import {
   SelectValue,
   Slider,
 } from '@/components';
+import { AppDispatch } from '@/redux/store';
+import { openDialog } from '@/redux/features/dialogSlice';
 
 import AmountInput from '@/views/_components/AmountInput';
 import AmountDetails from '@/views/_components/AmountDetails';
 import BetButton from '@/views/_components/BetButton';
+import ClosePosition from '@/views/sport/Detail/BetForm/ClosePosition';
+import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 
-import { awayTeam, homeTeam } from './index';
+import PlaceBet from './PlaceBet';
+import { awayTeam, homeTeam } from '../index';
 
 interface SportFormData {
   amount: string;
@@ -52,6 +58,7 @@ const options = [
 ];
 
 const BetForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [amount, setAmount] = useState();
 
   const {
@@ -66,8 +73,26 @@ const BetForm = () => {
     },
   });
 
+  const onConfirm = () => {
+    dispatch(
+      openDialog({
+        content: (
+          <AnimatedDialogContent key="close">
+            <ClosePosition />
+          </AnimatedDialogContent>
+        ),
+      }),
+    );
+  };
+
   const onSubmit = (data: SportFormData) => {
     console.log(data);
+
+    dispatch(
+      openDialog({
+        content: <PlaceBet onConfirm={onConfirm} />,
+      }),
+    );
   };
 
   return (
