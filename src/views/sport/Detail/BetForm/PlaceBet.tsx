@@ -2,15 +2,24 @@ import Image from 'next/image';
 
 import { Button } from '@/components';
 
-const details = [
-  { label: 'Team', value: 'Real Madrid', logo: '/images/teams/real-madrid.svg', leverage: '10x' },
-  { label: 'Entry price', value: '0.6' },
-  { label: 'Liquidation price', value: '0.4' },
-  { label: 'Position size', value: '$4,000' },
-  { label: 'Fee per minute', value: '$50' },
-];
+interface Props {
+  team: string;
+  entryPrice: string;
+  liquidationPrice: string;
+  positionSize: string;
+  fee: string;
+  onConfirm: () => void;
+}
 
-const PlaceBet = ({ onConfirm }: { onConfirm: () => void }) => {
+const PlaceBet = ({ team, entryPrice, liquidationPrice, positionSize, fee, onConfirm }: Props) => {
+  const details = [
+    { label: 'Team', value: team, logo: '/images/teams/real-madrid.svg', leverage: '10x' },
+    { label: 'Entry price', value: entryPrice },
+    { label: 'Liquidation price', value: liquidationPrice },
+    { label: 'Position size', value: `$${positionSize}` },
+    { label: 'Fee per minute', value: `$${fee}` },
+  ];
+
   return (
     <>
       <h3 className="text-base text-white font-medium text-center">Place bet</h3>

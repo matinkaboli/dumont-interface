@@ -78,7 +78,7 @@ const BetForm = () => {
       openDialog({
         content: (
           <AnimatedDialogContent key="close">
-            <ClosePosition />
+            <ClosePosition positionSize="4,000" fee="600" pnl="3,400" />
           </AnimatedDialogContent>
         ),
       }),
@@ -90,7 +90,16 @@ const BetForm = () => {
 
     dispatch(
       openDialog({
-        content: <PlaceBet onConfirm={onConfirm} />,
+        content: (
+          <PlaceBet
+            team="Real Madrid"
+            entryPrice="0.6"
+            liquidationPrice="0.4"
+            positionSize="4,000"
+            fee="50"
+            onConfirm={onConfirm}
+          />
+        ),
       }),
     );
   };

@@ -4,14 +4,20 @@ import { Button } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog } from '@/redux/features/dialogSlice';
 
-const details = [
-  { label: 'Position size', value: '$4,000' },
-  { label: 'Charged fee', value: '$600' },
-  { label: 'PNL', value: '$3,400' },
-];
+interface Props {
+  positionSize: string;
+  fee: string;
+  pnl: string;
+}
 
-const ClosePosition = () => {
+const ClosePosition = ({ positionSize, fee, pnl }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const details = [
+    { label: 'Position size', value: `$${positionSize}` },
+    { label: 'Charged fee', value: `$${fee}` },
+    { label: 'PNL', value: `$${pnl}` },
+  ];
 
   const onClose = () => {
     dispatch(closeDialog());
