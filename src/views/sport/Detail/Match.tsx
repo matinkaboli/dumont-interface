@@ -32,17 +32,17 @@ const Match = ({ homeTeam, awayTeam, matchTime, league, className }: Props) => {
       </div>
 
       <h1 className="flex items-center mt-2 whitespace-nowrap w-fit mx-auto">
-        <span className="inline-flex items-center text-md text-white font-bold gap-3">
+        <span className="inline-flex items-center md:text-md text-sm text-white font-bold md:gap-3 gap-1.5">
           {homeTeam.name}
           <Image width={0} height={0} className="h-8 w-auto" src={homeTeam.logo} alt="" />
         </span>
 
-        <span className="inline-flex flex-col gap-0.5 px-11">
+        <span className="inline-flex flex-col gap-0.5 md:px-11 px-2">
           <span className="text-center text-xs text-neutral-400">Match time</span>
           <span className="text-center text-sm text-neutral-100 font-medium">{matchTime}</span>
         </span>
 
-        <span className="inline-flex items-center text-md text-white font-bold gap-3">
+        <span className="inline-flex items-center md:text-md text-sm text-white font-bold md:gap-3 gap-1.5">
           <Image width={0} height={0} className="h-8 w-auto" src={awayTeam.logo} alt="" />
           {awayTeam.name}
         </span>
