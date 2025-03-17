@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
 import {
   Control,
   FieldErrors,
@@ -9,7 +8,6 @@ import {
   UseFormSetValue,
   UseFormTrigger,
 } from 'react-hook-form';
-import { AnimatePresence, motion } from 'framer-motion';
 
 import isEmpty from '@/helpers/isEmpty';
 import toFixedNumber from '@/helpers/toFixedNumber';
@@ -18,6 +16,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import AmountDetails from '@/views/_components/AmountDetails';
 import BetButton from '@/views/_components/BetButton';
 import AmountInput from '@/views/_components/AmountInput';
+import CustomSheet from '@/views/_components/CustomSheet';
 
 import { BetData } from '../index';
 
@@ -112,67 +111,34 @@ const Amount = ({
 
       {/* Mobile View */}
       <div className="md:hidden flex flex-col gap-2">
-        {isExpanded && (
-          <div className="fixed inset-0 bg-black opacity-75 z-40" onClick={onCloseDetail} />
-        )}
-
-        <div
-          className={clsx(
-            'bg-primary-900 px-5 pb-6 fixed md:-bottom-px bottom-[76px] right-0 left-0 rounded-t-3xl z-50',
-            isExpanded ? 'pt-3.5' : 'pt-6',
-          )}
-          onClick={(e) => e.stopPropagation()}
+        <CustomSheet
+          isExpanded={isExpanded}
+          onClose={onCloseDetail}
+          buttonElement={
+            <BetButton
+              size="md"
+              type={isExpanded ? 'submit' : 'button'}
+              disabled={isExpanded ? isFormValid : isButtonDisabled}
+              disabledButtonLabel={disabledButtonLabel}
+              showTooltip={!isCreated && isEmpty(game)}
+              tooltipContent="No game created yet"
+              label={isExpanded ? 'Bet' : `Bet (x${toFixedNumber(totalOdds)})`}
+              onClick={onExpandDetail}
+            />
+          }
         >
-          <AnimatePresence>
-            {isExpanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0, y: 20 }}
-                animate={{ height: 'auto', opacity: 1, y: 0 }}
-                exit={{ height: 0, opacity: 0, y: 20 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 500,
-                  damping: 30,
-                  opacity: { duration: 0.2 },
-                }}
-                className="overflow-hidden"
-              >
-                <button
-                  type="button"
-                  onClick={onCloseDetail}
-                  className="h-[5px] w-14 block mx-auto bg-primary-700 rounded-full"
-                />
-
-                <AmountInput
-                  className="mt-6"
-                  control={control}
-                  touchedFields={touchedFields}
-                  inputErrors={inputErrors}
-                  totalOdds={totalOdds}
-                  setValue={setValue}
-                  setAmount={setAmount}
-                />
-
-                <AmountDetails
-                  isDesktopView={false}
-                  details={amountDetails}
-                  className="pt-8 pb-10"
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <BetButton
-            size="md"
-            type={isExpanded ? 'submit' : 'button'}
-            disabled={isExpanded ? isFormValid : isButtonDisabled}
-            disabledButtonLabel={disabledButtonLabel}
-            showTooltip={!isCreated && isEmpty(game)}
-            tooltipContent="No game created yet"
-            label={isExpanded ? 'Bet' : `Bet (x${toFixedNumber(totalOdds)})`}
-            onClick={onExpandDetail}
+          <AmountInput
+            className="mt-6"
+            control={control}
+            touchedFields={touchedFields}
+            inputErrors={inputErrors}
+            totalOdds={totalOdds}
+            setValue={setValue}
+            setAmount={setAmount}
           />
-        </div>
+
+          <AmountDetails isDesktopView={false} details={amountDetails} className="pt-8 pb-10" />
+        </CustomSheet>
       </div>
     </>
   );
