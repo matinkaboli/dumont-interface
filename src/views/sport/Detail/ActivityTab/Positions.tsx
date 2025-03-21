@@ -56,7 +56,7 @@ const Positions = () => {
         {positions.map(
           ({ id, team, logo, size, entryPrice, liquidationPrice, chargedFee, pnl, leverage }) => (
             <TableRow key={id}>
-              <TableCell className="flex items-center gap-2">
+              <TableCell className="flex items-center gap-2 pr-6">
                 <Image
                   width={24}
                   height={24}

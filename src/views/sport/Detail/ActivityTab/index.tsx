@@ -8,11 +8,11 @@ import History from './History';
 const ActivityTab = ({ className = '' }: { className?: string }) => {
   return (
     <Tabs defaultValue="positions" className={className} onChange={(e) => e.preventDefault()}>
-      <TabsList>
-        <TabsTrigger value="positions" className="sm:!min-w-[160px]">
+      <TabsList className="sm:w-fit w-full">
+        <TabsTrigger value="positions" className="sm:!min-w-[160px] sm:w-auto w-1/2">
           Active positions
         </TabsTrigger>
-        <TabsTrigger value="history">History</TabsTrigger>
+        <TabsTrigger value="history" className="sm:w-auto w-1/2">History</TabsTrigger>
       </TabsList>
       <TabsContent value="positions">
         <Positions />
