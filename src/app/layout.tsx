@@ -17,19 +17,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
-      <head>
-        <HotJar />
-      </head>
-      <body className={inter.className}>
-        <Providers>
-          <Layout>
-            {children}
-            <DialogRoot />
-            <ConfettiRoot />
-          </Layout>
-        </Providers>
-      </body>
+    <html lang='en' className={inter.className}>
+    <head>
+      <HotJar />
+    </head>
+    <body>
+    <Providers>
+      <Layout>
+        {children}
+        <DialogRoot />
+        <ConfettiRoot />
+      </Layout>
+    </Providers>
+    </body>
     </html>
   );
 }
