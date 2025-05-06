@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { cva, VariantProps } from 'class-variance-authority';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { clsx } from 'clsx';
 
 import { Icon } from '@/components';

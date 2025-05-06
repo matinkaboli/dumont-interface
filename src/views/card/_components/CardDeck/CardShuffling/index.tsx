@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { motion, useAnimationControls } from 'framer-motion';
+import { motion, useAnimationControls } from 'motion/react';
 import clsx from 'clsx';
 
 import { Card } from '@/redux/features/gameSlice';

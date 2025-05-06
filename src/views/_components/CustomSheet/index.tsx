@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import clsx from 'clsx';
 
 interface Props {

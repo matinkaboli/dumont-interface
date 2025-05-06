@@ -1,6 +1,6 @@
 import React from 'react';
 import { Content, Overlay, Portal, Root } from '@radix-ui/react-dialog';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { cva, VariantProps } from 'class-variance-authority';
 
 import { Icon } from '@/components';
