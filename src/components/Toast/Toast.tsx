@@ -1,3 +1,5 @@
+'use client';
+
 import 'react-toastify/dist/ReactToastify.css';
 import './styles.css';
 
@@ -15,10 +17,12 @@ const contextClass = {
   default: 'bg-neutral-750',
 };
 
-interface Props extends Omit<ToastContainerProps, 'closeButton'> {}
+interface Props extends Omit<ToastContainerProps, 'closeButton'> {
+  bodyClassName?: string;
+}
 
 const Toast = ({ theme = 'dark', bodyClassName, toastClassName, ...props }: Props) => {
-  const CloseButton = ({ closeToast }: any) => (
+  const CloseButton = ({ closeToast }: { closeToast: () => void }) => (
     <button className="p-0 h-fit w-fit absolute top-2 right-2" onClick={closeToast}>
       <Icon name="xmark" width="16" height="16" color="#C4C4CC" />
     </button>
@@ -28,7 +32,7 @@ const Toast = ({ theme = 'dark', bodyClassName, toastClassName, ...props }: Prop
     <ToastContainer
       {...props}
       theme={theme}
-      bodyClassName={clsx('!px-0', bodyClassName)}
+      className={clsx('!px-0', bodyClassName)}
       closeButton={CloseButton}
       toastClassName={(context) =>
         clsx(
