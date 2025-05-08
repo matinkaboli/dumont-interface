@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import clsx from 'clsx';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -20,13 +20,7 @@ export const cardSizeStyles = {
   },
 };
 
-const PlayCards = ({
-  className = '',
-  needsShuffling = true,
-}: {
-  className?: string;
-  needsShuffling?: boolean;
-}) => {
+const PlayCards = ({ className = '', needsShuffling = true }: { className?: string; needsShuffling?: boolean; }) => {
   const [showSlider, setShowSlider] = useState(false);
   const { data: game } = useTypedSelector((state) => state.game);
 
@@ -40,8 +34,10 @@ const PlayCards = ({
       {needsShuffling && !showSlider ? (
         <CardShuffling cards={demoCards.slice(0, 18)} setShowSlider={setShowSlider} />
       ) : (
-        <div className="fade-in animate-in duration-1000">
-          <CardSlides slides={game?.cards ?? demoCards} />
+        <div className='fade-in animate-in duration-1000'>
+          <Suspense>
+            <CardSlides slides={game?.cards ?? demoCards} />
+          </Suspense>
         </div>
       )}
     </div>
