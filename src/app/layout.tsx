@@ -27,9 +27,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <Layout>
         {children}
         <DialogRoot />
-        <ConfettiRoot />
         <Toast />
       </Layout>
+      <ConfettiRoot />
     </Providers>
     </body>
     </html>

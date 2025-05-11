@@ -21,7 +21,10 @@ const ConfettiRoot = () => {
 
   if (!isActive) return null;
 
-  return <Confetti {...confettiProps} run={isActive} onConfettiComplete={handleComplete} />;
+  const { key, ...restProps } = confettiProps || {};
+
+  // @ts-ignore
+  return <Confetti key={key} {...restProps} run={isActive} onConfettiComplete={handleComplete} />;
 };
 
 export default ConfettiRoot;
