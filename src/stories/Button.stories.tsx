@@ -63,7 +63,7 @@ export const FullWidth: Story = {
   args: {
     variant: 'primary',
     children: 'button',
-    fullWidth: true
+    fullWidth: true,
   },
 };
 

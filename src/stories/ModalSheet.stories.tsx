@@ -1,5 +1,5 @@
 import type { Meta } from '@storybook/react';
-import {useState} from 'react';
+import { useState } from 'react';
 
 import { ModalSheet } from '@/components';
 

@@ -26,7 +26,7 @@ export const ButtonWithIcon: Story = {
     copyText: 'copy text',
     copyLabel: 'copy button',
     className: 'text-white text-sm bg-primary-500 py-1 px-2 rounded',
-  }
+  },
 };
 
 export const ButtonWithoutIcon: Story = {
@@ -35,5 +35,5 @@ export const ButtonWithoutIcon: Story = {
     copyText: 'copy text',
     copyLabel: 'copy button',
     className: 'text-white text-sm bg-primary-500 py-1 px-2 rounded',
-  }
+  },
 };

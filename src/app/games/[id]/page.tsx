@@ -1,12 +1,13 @@
 import Game from '@/views/card/Game';
 
-export async function generateMetadata({
-  searchParams,
-  params,
-}: {
-  params: { id: string };
-  searchParams: { cardId?: string };
-}) {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ cardId?: string }>;
+  }
+) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const { cardId } = searchParams;
   const gameId = params.id;
   const title = 'A provably fair gambling platform';

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { type InputHTMLAttributes, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ErrorMessage } from '@hookform/error-message';

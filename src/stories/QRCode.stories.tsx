@@ -17,6 +17,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
-   value: 'You just scanned a QR code!'
+    value: 'You just scanned a QR code!',
   },
 };

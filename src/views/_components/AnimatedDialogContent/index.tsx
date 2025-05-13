@@ -1,7 +1,7 @@
 'use client';
 
 import { PropsWithChildren } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 const AnimatedDialogContent = ({ children }: PropsWithChildren) => {
   return (

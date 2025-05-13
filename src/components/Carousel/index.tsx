@@ -15,7 +15,7 @@ interface Props extends Pick<SwiperProps, Exclude<keyof SwiperProps, 'modules' |
   nextELClassName?: string;
 }
 
-export const swiperRef: RefObject<SwiperRef> | null = createRef();
+export const swiperRef: RefObject<SwiperRef | null> | null = createRef();
 
 const Carousel = ({
   children,

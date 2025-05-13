@@ -9,15 +9,14 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     '@storybook/addon-onboarding',
     '@storybook/addon-interactions',
+    '@chromatic-com/storybook'
   ],
   framework: {
     name: '@storybook/nextjs',
     options: {},
   },
   staticDirs: ["../public"],
-  docs: {
-    autodocs: 'tag',
-  },
+  docs: {},
   webpackFinal: async (config: any) => {
     config.module!.rules!.push({
       test: /\.scss$/,

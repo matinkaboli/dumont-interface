@@ -112,7 +112,7 @@ export type IconName =
   | 'memo';
 
 // Create a map of icon names to their respective ReactElements
-export const iconMap: Record<IconName, ReactElement> = {
+export const iconMap: Record<IconName, ReactElement<any>> = {
   home: <Home />,
   'home-fill': <HomeFill />,
   'line-chart': <LineChart />,

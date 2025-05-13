@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import ReactConfetti, { Props } from 'react-confetti';
+import { Key, useEffect, useState } from 'react';
+import ReactConfetti, { IConfettiOptions } from 'react-confetti';
 import clsx from 'clsx';
 
-export interface ConfettiProps extends Omit<Props, 'drawShape' | 'height' | 'width' | 'tweenDuration'> {}
+export interface ConfettiProps extends Omit<IConfettiOptions, 'drawShape' | 'height' | 'width' | 'tweenDuration'> {
+  className?: string;
+  key?: Key;
+}
 
 const Confetti = ({ run = false, numberOfPieces = 1000, recycle = false, className = '', ...props }: ConfettiProps) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });

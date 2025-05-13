@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 
-import { Loading, Toast, ToastContent } from '@/components';
+import { Loading, ToastContent, ToastWrapper } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { getGame, setAllCardsGuessed, setGuessedCardsCount } from '@/redux/features/gameSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
@@ -38,7 +38,7 @@ const Game = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if ((!isEmpty(game) && +game!.id === +id) || (isEmpty(game) && !isCreated)) {
+      if ((!isEmpty(game) && +game!.id === +id!) || (isEmpty(game) && !isCreated)) {
         clearInterval(interval);
         return;
       }
@@ -69,11 +69,13 @@ const Game = () => {
         if (isCreated) {
           setNeedsShuffling(true);
           toast(
-            <ToastContent
-              variant="neutral"
-              title="Good luck!"
-              description="You have successfully created the round."
-            />,
+            <ToastWrapper>
+              <ToastContent
+                variant='neutral'
+                title='Good luck!'
+                description='You have successfully created the round.'
+              />
+            </ToastWrapper>,
             { position: 'bottom-right', toastId: 'welcome' },
           );
         }
@@ -83,10 +85,10 @@ const Game = () => {
   if (
     (isEmpty(game) && isConnecting) ||
     (loading && !isRefetching && !areAllCardsGuessed && !isExpired) ||
-    (!isEmpty(game) && +game!.id !== +id)
+    (!isEmpty(game) && +game!.id !== +id!)
   ) {
     return (
-      <div className="min-h-[50vh] flex-center">
+      <div className='min-h-[50vh] flex-center'>
         <Loading />
       </div>
     );
@@ -94,7 +96,7 @@ const Game = () => {
 
   if (isEmpty(game) && !isCreated) {
     return (
-      <div className="text-white text-center mx-auto py-20">There is no game with this id</div>
+      <div className='text-white text-center mx-auto py-20'>There is no game with this id</div>
     );
   }
 
@@ -102,15 +104,14 @@ const Game = () => {
     <>
       <Header showTitleInMobile={false} />
 
-      <div className="flex flex-col gap-4 mt-8">
+      <div className='flex flex-col gap-4 mt-8'>
         {isEmpty(game) ? (
-          <div className="bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height" />
+          <div className='bg-gradiant-box rounded-lg md:px-8 px-1.5 pt-8 text-center card-deck-height' />
         ) : (
           <CardDeck needsShuffling={needsShuffling} />
         )}
         <Board />
-        <ActivityTab className="md:mt-16 mt-14" />
-        <Toast />
+        <ActivityTab className='md:mt-16 mt-14' />
       </div>
     </>
   );
