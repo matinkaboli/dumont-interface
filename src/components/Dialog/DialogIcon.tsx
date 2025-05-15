@@ -1,4 +1,4 @@
-import React from 'react';
+import { Ref } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 
 import { IconProps } from '@/components/Icon';
@@ -19,15 +19,15 @@ const dialogIconVariants = cva('flex-center w-14 h-14 rounded-full mx-auto', {
 
 interface Props extends VariantProps<typeof dialogIconVariants>, IconProps {
   className?: string;
+  ref?: Ref<HTMLDivElement>;
 }
 
-const DialogIcon = React.forwardRef<HTMLDivElement, Props>(
-  ({ className, name, variant, defaultVariants, ...props }, ref) => (
+const DialogIcon =
+  ({ ref, className, name, variant, defaultVariants, ...props }: Props) => (
     <div ref={ref} className={dialogIconVariants({ variant, defaultVariants, className })}>
       <Icon name={name} {...props} />
     </div>
-  ),
-);
+  );
 DialogIcon.displayName = 'DialogIcon';
 
 export default DialogIcon;

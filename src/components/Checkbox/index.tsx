@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { ComponentPropsWithRef } from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { cva, VariantProps } from 'class-variance-authority';
 import { motion } from 'motion/react';
@@ -26,14 +26,14 @@ const indicatorVariants = cva('', {
 });
 
 interface CheckboxProps
-  extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>,
+  extends ComponentPropsWithRef<typeof CheckboxPrimitive.Root>,
     VariantProps<typeof rootVariants> {
   label?: string;
   containerClassName?: string;
 }
 
-const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root>, CheckboxProps>(
-  ({ className, size, label, containerClassName, id, ...props }, ref) => (
+const Checkbox =
+  ({ ref, className, size, label, containerClassName, id, ...props }: CheckboxProps) => (
     <div className={clsx(containerClassName, 'flex items-center space-x-1')}>
       <CheckboxPrimitive.Root
         id={id}
@@ -41,25 +41,24 @@ const Checkbox = React.forwardRef<React.ElementRef<typeof CheckboxPrimitive.Root
         className={rootVariants({ size, className })}
         {...props}
       >
-        <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current border-none rounded-md">
+        <CheckboxPrimitive.Indicator className='flex items-center justify-center text-current border-none rounded-md'>
           <motion.div
             initial={{ opacity: 0, y: 3 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 3 }}
           >
-            <Icon name="tick" className={indicatorVariants({ size })} />
+            <Icon name='tick' className={indicatorVariants({ size })} />
           </motion.div>
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
 
       {label && (
-        <label htmlFor={id} className="text-white text-sm">
+        <label htmlFor={id} className='text-white text-sm'>
           {label}
         </label>
       )}
     </div>
-  ),
-);
+  );
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
 export default Checkbox;

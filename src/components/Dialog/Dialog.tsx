@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 import { Content, Overlay, Portal, Root, Title } from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'motion/react';
 import { cva, VariantProps } from 'class-variance-authority';
@@ -20,7 +20,7 @@ const contentVariants = cva('fixed z-50 bg-neutral-750 rounded-xl w-3/4 px-6 py-
 });
 
 export interface DialogProps
-  extends React.ComponentProps<typeof Root>,
+  extends ComponentProps<typeof Root>,
     VariantProps<typeof contentVariants> {
   open: boolean;
   onOpenChange: () => void;

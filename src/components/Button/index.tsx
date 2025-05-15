@@ -1,4 +1,4 @@
-import React, { type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { type ButtonHTMLAttributes, type ReactNode, Ref } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -53,53 +53,52 @@ export interface ButtonProps
   isLoading?: boolean;
   rightSection?: ReactNode;
   leftSection?: ReactNode;
+  ref?: Ref<HTMLButtonElement>;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      variant,
-      size,
-      radius,
-      fullWidth = false,
-      asChild = false,
-      isLoading = false,
-      rightSection,
-      leftSection,
-      justify,
-      className,
-      children,
-      ...props
-    },
+const Button = (
+  {
     ref,
-  ) => {
-    const Comp = asChild ? Slot : 'button';
+    variant,
+    size,
+    radius,
+    fullWidth = false,
+    asChild = false,
+    isLoading = false,
+    rightSection,
+    leftSection,
+    justify,
+    className,
+    children,
+    ...props
+  }: ButtonProps,
+) => {
+  const Comp = asChild ? Slot : 'button';
 
-    return (
-      <Comp
-        className={buttonVariants({ variant, size, radius, fullWidth, justify, className })}
-        ref={ref}
-        {...props}
-      >
-        {asChild ? (
-          children
-        ) : (
-          <>
-            {isLoading ? (
-              <Loading size={24} color="white" />
-            ) : (
-              <>
-                {leftSection}
-                {children}
-                {rightSection}
-              </>
-            )}
-          </>
-        )}
-      </Comp>
-    );
-  },
-);
+  return (
+    <Comp
+      className={buttonVariants({ variant, size, radius, fullWidth, justify, className })}
+      ref={ref}
+      {...props}
+    >
+      {asChild ? (
+        children
+      ) : (
+        <>
+          {isLoading ? (
+            <Loading size={24} color='white' />
+          ) : (
+            <>
+              {leftSection}
+              {children}
+              {rightSection}
+            </>
+          )}
+        </>
+      )}
+    </Comp>
+  );
+};
 Button.displayName = 'Button';
 
 export default Button;

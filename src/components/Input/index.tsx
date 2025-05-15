@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type InputHTMLAttributes, ReactNode } from 'react';
+import { type InputHTMLAttributes, ReactNode, Ref } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ErrorMessage } from '@hookform/error-message';
 import { FieldErrors } from 'react-hook-form';
@@ -53,11 +53,13 @@ export interface Props
   description?: string;
   name: string;
   errors?: FieldErrors<any>;
+  ref?: Ref<HTMLInputElement>;
 }
 
-const Input = React.forwardRef<HTMLInputElement, Props>(
+const Input =
   (
     {
+      ref,
       className,
       type,
       size,
@@ -72,8 +74,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
       variant,
       errors = {},
       ...props
-    },
-    ref,
+    }: Props,
   ) => {
     const inputClassName = inputVariants({ size, className, variant });
 
@@ -90,7 +91,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
           )}
         >
           <InputSection
-            position="left"
+            position='left'
             section={leftSection}
             className={`pointer-events-${leftSectionPointerEvents}`}
           />
@@ -107,13 +108,13 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
             {...props}
           />
           <InputSection
-            position="right"
+            position='right'
             section={rightSection}
             className={`pointer-events-${rightSectionPointerEvents}`}
           />
         </div>
 
-        {description && <p className="text-xs text-neutral-500 font-medium mt-2">{description}</p>}
+        {description && <p className='text-xs text-neutral-500 font-medium mt-2'>{description}</p>}
 
         {!isEmpty(errors) && (
           <ErrorMessage
@@ -133,8 +134,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
         )}
       </div>
     );
-  },
-);
+  };
 Input.displayName = 'Input';
 
 export default Input;
