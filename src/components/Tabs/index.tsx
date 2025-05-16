@@ -1,16 +1,13 @@
 'use client';
 
-import React from 'react';
+import { ComponentPropsWithRef } from 'react';
 import clsx from 'clsx';
 import { motion } from 'motion/react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 
 const Tabs = TabsPrimitive.Root;
 
-const TabsList = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => (
+const TabsList = ({ ref, className, ...props }: ComponentPropsWithRef<typeof TabsPrimitive.List>) => (
   <TabsPrimitive.List
     ref={ref}
     className={clsx(
@@ -19,13 +16,10 @@ const TabsList = React.forwardRef<
     )}
     {...props}
   />
-));
+);
 TabsList.displayName = TabsPrimitive.List.displayName;
 
-const TabsTrigger = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
+const TabsTrigger = ({ ref, className, children, ...props }: ComponentPropsWithRef<typeof TabsPrimitive.Trigger>) => (
   <TabsPrimitive.Trigger
     ref={ref}
     className={clsx(
@@ -35,15 +29,12 @@ const TabsTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <div className="h-0.5 bg-neutral-800 border-active mt-1.5 -mb-0.5 rounded-3xl transition ease-in duration-200" />
+    <div className='h-0.5 bg-neutral-800 border-active mt-1.5 -mb-0.5 rounded-3xl transition ease-in duration-200' />
   </TabsPrimitive.Trigger>
-));
+);
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
-const TabsContent = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+const TabsContent = ({ ref, className, children, ...props }: ComponentPropsWithRef<typeof TabsPrimitive.Content>) => (
   <TabsPrimitive.Content ref={ref} className={clsx('mt-6', className)} {...props}>
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -53,7 +44,7 @@ const TabsContent = React.forwardRef<
       {children}
     </motion.div>
   </TabsPrimitive.Content>
-));
+);
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };

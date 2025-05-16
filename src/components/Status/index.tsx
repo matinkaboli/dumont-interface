@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode, Ref } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const statusVariant = cva('flex items-center gap-1', {
@@ -25,17 +25,17 @@ const circleVariant = cva('w-1 h-1 rounded-full', {
 
 interface Props extends VariantProps<typeof statusVariant> {
   className?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
+  ref?: Ref<HTMLSpanElement>;
 }
 
-const Status = React.forwardRef<HTMLSpanElement, Props>(
-  ({ variant = 'success', className = '', children }, ref) => (
-    <span className={statusVariant({ variant, className })} ref={ref}>
+const Status =
+  ({ ref, variant = 'success', className = '', children }: Props) => (
+    <span ref={ref} className={statusVariant({ variant, className })}>
       <span className={circleVariant({ variant })}></span>
       {children}
     </span>
-  ),
-);
+  );
 Status.displayName = 'Status';
 
 export default Status;
