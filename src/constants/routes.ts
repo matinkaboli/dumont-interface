@@ -1,8 +1,8 @@
 const Routes = {
   HOME: '/',
   CREATE_ROUND: '/',
-  ROUND: '/games',
-  START: '/start?mode=card',
+  ROUND: '/card',
+  START: '/card/start',
   MORE_INFO: '/more-info',
 };
 
