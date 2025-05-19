@@ -45,6 +45,7 @@ const FlipImage = ({
           className={clsx(imgParentClassnames, isRevealed ? 'z-0' : 'z-10')}
         >
           <Image
+            priority
             width={imgWidth}
             height={imgHeight}
             src={frontSrc}
@@ -65,6 +66,7 @@ const FlipImage = ({
             />
           )}
           <Image
+            priority
             width={imgWidth}
             height={imgHeight}
             src={backSrc}

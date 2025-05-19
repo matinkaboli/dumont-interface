@@ -32,7 +32,7 @@ const PlayCards = ({ className = '', needsShuffling = true }: { className?: stri
       )}
     >
       {needsShuffling && !showSlider ? (
-        <CardShuffling cards={demoCards.slice(0, 18)} setShowSlider={setShowSlider} />
+        <CardShuffling cards={demoCards.slice(0, 16)} setShowSlider={setShowSlider} />
       ) : (
         <div className='fade-in animate-in duration-1000'>
           <Suspense>

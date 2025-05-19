@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -16,7 +17,7 @@ import CardDeck from '@/views/card/_components/CardDeck';
 import Board from '@/views/card/_components/Board';
 import Header from '@/views/card/_components/Header';
 
-import ActivityTab from './ActivityTab';
+const ActivityTab = dynamic(() => import('./ActivityTab'));
 
 const Game = () => {
   const dispatch = useDispatch<AppDispatch>();
