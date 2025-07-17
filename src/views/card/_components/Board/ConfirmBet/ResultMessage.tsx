@@ -1,11 +1,11 @@
 import Image from 'next/image';
+import { useDispatch } from 'react-redux';
 
-import { Button } from '@/components';
+import { Button, Icon } from '@/components';
 import parseUnits from '@/helpers/parseUnits';
 import getCardInfo from '@/helpers/getCardInfo';
 import toFixedNumber from '@/helpers/toFixedNumber';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { openDialog } from '@/redux/features/dialogSlice';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
@@ -77,16 +77,16 @@ const ResultMessage = (
         {message.buttonText}
       </Button>
 
-      {/*{isPlayerWinner && (*/}
-      {/*  <button*/}
-      {/*    type="button"*/}
-      {/*    className="text-neutral-400 text-base flex-center gap-2 font-semibold mt-7 w-fit mx-auto"*/}
-      {/*    onClick={onShare}*/}
-      {/*  >*/}
-      {/*    <Icon name="share" />*/}
-      {/*    Share in social*/}
-      {/*  </button>*/}
-      {/*)}*/}
+      {isPlayerWinner && (
+        <button
+          type="button"
+          className="text-neutral-400 text-base flex-center gap-2 font-semibold mt-7 w-fit mx-auto"
+          onClick={onShare}
+        >
+          <Icon name="share" />
+          Share in social
+        </button>
+      )}
     </>
   );
 };
