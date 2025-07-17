@@ -22,8 +22,6 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import Routes from '@/constants/routes';
 
-import RewardButton from './RewardButton';
-// import AirdropButton from './AirdropButton';
 import ConnectedWallet from './ConnectedWallet';
 
 const ConnectWallet = () => {
@@ -100,7 +98,7 @@ const ConnectWallet = () => {
           </Link>
           <div className="flex items-center gap-2 ml-auto">
             {/*<AirdropButton />*/}
-            <RewardButton />
+            {/*<RewardButton />*/}
             <ConnectedWallet />
           </div>
         </div>

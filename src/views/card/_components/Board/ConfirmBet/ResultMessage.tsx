@@ -14,26 +14,26 @@ import SocialShare from './SocialShare';
 const createMessage = (isWinner: boolean, totalAmount: string, montAmount: string) => ({
   title: isWinner ? 'You won! 🎉' : 'No luck this time 💔',
   content: isWinner ? (
-    <p className="text-neutral-300 text-base px-6">
-      You’ll receive <b className="text-success-400">${totalAmount} win</b> in your wallet after in
+    <p className='text-neutral-300 text-base px-6'>
+      You’ll receive <b className='text-success-400'>${totalAmount} win</b> in your wallet after in
       ~ 10 sec.
     </p>
   ) : (
-    <p className="text-sm text-neutral-300 px-0 md:px-5">
-      You didn’t win this one, but you still got
-      <span className="text-success-400"> +{montAmount}</span> $MONT in rewards.
+    <p className='text-sm text-neutral-300 px-0 md:px-5'>
+      You didn’t win this time, but you still got it!
     </p>
   ),
   buttonText: isWinner ? 'Got it' : 'Try the next',
 });
 
-const ResultMessage = ({
-  onCloseDialog,
-  cardIndex,
-}: {
-  onCloseDialog: () => void;
-  cardIndex: number;
-}) => {
+const ResultMessage = (
+  {
+    onCloseDialog,
+    cardIndex,
+  }: {
+    onCloseDialog: () => void;
+    cardIndex: number;
+  }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { data } = useTypedSelector((state) => state.game);
 
@@ -52,7 +52,7 @@ const ResultMessage = ({
     dispatch(
       openDialog({
         content: (
-          <AnimatedDialogContent key="share">
+          <AnimatedDialogContent key='share'>
             <SocialShare gameId={+data.id} cardIndex={cardIndex} />
           </AnimatedDialogContent>
         ),
@@ -66,21 +66,14 @@ const ResultMessage = ({
         src={`/images/cards/${getCardInfo(data.cards[cardIndex].number)}.png`}
         width={160}
         height={223}
-        className="mx-auto"
-        alt=""
+        className='mx-auto'
+        alt=''
       />
-      <h3 className="text-xl text-white text-center font-bold mt-6">{message.title}</h3>
+      <h3 className='text-xl text-white text-center font-bold mt-6'>{message.title}</h3>
 
-      <div className="mt-2 text-center">{message.content}</div>
+      <div className='mt-2 text-center'>{message.content}</div>
 
-      {isPlayerWinner && (
-        <div className="mt-6 bg-neutral-700 text-center text-base text-white rounded-lg py-2">
-          <span className="font-medium">+{MONTAmount} MONT</span>
-          <span> in reward.</span>
-        </div>
-      )}
-
-      <Button fullWidth size="md" radius="lg" className="mt-8" onClick={onCloseDialog}>
+      <Button fullWidth size='md' radius='lg' className='mt-8' onClick={onCloseDialog}>
         {message.buttonText}
       </Button>
 
