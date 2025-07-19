@@ -31,7 +31,6 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
     balance,
     profile: { address },
   } = useTypedSelector((state) => state.account);
-  const { details } = useTypedSelector((state) => state.config);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const [process, setProcess] = useState<'send' | 'receive'>('send');

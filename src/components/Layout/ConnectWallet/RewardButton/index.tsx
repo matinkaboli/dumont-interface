@@ -22,7 +22,6 @@ import Claimed from '../Claimed';
 const RewardButton = () => {
   const dispatch = useDispatch();
   const { client } = useSmartWallets();
-  const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
   const [isClaimLoading, setIsClaimLoading] = useState(false);
   const [rewardTx, setRewardTx] = useState('');
