@@ -20,9 +20,9 @@ import SuccessModal from './SuccessModal';
 import { SendData } from '../index';
 
 const ConfirmSend = ({
-  sendData,
-  removeSlideTitle,
-}: {
+                       sendData,
+                       removeSlideTitle,
+                     }: {
   sendData?: SendData;
   removeSlideTitle: () => void;
 }) => {
@@ -49,8 +49,8 @@ const ConfirmSend = ({
       dispatch(
         openDialog({
           content: (
-            <AnimatedDialogContent key="error">
-              <ErrorContent title="Something went wrong!" />
+            <AnimatedDialogContent key='error'>
+              <ErrorContent title='Something went wrong!' />
             </AnimatedDialogContent>
           ),
         }),
@@ -63,7 +63,7 @@ const ConfirmSend = ({
     removeSlideTitle();
 
     const amount = formatUnits(sendData!.amount, sendData!.token === 'USDC' ? 6 : 18).toFixed();
-    const address = sendData!.token === 'USDC' ? details!.usdt : details!.mont;
+    const address = details!.usdc;
 
     onTransfer({
       account: client!.account,
@@ -82,15 +82,15 @@ const ConfirmSend = ({
 
   if (isTransferLoading || isWaitTXLoading) {
     return (
-      <AnimatedDialogContent key="loading">
-        <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+      <AnimatedDialogContent key='loading'>
+        <LoadingContent title='Waiting for the network' desc='It will take a few seconds' />
       </AnimatedDialogContent>
     );
   }
 
   if (isConfirmed) {
     return (
-      <AnimatedDialogContent key="confirm">
+      <AnimatedDialogContent key='confirm'>
         <SuccessModal sendData={sendData} />
       </AnimatedDialogContent>
     );
@@ -98,33 +98,33 @@ const ConfirmSend = ({
 
   return (
     <div>
-      <div className="bg-neutral-700 rounded-xl p-4 mt-8">
-        <div className="flex gap-2 bg-neutral-750 rounded-xl px-4 py-2.5 font-bold text-xl text-white w-fit mx-auto">
+      <div className='bg-neutral-700 rounded-xl p-4 mt-8'>
+        <div className='flex gap-2 bg-neutral-750 rounded-xl px-4 py-2.5 font-bold text-xl text-white w-fit mx-auto'>
           <Image
             width={24}
             height={24}
             src={`/images/tokens/${sendData!.token.toLowerCase()}.svg`}
-            alt=""
+            alt=''
           />
           {sendData?.amount}
         </div>
 
-        <Icon name="arrow-down" color="#ADADB6" className="mx-auto my-4" />
+        <Icon name='arrow-down' color='#ADADB6' className='mx-auto my-4' />
 
         <CopyToClipboard
           showIcon={false}
           copyText={sendData!.address}
-          className="flex gap-2 bg-neutral-750 rounded-xl px-4 py-2.5 font-medium text-md text-white w-fit mx-auto"
+          className='flex gap-2 bg-neutral-750 rounded-xl px-4 py-2.5 font-medium text-md text-white w-fit mx-auto'
         >
-          <Image src="/images/account.svg" width={24} height={24} alt="account" />
+          <Image src='/images/account.svg' width={24} height={24} alt='account' />
           {truncateString(sendData!.address, { leftChars: 8, rightChars: 8 })}
         </CopyToClipboard>
       </div>
 
       <Button
         fullWidth
-        className="mt-6"
-        radius="lg"
+        className='mt-6'
+        radius='lg'
         onClick={onConfirm}
         disabled={isTransferLoading || isWaitTXLoading}
       >

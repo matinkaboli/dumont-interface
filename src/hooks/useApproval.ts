@@ -14,7 +14,7 @@ export const useApproval = (
   const { details } = useTypedSelector((state) => state.config);
 
   const { data: allowanceData, refetch: refetchAllowance } = useReadContract({
-    address: details?.usdt,
+    address: details?.usdc,
     abi: ERC20_ABI,
     functionName: 'allowance',
     args: [address, contractAddress],
@@ -34,7 +34,7 @@ export const useApproval = (
   const sendApprove = (value: string) => {
     const approveValue = formatUnits(value, 6).toString();
     writeApprove?.({
-      address: details!.usdt,
+      address: details!.usdc,
       abi: ERC20_ABI,
       functionName: 'approve',
       args: [contractAddress, approveValue],

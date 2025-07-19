@@ -201,7 +201,7 @@ const Board = () => {
         account: client.account,
         calls: [
           {
-            to: details!.usdt,
+            to: details!.usdc,
             data: encodeFunctionData({
               abi: ERC20_ABI,
               functionName: 'approve',

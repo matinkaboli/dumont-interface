@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 import { Icon } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { DEFAULT_ADDRESS } from '@/constants/static';
 
 import MultiStepCarousel from './MultiStepCarousel';
 import ProfileDetail from './steps/ProfileDetail';
@@ -37,7 +38,7 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
   const [sendData, setSendData] = useState<SendData | undefined>(undefined);
   const [removeSlideTitle, setRemoveSlideTitle] = useState(false);
 
-  const { data: montBalance } = useBalance({ address, token: details?.mont });
+  const { data: montBalance } = useBalance({ address, token: DEFAULT_ADDRESS });
   const { data: ethBalance } = useBalance({ address });
   const accountBalance: Balance = {
     usdc: balance,

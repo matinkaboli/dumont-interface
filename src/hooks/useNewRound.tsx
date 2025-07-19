@@ -14,7 +14,7 @@ import formatUnits from '@/helpers/formatUnits';
 import Routes from '@/constants/routes';
 import { DEFAULT_APPROVE_VALUE } from '@/constants/static';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
-import GAME_FACTORY_ABI from '@/abis/GAME_FACTORY_ABI.json';
+import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ConfirmNewRound from '../views/card/_components/ConfirmNewRound';
@@ -26,7 +26,6 @@ export const useNewRound = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { client } = useSmartWallets();
   const { details } = useTypedSelector((state) => state.config);
-  const { referralAddress } = useTypedSelector((state) => state.referral);
   const [loadingIndex, setLoadingIndex] = useState(0);
   const [isCreateGameLoading, setIsCreateGameLoading] = useState(false);
   const [errorMessageGame, setErrorMessageGame] = useState('');
@@ -46,7 +45,7 @@ export const useNewRound = () => {
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
-            <AnimatedDialogContent key="loading">
+            <AnimatedDialogContent key='loading'>
               <LongLoadingContent activeIndex={loadingIndex} setActiveIndex={setLoadingIndex} />
             </AnimatedDialogContent>
           ),
@@ -82,19 +81,18 @@ export const useNewRound = () => {
         account: client.account,
         calls: [
           {
-            to: details!.usdt,
+            to: details!.usdc,
             data: encodeFunctionData({
               abi: ERC20_ABI,
               functionName: 'approve',
-              args: [details?.gameFactory, approveValue],
+              args: [details!.gateway, approveValue],
             }),
           },
           {
-            to: details!.gameFactory,
+            to: details!.gateway,
             data: encodeFunctionData({
-              abi: GAME_FACTORY_ABI,
-              functionName: 'createGame',
-              args: [referralAddress],
+              abi: GATEWAY_ABI,
+              functionName: 'createFaro',
             }),
           },
         ],
@@ -102,12 +100,13 @@ export const useNewRound = () => {
 
       setGameTx(tx);
     } catch (error) {
+      console.log(error);
       setErrorMessageGame('Transaction failed. Please try again.');
       dispatch(
         openDialog({
           content: (
-            <AnimatedDialogContent key="error">
-              <ErrorContent title="Something went wrong!" />
+            <AnimatedDialogContent key='error'>
+              <ErrorContent title='Something went wrong!' />
             </AnimatedDialogContent>
           ),
         }),

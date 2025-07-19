@@ -37,7 +37,7 @@ const ConnectWallet = () => {
 
   const { data: balance } = useBalance({
     address,
-    token: details?.usdt,
+    token: details?.usdc,
     query: {
       refetchInterval: 8000,
       enabled: !isEmpty(address),

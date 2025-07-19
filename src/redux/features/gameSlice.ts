@@ -55,7 +55,7 @@ export const getGame = createAsyncThunk<GameData, string>(
   'api/getGame',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`games/${id}`);
+      const response = await axios.get(`faros/${id}`);
       return response.data.result;
     } catch (error) {
       const axiosError = error as AxiosError;

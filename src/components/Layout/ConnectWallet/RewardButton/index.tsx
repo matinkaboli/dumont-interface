@@ -10,6 +10,7 @@ import { showConfetti } from '@/redux/features/confettiSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import parseUnits from '@/helpers/parseUnits';
 import MONT_REWARD_MANAGER_ABI from '@/abis/MONT_REWARD_MANAGER_ABI.json';
+import { DEFAULT_ADDRESS } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '../../../../views/_components/Dialog/ErrorContent';
@@ -27,7 +28,7 @@ const RewardButton = () => {
   const [rewardTx, setRewardTx] = useState('');
 
   const { data: balancesData, refetch } = useReadContract({
-    address: details?.montRewardManager,
+    address: DEFAULT_ADDRESS,
     abi: MONT_REWARD_MANAGER_ABI,
     functionName: 'balances',
     args: [address],
@@ -95,7 +96,7 @@ const RewardButton = () => {
         account: client.account,
         calls: [
           {
-            to: details!.montRewardManager,
+            to: DEFAULT_ADDRESS,
             data: encodeFunctionData({
               abi: MONT_REWARD_MANAGER_ABI,
               functionName: 'claim',
