@@ -100,7 +100,6 @@ export const useNewRound = () => {
 
       setGameTx(tx);
     } catch (error) {
-      console.log(error);
       setErrorMessageGame('Transaction failed. Please try again.');
       dispatch(
         openDialog({

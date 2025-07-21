@@ -8,11 +8,12 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import formatDurationFromSeconds from '@/helpers/formatDurationFromSeconds';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import isEmpty from '@/helpers/isEmpty';
+import { FARO_DURATION } from '@/constants/static';
 
 import Round from './Round';
 
-const formatTime = (duration: string, createdAt: Date) => {
-  const time = +duration - timeLeftInSeconds(createdAt);
+const formatTime = (duration: number, createdAt: number) => {
+  const time = duration - timeLeftInSeconds(createdAt);
   if (time <= 0) return '';
 
   return formatDurationFromSeconds(time);
@@ -26,7 +27,7 @@ const Footer = ({ className }: { className?: string }) => {
   useEffect(() => {
     if (!isEmpty(game)) {
       const updateFormattedTime = () => {
-        setCurrentTime(formatTime(game!.duration, game!.createdAt));
+        setCurrentTime(formatTime(FARO_DURATION, game!.createdAt));
       };
 
       updateFormattedTime();
@@ -49,7 +50,7 @@ const Footer = ({ className }: { className?: string }) => {
             <TooltipTrigger>
               <Round roundTime={currentTime} />
             </TooltipTrigger>
-            <TooltipContent className="w-48 !text-xs">
+            <TooltipContent className='w-48 !text-xs'>
               Each round has an expiration time. After that it becomes inactive.
             </TooltipContent>
           </Tooltip>

@@ -58,7 +58,6 @@ const BetForm = () => {
   };
 
   const onSubmit = (data: SportFormData) => {
-    console.log(data);
     setIsExpanded(false);
 
     dispatch(
