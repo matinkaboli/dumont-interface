@@ -54,7 +54,7 @@ interface Activity {
 
 type ExtendedCellContext<TData, TValue> = CellContext<TData, TValue> & {
   claimableAfter?: string;
-  gameAddress?: `0x${string}`;
+  gameId?: number;
   fetchActivities?: () => Promise<void>;
 };
 
@@ -133,7 +133,7 @@ const columns = [
     cell: ({
       row,
       claimableAfter,
-      gameAddress,
+      gameId,
       fetchActivities,
     }: ExtendedCellContext<Activity, Activity['status']>) => {
       const activity = row.original;
@@ -144,7 +144,7 @@ const columns = [
           <ClaimButton
             refetch={fetchActivities}
             cardIndex={activity.index}
-            gameAddress={gameAddress}
+            gameId={gameId}
           />
         );
       }
@@ -229,7 +229,7 @@ const Activities = () => {
                 {flexRender(cell.column.columnDef.cell, {
                   ...cell.getContext(),
                   claimableAfter: game?.claimableAfter,
-                  gameAddress: game?.address,
+                  gameId: game?.id,
                   fetchActivities: handleFetchActivities,
                 })}
               </TableCell>

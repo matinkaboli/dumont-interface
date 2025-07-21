@@ -10,7 +10,7 @@ interface Details {
   gateway: HexString;
   operator: HexString;
   usdc: HexString;
-  valut: HexString;
+  vault: HexString;
   networkId: number;
 }
 

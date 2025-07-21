@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { openDialog } from '@/redux/features/dialogSlice';
-import GAME_ABI from '@/abis/GAME_ABI.json';
+import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
@@ -14,12 +15,13 @@ import ClaimedWin from './ClaimedWin';
 
 interface Props {
   cardIndex: number;
-  gameAddress?: `0x${string}`;
+  gameId?: number;
   refetch?: () => Promise<void>;
 }
 
-const ClaimButton = ({ gameAddress, cardIndex, refetch }: Props) => {
+const ClaimButton = ({ gameId, cardIndex, refetch }: Props) => {
   const dispatch = useDispatch();
+  const { details } = useTypedSelector((state) => state.config);
 
   const {
     writeContract: writeClaim,
@@ -57,10 +59,10 @@ const ClaimButton = ({ gameAddress, cardIndex, refetch }: Props) => {
 
   function onClaim() {
     writeClaim?.({
-      address: gameAddress!,
-      abi: GAME_ABI,
+      address: details!.gateway,
+      abi: GATEWAY_ABI,
       functionName: 'claimWin',
-      args: [cardIndex],
+      args: [gameId, cardIndex],
     });
   }
 

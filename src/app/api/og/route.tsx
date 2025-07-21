@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
   const cardIndex = cardId ? parseInt(cardId, 10) - 1 : 0;
 
-  const apiEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/games/${gameId}/activities`;
+  const apiEndpoint = `${process.env.NEXT_PUBLIC_API_URL}/faros/${gameId}/activities`;
   const gameData = await fetch(apiEndpoint)
     .then((res) => {
       if (!res.ok) {

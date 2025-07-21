@@ -7,6 +7,7 @@ import isEmpty from '@/helpers/isEmpty';
 import ProgressbarTimer from './ProgressbarTimer';
 import Tutorial from './Tutorial';
 import NewGame from './NewGame';
+import { FARO_DURATION } from '@/constants/static';
 
 const Header = ({ showTitleInMobile = true }: { showTitleInMobile?: boolean }) => {
   const { data: game, areAllCardsGuessed, isRefetching } = useTypedSelector((state) => state.game);
@@ -25,8 +26,8 @@ const Header = ({ showTitleInMobile = true }: { showTitleInMobile?: boolean }) =
         {!isEmpty(game) && !areAllCardsGuessed && (
           <div key={isRefetching ? 'refetch' : 'fetch'}>
             <ProgressbarTimer
-              duration={+game!.duration}
-              initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}
+              duration={FARO_DURATION}
+              initialTime={FARO_DURATION - timeLeftInSeconds(game!.createdAt)}
             />
           </div>
         )}

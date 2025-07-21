@@ -12,11 +12,11 @@ import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { usePolling } from '@/hooks/usePolling';
 import isEmpty from '@/helpers/isEmpty';
-import GAME_ABI from '@/abis/GAME_ABI.json';
+import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import ErrorContent from '../../../../../../_components/Dialog/ErrorContent';
-import LoadingContent from '../../../../../../_components/Dialog/LoadingContent';
+import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import KeyButton from '../KeyButton';
 import ConfirmReveal from './ConfirmReveal';
@@ -29,6 +29,7 @@ const RevealKey = ({ className }: { className?: string }) => {
   const { client } = useSmartWallets();
   const [isRevealCardLoading, setIsRevealCardLoading] = useState(false);
   const [revealCardTx, setRevealCardTx] = useState('');
+  const { details } = useTypedSelector((state) => state.config);
 
   const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: revealCardTx as `0x${string}`,
@@ -92,15 +93,16 @@ const RevealKey = ({ className }: { className?: string }) => {
     if (!client) return;
 
     try {
+      console.log(game);
       const tx = await client.sendTransaction({
         account: client.account,
         calls: [
           {
-            to: game!.address,
+            to: details!.gateway,
             data: encodeFunctionData({
-              abi: GAME_ABI,
+              abi: GATEWAY_ABI,
               functionName: 'requestFreeRevealCard',
-              args: [activeCardIndex - 1],
+              args: [game!.id ,activeCardIndex - 1],
             }),
           },
         ],
