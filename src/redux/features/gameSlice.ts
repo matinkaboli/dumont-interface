@@ -33,7 +33,7 @@ export interface GameData {
   gameCreationFee: string;
   gameCreatedAt: string;
   cards: Card[];
-  createdAt: Date;
+  createdAt: number;
   updatedAt: Date;
   __v: number;
   freeRevealRequests: number;

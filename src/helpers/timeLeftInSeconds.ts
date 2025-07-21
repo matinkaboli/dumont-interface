@@ -1,13 +1,10 @@
 import dayjs from 'dayjs';
 
-function timeLeftInSeconds(pastTime: Date): number {
+function timeLeftInSeconds(pastTime: number): number {
   const currentTime = dayjs();
-  const pastDate = dayjs(pastTime);
+  const pastDate = dayjs.unix(pastTime);
 
-  const differenceInMilliseconds = currentTime.diff(pastDate);
-  const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000);
-
-  return differenceInSeconds;
+  return currentTime.diff(pastDate, 'second');
 }
 
 export default timeLeftInSeconds;
