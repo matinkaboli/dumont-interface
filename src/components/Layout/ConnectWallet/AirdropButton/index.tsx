@@ -10,6 +10,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import AIRDROP_ABI from '@/abis/AIRDROP_ABI.json';
 import { showConfetti } from '@/redux/features/confettiSlice';
 import parseUnits from '@/helpers/parseUnits';
+import { DEFAULT_ADDRESS } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '../../../../views/_components/Dialog/ErrorContent';
@@ -21,13 +22,12 @@ import Claimed from '../Claimed';
 const AirdropButton = () => {
   const dispatch = useDispatch();
   const { client } = useSmartWallets();
-  const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
   const [isClaimLoading, setIsClaimLoading] = useState(false);
   const [claimTx, setClaimTx] = useState('');
 
   const { data: isAirdropEligible, refetch } = useReadContract({
-    address: details?.airdrop,
+    address: DEFAULT_ADDRESS,
     abi: AIRDROP_ABI,
     functionName: 'claimers',
     args: [address],
@@ -51,8 +51,8 @@ const AirdropButton = () => {
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
-            <AnimatedDialogContent key="loading">
-              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+            <AnimatedDialogContent key='loading'>
+              <LoadingContent title='Waiting for the network' desc='It will take a few seconds' />
             </AnimatedDialogContent>
           ),
         }),
@@ -67,7 +67,7 @@ const AirdropButton = () => {
       dispatch(
         openDialog({
           content: (
-            <AnimatedDialogContent key="claimed">
+            <AnimatedDialogContent key='claimed'>
               <Claimed refetch={refetch} amount={claimValue} />
             </AnimatedDialogContent>
           ),
@@ -95,7 +95,7 @@ const AirdropButton = () => {
         account: client.account,
         calls: [
           {
-            to: details!.airdrop,
+            to: DEFAULT_ADDRESS,
             data: encodeFunctionData({
               abi: AIRDROP_ABI,
               functionName: 'claim',
@@ -108,8 +108,8 @@ const AirdropButton = () => {
       dispatch(
         openDialog({
           content: (
-            <AnimatedDialogContent key="error">
-              <ErrorContent title="Something went wrong!" />
+            <AnimatedDialogContent key='error'>
+              <ErrorContent title='Something went wrong!' />
             </AnimatedDialogContent>
           ),
         }),
@@ -119,17 +119,17 @@ const AirdropButton = () => {
   };
 
   return (
-    <div className="border-primary-gradiant rounded-lg">
+    <div className='border-primary-gradiant rounded-lg'>
       <button
-        type="button"
+        type='button'
         onClick={onOpenDialog}
         disabled={isClaimLoading || isWaitTXLoading}
-        className="flex-center bg-primary-800 rounded-lg w-10 h-10"
+        className='flex-center bg-primary-800 rounded-lg w-10 h-10'
       >
         {claimValue === 0 ? (
-          <Icon name="air-balloon" color="#821182" />
+          <Icon name='air-balloon' color='#821182' />
         ) : (
-          <Icon name="air-balloon-rainbow" />
+          <Icon name='air-balloon-rainbow' />
         )}
       </button>
     </div>

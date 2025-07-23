@@ -12,11 +12,12 @@ import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { usePolling } from '@/hooks/usePolling';
 import isEmpty from '@/helpers/isEmpty';
-import GAME_ABI from '@/abis/GAME_ABI.json';
+import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
+import { MAX_FREE_REVEALS } from '@/constants/static';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import ErrorContent from '../../../../../../_components/Dialog/ErrorContent';
-import LoadingContent from '../../../../../../_components/Dialog/LoadingContent';
+import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import KeyButton from '../KeyButton';
 import ConfirmReveal from './ConfirmReveal';
@@ -24,6 +25,7 @@ import RevealedCard from './RevealedCard';
 
 const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
   const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
   const { client } = useSmartWallets();
@@ -48,7 +50,7 @@ const RevealKey = ({ className }: { className?: string }) => {
               onClickOverlay: onCloseResultDialog,
             },
             content: (
-              <AnimatedDialogContent key="reveal">
+              <AnimatedDialogContent key='reveal'>
                 <RevealedCard cardIndex={activeCardIndex - 1} onCloseDialog={onCloseResultDialog} />
               </AnimatedDialogContent>
             ),
@@ -66,8 +68,8 @@ const RevealKey = ({ className }: { className?: string }) => {
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
-            <AnimatedDialogContent key="loading">
-              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+            <AnimatedDialogContent key='loading'>
+              <LoadingContent title='Waiting for the network' desc='It will take a few seconds' />
             </AnimatedDialogContent>
           ),
         }),
@@ -96,11 +98,11 @@ const RevealKey = ({ className }: { className?: string }) => {
         account: client.account,
         calls: [
           {
-            to: game!.address,
+            to: details!.gateway,
             data: encodeFunctionData({
-              abi: GAME_ABI,
+              abi: GATEWAY_ABI,
               functionName: 'requestFreeRevealCard',
-              args: [activeCardIndex - 1],
+              args: [game!.id, activeCardIndex - 1],
             }),
           },
         ],
@@ -110,8 +112,8 @@ const RevealKey = ({ className }: { className?: string }) => {
       dispatch(
         openDialog({
           content: (
-            <AnimatedDialogContent key="error">
-              <ErrorContent title="Something went wrong!" />
+            <AnimatedDialogContent key='error'>
+              <ErrorContent title='Something went wrong!' />
             </AnimatedDialogContent>
           ),
         }),
@@ -134,19 +136,19 @@ const RevealKey = ({ className }: { className?: string }) => {
     game?.player.toLowerCase() !== address?.toLowerCase() ||
     game!.cards[activeCardIndex - 1]?.isFreeReveal ||
     game?.cards[activeCardIndex - 1]?.number !== -1 ||
-    +game!.freeRevealRequests === +game!.maxFreeReveals ||
+    +game!.freeRevealRequests === MAX_FREE_REVEALS ||
     isRevealCardLoading ||
     isRevealConfirming ||
     isWaitTXLoading;
 
   return (
     <KeyButton
-      className="flex flex-col gap-0.5 [&>div]:disabled:text-neutral-500 group"
+      className='flex flex-col gap-0.5 [&>div]:disabled:text-neutral-500 group'
       borderClassName={clsx('col-span-2', className)}
       onClick={onReveal}
       disabled={disabled}
     >
-      <div className="text-md text-white font-bold">Reveal {`->`}</div>
+      <div className='text-md text-white font-bold'>Reveal {`->`}</div>
       {!isEmpty(game) ? (
         <div
           className={clsx(

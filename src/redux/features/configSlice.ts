@@ -6,14 +6,11 @@ import axios from '@/lib/axios';
 type HexString = `0x${string}`;
 
 interface Details {
-  gameFactory: HexString;
-  usdt: HexString;
-  mont: HexString;
-  burner: HexString;
-  airdrop: HexString;
-  revealer: HexString;
-  valut: HexString;
-  montRewardManager: HexString;
+  factory: HexString;
+  gateway: HexString;
+  operator: HexString;
+  usdc: HexString;
+  vault: HexString;
   networkId: number;
 }
 

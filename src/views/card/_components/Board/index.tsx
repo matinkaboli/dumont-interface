@@ -18,13 +18,13 @@ import isEmpty from '@/helpers/isEmpty';
 import formatDecimal from '@/helpers/formatDecimal';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { usePolling } from '@/hooks/usePolling';
-import GAME_ABI from '@/abis/GAME_ABI.json';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import { TOTAL_CARDS_LENGTH } from '@/constants/static';
+import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
-import ErrorContent from '../../../_components/Dialog/ErrorContent';
-import LoadingContent from '../../../_components/Dialog/LoadingContent';
+import ErrorContent from '@/views/_components/Dialog/ErrorContent';
+import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import ResultMessage from './ConfirmBet/ResultMessage';
 import KeyBoard from './KeyBoard';
@@ -201,19 +201,19 @@ const Board = () => {
         account: client.account,
         calls: [
           {
-            to: details!.usdt,
+            to: details!.usdc,
             data: encodeFunctionData({
               abi: ERC20_ABI,
               functionName: 'approve',
-              args: [game?.address, amount.toString()],
+              args: [details!.gateway, amount.toString()],
             }),
           },
           {
-            to: game!.address,
+            to: details!.gateway,
             data: encodeFunctionData({
-              abi: GAME_ABI,
+              abi: GATEWAY_ABI,
               functionName: 'guessCard',
-              args: [activeCardIndex - 1, amount, guessNumber],
+              args: [game!.id, activeCardIndex - 1, amount, guessNumber],
             }),
           },
         ],

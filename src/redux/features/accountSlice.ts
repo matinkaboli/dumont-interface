@@ -31,7 +31,7 @@ export const getPlayerGames = createAsyncThunk<GameData[], string>(
   'api/getPlayerGames',
   async (address: string, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`players/${address}/games`);
+      const response = await axios.get(`players/${address}/faros`);
 
       const { result } = response.data;
       return result.sort((a: any, b: any) => b.id - a.id);

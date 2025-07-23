@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import React, { ChangeEvent } from 'react';
 import { Control, Controller, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import Image from 'next/image';
 import BigNumber from 'bignumber.js';
@@ -18,7 +18,7 @@ const inputProps: InputProps = {
   name: 'amount',
   size: 'sm',
   placeholder: 'Enter amount',
-  rightSection: <Image src="/images/USDC.png" width={24} height={24} alt="" />,
+  rightSection: <Image src='/images/USDC.png' width={24} height={24} alt='' />,
 };
 
 interface Props {
@@ -28,18 +28,16 @@ interface Props {
   inputErrors?: FieldErrors<any>;
   totalOdds: number;
   setValue: UseFormSetValue<any>;
-  setAmount: Dispatch<SetStateAction<any>>;
 }
 
 const AmountInput = ({
-  className = '',
-  touchedFields,
-  control,
-  inputErrors,
-  totalOdds,
-  setValue,
-  setAmount,
-}: Props) => {
+                       className = '',
+                       touchedFields,
+                       control,
+                       inputErrors,
+                       totalOdds,
+                       setValue,
+                     }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.bet);
 
@@ -47,7 +45,6 @@ const AmountInput = ({
     required: 'Bet amount is required.',
     pattern: { value: /^\d*\.?\d+$/, message: 'This input is number only.' },
     validate: (value: any) => {
-      setAmount(value);
       if (totalOdds > 0) {
         const payoutValue = value * totalOdds;
 
@@ -106,14 +103,14 @@ const AmountInput = ({
   return (
     <>
       <div className={clsx('flex justify-between mb-2', className)}>
-        <div className="font-medium text-xs text-white">Amount</div>
+        <div className='font-medium text-xs text-white'>Amount</div>
         <MaxButton onClick={setMaxValue}>
-          <Icon name="caret-up" />
+          <Icon name='caret-up' />
         </MaxButton>
       </div>
 
       <Controller
-        name="amount"
+        name='amount'
         control={control}
         rules={inputValidation}
         render={({ field }) => (

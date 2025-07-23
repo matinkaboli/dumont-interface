@@ -1,10 +1,5 @@
 [
   {
-    "type": "constructor",
-    "inputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
     "type": "function",
     "name": "DEFAULT_ADMIN_ROLE",
     "inputs": [],
@@ -19,7 +14,7 @@
   },
   {
     "type": "function",
-    "name": "REVEALER_ROLE",
+    "name": "OPERATOR_ROLE",
     "inputs": [],
     "outputs": [
       {
@@ -94,48 +89,23 @@
   {
     "type": "function",
     "name": "initialize",
-    "inputs": [
-      {
-        "name": "_data",
-        "type": "tuple",
-        "internalType": "struct IRevealer.InitializeGame",
-        "components": [
-          {
-            "name": "game",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "hashedDeck",
-            "type": "bytes32[52]",
-            "internalType": "bytes32[52]"
-          }
-        ]
-      }
-    ],
+    "inputs": [],
     "outputs": [],
     "stateMutability": "nonpayable"
   },
   {
     "type": "function",
-    "name": "initializeBatch",
+    "name": "multicall",
     "inputs": [
       {
+        "name": "_targets",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
         "name": "_data",
-        "type": "tuple[]",
-        "internalType": "struct IRevealer.InitializeGame[]",
-        "components": [
-          {
-            "name": "game",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "hashedDeck",
-            "type": "bytes32[52]",
-            "internalType": "bytes32[52]"
-          }
-        ]
+        "type": "bytes[]",
+        "internalType": "bytes[]"
       }
     ],
     "outputs": [],
@@ -154,86 +124,6 @@
         "name": "callerConfirmation",
         "type": "address",
         "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "revealCard",
-    "inputs": [
-      {
-        "name": "_card",
-        "type": "tuple",
-        "internalType": "struct IRevealer.RevealedCard",
-        "components": [
-          {
-            "name": "game",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "isFreeReveal",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "index",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "number",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "salt",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          }
-        ]
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "revealCardBatch",
-    "inputs": [
-      {
-        "name": "_cards",
-        "type": "tuple[]",
-        "internalType": "struct IRevealer.RevealedCard[]",
-        "components": [
-          {
-            "name": "game",
-            "type": "address",
-            "internalType": "address"
-          },
-          {
-            "name": "isFreeReveal",
-            "type": "bool",
-            "internalType": "bool"
-          },
-          {
-            "name": "index",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "number",
-            "type": "uint256",
-            "internalType": "uint256"
-          },
-          {
-            "name": "salt",
-            "type": "bytes32",
-            "internalType": "bytes32"
-          }
-        ]
       }
     ],
     "outputs": [],
@@ -278,41 +168,23 @@
   },
   {
     "type": "event",
-    "name": "CardRevealed",
+    "name": "Initialized",
     "inputs": [
       {
-        "name": "_revealer",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "_game",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "_index",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
+        "name": "version",
+        "type": "uint64",
+        "indexed": false,
+        "internalType": "uint64"
       }
     ],
     "anonymous": false
   },
   {
     "type": "event",
-    "name": "GameInitialized",
+    "name": "MulticallExecuted",
     "inputs": [
       {
-        "name": "_revealer",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "_game",
+        "name": "_operator",
         "type": "address",
         "indexed": true,
         "internalType": "address"
@@ -415,5 +287,47 @@
         "internalType": "bytes32"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "ArrayLengthMismatch",
+    "inputs": [
+      {
+        "name": "_targetsLength",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_dataLength",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidInitialization",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "MulticallFailed",
+    "inputs": [
+      {
+        "name": "_target",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_callData",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NotInitializing",
+    "inputs": []
   }
 ]

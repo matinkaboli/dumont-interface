@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
+import { FARO_DURATION } from '@/constants/static';
 
 import ProgressbarTimer from './ProgressbarTimer';
 import Tutorial from './Tutorial';
@@ -12,8 +13,8 @@ const Header = ({ showTitleInMobile = true }: { showTitleInMobile?: boolean }) =
   const { data: game, areAllCardsGuessed, isRefetching } = useTypedSelector((state) => state.game);
 
   return (
-    <div className="flex justify-between items-center text-white gap-1">
-      <div className="flex items-center sm:gap-2 gap-1">
+    <div className='flex justify-between items-center text-white gap-1'>
+      <div className='flex items-center sm:gap-2 gap-1'>
         <h1
           className={clsx(
             'font-bold md:text-2xl sm:text-xl whitespace-nowrap',
@@ -25,13 +26,13 @@ const Header = ({ showTitleInMobile = true }: { showTitleInMobile?: boolean }) =
         {!isEmpty(game) && !areAllCardsGuessed && (
           <div key={isRefetching ? 'refetch' : 'fetch'}>
             <ProgressbarTimer
-              duration={+game!.duration}
-              initialTime={+game!.duration - timeLeftInSeconds(game!.createdAt)}
+              duration={FARO_DURATION}
+              initialTime={FARO_DURATION - timeLeftInSeconds(game!.createdAt)}
             />
           </div>
         )}
       </div>
-      <div className="flex sm:gap-3 gap-1">
+      <div className='flex sm:gap-3 gap-1'>
         <Tutorial />
         <NewGame />
       </div>

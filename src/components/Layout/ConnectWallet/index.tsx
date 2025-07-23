@@ -37,7 +37,7 @@ const ConnectWallet = () => {
 
   const { data: balance } = useBalance({
     address,
-    token: details?.usdt,
+    token: details?.usdc,
     query: {
       refetchInterval: 8000,
       enabled: !isEmpty(address),
@@ -45,7 +45,7 @@ const ConnectWallet = () => {
   });
 
   const { data: maxBetAmount } = useReadContract({
-    address: details?.valut,
+    address: details?.vault,
     abi: VAULT_ABI,
     functionName: 'getMaximumBetAmount',
     query: {
@@ -54,7 +54,7 @@ const ConnectWallet = () => {
   });
 
   const { data: minBetAmount } = useReadContract({
-    address: details?.valut,
+    address: details?.vault,
     abi: VAULT_ABI,
     functionName: 'getMinimumBetAmount',
   });

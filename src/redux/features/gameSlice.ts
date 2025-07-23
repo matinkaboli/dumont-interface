@@ -23,19 +23,14 @@ export interface Card {
 
 export interface GameData {
   _id: string;
-  id: string;
-  address: `0x${string}`;
-  revealer: string;
+  id: number;
+  contractAddress: string;
   player: string;
-  duration: string;
-  claimableAfter: string;
-  maxFreeReveals: string;
-  gameCreationFee: string;
-  gameCreatedAt: string;
+  createdAt: number;
+  initialization: 'INITIALIZED' | string;
+  updatedAt: string;
+  initializationHash: string;
   cards: Card[];
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
   freeRevealRequests: number;
 }
 
@@ -51,11 +46,11 @@ interface State {
   isRefetching: boolean;
 }
 
-export const getGame = createAsyncThunk<GameData, string>(
+export const getGame = createAsyncThunk<GameData, number>(
   'api/getGame',
-  async (id: string, { rejectWithValue }) => {
+  async (id: number, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`games/${id}`);
+      const response = await axios.get(`faros/${id}`);
       return response.data.result;
     } catch (error) {
       const axiosError = error as AxiosError;

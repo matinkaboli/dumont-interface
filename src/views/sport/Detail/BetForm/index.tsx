@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { AppDispatch } from '@/redux/store';
 import { openDialog } from '@/redux/features/dialogSlice';
+
 import BetButton from '@/views/_components/BetButton';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import CustomSheet from '@/views/_components/CustomSheet';
@@ -20,7 +21,6 @@ export interface SportFormData {
 
 const BetForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [amount, setAmount] = useState<string>('');
   const [isExpanded, setIsExpanded] = useState(false);
 
   const {
@@ -57,8 +57,7 @@ const BetForm = () => {
     );
   };
 
-  const onSubmit = (data: SportFormData) => {
-    console.log(data);
+  const onSubmit = () => {
     setIsExpanded(false);
 
     dispatch(
@@ -86,7 +85,6 @@ const BetForm = () => {
           touchedFields={touchedFields}
           errors={errors}
           setValue={setValue}
-          setAmount={setAmount}
         />
         <BetButton disabledButtonLabel="Bet" />
       </div>
@@ -111,7 +109,6 @@ const BetForm = () => {
               touchedFields={touchedFields}
               errors={errors}
               setValue={setValue}
-              setAmount={setAmount}
             />
           </div>
         </CustomSheet>

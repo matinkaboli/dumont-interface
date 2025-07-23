@@ -1,15 +1,6 @@
-import { Dispatch, SetStateAction } from 'react';
 import { Control, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import Image from 'next/image';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Slider,
-} from '@/components';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components';
 
 import AmountInput from '@/views/_components/AmountInput';
 import AmountDetails from '@/views/_components/AmountDetails';
@@ -49,35 +40,34 @@ interface Props {
   touchedFields: Partial<{ amount?: boolean | undefined }>;
   errors: FieldErrors<SportFormData>;
   setValue: UseFormSetValue<SportFormData>;
-  setAmount: Dispatch<SetStateAction<string>>;
 }
 
-const AmountControls = ({ control, touchedFields, errors, setValue, setAmount }: Props) => {
+const AmountControls = ({ control, touchedFields, errors, setValue }: Props) => {
   return (
     <>
-      <Select defaultValue="option1">
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a option" />
+      <Select defaultValue='option1'>
+        <SelectTrigger className='w-full'>
+          <SelectValue placeholder='Select a option' />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             {options.map(({ value, label, logo, price }) => (
               <SelectItem key={value} value={value}>
-                <div className="flex items-center gap-1">
+                <div className='flex items-center gap-1'>
                   {logo ? (
                     <Image
                       width={0}
                       height={0}
-                      sizes="100vw"
-                      className="h-6 w-auto"
+                      sizes='100vw'
+                      className='h-6 w-auto'
                       src={logo}
-                      alt=""
+                      alt=''
                     />
                   ) : (
-                    <span className="block w-4 h-0.5 bg-neutral-200" />
+                    <span className='block w-4 h-0.5 bg-neutral-200' />
                   )}
                   {label}
-                  <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
+                  <div className='text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5'>
                     {price}
                   </div>
                 </div>
@@ -93,9 +83,8 @@ const AmountControls = ({ control, touchedFields, errors, setValue, setAmount }:
           inputErrors={errors}
           totalOdds={8}
           setValue={setValue}
-          setAmount={setAmount}
         />
-        <Slider defaultValue={[2]} max={30} step={1} className="my-5" />
+        <Slider defaultValue={[2]} max={30} step={1} className='my-5' />
       </div>
       <AmountDetails details={amountDetails} />
     </>

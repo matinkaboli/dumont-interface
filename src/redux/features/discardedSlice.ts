@@ -21,7 +21,7 @@ export const getDiscardedCards = createAsyncThunk(
   'api/getDiscardedCards',
   async (gameId: string, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`games/${gameId}/cards`);
+      const response = await axios.get(`faros/${gameId}/cards`);
       return response.data.result;
     } catch (error) {
       const axiosError = error as AxiosError;
