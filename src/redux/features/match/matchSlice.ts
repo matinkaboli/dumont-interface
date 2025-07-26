@@ -6,12 +6,14 @@ import { Match } from '@/types/match';
 
 interface State {
   matches: Match[] | null;
+  match: Match | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: State = {
   matches: null,
+  match: null,
   loading: false,
   error: null,
 };
@@ -20,6 +22,16 @@ export const getMatches = createAsyncThunk('match/getMatches', async (_, { rejec
   try {
     const response = await axios.get('matches');
     return response.data.result as Match[];
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    return rejectWithValue(axiosError.message);
+  }
+});
+
+export const getMatch = createAsyncThunk('match/getMatch', async (id: string, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`matches/${id}`);
+    return response.data.result as Match;
   } catch (error) {
     const axiosError = error as AxiosError;
     return rejectWithValue(axiosError.message);
@@ -43,6 +55,18 @@ const matchSlice = createSlice({
       .addCase(getMatches.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || 'Failed to fetch details';
+      });
+    builder.addCase(getMatch.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+      .addCase(getMatch.fulfilled, (state, action) => {
+        state.loading = false;
+        state.match = action.payload;
+      })
+      .addCase(getMatch.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || 'Failed to fetch match';
       });
   },
 });

@@ -46,9 +46,10 @@ const GameBoard = () => {
             id={match.matchId}
             homeTeam={match.homeTeam}
             awayTeam={match.awayTeam}
+            odds={match.latestOdds}
             isActive={!match.isEnded}
             league={match.league}
-            matchTime='23 Aug - 23:30'
+            matchTime={match.start}
           />
         ))}
       </div>
