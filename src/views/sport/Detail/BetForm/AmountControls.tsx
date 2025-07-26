@@ -1,10 +1,11 @@
 import { Control, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import Image from 'next/image';
+
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components';
+import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import AmountInput from '@/views/_components/AmountInput';
 import AmountDetails from '@/views/_components/AmountDetails';
-import { awayTeam, homeTeam } from '@/views/sport/Detail';
 
 import { SportFormData } from './index';
 
@@ -12,27 +13,6 @@ const amountDetails = [
   { id: '1', label: 'Total size', value: '0.00' },
   { id: '2', label: 'Fee per minute', value: '0.00' },
   { id: '3', label: 'Liquidation price', value: '0.00' },
-];
-
-const options = [
-  {
-    value: 'option1',
-    label: homeTeam.name,
-    logo: homeTeam.logo,
-    price: '$0.43',
-  },
-  {
-    value: 'option2',
-    label: 'Draw',
-    logo: null,
-    price: '$0.22',
-  },
-  {
-    value: 'option3',
-    label: awayTeam.name,
-    logo: awayTeam.logo,
-    price: '$0.35',
-  },
 ];
 
 interface Props {
@@ -43,6 +23,29 @@ interface Props {
 }
 
 const AmountControls = ({ control, touchedFields, errors, setValue }: Props) => {
+  const { match } = useTypedSelector((state) => state.match);
+
+  const options = [
+    {
+      value: 'option1',
+      label: match?.homeTeam.name,
+      logo: match?.homeTeam.logo,
+      price: '$0.43',
+    },
+    {
+      value: 'option2',
+      label: 'Draw',
+      logo: null,
+      price: '$0.22',
+    },
+    {
+      value: 'option3',
+      label: match?.awayTeam.name,
+      logo: match?.awayTeam.logo,
+      price: '$0.35',
+    },
+  ];
+
   return (
     <>
       <Select defaultValue='option1'>

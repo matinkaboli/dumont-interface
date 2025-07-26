@@ -13,6 +13,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import timeLeftInSeconds from '@/helpers/timeLeftInSeconds';
 import Routes from '@/constants/routes';
+import { FARO_DURATION } from '@/constants/static';
 
 import Board from '@/views/card/_components/Board';
 import CardDeck from '@/views/card/_components/CardDeck';
@@ -22,7 +23,7 @@ const Home = () => {
   const { ready, user } = usePrivy();
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useTypedSelector((state) => state.account);
-  const [activeRoundId, setActiveRoundId] = useState<string>('');
+  const [activeRoundId, setActiveRoundId] = useState<number | null>(null);
   const [isDecidingRedirect, setIsDecidingRedirect] = useState(true);
   const address = user?.smartWallet?.address;
 
@@ -32,17 +33,17 @@ const Home = () => {
 
   const handlePlayerGames = (addr: `0x${string}`) => {
     dispatch(resetGame());
-    setActiveRoundId('');
+    setActiveRoundId(null);
     setIsDecidingRedirect(true);
 
     dispatch(getPlayerGames(addr))
       .unwrap()
       .then((games) => {
         if (isEmpty(games)) {
-          setActiveRoundId('');
+          setActiveRoundId(null);
         } else {
           const game = games[0];
-          const timeRemaining = +game.duration - timeLeftInSeconds(game.createdAt);
+          const timeRemaining = FARO_DURATION - timeLeftInSeconds(game.createdAt);
           if (timeRemaining > 0) setActiveRoundId(game.id);
         }
       })
@@ -53,7 +54,7 @@ const Home = () => {
 
   if (loading || !ready || (!isEmpty(address) && isDecidingRedirect))
     return (
-      <div className="min-h-[50vh] flex-center">
+      <div className='min-h-[50vh] flex-center'>
         <Loading />
       </div>
     );
@@ -67,7 +68,7 @@ const Home = () => {
     <>
       <Header />
 
-      <div className="flex flex-col gap-4 sm:mt-8 mt-4">
+      <div className='flex flex-col gap-4 sm:mt-8 mt-4'>
         <CardDeck />
         <Board />
       </div>
