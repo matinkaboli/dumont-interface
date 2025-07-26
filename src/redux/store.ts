@@ -9,6 +9,7 @@ import referralReducer from './features/referralSlice';
 import discardedSliceReducer from './features/discardedSlice';
 import activitySliceReducer from './features/activitySlice';
 import confettiSliceReducer from './features/confettiSlice';
+import matchSliceReducer from './features/match/matchSlice';
 
 const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
     discarded: discardedSliceReducer,
     activity: activitySliceReducer,
     confetti: confettiSliceReducer,
+    match: matchSliceReducer,
   },
   // TODO: Check serializableCheck to ensure there are no problems (content type in modal)
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
