@@ -27,6 +27,7 @@ export interface Faro {
   initializationHash: string;
   cards: Card[];
   freeRevealRequests: number;
+  claimableAfter: string;
 }
 
 export interface Activity {
