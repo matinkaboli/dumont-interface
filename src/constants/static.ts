@@ -4,3 +4,8 @@ export const DEFAULT_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const DEFAULT_APPROVE_VALUE = '1';
 export const FARO_DURATION = 86400;
 export const MAX_FREE_REVEALS = 3;
+export enum Outcome {
+  Home = 0,
+  Draw = 1,
+  Away = 2
+}

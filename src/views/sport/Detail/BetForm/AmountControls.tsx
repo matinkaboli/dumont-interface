@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import { Outcome } from '@/constants/static';
 
 import AmountInput from '@/views/_components/AmountInput';
 import AmountDetails from '@/views/_components/AmountDetails';
@@ -20,26 +21,27 @@ interface Props {
   touchedFields: Partial<{ amount?: boolean | undefined }>;
   errors: FieldErrors<SportFormData>;
   setValue: UseFormSetValue<SportFormData>;
+  defaultMultiplierValue: number;
 }
 
-const AmountControls = ({ control, touchedFields, errors, setValue }: Props) => {
+const AmountControls = ({ control, touchedFields, errors, setValue, defaultMultiplierValue }: Props) => {
   const { match } = useTypedSelector((state) => state.match.main);
 
   const options = [
     {
-      value: 'option1',
+      value: `${Outcome.Home}`,
       label: match?.homeTeam.name,
       logo: match?.homeTeam.logo,
       price: '$0.43',
     },
     {
-      value: 'option2',
+      value: `${Outcome.Draw}`,
       label: 'Draw',
       logo: null,
       price: '$0.22',
     },
     {
-      value: 'option3',
+      value: `${Outcome.Away}`,
       label: match?.awayTeam.name,
       logo: match?.awayTeam.logo,
       price: '$0.35',
@@ -48,7 +50,7 @@ const AmountControls = ({ control, touchedFields, errors, setValue }: Props) => 
 
   return (
     <>
-      <Select defaultValue='option1'>
+      <Select defaultValue={`${Outcome.Home}`} onValueChange={(value) => setValue('outcome', +value)}>
         <SelectTrigger className='w-full'>
           <SelectValue placeholder='Select a option' />
         </SelectTrigger>
@@ -87,7 +89,13 @@ const AmountControls = ({ control, touchedFields, errors, setValue }: Props) => 
           totalOdds={8}
           setValue={setValue}
         />
-        <Slider defaultValue={[2]} max={30} step={1} className='my-5' />
+        <Slider
+          defaultValue={[defaultMultiplierValue]}
+          max={30}
+          step={1}
+          className='my-5'
+          onValueChange={(values) => setValue('multiplier', values[0])}
+        />
       </div>
       <AmountDetails details={amountDetails} />
     </>

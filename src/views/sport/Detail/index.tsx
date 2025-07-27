@@ -97,7 +97,7 @@ const Detail = ({}) => {
           teams={teams}
           data={sampleData}
         />
-        <BetForm />
+        <BetForm matchId={params.id} />
       </div>
 
       <ActivityTab className='md:mt-16 mt-6' />
