@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { Control, Controller, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import Image from 'next/image';
 import BigNumber from 'bignumber.js';
@@ -28,16 +28,19 @@ interface Props {
   inputErrors?: FieldErrors<any>;
   totalOdds: number;
   setValue: UseFormSetValue<any>;
+  setAmount?: Dispatch<SetStateAction<any>> | null;
 }
 
-const AmountInput = ({
-                       className = '',
-                       touchedFields,
-                       control,
-                       inputErrors,
-                       totalOdds,
-                       setValue,
-                     }: Props) => {
+const AmountInput = (
+  {
+    className = '',
+    touchedFields,
+    control,
+    inputErrors,
+    totalOdds,
+    setValue,
+    setAmount = null,
+  }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
   const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
 
@@ -45,6 +48,8 @@ const AmountInput = ({
     required: 'Bet amount is required.',
     pattern: { value: /^\d*\.?\d+$/, message: 'This input is number only.' },
     validate: (value: any) => {
+      if (setAmount) setAmount(value);
+
       if (totalOdds > 0) {
         const payoutValue = value * totalOdds;
 
