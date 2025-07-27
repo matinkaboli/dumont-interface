@@ -1,4 +1,4 @@
-import { Card } from '@/redux/features/gameSlice';
+import { Card } from '@/redux/features/faro/faroSlice';
 
 const demoCards: Card[] = [
   {

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import { motion, useAnimationControls } from 'motion/react';
 import clsx from 'clsx';
 
-import { Card } from '@/redux/features/gameSlice';
+import { Card } from '@/redux/features/faro/faroSlice';
 
 import { cardSizeStyles } from '../index';
 

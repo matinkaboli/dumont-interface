@@ -19,7 +19,7 @@ const initialState: DiscardedCardsState = {
 
 export const getDiscardedCards = createAsyncThunk(
   'api/getDiscardedCards',
-  async (gameId: string, { rejectWithValue }) => {
+  async (gameId: number, { rejectWithValue }) => {
     try {
       const response = await axios.get(`faros/${gameId}/cards`);
       return response.data.result;

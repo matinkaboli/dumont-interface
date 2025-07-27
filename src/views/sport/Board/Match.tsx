@@ -3,30 +3,24 @@ import Link from 'next/link';
 import dayjs from 'dayjs';
 
 import { Icon, PulsingCircle } from '@/components';
-import { League, Team, Odds } from '@/types/match';
-
-import ProgressBar from '@/views/sport/_components/ProgressBar';
+import { Match } from '@/types/match';
 import Routes from '@/constants/routes';
 
-interface Props {
-  id: number;
-  league: League;
-  homeTeam: Team;
-  awayTeam: Team;
-  odds: Odds;
-  isActive: boolean;
-  matchTime: number;
-}
+import ProgressBar from '@/views/sport/_components/ProgressBar';
 
-const Match = ({ id, isActive, league, homeTeam, awayTeam, matchTime, odds }: Props) => {
+const Match = ({ match }: {
+  match: Match;
+}) => {
+  const { matchId, homeTeam, awayTeam, league, latestOdds, isEnded, start } = match;
+
   return (
     <Link
-      href={`${Routes.SPORT}/${id}`}
+      href={`${Routes.SPORT}/${matchId}`}
       className='relative border-[1.5px] border-neutral-700 bg-neutral-800 rounded-lg w-full sm:pt-4 sm:pb-6 sm:px-2 p-3 cursor-pointer'>
-      {isActive && <PulsingCircle size='sm' className='absolute top-2 left-2' />}
+      {!isEnded && <PulsingCircle size='sm' className='absolute top-2 left-2' />}
       <div className='text-center text-xs text-neutral-400'>Match time</div>
       <div className='text-center text-xs text-neutral-100 mt-0.5'>
-        {dayjs(matchTime).format('DD MMM - HH:mm')}
+        {dayjs(start).format('DD MMM - HH:mm')}
       </div>
 
       <h6 className='flex items-center text-sm text-white font-medium mt-3 whitespace-nowrap w-fit mx-auto'>
@@ -47,9 +41,9 @@ const Match = ({ id, isActive, league, homeTeam, awayTeam, matchTime, odds }: Pr
       </div>
 
       <div className='mt-4 flex flex-col gap-3'>
-        <ProgressBar name={homeTeam.shortName} percentage={odds.home} bgColor='white' />
-        <ProgressBar name='DRAW' percentage={odds.draw} />
-        <ProgressBar name={awayTeam.shortName} percentage={odds.away} />
+        <ProgressBar name={homeTeam.shortName} percentage={latestOdds.home} bgColor='white' />
+        <ProgressBar name='DRAW' percentage={latestOdds.draw} />
+        <ProgressBar name={awayTeam.shortName} percentage={latestOdds.away} />
       </div>
     </Link>
   );

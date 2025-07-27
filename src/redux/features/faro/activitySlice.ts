@@ -2,23 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 import axios from '@/lib/axios';
-
-interface Activity {
-  index: number;
-  status: 'FREE_REVEAL_REQUESTED' | 'GUESSED' | 'REVEALED' | 'CLAIMED';
-  requestedAt: number;
-  revealDate: string;
-  betAmount: string;
-  totalAmount: string;
-  revelationHash?: string;
-  hash: string;
-  result?: {
-    isPlayerWinner: boolean;
-    isFreeReveal: boolean;
-    montAmount: string;
-    rate: string;
-  };
-}
+import { Activity } from '@/types/faro';
 
 interface ActivitiesState {
   activities: Activity[];
@@ -36,7 +20,7 @@ const initialState: ActivitiesState = {
 
 export const getActivities = createAsyncThunk(
   'api/getActivities',
-  async (gameId: string, { rejectWithValue }) => {
+  async (gameId: number, { rejectWithValue }) => {
     try {
       const response = await axios.get(`faros/${gameId}/activities`);
       return response.data.result;

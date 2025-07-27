@@ -9,7 +9,7 @@ import isEmpty from '@/helpers/isEmpty';
 import EmptyDataMessage from '../EmptyDataMessage';
 
 const Discarded = () => {
-  const { cards, loading, isRefetching } = useTypedSelector((state) => state.discarded);
+  const { cards, loading, isRefetching } = useTypedSelector((state) => state.faro.discarded);
 
   const sortedDiscarded = useMemo(() => {
     return [...cards].sort((a, b) => (a % 13) - (b % 13)) || [];

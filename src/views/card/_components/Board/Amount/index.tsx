@@ -49,7 +49,7 @@ const Amount = ({
   isSubmitted,
   resetField,
 }: Props) => {
-  const { isCreated, data: game } = useTypedSelector((state) => state.game);
+  const { isCreated, data: game } = useTypedSelector((state) => state.faro.main);
   const [amount, setAmount] = useState();
   const [isExpanded, setIsExpanded] = useState(false);
   const formattedPayout =

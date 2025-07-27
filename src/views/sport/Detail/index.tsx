@@ -53,7 +53,7 @@ const Detail = ({}) => {
   const dispatch = useDispatch<AppDispatch>();
   const params = useParams<{ id: string; }>();
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { match, loading } = useTypedSelector((state) => state.match);
+  const { match, loading } = useTypedSelector((state) => state.match.main);
 
   const teams = [
     { name: 'homeTeam', label: match ? match.homeTeam.name : '' },

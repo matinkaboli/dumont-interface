@@ -8,7 +8,7 @@ import { MAX_FREE_REVEALS } from '@/constants/static';
 
 const ConfirmReveal = ({ onReveal }: { onReveal: () => void }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data: game } = useTypedSelector((state) => state.game);
+  const { data: game } = useTypedSelector((state) => state.faro.main);
 
   const onCloseDialog = () => dispatch(closeDialog());
 

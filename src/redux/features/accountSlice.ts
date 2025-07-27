@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 
 import axios from '@/lib/axios';
 
-import { GameData } from './gameSlice';
+import { Faro } from '@/types/faro';
 
 interface Account {
   address: `0x${string}` | undefined;
@@ -14,7 +14,7 @@ interface Account {
 interface InitialState {
   profile: Account;
   balance?: string;
-  games: GameData[];
+  games: Faro[];
   loading: boolean;
   error: string | null;
 }
@@ -27,7 +27,7 @@ const initialState: InitialState = {
   error: null,
 };
 
-export const getPlayerGames = createAsyncThunk<GameData[], string>(
+export const getPlayerGames = createAsyncThunk<Faro[], string>(
   'api/getPlayerGames',
   async (address: string, { rejectWithValue }) => {
     try {
@@ -59,7 +59,7 @@ const accountSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(getPlayerGames.fulfilled, (state, action: PayloadAction<GameData[]>) => {
+      .addCase(getPlayerGames.fulfilled, (state, action: PayloadAction<Faro[]>) => {
         state.loading = false;
         state.games = action.payload;
       })

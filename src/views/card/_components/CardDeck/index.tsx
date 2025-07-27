@@ -22,7 +22,7 @@ export const cardSizeStyles = {
 
 const PlayCards = ({ className = '', needsShuffling = true }: { className?: string; needsShuffling?: boolean; }) => {
   const [showSlider, setShowSlider] = useState(false);
-  const { data: game } = useTypedSelector((state) => state.game);
+  const { data: game } = useTypedSelector((state) => state.faro.main);
 
   return (
     <div

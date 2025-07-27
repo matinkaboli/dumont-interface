@@ -1,38 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
+import {Faro} from '@/types/faro';
 import axios from '@/lib/axios';
-
-interface Result {
-  montAmount: string;
-  rate: string;
-  isPlayerWinner: boolean;
-  revelationHash: string;
-}
-
-export interface Card {
-  number: number;
-  totalAmount: string;
-  hash: string;
-  isFreeReveal: boolean;
-  guessedNumbers: any[];
-  status: string;
-  _id: string;
-  result?: Result;
-}
-
-export interface GameData {
-  _id: string;
-  id: number;
-  contractAddress: string;
-  player: string;
-  createdAt: number;
-  initialization: 'INITIALIZED' | string;
-  updatedAt: string;
-  initializationHash: string;
-  cards: Card[];
-  freeRevealRequests: number;
-}
 
 interface State {
   loading: boolean;
@@ -41,12 +11,12 @@ interface State {
   isExpired: boolean;
   areAllCardsGuessed: boolean;
   guessedCardsCount: number;
-  data: GameData | null;
+  data: Faro | null;
   activeCardIndex: number;
   isRefetching: boolean;
 }
 
-export const getGame = createAsyncThunk<GameData, number>(
+export const getGame = createAsyncThunk<Faro, number>(
   'api/getGame',
   async (id: number, { rejectWithValue }) => {
     try {
@@ -71,7 +41,7 @@ const initialState: State = {
   isRefetching: false,
 };
 
-const gameSlice = createSlice({
+const faroSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
@@ -105,7 +75,7 @@ const gameSlice = createSlice({
         }
         state.error = null;
       })
-      .addCase(getGame.fulfilled, (state, action: PayloadAction<GameData>) => {
+      .addCase(getGame.fulfilled, (state, action: PayloadAction<Faro>) => {
         state.loading = false;
         state.isRefetching = false;
         state.data = action.payload;
@@ -125,5 +95,5 @@ export const {
   setAllCardsGuessed,
   setGuessedCardsCount,
   setIsGameCreated,
-} = gameSlice.actions;
-export default gameSlice.reducer;
+} = faroSlice.actions;
+export default faroSlice.reducer;

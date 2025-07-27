@@ -21,11 +21,12 @@ import {
   TableRow,
 } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import { getActivities } from '@/redux/features/activitySlice';
+import { getActivities } from '@/redux/features/faro/activitySlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import parseUnits from '@/helpers/parseUnits';
 import toFixedNumber from '@/helpers/toFixedNumber';
+import {Activity} from '@/types/faro';
 
 import InfoTooltip from '@/views/_components/InfoTooltip';
 
@@ -36,21 +37,6 @@ import EmptyDataMessage from '../EmptyDataMessage';
 
 import ClaimButton from './ClaimButton';
 import VerifiedButton from './VerifiedButton';
-
-interface Activity {
-  index: number;
-  status: 'FREE_REVEAL_REQUESTED' | 'GUESSED' | 'REVEALED' | 'CLAIMED';
-  requestedAt: number;
-  revealDate: string;
-  betAmount: string;
-  totalAmount: string;
-  revelationHash?: string;
-  result?: {
-    isPlayerWinner: boolean;
-    montAmount: string;
-    rate: string;
-  };
-}
 
 type ExtendedCellContext<TData, TValue> = CellContext<TData, TValue> & {
   claimableAfter?: string;
@@ -160,8 +146,8 @@ const columns = [
 
 const Activities = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data: game } = useTypedSelector((state) => state.game);
-  const { activities, loading, isRefetching } = useTypedSelector((state) => state.activity);
+  const { data: game } = useTypedSelector((state) => state.faro.main);
+  const { activities, loading, isRefetching } = useTypedSelector((state) => state.faro.activity);
   const handleFetchActivities = () => {
     if (game?.id) dispatch(getActivities(game.id));
   };

@@ -6,7 +6,7 @@ import toFixedNumber from '@/helpers/toFixedNumber';
 import parseUnits from '@/helpers/parseUnits';
 
 const SocialShare = ({ gameId, cardIndex }: { gameId: number; cardIndex: number }) => {
-  const { activities } = useTypedSelector((state) => state.activity);
+  const { activities } = useTypedSelector((state) => state.faro.activity);
   const card = activities[cardIndex];
   const totalAmount = toFixedNumber(parseUnits(card?.totalAmount, 6));
   const odds = toFixedNumber(card?.result?.rate as string);

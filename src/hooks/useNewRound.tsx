@@ -7,7 +7,7 @@ import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
-import { setIsGameCreated } from '@/redux/features/gameSlice';
+import { setIsGameCreated } from '@/redux/features/faro/faroSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import extractGameId from '@/helpers/extractGameId';
 import formatUnits from '@/helpers/formatUnits';
