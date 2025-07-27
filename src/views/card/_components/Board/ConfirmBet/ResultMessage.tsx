@@ -35,7 +35,7 @@ const ResultMessage = (
     cardIndex: number;
   }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data } = useTypedSelector((state) => state.game);
+  const { data } = useTypedSelector((state) => state.faro.main);
 
   if (!data) return null;
 

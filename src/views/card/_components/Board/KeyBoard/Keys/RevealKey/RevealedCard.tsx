@@ -5,7 +5,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import getCardInfo from '@/helpers/getCardInfo';
 
 const RevealedCard = ({ onCloseDialog, cardIndex }: { onCloseDialog: () => void, cardIndex: number }) => {
-  const { data } = useTypedSelector((state) => state.game);
+  const { data } = useTypedSelector((state) => state.faro.main);
 
   return (
     <>

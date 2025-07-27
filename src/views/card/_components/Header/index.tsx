@@ -10,7 +10,7 @@ import Tutorial from './Tutorial';
 import NewGame from './NewGame';
 
 const Header = ({ showTitleInMobile = true }: { showTitleInMobile?: boolean }) => {
-  const { data: game, areAllCardsGuessed, isRefetching } = useTypedSelector((state) => state.game);
+  const { data: game, areAllCardsGuessed, isRefetching } = useTypedSelector((state) => state.faro.main);
 
   return (
     <div className='flex justify-between items-center text-white gap-1'>

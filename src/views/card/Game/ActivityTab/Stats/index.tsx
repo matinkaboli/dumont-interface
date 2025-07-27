@@ -10,7 +10,7 @@ import StatsBar from './StatsBar';
 import EmptyDataMessage from '../EmptyDataMessage';
 
 const Stats = () => {
-  const { activities, loading } = useTypedSelector((state) => state.activity);
+  const { activities, loading } = useTypedSelector((state) => state.faro.activity);
 
   const stats = useMemo(() => {
     if (!activities?.length) {

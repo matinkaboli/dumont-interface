@@ -7,7 +7,8 @@ import clsx from 'clsx';
 
 import { swiperRef } from '@/components/Carousel';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { GameData, getGame } from '@/redux/features/gameSlice';
+import { getGame } from '@/redux/features/faro/faroSlice';
+import { Faro } from '@/types/faro';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { usePolling } from '@/hooks/usePolling';
@@ -27,7 +28,7 @@ const RevealKey = ({ className }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
   const { address } = useTypedSelector((state) => state.account.profile);
-  const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.game);
+  const { data: game, activeCardIndex, isExpired } = useTypedSelector((state) => state.faro.main);
   const { client } = useSmartWallets();
   const [isRevealCardLoading, setIsRevealCardLoading] = useState(false);
   const [revealCardTx, setRevealCardTx] = useState('');
@@ -39,7 +40,7 @@ const RevealKey = ({ className }: { className?: string }) => {
   const isRevealConfirming = usePolling(
     isConfirmed,
     () => dispatch(getGame(game!.id)).unwrap(),
-    (game: GameData) => {
+    (game: Faro) => {
       const cardRevealed = game.cards[activeCardIndex - 1].number !== -1;
 
       if (cardRevealed) {

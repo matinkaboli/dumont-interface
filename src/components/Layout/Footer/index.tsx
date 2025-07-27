@@ -20,7 +20,7 @@ const formatTime = (duration: number, createdAt: number) => {
 };
 
 const Footer = ({ className }: { className?: string }) => {
-  const { data: game } = useTypedSelector((state) => state.game);
+  const { data: game } = useTypedSelector((state) => state.faro.main);
   const { isConnected } = useTypedSelector((state) => state.account.profile);
   const [currentTime, setCurrentTime] = useState('');
 

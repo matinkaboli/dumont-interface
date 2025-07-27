@@ -13,7 +13,7 @@ import Match from './Match';
 const GameBoard = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { matches, loading } = useTypedSelector((state) => state.match);
+  const { matches, loading } = useTypedSelector((state) => state.match.main);
 
   useEffect(() => {
     dispatch(getMatches());

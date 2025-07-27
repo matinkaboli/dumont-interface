@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 
 import { Loading, ToastContent, ToastWrapper } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import { getGame, setAllCardsGuessed, setGuessedCardsCount } from '@/redux/features/gameSlice';
+import { getGame, setAllCardsGuessed, setGuessedCardsCount } from '@/redux/features/faro/faroSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 import { MAX_GUESSABLE_CARDS } from '@/constants/static';
@@ -30,7 +30,7 @@ const Game = () => {
     isExpired,
     isRefetching,
     areAllCardsGuessed,
-  } = useTypedSelector((state) => state.game);
+  } = useTypedSelector((state) => state.faro.main);
   const [needsShuffling, setNeedsShuffling] = useState(false);
 
   useEffect(() => {

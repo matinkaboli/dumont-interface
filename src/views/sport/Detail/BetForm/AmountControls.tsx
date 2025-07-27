@@ -23,7 +23,7 @@ interface Props {
 }
 
 const AmountControls = ({ control, touchedFields, errors, setValue }: Props) => {
-  const { match } = useTypedSelector((state) => state.match);
+  const { match } = useTypedSelector((state) => state.match.main);
 
   const options = [
     {

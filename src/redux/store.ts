@@ -1,28 +1,38 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import accountReducer from './features/accountSlice';
 import dialogReducer from './features/dialogSlice';
-import betReducer from './features/betSlice';
-import gameReducer from './features/gameSlice';
 import infoReducer from './features/configSlice';
-import referralReducer from './features/referralSlice';
-import discardedSliceReducer from './features/discardedSlice';
-import activitySliceReducer from './features/activitySlice';
-import confettiSliceReducer from './features/confettiSlice';
-import matchSliceReducer from './features/match/matchSlice';
+import confettiReducer from './features/confettiSlice';
+
+import betReducer from './features/faro/betSlice';
+import mainFaroReducer from './features/faro/faroSlice';
+import referralReducer from './features/faro/referralSlice';
+import discardedReducer from './features/faro/discardedSlice';
+import activityReducer from './features/faro/activitySlice';
+
+import mainMatchReducer from './features/match/matchSlice';
+
+const faroReducer = combineReducers({
+  main: mainFaroReducer,
+  bet: betReducer,
+  referral: referralReducer,
+  discarded: discardedReducer,
+  activity: activityReducer,
+});
+
+const matchReducer = combineReducers({
+  main: mainMatchReducer,
+});
 
 const store = configureStore({
   reducer: {
     account: accountReducer,
     dialog: dialogReducer,
-    bet: betReducer,
-    game: gameReducer,
     config: infoReducer,
-    referral: referralReducer,
-    discarded: discardedSliceReducer,
-    activity: activitySliceReducer,
-    confetti: confettiSliceReducer,
-    match: matchSliceReducer,
+    confetti: confettiReducer,
+    faro: faroReducer,
+    match: matchReducer,
   },
   // TODO: Check serializableCheck to ensure there are no problems (content type in modal)
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),

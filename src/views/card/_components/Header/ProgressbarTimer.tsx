@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 import { ToastContent, ToastWrapper } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import { expireGame } from '@/redux/features/gameSlice';
+import { expireGame } from '@/redux/features/faro/faroSlice';
 import formatDurationFromSeconds from '@/helpers/formatDurationFromSeconds';
 
 const ProgressbarTimer = ({ duration, initialTime }: { duration: number; initialTime: number }) => {

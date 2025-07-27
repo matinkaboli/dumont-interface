@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import { Swiper } from 'swiper/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Carousel, CarouselItem } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { Card, setActiveCardIndex } from '@/redux/features/gameSlice';
+import { Card } from '@/types/faro';
+import { setActiveCardIndex } from '@/redux/features/faro/faroSlice';
 
 import Slide from './Slide';
-import { Swiper } from 'swiper/types';
 
 interface Props {
   slides?: Card[];
@@ -17,7 +18,7 @@ const CardSlides = ({ slides = [] }: Props) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { activeCardIndex, data: game } = useTypedSelector((state) => state.game);
+  const { activeCardIndex, data: game } = useTypedSelector((state) => state.faro.main);
 
   const initialSlide = useMemo(() => {
     const cardIdParam = searchParams.get('cardId');
@@ -48,7 +49,7 @@ const CardSlides = ({ slides = [] }: Props) => {
     >
       <CarouselItem>
         {({ isActive }) => (
-          <Slide isActive={isActive} index={53} slide="/images/card-placeholder.png" />
+          <Slide isActive={isActive} index={53} slide='/images/card-placeholder.png' />
         )}
       </CarouselItem>
 
@@ -58,7 +59,7 @@ const CardSlides = ({ slides = [] }: Props) => {
             {({ isActive }) => (
               <Slide
                 index={index + 1}
-                slide="/images/card.png"
+                slide='/images/card.png'
                 isLeaked={slide.isFreeReveal}
                 number={slide?.number}
                 isActive={isActive}

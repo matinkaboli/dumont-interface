@@ -8,7 +8,8 @@ import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 import { swiperRef } from '@/components/Carousel';
 import { AppDispatch } from '@/redux/store';
 import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
-import { Card, GameData, getGame } from '@/redux/features/gameSlice';
+import { getGame } from '@/redux/features/faro/faroSlice';
+import { Card, Faro } from '@/types/faro';
 import { showConfetti } from '@/redux/features/confettiSlice';
 import transformedRanks from '@/helpers/transformedRanks';
 import transformRanks from '@/helpers/transformedRanks';
@@ -51,7 +52,7 @@ const useCardData = () => {
     isExpired,
     guessedCardsCount,
     areAllCardsGuessed,
-  } = useTypedSelector((state) => state.game);
+  } = useTypedSelector((state) => state.faro.main);
 
   const validCardNumbers = useMemo(
     () =>
@@ -134,7 +135,7 @@ const Board = () => {
   const isGuessCardConfirming = usePolling(
     isConfirmed,
     () => dispatch(getGame(game!.id)).unwrap(),
-    (game: GameData) => {
+    (game: Faro) => {
       const cardRevealed = game.cards[activeCardIndex - 1].number !== -1;
 
       if (cardRevealed) {
@@ -145,7 +146,7 @@ const Board = () => {
               onClickOverlay: onCloseResultDialog,
             },
             content: (
-              <AnimatedDialogContent key="result">
+              <AnimatedDialogContent key='result'>
                 <ResultMessage
                   cardIndex={activeCardIndex - 1}
                   onCloseDialog={onCloseResultDialog}
@@ -177,8 +178,8 @@ const Board = () => {
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
-            <AnimatedDialogContent key="loading">
-              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
+            <AnimatedDialogContent key='loading'>
+              <LoadingContent title='Waiting for the network' desc='It will take a few seconds' />
             </AnimatedDialogContent>
           ),
         }),
@@ -224,8 +225,8 @@ const Board = () => {
       dispatch(
         openDialog({
           content: (
-            <AnimatedDialogContent key="error">
-              <ErrorContent title="Something went wrong!" />
+            <AnimatedDialogContent key='error'>
+              <ErrorContent title='Something went wrong!' />
             </AnimatedDialogContent>
           ),
         }),
@@ -289,9 +290,9 @@ const Board = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4"
+      className='grid md:grid-cols-3 grid-cols-1 md:gap-x-4 gap-x-0 md:gap-y-0 gap-y-4'
     >
-      <div className="col-span-2 md:order-1 order-2">
+      <div className='col-span-2 md:order-1 order-2'>
         <KeyBoard
           values={keys}
           setValue={setValue}
@@ -299,7 +300,7 @@ const Board = () => {
           cardOccurrences={cardOccurrences}
         />
       </div>
-      <div className="col-span-1 md:order-2 order-1">
+      <div className='col-span-1 md:order-2 order-1'>
         <Amount
           payout={formattedPayout}
           totalOdds={totalOdds}

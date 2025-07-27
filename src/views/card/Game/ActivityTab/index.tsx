@@ -1,22 +1,22 @@
 'use client';
 
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import { getDiscardedCards } from '@/redux/features/discardedSlice';
+import { getDiscardedCards } from '@/redux/features/faro/discardedSlice';
 import { AppDispatch } from '@/redux/store';
 
 import Activities from './Activities';
 import Discarded from './Discarded';
 import Stats from './Stats';
-import clsx from 'clsx';
 
 const ActivityTab = ({ className = '' }: { className?: string }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data: game } = useTypedSelector((state) => state.game);
-  const { cards } = useTypedSelector((state) => state.discarded);
+  const { data: game } = useTypedSelector((state) => state.faro.main);
+  const { cards } = useTypedSelector((state) => state.faro.discarded);
   const [activeTab, setActiveTab] = useState('');
 
   useEffect(() => {

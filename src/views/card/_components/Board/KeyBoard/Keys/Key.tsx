@@ -14,7 +14,7 @@ export interface KeyProps extends Partial<KeyType> {
 }
 
 const Key = memo(({ value, weight, className, isSelected = false, onClick }: KeyProps) => {
-  const { areAllCardsGuessed } = useTypedSelector((state) => state.game);
+  const { areAllCardsGuessed } = useTypedSelector((state) => state.faro.main);
 
   const isDisabled = weight === 0 || areAllCardsGuessed;
   const weightDisplay = isDisabled ? '-' : `x${weight}`;

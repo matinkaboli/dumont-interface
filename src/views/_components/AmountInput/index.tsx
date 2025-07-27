@@ -39,7 +39,7 @@ const AmountInput = ({
                        setValue,
                      }: Props) => {
   const { balance } = useTypedSelector((state) => state.account);
-  const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.bet);
+  const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
 
   const inputValidation = {
     required: 'Bet amount is required.',

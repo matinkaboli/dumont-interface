@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 
 import { Loading } from '@/components';
 import { getPlayerGames } from '@/redux/features/accountSlice';
-import { resetGame } from '@/redux/features/gameSlice';
+import { resetGame } from '@/redux/features/faro/faroSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
