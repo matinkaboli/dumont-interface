@@ -14,6 +14,8 @@ export interface Match {
   updatedAt: string;
   __v: number;
   latestOdds: Odds;
+  score: string;
+  isBettingClosed: boolean;
 }
 
 export interface League {
