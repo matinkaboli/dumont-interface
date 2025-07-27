@@ -41,16 +41,7 @@ const GameBoard = () => {
       </div>
       <div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-3 sm:mt-8 mt-6'>
         {matches?.map((match) => (
-          <Match
-            key={match.matchId}
-            id={match.matchId}
-            homeTeam={match.homeTeam}
-            awayTeam={match.awayTeam}
-            odds={match.latestOdds}
-            isActive={!match.isEnded}
-            league={match.league}
-            matchTime={match.start}
-          />
+          <Match key={match.matchId} match={match} />
         ))}
       </div>
     </>
