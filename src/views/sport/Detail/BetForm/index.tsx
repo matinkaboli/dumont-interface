@@ -22,7 +22,6 @@ import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import AmountControls from './AmountControls';
-import ClosePosition from './ClosePosition';
 import PlaceBet from './PlaceBet';
 
 export interface SportFormData {
@@ -56,7 +55,7 @@ const BetForm = ({ matchId }: { matchId: string }) => {
     },
   });
 
-  const { data: position, isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: openPositionTx as `0x${string}`,
   });
 
@@ -81,7 +80,7 @@ const BetForm = ({ matchId }: { matchId: string }) => {
         openDialog({
           content: (
             <AnimatedDialogContent key='close'>
-              <ClosePosition positionSize='4,000' fee='600' pnl='3,400' />
+              <div>Successfully</div>
             </AnimatedDialogContent>
           ),
         }),
@@ -89,17 +88,7 @@ const BetForm = ({ matchId }: { matchId: string }) => {
     }
   }, [isConfirmed]);
 
-  const onExpandDetail = () => {
-    if (!isExpanded) setIsExpanded(true);
-  };
-
-  const onCloseDetail = () => {
-    setIsExpanded(false);
-    resetField('amount');
-  };
-
   const onOpenPosition = async (data: SportFormData) => {
-    setIsCreatePositionLoading(true);
     if (!client) return;
 
     const { amount, multiplier, outcome } = data;
@@ -107,6 +96,8 @@ const BetForm = ({ matchId }: { matchId: string }) => {
     const formattedMultiplier = formatUnits(`${multiplier}`, 3).toNumber();
 
     try {
+      setIsCreatePositionLoading(true);
+
       const tx = await client.sendTransaction({
         account: client.account,
         calls: [
@@ -145,37 +136,6 @@ const BetForm = ({ matchId }: { matchId: string }) => {
     }
   };
 
-  const OnClosePosition = async () => {
-    if (!client) return;
-
-    try {
-      const tx = await client.sendTransaction({
-        account: client.account,
-        calls: [
-          {
-            to: details!.gateway,
-            data: encodeFunctionData({
-              abi: GATEWAY_ABI,
-              functionName: 'createPosition',
-              args: [matchId],
-            }),
-          },
-        ],
-      });
-
-    } catch (error) {
-      dispatch(
-        openDialog({
-          content: (
-            <AnimatedDialogContent key='error'>
-              <ErrorContent title='Something went wrong!' />
-            </AnimatedDialogContent>
-          ),
-        }),
-      );
-    }
-  };
-
   const onSubmit = (data: SportFormData) => {
     setIsExpanded(false);
 
@@ -193,6 +153,15 @@ const BetForm = ({ matchId }: { matchId: string }) => {
         ),
       }),
     );
+  };
+
+  const onExpandDetail = () => {
+    if (!isExpanded) setIsExpanded(true);
+  };
+
+  const onCloseDetail = () => {
+    setIsExpanded(false);
+    resetField('amount');
   };
 
   return (

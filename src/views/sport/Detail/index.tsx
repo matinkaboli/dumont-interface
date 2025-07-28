@@ -76,21 +76,14 @@ const Detail = ({}) => {
   if (isEmpty(match)) {
     return (
       <div className='text-white text-center mx-auto py-20'>
-        There is no game with this id
+        There is no match with this id
       </div>
     );
   }
 
   return (
     <>
-      <Match
-        homeTeam={match!.homeTeam}
-        awayTeam={match!.awayTeam}
-        odds={match!.latestOdds}
-        league={match!.league}
-        matchTime={match!.start}
-        className={clsx(darkLayoutStyle, 'md:p-4 px-2 py-4')}
-      />
+      <Match match={match!} className={clsx(darkLayoutStyle, 'md:p-4 px-2 py-4')} />
       <div className='grid md:grid-cols-3 grid-cols-1 gap-4 mt-4'>
         <TeamChart
           className={clsx(darkLayoutStyle, 'col-span-2 md:px-6 pl-2 pr-0 md:py-5 py-4')}

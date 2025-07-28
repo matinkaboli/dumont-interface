@@ -7,6 +7,7 @@ import { Loading, PulsingCircle } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { getMatches } from '@/redux/features/match/matchSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import isEmpty from '@/helpers/isEmpty';
 
 import Match from './Match';
 
@@ -39,11 +40,17 @@ const GameBoard = () => {
           Live
         </button>
       </div>
-      <div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-3 sm:mt-8 mt-6'>
-        {matches?.map((match) => (
-          <Match key={match.matchId} match={match} />
-        ))}
-      </div>
+
+      {isEmpty(matches) ?
+        (<div className='text-white text-center mx-auto py-20'>
+          There is no match.
+        </div>) :
+        (<div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-3 sm:mt-8 mt-6'>
+          {matches?.map((match) => (
+            <Match key={match.matchId} match={match} />
+          ))}
+        </div>)
+      }
     </>
   );
 };
