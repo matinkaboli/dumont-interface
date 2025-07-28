@@ -4,6 +4,7 @@ import { Button, DialogTitle, Icon } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import toFixedNumber from '@/helpers/toFixedNumber';
 import parseUnits from '@/helpers/parseUnits';
+import Routes from '@/constants/routes';
 
 const SocialShare = ({ gameId, cardIndex }: { gameId: number; cardIndex: number }) => {
   const { activities } = useTypedSelector((state) => state.faro.activity);
@@ -14,7 +15,7 @@ const SocialShare = ({ gameId, cardIndex }: { gameId: number; cardIndex: number 
   // const payoutUrl = `https://basescan.org/tx/${card?.hash}`;
   // const text = `Won $${totalAmount} with ${odds}x odds on @dumontgg \n\nPayout transaction:\n${payoutUrl}`;
   const text = `Won $${totalAmount} with ${odds}x odds on @dumontgg`;
-  const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/card/${gameId}?cardId=${cardIndex + 1}`;
+  const url = `${process.env.NEXT_PUBLIC_WEBSITE_URL}${Routes.ROUND}/${gameId}?cardId=${cardIndex + 1}`;
 
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
     text,
