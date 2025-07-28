@@ -49,7 +49,7 @@ const sampleData = [
 
 const darkLayoutStyle = 'bg-secondary-900 border-[1.5px] border-neutral-700 rounded-lg';
 
-const Detail = ({}) => {
+const Detail = () => {
   const dispatch = useDispatch<AppDispatch>();
   const params = useParams<{ id: string; }>();
   const { isConnecting } = useTypedSelector((state) => state.account.profile);

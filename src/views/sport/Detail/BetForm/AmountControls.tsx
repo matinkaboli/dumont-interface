@@ -32,19 +32,19 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
       value: `${Outcome.Home}`,
       label: match?.homeTeam.name,
       logo: match?.homeTeam.logo,
-      price: '$0.43',
+      price: `${match?.latestOdds.home}%`,
     },
     {
       value: `${Outcome.Draw}`,
       label: 'Draw',
       logo: null,
-      price: '$0.22',
+      price: `${match?.latestOdds.draw}%`,
     },
     {
       value: `${Outcome.Away}`,
       label: match?.awayTeam.name,
       logo: match?.awayTeam.logo,
-      price: '$0.35',
+      price: `${match?.latestOdds.away}%`,
     },
   ];
 
@@ -66,7 +66,7 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
                       sizes='100vw'
                       className='h-6 w-auto'
                       src={logo}
-                      alt=''
+                      alt={label ?? ''}
                     />
                   ) : (
                     <span className='block w-4 h-0.5 bg-neutral-200' />

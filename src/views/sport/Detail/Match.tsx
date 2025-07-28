@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import dayjs from 'dayjs';
 
-import { Icon } from '@/components';
 import { Match } from '@/types/match';
 
 import ProgressBar from '@/views/sport/_components/ProgressBar';
@@ -17,14 +16,14 @@ const Match = ({ match, className }: Props) => {
   return (
     <div className={className}>
       <div className='flex gap-1 items-center text-xs text-center text-neutral-400 w-fit mx-auto'>
-        <Icon name='ball' width='12' height='12' />
+        <Image width={0} height={0} className='h-5 w-auto' sizes='100vw' src={league.logo} alt={league.name} />
         {league.name}
       </div>
 
       <h1 className='flex items-center mt-2 whitespace-nowrap w-fit mx-auto'>
         <span className='inline-flex items-center md:text-md text-sm text-white font-bold md:gap-3 gap-1.5'>
           {homeTeam.name}
-          <Image width={0} height={0} className='h-8 w-auto' src={homeTeam.logo} alt='' />
+          <Image width={0} height={0} className='h-8 w-auto' sizes='100vw' src={homeTeam.logo} alt={homeTeam.logo} />
         </span>
 
         <span className='inline-flex flex-col gap-0.5 md:px-11 px-2'>
@@ -35,7 +34,7 @@ const Match = ({ match, className }: Props) => {
         </span>
 
         <span className='inline-flex items-center md:text-md text-sm text-white font-bold md:gap-3 gap-1.5'>
-          <Image width={0} height={0} className='h-8 w-auto' src={awayTeam.logo} alt='' />
+          <Image width={0} height={0} className='h-8 w-auto' sizes='100vw' src={awayTeam.logo} alt={awayTeam.name} />
           {awayTeam.name}
         </span>
       </h1>
