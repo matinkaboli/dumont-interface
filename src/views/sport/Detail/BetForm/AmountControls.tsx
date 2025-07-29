@@ -8,13 +8,7 @@ import { Outcome } from '@/constants/static';
 import AmountInput from '@/views/_components/AmountInput';
 import AmountDetails from '@/views/_components/AmountDetails';
 
-import { SportFormData } from './index';
-
-const amountDetails = [
-  { id: '1', label: 'Total size', value: '0.00' },
-  { id: '2', label: 'Fee per minute', value: '0.00' },
-  { id: '3', label: 'Liquidation price', value: '0.00' },
-];
+import { BetDetails, SportFormData } from './index';
 
 interface Props {
   control: Control<SportFormData>;
@@ -22,9 +16,10 @@ interface Props {
   errors: FieldErrors<SportFormData>;
   setValue: UseFormSetValue<SportFormData>;
   defaultMultiplierValue: number;
+  betDetails: BetDetails;
 }
 
-const AmountControls = ({ control, touchedFields, errors, setValue, defaultMultiplierValue }: Props) => {
+const AmountControls = ({ control, touchedFields, errors, setValue, defaultMultiplierValue, betDetails }: Props) => {
   const { match } = useTypedSelector((state) => state.match.main);
 
   const options = [
@@ -46,6 +41,12 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
       logo: match?.awayTeam.logo,
       price: `${match?.latestOdds?.away ?? 0}%`,
     },
+  ];
+
+  const details = [
+    { id: '1', label: 'Total size', value: betDetails.totalSize },
+    { id: '2', label: 'Fee per minute', value: betDetails.feePerMinute },
+    { id: '3', label: 'Liquidation price', value: betDetails.liquidationPrice },
   ];
 
   return (
@@ -97,7 +98,7 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
           onValueChange={(values) => setValue('multiplier', values[0])}
         />
       </div>
-      <AmountDetails details={amountDetails} />
+      <AmountDetails details={details} />
     </>
   );
 };

@@ -14,15 +14,18 @@ import { useTypedSelector } from '@/hooks/useTypedSelector';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
 import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
 import formatUnits from '@/helpers/formatUnits';
+import { Odds } from '@/types/match';
 
 import BetButton from '@/views/_components/BetButton';
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import CustomSheet from '@/views/_components/CustomSheet';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
+import { getFeePerMinute, getLiquidationThreshold, getTotalSize } from '@/views/sport/Detail/helpers';
 
 import AmountControls from './AmountControls';
 import PlaceBet from './PlaceBet';
+
 
 export interface SportFormData {
   amount: string;
@@ -30,19 +33,33 @@ export interface SportFormData {
   multiplier: number;
 }
 
+export interface BetDetails {
+  totalSize: number,
+  feePerMinute: number,
+  liquidationPrice: number
+}
+
+type OutcomeLabel = 'home' | 'away' | 'draw';
+
 const defaultMultiplierValue = 2;
 
-const BetForm = ({ matchId }: { matchId: string }) => {
+const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
   const { client } = useSmartWallets();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
   const [isExpanded, setIsExpanded] = useState(false);
   const [openPositionTx, setOpenPositionTx] = useState('');
   const [isCreatePositionLoading, setIsCreatePositionLoading] = useState(false);
+  const [betDetails, setBetDetails] = useState<BetDetails>({
+    totalSize: 0,
+    feePerMinute: 0,
+    liquidationPrice: 0,
+  });
 
   const {
     control,
     setValue,
+    watch,
     handleSubmit,
     resetField,
     formState: { errors, touchedFields },
@@ -55,9 +72,27 @@ const BetForm = ({ matchId }: { matchId: string }) => {
     },
   });
 
-  const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const {
+    isLoading: isWaitTXLoading,
+    isSuccess: isConfirmed,
+  } = useWaitForTransactionReceipt({
     hash: openPositionTx as `0x${string}`,
   });
+
+  const amount = watch('amount');
+  const multiplier = watch('multiplier');
+  const outcome = watch('outcome');
+
+  useEffect(() => {
+    if (amount && +amount > 0) {
+      const totalSize = getTotalSize(+amount, multiplier);
+      const feePerMinute = getFeePerMinute(totalSize);
+      const selectedTeam = Outcome[outcome].toLowerCase() as OutcomeLabel;
+      const liquidationPrice = odds ? getLiquidationThreshold(odds[selectedTeam], multiplier) : 0;
+
+      setBetDetails({ totalSize, feePerMinute, liquidationPrice });
+    }
+  }, [amount, multiplier, outcome, odds]);
 
   useEffect(() => {
     if (isWaitTXLoading || isCreatePositionLoading) {
@@ -143,11 +178,11 @@ const BetForm = ({ matchId }: { matchId: string }) => {
       openDialog({
         content: (
           <PlaceBet
-            team='Real Madrid'
             entryPrice='0.6'
-            liquidationPrice='0.4'
-            positionSize='4,000'
-            fee='50'
+            liquidationPrice={betDetails.liquidationPrice}
+            positionSize={betDetails.totalSize}
+            fee={betDetails.feePerMinute}
+            outcome={outcome}
             onConfirm={() => onOpenPosition(data)}
           />
         ),
@@ -175,6 +210,7 @@ const BetForm = ({ matchId }: { matchId: string }) => {
           errors={errors}
           setValue={setValue}
           defaultMultiplierValue={defaultMultiplierValue}
+          betDetails={betDetails}
         />
         <BetButton disabledButtonLabel='Bet' />
       </div>
@@ -200,6 +236,7 @@ const BetForm = ({ matchId }: { matchId: string }) => {
               errors={errors}
               setValue={setValue}
               defaultMultiplierValue={defaultMultiplierValue}
+              betDetails={betDetails}
             />
           </div>
         </CustomSheet>

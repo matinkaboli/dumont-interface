@@ -13,10 +13,11 @@ import isEmpty from '@/helpers/isEmpty';
 import { getOdds } from '@/redux/features/match/oddsSlice';
 import { Odds } from '@/types/match';
 
+import BetForm from '@/views/sport/Detail/BetForm';
+
 import TeamChart from './TeamChart';
 import Match from './Match';
 import ActivityTab from './ActivityTab';
-import BetForm from '@/views/sport/Detail/BetForm';
 
 const darkLayoutStyle = 'bg-secondary-900 border-[1.5px] border-neutral-700 rounded-lg';
 
@@ -88,7 +89,7 @@ const Detail = () => {
             data={formattedOdds}
           />
         }
-        <BetForm matchId={id} />
+        <BetForm matchId={id} odds={match?.latestOdds} />
       </div>
 
       <ActivityTab className='md:mt-16 mt-6' />

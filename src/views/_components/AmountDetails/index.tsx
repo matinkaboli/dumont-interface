@@ -1,9 +1,10 @@
 import clsx from 'clsx';
+import formatDecimal from '@/helpers/formatDecimal';
 
 interface Detail {
   id: string;
   label: string;
-  value: string;
+  value: number;
 }
 
 interface Props {
@@ -16,12 +17,12 @@ const AmountDetails = ({ details, className, isDesktopView = true }: Props) => {
   return (
     <ul className={clsx('flex flex-col gap-3', className)}>
       {details.map((detail) => (
-        <li key={detail.id} className="font-medium flex-between">
+        <li key={detail.id} className='font-medium flex-between'>
           <span className={isDesktopView ? 'text-white text-sm' : 'text-white text-base'}>
             {detail.label}
           </span>
           <span className={isDesktopView ? 'text-neutral-400 text-sm' : 'text-white text-base'}>
-            {detail.value}
+            {formatDecimal({ amount: detail.value, decimalPlaces: 2 })}
           </span>
         </li>
       ))}
