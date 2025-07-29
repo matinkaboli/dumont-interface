@@ -32,19 +32,19 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
       value: `${Outcome.Home}`,
       label: match?.homeTeam.name,
       logo: match?.homeTeam.logo,
-      price: `${match?.latestOdds.home}%`,
+      price: `${match?.latestOdds?.home ?? 0}%`,
     },
     {
       value: `${Outcome.Draw}`,
       label: 'Draw',
       logo: null,
-      price: `${match?.latestOdds.draw}%`,
+      price: `${match?.latestOdds?.draw ?? 0}%`,
     },
     {
       value: `${Outcome.Away}`,
       label: match?.awayTeam.name,
       logo: match?.awayTeam.logo,
-      price: `${match?.latestOdds.away}%`,
+      price: `${match?.latestOdds?.away ?? 0}%`,
     },
   ];
 

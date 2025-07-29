@@ -16,6 +16,7 @@ import { Odds } from '@/types/match';
 import TeamChart from './TeamChart';
 import Match from './Match';
 import ActivityTab from './ActivityTab';
+import BetForm from '@/views/sport/Detail/BetForm';
 
 const darkLayoutStyle = 'bg-secondary-900 border-[1.5px] border-neutral-700 rounded-lg';
 
@@ -87,7 +88,7 @@ const Detail = () => {
             data={formattedOdds}
           />
         }
-        {/*<BetForm matchId={params.id} />*/}
+        <BetForm matchId={id} />
       </div>
 
       <ActivityTab className='md:mt-16 mt-6' />

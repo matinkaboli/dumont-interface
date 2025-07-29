@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { Icon, PulsingCircle } from '@/components';
 import { Match } from '@/types/match';
 import Routes from '@/constants/routes';
+import ProgressBar from '@/views/sport/_components/ProgressBar';
 
 const Match = ({ match }: {
   match: Match;
@@ -38,11 +39,11 @@ const Match = ({ match }: {
         {league.name}
       </div>
 
-      {/*<div className='mt-4 flex flex-col gap-3'>*/}
-      {/*  <ProgressBar name={homeTeam.shortName} percentage={latestOdds.home} bgColor='white' />*/}
-      {/*  <ProgressBar name='DRAW' percentage={latestOdds.draw} />*/}
-      {/*  <ProgressBar name={awayTeam.shortName} percentage={latestOdds.away} />*/}
-      {/*</div>*/}
+      <div className='mt-4 flex flex-col gap-3'>
+        <ProgressBar name={homeTeam.shortName} percentage={latestOdds?.home ?? 0} bgColor='white' />
+        <ProgressBar name='DRAW' percentage={latestOdds?.draw ?? 0} />
+        <ProgressBar name={awayTeam.shortName} percentage={latestOdds?.away ?? 0} />
+      </div>
     </Link>
   );
 };
