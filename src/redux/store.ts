@@ -12,6 +12,7 @@ import discardedReducer from './features/faro/discardedSlice';
 import activityReducer from './features/faro/activitySlice';
 
 import mainMatchReducer from './features/match/matchSlice';
+import oddsMatchReducer from './features/match/oddsSlice';
 
 const faroReducer = combineReducers({
   main: mainFaroReducer,
@@ -23,6 +24,7 @@ const faroReducer = combineReducers({
 
 const matchReducer = combineReducers({
   main: mainMatchReducer,
+  odds: oddsMatchReducer,
 });
 
 const store = configureStore({

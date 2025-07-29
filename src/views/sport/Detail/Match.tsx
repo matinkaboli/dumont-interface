@@ -40,20 +40,20 @@ const Match = ({ match, className }: Props) => {
       </h1>
 
       <div className='max-w-[541px] flex gap-1.5 w-full mx-auto mt-6'>
-        <ProgressBar
-          name={homeTeam.shortName}
-          percentage={latestOdds.home}
-          bgColor='white'
-          roundedFull
-          labelClassName='text-center'
-        />
-        <ProgressBar name='DRAW' percentage={latestOdds.draw} roundedFull labelClassName='text-center' />
-        <ProgressBar
-          name={awayTeam.shortName}
-          percentage={latestOdds.away}
-          roundedFull
-          labelClassName='text-center'
-        />
+        {/*<ProgressBar*/}
+        {/*  name={homeTeam.shortName}*/}
+        {/*  percentage={latestOdds.home}*/}
+        {/*  bgColor='white'*/}
+        {/*  roundedFull*/}
+        {/*  labelClassName='text-center'*/}
+        {/*/>*/}
+        {/*<ProgressBar name='DRAW' percentage={latestOdds.draw} roundedFull labelClassName='text-center' />*/}
+        {/*<ProgressBar*/}
+        {/*  name={awayTeam.shortName}*/}
+        {/*  percentage={latestOdds.away}*/}
+        {/*  roundedFull*/}
+        {/*  labelClassName='text-center'*/}
+        {/*/>*/}
       </div>
     </div>
   );
