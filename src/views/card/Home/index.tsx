@@ -60,8 +60,8 @@ const Home = () => {
     );
 
   if (!isEmpty(address)) {
-    if (activeRoundId) redirect(`${Routes.ROUND}/${activeRoundId}`);
-    if (!activeRoundId) redirect(Routes.START);
+    if (activeRoundId) redirect(`${Routes.CARDS}/${activeRoundId}`);
+    if (!activeRoundId) redirect(Routes.CARDS);
   }
 
   return (

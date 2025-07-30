@@ -52,7 +52,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     id: 'card',
     label: 'Card',
     link: Routes.HOME,
-    targetLink: Routes.ROUND,
+    targetLink: Routes.CARDS,
     icon: {
       type: 'icon',
       name: 'game-card',
@@ -62,8 +62,8 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   {
     id: 'sport',
     label: 'Sport',
-    link: Routes.SPORT,
-    targetLink: Routes.SPORT,
+    link: Routes.SPORTS,
+    targetLink: Routes.SPORTS,
     icon: {
       type: 'icon',
       name: 'ball',

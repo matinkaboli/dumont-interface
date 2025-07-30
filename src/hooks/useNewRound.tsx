@@ -60,7 +60,7 @@ export const useNewRound = () => {
       const id = extractGameId(receiptData.logs);
 
       if (id) {
-        router.push(`${Routes.ROUND}/${id}`);
+        router.push(`${Routes.CARDS}/${id}`);
         dispatch(setIsGameCreated(true));
         dispatch(closeDialog());
       }

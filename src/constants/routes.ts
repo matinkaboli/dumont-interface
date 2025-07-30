@@ -1,10 +1,9 @@
 const Routes = {
   HOME: '/',
   CREATE_ROUND: '/',
-  ROUND: '/cards',
-  START: '/cards/start',
-  MORE_INFO: '/more-info',
-  SPORT: '/sports',
+  CARDS: '/cards',
+  MORE_INFO: '/info',
+  SPORTS: '/sports',
 };
 
 export default Routes;

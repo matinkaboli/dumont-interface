@@ -14,7 +14,7 @@ const Match = ({ match }: {
 
   return (
     <Link
-      href={`${Routes.SPORT}/${matchId}`}
+      href={`${Routes.SPORTS}/${matchId}`}
       className='relative border-[1.5px] border-neutral-700 bg-neutral-800 rounded-lg w-full sm:pt-4 sm:pb-6 sm:px-2 p-3 cursor-pointer'>
       {!isEnded && <PulsingCircle size='sm' className='absolute top-2 left-2' />}
       <div className='text-center text-xs text-neutral-400'>Match time</div>
