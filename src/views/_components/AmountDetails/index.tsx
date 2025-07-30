@@ -1,10 +1,9 @@
 import clsx from 'clsx';
-import formatDecimal from '@/helpers/formatDecimal';
 
 interface Detail {
   id: string;
   label: string;
-  value: number;
+  value: string;
 }
 
 interface Props {
@@ -22,7 +21,7 @@ const AmountDetails = ({ details, className, isDesktopView = true }: Props) => {
             {detail.label}
           </span>
           <span className={isDesktopView ? 'text-neutral-400 text-sm' : 'text-white text-base'}>
-            {formatDecimal({ amount: detail.value, decimalPlaces: 2 })}
+           {detail.value}
           </span>
         </li>
       ))}

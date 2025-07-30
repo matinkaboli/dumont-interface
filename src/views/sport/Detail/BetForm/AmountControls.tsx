@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import formatDecimal from '@/helpers/formatDecimal';
 import { Outcome } from '@/constants/static';
 
 import AmountInput from '@/views/_components/AmountInput';
@@ -44,9 +45,21 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
   ];
 
   const details = [
-    { id: '1', label: 'Total size', value: betDetails.totalSize },
-    { id: '2', label: 'Fee per minute', value: betDetails.feePerMinute },
-    { id: '3', label: 'Liquidation price', value: betDetails.liquidationPrice },
+    {
+      id: '1',
+      label: 'Total size',
+      value: `$${formatDecimal({ amount: betDetails.totalSize, decimalPlaces: 2 })}`,
+    },
+    {
+      id: '2',
+      label: 'Fee per minute',
+      value: `$${formatDecimal({ amount: betDetails.feePerMinute, decimalPlaces: 2 })}`,
+    },
+    {
+      id: '3',
+      label: 'Liquidation price',
+      value: `%${formatDecimal({ amount: betDetails.liquidationPrice, decimalPlaces: 2 })}`,
+    },
   ];
 
   return (

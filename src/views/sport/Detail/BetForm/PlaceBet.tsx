@@ -42,7 +42,7 @@ const PlaceBet = ({ outcome, entryPrice, liquidationPrice, positionSize, fee, on
       ),
     },
     { label: 'Entry price', value: entryPrice },
-    { label: 'Liquidation price', value: `$${formatDecimal({ amount: liquidationPrice, decimalPlaces: 2 })}` },
+    { label: 'Liquidation price', value: `%${formatDecimal({ amount: liquidationPrice, decimalPlaces: 2 })}` },
     { label: 'Position size', value: `$${formatDecimal({ amount: positionSize, decimalPlaces: 2 })}` },
     { label: 'Fee per minute', value: `$${formatDecimal({ amount: fee, decimalPlaces: 2 })}` },
   ];
