@@ -49,9 +49,9 @@ const colors = ['#A215A2', '#BD7E06', '#5100FE'];
 const lineColor = '#252525';
 const axisColor = '#858585';
 
-const formatAxisTime = (timestamp: string) => dayjs(timestamp).format('h:mm a');
+const formatAxisTime = (timestamp: number) => dayjs.unix(timestamp).format('h:mm a');
 
-const formatTooltipTime = (timestamp: string) => dayjs(timestamp).format('MMM D, YYYY h:mm a');
+const formatTooltipTime = (timestamp: number) => dayjs.unix(timestamp).format('MMM D, YYYY h:mm a');
 
 const CustomDot = (props: CustomDotProps) => {
   const { cx, cy, payload, dataKey, data, teams } = props;
