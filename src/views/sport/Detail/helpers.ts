@@ -1,6 +1,6 @@
 export const getTotalSize = (amount: number, multiplier: number) => amount * multiplier;
 
-export const getFeePerMinute = (totalSize: number) => 15 * totalSize;
+export const getFeePerMinute = (totalSize: number) => totalSize / 15;
 
 export const getLiquidationThreshold = (entryOdds: number, multiplier: number): number => {
   if (multiplier === 0) return 0;
