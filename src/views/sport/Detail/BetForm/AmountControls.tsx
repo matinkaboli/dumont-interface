@@ -58,7 +58,7 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
     {
       id: '3',
       label: 'Liquidation price',
-      value: `%${formatDecimal({ amount: betDetails.liquidationPrice, decimalPlaces: 2 })}`,
+      value: `${formatDecimal({ amount: betDetails.liquidationPrice, decimalPlaces: 2 })}%`,
     },
   ];
 

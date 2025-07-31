@@ -7,42 +7,42 @@ import { Outcome } from '@/constants/static';
 import { Team } from '@/types/match';
 
 interface Props {
-  entryPrice: string;
+  entryPrice: number;
   liquidationPrice: number;
   positionSize: number;
   fee: number;
   outcome: number;
+  multiplier: number;
   onConfirm: () => void;
 }
 
-const PlaceBet = ({ outcome, entryPrice, liquidationPrice, positionSize, fee, onConfirm }: Props) => {
+const PlaceBet = ({ outcome, entryPrice, liquidationPrice, positionSize, fee, multiplier, onConfirm }: Props) => {
   const { match } = useTypedSelector((state) => state.match.main);
 
   const selectedKey = Outcome[outcome]?.toLowerCase();
   const team: Team | undefined = match ? (match[`${selectedKey}Team` as keyof typeof match] as Team) : undefined;
 
-
   const details = [
     {
       label: 'Team',
       render: team && (
-        <div className="flex items-center gap-2">
+        <div className='flex items-center gap-2'>
           <Image
             src={team.logo}
             alt={team.name || 'Team logo'}
             width={24}
             height={24}
-            className="h-6 w-auto"
+            className='h-6 w-auto'
           />
           <span>{team.name}</span>
-          <span className="bg-neutral-600 rounded-full px-2 py-0.5 text-xs font-medium text-white">
-            10x
+          <span className='bg-neutral-600 rounded-full px-2 py-0.5 text-xs font-medium text-white'>
+            {multiplier}x
           </span>
         </div>
       ),
     },
-    { label: 'Entry price', value: entryPrice },
-    { label: 'Liquidation price', value: `%${formatDecimal({ amount: liquidationPrice, decimalPlaces: 2 })}` },
+    { label: 'Entry price', value: `${entryPrice}%` },
+    { label: 'Liquidation price', value: `${formatDecimal({ amount: liquidationPrice, decimalPlaces: 2 })}%` },
     { label: 'Position size', value: `$${formatDecimal({ amount: positionSize, decimalPlaces: 2 })}` },
     { label: 'Fee per minute', value: `$${formatDecimal({ amount: fee, decimalPlaces: 2 })}` },
   ];

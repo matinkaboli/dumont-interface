@@ -37,6 +37,7 @@ export interface BetDetails {
   totalSize: number,
   feePerMinute: number,
   liquidationPrice: number
+  selectedTeamOdds: number,
 }
 
 type OutcomeLabel = 'home' | 'away' | 'draw';
@@ -54,6 +55,7 @@ const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
     totalSize: 0,
     feePerMinute: 0,
     liquidationPrice: 0,
+    selectedTeamOdds: 0,
   });
 
   const {
@@ -90,7 +92,12 @@ const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
       const selectedTeam = Outcome[outcome].toLowerCase() as OutcomeLabel;
       const liquidationPrice = odds ? getLiquidationThreshold(odds[selectedTeam], multiplier) : 0;
 
-      setBetDetails({ totalSize, feePerMinute, liquidationPrice });
+      setBetDetails({
+        totalSize,
+        feePerMinute,
+        liquidationPrice,
+        selectedTeamOdds: odds ? odds[selectedTeam] : 0,
+      });
     }
   }, [amount, multiplier, outcome, odds]);
 
@@ -178,11 +185,12 @@ const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
       openDialog({
         content: (
           <PlaceBet
-            entryPrice='0.6'
-            liquidationPrice={betDetails.liquidationPrice}
-            positionSize={betDetails.totalSize}
-            fee={betDetails.feePerMinute}
             outcome={outcome}
+            multiplier={data.multiplier}
+            fee={betDetails.feePerMinute}
+            positionSize={betDetails.totalSize}
+            entryPrice={betDetails.selectedTeamOdds}
+            liquidationPrice={betDetails.liquidationPrice}
             onConfirm={() => onOpenPosition(data)}
           />
         ),
