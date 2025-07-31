@@ -5,11 +5,13 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import formatDecimal from '@/helpers/formatDecimal';
 import { Outcome } from '@/constants/static';
+import humanizeAmount from '@/helpers/humanizeAmount';
 
 import AmountInput from '@/views/_components/AmountInput';
 import AmountDetails from '@/views/_components/AmountDetails';
+import { getMaximumPossibleAmount } from '@/views/sport/Detail/helpers';
 
-import { BetDetails, SportFormData } from './index';
+import { BetDetails, OutcomeLabel, SportFormData } from './index';
 
 interface Props {
   control: Control<SportFormData>;
@@ -22,6 +24,8 @@ interface Props {
 
 const AmountControls = ({ control, touchedFields, errors, setValue, defaultMultiplierValue, betDetails }: Props) => {
   const { match } = useTypedSelector((state) => state.match.main);
+  const { balance } = useTypedSelector((state) => state.account);
+  const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
 
   const options = [
     {
@@ -62,6 +66,45 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
     },
   ];
 
+  const getCurrentOdds = () => {
+    const selectedTeam = Outcome[control._formValues.outcome].toLowerCase() as OutcomeLabel;
+    return match!.latestOdds[selectedTeam];
+  };
+
+  const onValidateInput = (value: any) => {
+    if (balance && value > +balance) return 'Insufficient USDC balance';
+
+    const currentOdds = getCurrentOdds();
+    const maxPossibleAmount = getMaximumPossibleAmount({
+      currentOdds: currentOdds,
+      amount: value,
+      multiplier: control._formValues.multiplier,
+    });
+
+    if (maxPossibleAmount > maxBetAmount)
+      return `Max bet is $${humanizeAmount(
+        formatDecimal({ amount: maxPossibleAmount, decimalPlaces: 2 }),
+      )}`;
+
+    if (value < minBetAmount) return `Min bet is $${minBetAmount}`;
+
+    return true;
+  };
+
+  const setMaxValue = () => {
+    touchedFields.amount = true;
+
+    const currentOdds = getCurrentOdds();
+
+    const maxPossibleAmount = getMaximumPossibleAmount({
+      currentOdds: currentOdds,
+      amount: maxBetAmount,
+      multiplier: control._formValues.multiplier,
+    }).toString();
+
+    setValue('amount', maxPossibleAmount, { shouldDirty: true, shouldValidate: true });
+  };
+
   return (
     <>
       <Select defaultValue={`${Outcome.Home}`} onValueChange={(value) => setValue('outcome', +value)}>
@@ -100,8 +143,8 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
           control={control}
           touchedFields={touchedFields}
           inputErrors={errors}
-          totalOdds={8}
-          setValue={setValue}
+          setMaxValue={setMaxValue}
+          onValidate={onValidateInput}
         />
         <Slider
           defaultValue={[defaultMultiplierValue]}

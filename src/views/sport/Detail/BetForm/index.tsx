@@ -40,7 +40,7 @@ export interface BetDetails {
   selectedTeamOdds: number,
 }
 
-type OutcomeLabel = 'home' | 'away' | 'draw';
+export type OutcomeLabel = 'home' | 'away' | 'draw';
 
 const defaultMultiplierValue = 2;
 

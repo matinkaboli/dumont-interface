@@ -13,10 +13,12 @@ export const getLiquidationThreshold = (entryOdds: number, multiplier: number): 
   return odds > drop ? (odds - drop) / 100 : 0;
 };
 
-const getMaximumPossibleAmount = (
-  currentOdds: number,
-  multiplier: number,
-  amount: number,
+export const getMaximumPossibleAmount = (
+  { currentOdds, multiplier, amount }: {
+    currentOdds: number,
+    multiplier: number,
+    amount: number
+  },
 ): number => {
   const MAXIMUM_ODDS = 100000; // example value: 100.000%
   const SCALE = 1000; // scale factor (e.g., for 3 decimal precision)
