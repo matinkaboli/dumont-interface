@@ -3,52 +3,68 @@ import Image from 'next/image';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import formatDecimal from '@/helpers/formatDecimal';
+import { Outcome } from '@/constants/static';
 
 import AmountInput from '@/views/_components/AmountInput';
 import AmountDetails from '@/views/_components/AmountDetails';
 
-import { SportFormData } from './index';
-
-const amountDetails = [
-  { id: '1', label: 'Total size', value: '0.00' },
-  { id: '2', label: 'Fee per minute', value: '0.00' },
-  { id: '3', label: 'Liquidation price', value: '0.00' },
-];
+import { BetDetails, SportFormData } from './index';
 
 interface Props {
   control: Control<SportFormData>;
   touchedFields: Partial<{ amount?: boolean | undefined }>;
   errors: FieldErrors<SportFormData>;
   setValue: UseFormSetValue<SportFormData>;
+  defaultMultiplierValue: number;
+  betDetails: BetDetails;
 }
 
-const AmountControls = ({ control, touchedFields, errors, setValue }: Props) => {
+const AmountControls = ({ control, touchedFields, errors, setValue, defaultMultiplierValue, betDetails }: Props) => {
   const { match } = useTypedSelector((state) => state.match.main);
 
   const options = [
     {
-      value: 'option1',
+      value: `${Outcome.Home}`,
       label: match?.homeTeam.name,
       logo: match?.homeTeam.logo,
-      price: '$0.43',
+      price: `${match?.latestOdds?.home ?? 0}%`,
     },
     {
-      value: 'option2',
+      value: `${Outcome.Draw}`,
       label: 'Draw',
       logo: null,
-      price: '$0.22',
+      price: `${match?.latestOdds?.draw ?? 0}%`,
     },
     {
-      value: 'option3',
+      value: `${Outcome.Away}`,
       label: match?.awayTeam.name,
       logo: match?.awayTeam.logo,
-      price: '$0.35',
+      price: `${match?.latestOdds?.away ?? 0}%`,
+    },
+  ];
+
+  const details = [
+    {
+      id: '1',
+      label: 'Total size',
+      value: `$${formatDecimal({ amount: betDetails.totalSize, decimalPlaces: 2 })}`,
+    },
+    {
+      id: '2',
+      label: 'Fee per minute',
+      value: `$${formatDecimal({ amount: betDetails.feePerMinute, decimalPlaces: 2 })}`,
+    },
+    {
+      id: '3',
+      label: 'Liquidation price',
+      value: `%${formatDecimal({ amount: betDetails.liquidationPrice, decimalPlaces: 2 })}`,
     },
   ];
 
   return (
     <>
-      <Select defaultValue='option1'>
+      <Select defaultValue={`${Outcome.Home}`} onValueChange={(value) => setValue('outcome', +value)}>
         <SelectTrigger className='w-full'>
           <SelectValue placeholder='Select a option' />
         </SelectTrigger>
@@ -64,7 +80,7 @@ const AmountControls = ({ control, touchedFields, errors, setValue }: Props) => 
                       sizes='100vw'
                       className='h-6 w-auto'
                       src={logo}
-                      alt=''
+                      alt={label ?? ''}
                     />
                   ) : (
                     <span className='block w-4 h-0.5 bg-neutral-200' />
@@ -87,9 +103,15 @@ const AmountControls = ({ control, touchedFields, errors, setValue }: Props) => 
           totalOdds={8}
           setValue={setValue}
         />
-        <Slider defaultValue={[2]} max={30} step={1} className='my-5' />
+        <Slider
+          defaultValue={[defaultMultiplierValue]}
+          max={30}
+          step={1}
+          className='my-5'
+          onValueChange={(values) => setValue('multiplier', values[0])}
+        />
       </div>
-      <AmountDetails details={amountDetails} />
+      <AmountDetails details={details} />
     </>
   );
 };

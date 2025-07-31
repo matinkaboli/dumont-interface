@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 import { Icon } from '@/components';
 import { IconName } from '@/components/Icon/iconConfig';
@@ -44,16 +44,15 @@ export const generateNavColor = (isActive: boolean, disabled: boolean) => {
 };
 
 const SideNavs = () => {
-  const searchParams = useSearchParams();
-  const mode = searchParams.get('mode');
   const pathname = usePathname();
 
-  const isLinkActive = (targetLink: string) => mode === targetLink || pathname === targetLink;
+  const isLinkActive = (targetLink: string) => pathname === targetLink || pathname.startsWith(targetLink);
 
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="md:flex hidden flex-col justify-between items-center gap-0.5 px-2.5 pb-6 border-x-[1.5px] border-neutral-750 bg-secondary-900 md:min-h-screen min-h-auto">
+      <nav
+        className='md:flex hidden flex-col justify-between items-center gap-0.5 px-2.5 pb-6 border-x-[1.5px] border-neutral-750 bg-secondary-900 md:min-h-screen min-h-auto'>
         <div>
           {NAVIGATION_ITEMS.map((item, index) => (
             <DesktopNavItem
@@ -64,17 +63,17 @@ const SideNavs = () => {
             />
           ))}
         </div>
-        <div className="flex-col gap-2">
+        <div className='flex-col gap-2'>
           {FOOTER_ITEMS.map((item) => (
             <Link
               key={item.id}
               href={item.link}
-              target="_blank"
-              className="w-12 h-12 block flex-center group"
+              target='_blank'
+              className='w-12 h-12 block flex-center group'
             >
               <Icon
                 name={item.icon as IconName}
-                className="[&>path]:fill-neutral-400 group-hover:[&>path]:fill-primary-400 transition ease-in-out"
+                className='[&>path]:fill-neutral-400 group-hover:[&>path]:fill-primary-400 transition ease-in-out'
               />
             </Link>
           ))}
@@ -82,7 +81,7 @@ const SideNavs = () => {
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden flex justify-between fixed inset-x-0 bottom-0 z-50 bg-gradiant-black px-8 py-2.5">
+      <nav className='md:hidden flex justify-between fixed inset-x-0 bottom-0 z-50 bg-gradiant-black px-8 py-2.5'>
         {NAVIGATION_ITEMS.map(
           (item) =>
             item.icon.type !== 'image' && (
