@@ -90,13 +90,22 @@ const ConnectWallet = () => {
   }, [params.id, pathname, dispatch, address]);
 
   return (
-    <>
+    <div className='min-h-[40px]'>
       {ready && authenticated ? (
-        <div className="flex items-center justify-between w-full">
-          <Link href={Routes.HOME} className="sm:hidden block">
-            <Image width={36} height={31} src="/images/logo.svg" alt="dumont" />
+        <div className='flex items-center justify-between w-full'>
+          <Link href={Routes.HOME} className='md:hidden block'>
+            <Image width={36} height={31} src='/images/logo.svg' alt='dumont' />
           </Link>
-          <div className="flex items-center gap-2 ml-auto">
+          <div className='w-[1px] h-6 bg-neutral-550 mx-3 md:hidden block' />
+          <Image
+            width={0}
+            height={0}
+            className='h-4 w-auto'
+            sizes='100vw'
+            src='/images/base-logo.svg'
+            alt='base'
+          />
+          <div className='flex items-center gap-2 ml-auto'>
             {/*<AirdropButton />*/}
             {/*<RewardButton />*/}
             <ConnectedWallet />
@@ -104,9 +113,9 @@ const ConnectWallet = () => {
         </div>
       ) : (
         <Button
-          variant="link"
-          size="sm"
-          radius="lg"
+          variant='link'
+          size='sm'
+          radius='lg'
           onClick={login}
           disabled={!ready}
           className={clsx(
@@ -119,7 +128,7 @@ const ConnectWallet = () => {
           Connect Wallet
         </Button>
       )}
-    </>
+    </div>
   );
 };
 
