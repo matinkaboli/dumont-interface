@@ -42,6 +42,51 @@ const AmountControls = ({
   const { balance } = useTypedSelector((state) => state.account);
   const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
 
+  const selectedOutcome = control._formValues.outcome;
+  const multiplier = control._formValues.multiplier;
+
+  const getCurrentOdds = (): number => {
+    if (!match?.latestOdds || selectedOutcome == null) return 0;
+    const key = Outcome[selectedOutcome].toLowerCase() as OutcomeLabel;
+    return match.latestOdds[key] ?? 0;
+  };
+
+  const onValidateInput = (value: any) => {
+    if (balance && value > +balance) return 'Insufficient USDC balance';
+
+    const currentOdds = getCurrentOdds();
+    const maxPossibleAmount = getMaximumPossibleAmount({
+      currentOdds: currentOdds,
+      amount: value,
+      multiplier,
+    });
+
+    if (maxPossibleAmount > maxBetAmount) {
+      const rate = multiplier * (100 / currentOdds);
+      const maxAllowed = ((maxBetAmount / rate) * 99) / 100;
+
+      return `Max bet is $${humanizeAmount(
+        formatDecimal({ amount: maxAllowed, decimalPlaces: 2 }),
+      )}`;
+    }
+
+    if (value < minBetAmount) return `Min bet is $${minBetAmount}`;
+
+    return true;
+  };
+
+  const setMaxValue = () => {
+    touchedFields.amount = true;
+
+    const currentOdds = getCurrentOdds();
+
+    const rate = multiplier * (100 / currentOdds);
+    const maxAllowed = ((maxBetAmount / rate) * 99) / 100;
+
+    setValue('amount', String(maxAllowed), { shouldDirty: true, shouldValidate: true });
+  };
+
+
   const options = [
     {
       value: `${Outcome.Home}`,
@@ -80,54 +125,6 @@ const AmountControls = ({
       value: `${formatDecimal({ amount: betDetails.liquidationPrice, decimalPlaces: 2 })}%`,
     },
   ];
-
-  const getCurrentOdds = () => {
-    const selectedTeam = Outcome[control._formValues.outcome].toLowerCase() as OutcomeLabel;
-    return match!.latestOdds[selectedTeam];
-  };
-
-  const onValidateInput = (value: any) => {
-    if (balance && value > +balance) return 'Insufficient USDC balance';
-
-    const currentOdds = getCurrentOdds();
-    const maxPossibleAmount = getMaximumPossibleAmount({
-      currentOdds: currentOdds,
-      amount: value,
-      multiplier: control._formValues.multiplier,
-    });
-
-    console.log('--');
-    console.log('--');
-    console.log(currentOdds);
-    console.log(maxPossibleAmount);
-    console.log(maxBetAmount);
-    console.log('--');
-    console.log('--');
-
-    if (maxPossibleAmount > maxBetAmount) {
-      const rate = control._formValues.multiplier * (100 / currentOdds);
-      const maximumValueAmount = ((maxBetAmount / rate) * 99) / 100;
-
-      return `Max bet is $${humanizeAmount(
-        formatDecimal({ amount: maximumValueAmount, decimalPlaces: 2 }),
-      )}`;
-    }
-
-    if (value < minBetAmount) return `Min bet is $${minBetAmount}`;
-
-    return true;
-  };
-
-  const setMaxValue = () => {
-    touchedFields.amount = true;
-
-    const currentOdds = getCurrentOdds();
-
-    const rate = control._formValues.multiplier * (100 / currentOdds);
-    const maximumValueAmount = ((maxBetAmount / rate) * 99) / 100;
-
-    setValue('amount', String(maximumValueAmount), { shouldDirty: true, shouldValidate: true });
-  };
 
   return (
     <>
