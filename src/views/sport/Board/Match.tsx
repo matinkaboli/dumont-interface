@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 
-import { Icon, PulsingCircle } from '@/components';
+import { PulsingCircle } from '@/components';
 import { Match } from '@/types/match';
 import Routes from '@/constants/routes';
 import ProgressBar from '@/views/sport/_components/ProgressBar';
@@ -35,7 +35,7 @@ const Match = ({ match }: {
       </h6>
 
       <div className='flex gap-1 items-center text-xs text-center text-neutral-400 w-fit mx-auto mt-3'>
-        <Icon name='ball' width='12' height='12' />
+        <Image src={league.logo} width={0} height={0} sizes='100vw' className='h-3 w-auto' alt={league.name} />
         {league.name}
       </div>
 
