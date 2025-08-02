@@ -1,7 +1,15 @@
 import { Control, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import Image from 'next/image';
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Slider,
+} from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import formatDecimal from '@/helpers/formatDecimal';
 import { Outcome } from '@/constants/static';
@@ -22,7 +30,14 @@ interface Props {
   betDetails: BetDetails;
 }
 
-const AmountControls = ({ control, touchedFields, errors, setValue, defaultMultiplierValue, betDetails }: Props) => {
+const AmountControls = ({
+  control,
+  touchedFields,
+  errors,
+  setValue,
+  defaultMultiplierValue,
+  betDetails,
+}: Props) => {
   const { match } = useTypedSelector((state) => state.match.main);
   const { balance } = useTypedSelector((state) => state.account);
   const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
@@ -81,10 +96,22 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
       multiplier: control._formValues.multiplier,
     });
 
-    if (maxPossibleAmount > maxBetAmount)
+    console.log('--');
+    console.log('--');
+    console.log(currentOdds);
+    console.log(maxPossibleAmount);
+    console.log(maxBetAmount);
+    console.log('--');
+    console.log('--');
+
+    if (maxPossibleAmount > maxBetAmount) {
+      const rate = control._formValues.multiplier * (100 / currentOdds);
+      const maximumValueAmount = ((maxBetAmount / rate) * 99) / 100;
+
       return `Max bet is $${humanizeAmount(
-        formatDecimal({ amount: maxPossibleAmount, decimalPlaces: 2 }),
+        formatDecimal({ amount: maximumValueAmount, decimalPlaces: 2 }),
       )}`;
+    }
 
     if (value < minBetAmount) return `Min bet is $${minBetAmount}`;
 
@@ -96,40 +123,40 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
 
     const currentOdds = getCurrentOdds();
 
-    const maxPossibleAmount = getMaximumPossibleAmount({
-      currentOdds: currentOdds,
-      amount: maxBetAmount,
-      multiplier: control._formValues.multiplier,
-    }).toString();
+    const rate = control._formValues.multiplier * (100 / currentOdds);
+    const maximumValueAmount = ((maxBetAmount / rate) * 99) / 100;
 
-    setValue('amount', maxPossibleAmount, { shouldDirty: true, shouldValidate: true });
+    setValue('amount', String(maximumValueAmount), { shouldDirty: true, shouldValidate: true });
   };
 
   return (
     <>
-      <Select defaultValue={`${Outcome.Home}`} onValueChange={(value) => setValue('outcome', +value)}>
-        <SelectTrigger className='w-full'>
-          <SelectValue placeholder='Select a option' />
+      <Select
+        defaultValue={`${Outcome.Home}`}
+        onValueChange={(value) => setValue('outcome', +value)}
+      >
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Select a option" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             {options.map(({ value, label, logo, price }) => (
               <SelectItem key={value} value={value}>
-                <div className='flex items-center gap-1'>
+                <div className="flex items-center gap-1">
                   {logo ? (
                     <Image
                       width={0}
                       height={0}
-                      sizes='100vw'
-                      className='h-6 w-auto'
+                      sizes="100vw"
+                      className="h-6 w-auto"
                       src={logo}
                       alt={label ?? ''}
                     />
                   ) : (
-                    <span className='block w-4 h-0.5 bg-neutral-200' />
+                    <span className="block w-4 h-0.5 bg-neutral-200" />
                   )}
                   {label}
-                  <div className='text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5'>
+                  <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
                     {price}
                   </div>
                 </div>
@@ -150,7 +177,7 @@ const AmountControls = ({ control, touchedFields, errors, setValue, defaultMulti
           defaultValue={[defaultMultiplierValue]}
           max={30}
           step={1}
-          className='my-5'
+          className="my-5"
           onValueChange={(values) => setValue('multiplier', values[0])}
         />
       </div>
