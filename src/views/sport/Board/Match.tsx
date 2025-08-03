@@ -10,7 +10,7 @@ import ProgressBar from '@/views/sport/_components/ProgressBar';
 const Match = ({ match }: {
   match: Match;
 }) => {
-  const { matchId, homeTeam, awayTeam, league, latestOdds, start, isPrematch } = match;
+  const { matchId, homeTeam, awayTeam, league, latestOdds, start, isPrematch, score } = match;
 
   return (
     <Link
@@ -27,7 +27,7 @@ const Match = ({ match }: {
           {homeTeam.name}
           <Image width={0} height={0} className='h-6 w-auto' sizes='100vw' src={homeTeam.logo} alt={homeTeam.name} />
         </span>
-        <span className='px-2'>-</span>
+        <span className='px-2 text-sm font-bold'>{score.replace(':', ' - ')}</span>
         <span className='inline-flex items-center gap-2'>
           <Image width={0} height={0} className='h-6 w-auto' sizes='100vw' src={awayTeam.logo} alt={awayTeam.name} />
           {awayTeam.name}
