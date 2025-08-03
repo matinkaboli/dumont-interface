@@ -42,9 +42,15 @@ export interface BetDetails {
 
 export type OutcomeLabel = 'home' | 'away' | 'draw';
 
+interface Props {
+  matchId: string;
+  odds?: Odds;
+  isDisable?: boolean;
+}
+
 const defaultMultiplierValue = 2;
 
-const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
+const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
   const { client } = useSmartWallets();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
@@ -208,48 +214,54 @@ const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Desktop View */}
-      <div
-        className='h-full md:flex hidden flex-col justify-between bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4'>
-        <AmountControls
-          control={control}
-          touchedFields={touchedFields}
-          errors={errors}
-          setValue={setValue}
-          defaultMultiplierValue={defaultMultiplierValue}
-          betDetails={betDetails}
-        />
-        <BetButton disabledButtonLabel='Bet' />
-      </div>
+    <div className='relative'>
+      {isDisable && <div className='absolute inset-0 bg-primary-900/40 z-10 cursor-not-allowed rounded-xl' />}
+      <form onSubmit={handleSubmit(onSubmit)} className='h-full'>
+        {/* Desktop View */}
+        <div
+          className='h-full md:flex hidden flex-col justify-between bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4'>
+          <AmountControls
+            control={control}
+            touchedFields={touchedFields}
+            errors={errors}
+            setValue={setValue}
+            defaultMultiplierValue={defaultMultiplierValue}
+            betDetails={betDetails}
+            isDisable={isDisable}
+          />
+          <BetButton disabledButtonLabel='Bet' disabled={isDisable} />
+        </div>
 
-      {/* Mobile View */}
-      <div className='md:hidden block text-white'>
-        <CustomSheet
-          isExpanded={isExpanded}
-          onClose={onCloseDetail}
-          buttonElement={
-            <BetButton
-              size='md'
-              type={isExpanded ? 'submit' : 'button'}
-              disabledButtonLabel='Bet'
-              onClick={onExpandDetail}
-            />
-          }
-        >
-          <div className='flex flex-col gap-4 pt-6 pb-10'>
-            <AmountControls
-              control={control}
-              touchedFields={touchedFields}
-              errors={errors}
-              setValue={setValue}
-              defaultMultiplierValue={defaultMultiplierValue}
-              betDetails={betDetails}
-            />
-          </div>
-        </CustomSheet>
-      </div>
-    </form>
+        {/* Mobile View */}
+        <div className='md:hidden block text-white'>
+          <CustomSheet
+            isExpanded={isExpanded}
+            onClose={onCloseDetail}
+            buttonElement={
+              <BetButton
+                size='md'
+                type={isExpanded ? 'submit' : 'button'}
+                disabledButtonLabel='Bet'
+                onClick={onExpandDetail}
+                disabled={isDisable}
+              />
+            }
+          >
+            <div className='flex flex-col gap-4 pt-6 pb-10'>
+              <AmountControls
+                control={control}
+                touchedFields={touchedFields}
+                errors={errors}
+                setValue={setValue}
+                defaultMultiplierValue={defaultMultiplierValue}
+                betDetails={betDetails}
+                isDisable={isDisable}
+              />
+            </div>
+          </CustomSheet>
+        </div>
+      </form>
+    </div>
   );
 };
 

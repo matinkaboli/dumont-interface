@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Match = ({ match, className }: Props) => {
-  const { homeTeam, awayTeam, latestOdds, start, league } = match;
+  const { homeTeam, awayTeam, latestOdds, start, league, isEnded, isBettingClosed } = match;
 
   return (
     <div className={className}>
@@ -39,24 +39,28 @@ const Match = ({ match, className }: Props) => {
         </span>
       </h1>
 
-      {latestOdds && (
-        <div className='max-w-[541px] flex gap-1.5 w-full mx-auto mt-6'>
-          <ProgressBar
-            name={homeTeam.shortName}
-            percentage={latestOdds.home}
-            bgColor='white'
-            roundedFull
-            labelClassName='text-center'
-          />
-          <ProgressBar name='DRAW' percentage={latestOdds.draw} roundedFull labelClassName='text-center' />
-          <ProgressBar
-            name={awayTeam.shortName}
-            percentage={latestOdds.away}
-            roundedFull
-            labelClassName='text-center'
-          />
-        </div>
-      )}
+      {isEnded || isBettingClosed ?
+        (<div className='bg-primary-800 text-white w-fit px-6 py-1.5 font-bold text-base mx-auto mt-6 rounded-full'>
+          The match has ended
+        </div>) :
+        latestOdds && (
+          <div className='max-w-[541px] flex gap-1.5 w-full mx-auto mt-6'>
+            <ProgressBar
+              name={homeTeam.shortName}
+              percentage={latestOdds.home}
+              bgColor='white'
+              roundedFull
+              labelClassName='text-center'
+            />
+            <ProgressBar name='DRAW' percentage={latestOdds.draw} roundedFull labelClassName='text-center' />
+            <ProgressBar
+              name={awayTeam.shortName}
+              percentage={latestOdds.away}
+              roundedFull
+              labelClassName='text-center'
+            />
+          </div>)
+      }
     </div>
   );
 };

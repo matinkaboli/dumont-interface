@@ -1,15 +1,7 @@
 import { Control, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import Image from 'next/image';
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Slider,
-} from '@/components';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import formatDecimal from '@/helpers/formatDecimal';
 import { Outcome } from '@/constants/static';
@@ -28,16 +20,19 @@ interface Props {
   setValue: UseFormSetValue<SportFormData>;
   defaultMultiplierValue: number;
   betDetails: BetDetails;
+  isDisable?: boolean;
 }
 
-const AmountControls = ({
-  control,
-  touchedFields,
-  errors,
-  setValue,
-  defaultMultiplierValue,
-  betDetails,
-}: Props) => {
+const AmountControls = (
+  {
+    control,
+    touchedFields,
+    errors,
+    setValue,
+    defaultMultiplierValue,
+    betDetails,
+    isDisable = false,
+  }: Props) => {
   const { match } = useTypedSelector((state) => state.match.main);
   const { balance } = useTypedSelector((state) => state.account);
   const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
@@ -86,7 +81,6 @@ const AmountControls = ({
     setValue('amount', String(maxAllowed), { shouldDirty: true, shouldValidate: true });
   };
 
-
   const options = [
     {
       value: `${Outcome.Home}`,
@@ -131,29 +125,30 @@ const AmountControls = ({
       <Select
         defaultValue={`${Outcome.Home}`}
         onValueChange={(value) => setValue('outcome', +value)}
+        disabled={isDisable}
       >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a option" />
+        <SelectTrigger className='w-full'>
+          <SelectValue placeholder='Select a option' />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             {options.map(({ value, label, logo, price }) => (
               <SelectItem key={value} value={value}>
-                <div className="flex items-center gap-1">
+                <div className='flex items-center gap-1'>
                   {logo ? (
                     <Image
                       width={0}
                       height={0}
-                      sizes="100vw"
-                      className="h-6 w-auto"
+                      sizes='100vw'
+                      className='h-6 w-auto'
                       src={logo}
                       alt={label ?? ''}
                     />
                   ) : (
-                    <span className="block w-4 h-0.5 bg-neutral-200" />
+                    <span className='block w-4 h-0.5 bg-neutral-200' />
                   )}
                   {label}
-                  <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
+                  <div className='text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5'>
                     {price}
                   </div>
                 </div>
@@ -174,7 +169,8 @@ const AmountControls = ({
           defaultValue={[defaultMultiplierValue]}
           max={30}
           step={1}
-          className="my-5"
+          className='my-5'
+          disabled={isDisable}
           onValueChange={(values) => setValue('multiplier', values[0])}
         />
       </div>

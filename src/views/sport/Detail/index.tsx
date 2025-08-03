@@ -97,7 +97,11 @@ const Detail = () => {
             data={formattedOdds}
           />
         }
-        <BetForm matchId={id} odds={match?.latestOdds} />
+        <BetForm
+          matchId={id}
+          odds={match?.latestOdds}
+          isDisable={match?.isEnded || match?.isBettingClosed}
+        />
       </div>
 
       <ActivityTab className='md:mt-16 mt-6' />
