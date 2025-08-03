@@ -9,7 +9,7 @@ interface Props {
 
 const ClosePosition = ({ positionSize, fee, pnl, onClosePosition }: Props) => {
   const details = [
-    { label: 'Position size', value: `$${positionSize}` },
+    { label: 'Position size', value: `${positionSize}` },
     { label: 'Charged fee', value: `$${fee}` },
     { label: 'PNL', value: `$${pnl}` },
   ];
@@ -18,7 +18,7 @@ const ClosePosition = ({ positionSize, fee, pnl, onClosePosition }: Props) => {
     <>
       <h3 className='text-base text-white font-medium text-center'>Close position</h3>
 
-      <ul className='mt-4'>
+      <ul className='mt-6'>
         {details.map(({ value, label }, index) => (
           <li
             key={index}

@@ -189,6 +189,7 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
 
     dispatch(
       openDialog({
+        dialogProps: { className: '!pt-6', closeButtonClassName: '!top-[23px]' },
         content: (
           <PlaceBet
             outcome={outcome}

@@ -49,8 +49,8 @@ const PlaceBet = ({ outcome, entryPrice, liquidationPrice, positionSize, fee, mu
 
   return (
     <>
-      <h3 className='text-base text-white font-medium text-center'>Place bet</h3>
-      <ul className='mt-4'>
+      <h3 className='text-base text-white font-medium text-center'>Open Position</h3>
+      <ul className='mt-6'>
         {details.map(({ label, value, render }, index) => (
           <li
             key={index}

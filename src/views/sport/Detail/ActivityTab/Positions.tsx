@@ -98,6 +98,7 @@ const Positions = () => {
   ) => {
     dispatch(
       openDialog({
+        dialogProps: { className: '!pt-6', closeButtonClassName: '!top-[23px]' },
         content: (
           <ClosePosition
             positionSize={size}

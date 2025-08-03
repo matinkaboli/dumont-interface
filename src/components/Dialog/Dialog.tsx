@@ -1,4 +1,5 @@
 import { ComponentProps } from 'react';
+import { clsx } from 'clsx';
 import { Content, Overlay, Portal, Root, Title } from '@radix-ui/react-dialog';
 import { AnimatePresence, motion } from 'motion/react';
 import { cva, VariantProps } from 'class-variance-authority';
@@ -6,7 +7,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 import { Icon } from '@/components';
 
-const contentVariants = cva('fixed z-50 bg-neutral-750 rounded-xl w-3/4 px-6 py-8', {
+const contentVariants = cva('fixed z-50 bg-neutral-750 rounded-xl w-3/4 px-6 py-8 md:block hidden', {
   variants: {
     size: {
       sm: 'md:w-[340px]',
@@ -29,20 +30,23 @@ export interface DialogProps
   className?: string;
   showCloseButton?: boolean;
   disableEvents?: boolean;
+  closeButtonClassName?: string;
 }
 
-const Dialog = ({
-                  open,
-                  onOpenChange,
-                  onCloseButton,
-                  onClickOverlay,
-                  showCloseButton = true,
-                  disableEvents = false,
-                  className,
-                  size,
-                  children,
-                  ...props
-                }: DialogProps) => {
+const Dialog = (
+  {
+    open,
+    onOpenChange,
+    onCloseButton,
+    onClickOverlay,
+    showCloseButton = true,
+    disableEvents = false,
+    className,
+    closeButtonClassName = '',
+    size,
+    children,
+    ...props
+  }: DialogProps) => {
   const onCloseDialog = () => {
     if (!disableEvents) onOpenChange();
   };
@@ -76,7 +80,7 @@ const Dialog = ({
               ></motion.div>
             </Overlay>
 
-            <div className='flex justify-center items-center min-h-[80vh] fixed inset-0 z-50'>
+            <div className='flex justify-center items-center min-h-[80vh] fixed inset-0 z-50 hhhh'>
               <Content asChild className={contentVariants({ size, className })}>
                 <motion.div
                   initial={{ opacity: 0, y: 25 }}
@@ -89,7 +93,7 @@ const Dialog = ({
                   {showCloseButton && (
                     <div
                       onClick={handleCloseButton}
-                      className='absolute right-3.5 top-3.5 cursor-pointer'
+                      className={clsx('absolute right-3.5 top-3.5 cursor-pointer', closeButtonClassName)}
                     >
                       <Icon name='xmark' color='#75757C' />
                       <span className='sr-only'>Close</span>
