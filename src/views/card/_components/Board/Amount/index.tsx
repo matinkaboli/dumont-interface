@@ -1,17 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  Control,
-  FieldErrors,
-  UseFormResetField,
-  UseFormSetValue,
-  UseFormTrigger,
-} from 'react-hook-form';
+import BigNumber from 'bignumber.js';
+import { Control, FieldErrors, UseFormResetField, UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 
 import isEmpty from '@/helpers/isEmpty';
 import toFixedNumber from '@/helpers/toFixedNumber';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import humanizeAmount from '@/helpers/humanizeAmount';
+import formatDecimal from '@/helpers/formatDecimal';
 
 import AmountDetails from '@/views/_components/AmountDetails';
 import BetButton from '@/views/_components/BetButton';
@@ -35,21 +32,24 @@ interface Props {
   resetField: UseFormResetField<BetData>;
 }
 
-const Amount = ({
-  control,
-  inputErrors,
-  setValue,
-  payout,
-  totalOdds,
-  trigger,
-  isFormValid,
-  isButtonDisabled,
-  disabledButtonLabel,
-  touchedFields,
-  isSubmitted,
-  resetField,
-}: Props) => {
+const Amount = (
+  {
+    control,
+    inputErrors,
+    setValue,
+    payout,
+    totalOdds,
+    trigger,
+    isFormValid,
+    isButtonDisabled,
+    disabledButtonLabel,
+    touchedFields,
+    isSubmitted,
+    resetField,
+  }: Props) => {
   const { isCreated, data: game } = useTypedSelector((state) => state.faro.main);
+  const { balance } = useTypedSelector((state) => state.account);
+  const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
   const [amount, setAmount] = useState();
   const [isExpanded, setIsExpanded] = useState(false);
   const formattedPayout =
@@ -68,6 +68,50 @@ const Amount = ({
     if (isSubmitted) setIsExpanded(false);
   }, [isSubmitted]);
 
+  const onValidateInput = (value: any) => {
+    setAmount(value);
+
+    if (totalOdds > 0) {
+      const payoutValue = value * totalOdds;
+
+      if (balance && value > +balance) return 'Insufficient USDC balance';
+
+      const maxBetAmountMargined = (maxBetAmount * 98) / 100;
+      const maxBetValue = maxBetAmountMargined / totalOdds;
+
+      if (payoutValue > maxBetAmountMargined)
+        return `Max bet is $${humanizeAmount(
+          formatDecimal({ amount: maxBetValue, decimalPlaces: 2 }),
+        )}`;
+
+      if (value < minBetAmount) return `Min bet is $${minBetAmount}`;
+
+      return true;
+    }
+  };
+
+  const setMaxValue = () => {
+    touchedFields.amount = true;
+
+    let maximumPossibleAmount = '0';
+
+    if (!isEmpty(balance) && balance) {
+      const maxPossible = new BigNumber(maxBetAmount).div(totalOdds).times(97).div(100);
+
+      let maxPossibleString = balance.toString();
+
+      if (maxPossible.isLessThan(balance)) {
+        maxPossibleString = maxPossible.toString();
+      }
+
+      maximumPossibleAmount = maxPossibleString;
+    }
+
+    maximumPossibleAmount = toFixedNumber(maximumPossibleAmount, 3);
+
+    setValue('amount', maximumPossibleAmount, { shouldDirty: true, shouldValidate: true });
+  };
+
   const onExpandDetail = () => {
     if (!isExpanded) setIsExpanded(true);
   };
@@ -80,16 +124,16 @@ const Amount = ({
   return (
     <>
       {/* Desktop View */}
-      <div className="md:block hidden bg-gradiant-border bg-primary-800 bg-origin-border border border-transparent rounded-lg w-full h-full">
-        <div className="flex flex-col justify-between bg-primary-900 px-4 py-6 rounded-lg w-full h-full">
+      <div
+        className='md:block hidden bg-gradiant-border bg-primary-800 bg-origin-border border border-transparent rounded-lg w-full h-full'>
+        <div className='flex flex-col justify-between bg-primary-900 px-4 py-6 rounded-lg w-full h-full'>
           <div>
             <AmountInput
               control={control}
               touchedFields={touchedFields}
               inputErrors={inputErrors}
-              totalOdds={totalOdds}
-              setValue={setValue}
-              setAmount={setAmount}
+              setMaxValue={setMaxValue}
+              onValidate={onValidateInput}
             />
 
             <AmountDetails
@@ -99,10 +143,10 @@ const Amount = ({
           </div>
 
           <BetButton
-            type="submit"
-            size="md"
+            type='submit'
+            size='md'
             showTooltip={!isCreated && isEmpty(game)}
-            tooltipContent="No game created yet"
+            tooltipContent='No game created yet'
             disabled={isFormValid}
             disabledButtonLabel={disabledButtonLabel}
           />
@@ -110,34 +154,33 @@ const Amount = ({
       </div>
 
       {/* Mobile View */}
-      <div className="md:hidden flex flex-col gap-2">
+      <div className='md:hidden flex flex-col gap-2'>
         <CustomSheet
           isExpanded={isExpanded}
           onClose={onCloseDetail}
           buttonElement={
             <BetButton
-              size="md"
+              size='md'
               type={isExpanded ? 'submit' : 'button'}
               disabled={isExpanded ? isFormValid : isButtonDisabled}
               disabledButtonLabel={disabledButtonLabel}
               showTooltip={!isCreated && isEmpty(game)}
-              tooltipContent="No game created yet"
+              tooltipContent='No game created yet'
               label={isExpanded ? 'Bet' : `Bet (x${toFixedNumber(totalOdds)})`}
               onClick={onExpandDetail}
             />
           }
         >
           <AmountInput
-            className="mt-6"
+            className='mt-6'
             control={control}
             touchedFields={touchedFields}
             inputErrors={inputErrors}
-            totalOdds={totalOdds}
-            setValue={setValue}
-            setAmount={setAmount}
+            setMaxValue={setMaxValue}
+            onValidate={onValidateInput}
           />
 
-          <AmountDetails isDesktopView={false} details={amountDetails} className="pt-8 pb-10" />
+          <AmountDetails isDesktopView={false} details={amountDetails} className='pt-8 pb-10' />
         </CustomSheet>
       </div>
     </>

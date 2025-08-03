@@ -1,16 +1,10 @@
-import React, { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { Control, Controller, FieldErrors, UseFormSetValue } from 'react-hook-form';
+import React, { ChangeEvent } from 'react';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
 import Image from 'next/image';
-import BigNumber from 'bignumber.js';
 import clsx from 'clsx';
 
 import { Icon, Input } from '@/components';
 import { Props as InputProps } from '@/components/Input';
-import isEmpty from '@/helpers/isEmpty';
-import toFixedNumber from '@/helpers/toFixedNumber';
-import humanizeAmount from '@/helpers/humanizeAmount';
-import formatDecimal from '@/helpers/formatDecimal';
-import { useTypedSelector } from '@/hooks/useTypedSelector';
 
 import MaxButton from './MaxButton';
 
@@ -26,9 +20,8 @@ interface Props {
   control: Control<any>;
   touchedFields: Partial<{ amount?: boolean | undefined; keys?: boolean[] | undefined }>;
   inputErrors?: FieldErrors<any>;
-  totalOdds: number;
-  setValue: UseFormSetValue<any>;
-  setAmount?: Dispatch<SetStateAction<any>> | null;
+  onValidate: (value: any) => any;
+  setMaxValue: () => void;
 }
 
 const AmountInput = (
@@ -37,59 +30,14 @@ const AmountInput = (
     touchedFields,
     control,
     inputErrors,
-    totalOdds,
-    setValue,
-    setAmount = null,
+    onValidate,
+    setMaxValue,
   }: Props) => {
-  const { balance } = useTypedSelector((state) => state.account);
-  const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
 
   const inputValidation = {
     required: 'Bet amount is required.',
     pattern: { value: /^\d*\.?\d+$/, message: 'This input is number only.' },
-    validate: (value: any) => {
-      if (setAmount) setAmount(value);
-
-      if (totalOdds > 0) {
-        const payoutValue = value * totalOdds;
-
-        if (balance && value > +balance) return 'Insufficient USDC balance';
-
-        const maxBetAmountMargined = (maxBetAmount * 98) / 100;
-        const maxBetValue = maxBetAmountMargined / totalOdds;
-
-        if (payoutValue > maxBetAmountMargined)
-          return `Max bet is $${humanizeAmount(
-            formatDecimal({ amount: maxBetValue, decimalPlaces: 2 }),
-          )}`;
-
-        if (value < minBetAmount) return `Min bet is $${minBetAmount}`;
-
-        return true;
-      }
-    },
-  };
-
-  const setMaxValue = () => {
-    touchedFields.amount = true;
-
-    let maximumPossibleAmount = '0';
-
-    if (!isEmpty(balance) && balance) {
-      const maxPossible = new BigNumber(maxBetAmount).div(totalOdds).times(97).div(100);
-
-      let maxPossibleString = balance.toString();
-
-      if (maxPossible.isLessThan(balance)) {
-        maxPossibleString = maxPossible.toString();
-      }
-
-      maximumPossibleAmount = maxPossibleString;
-    }
-
-    maximumPossibleAmount = toFixedNumber(maximumPossibleAmount, 3);
-
-    setValue('amount', maximumPossibleAmount, { shouldDirty: true, shouldValidate: true });
+    validate: (value: any) => onValidate(value),
   };
 
   const handleInputChange = (

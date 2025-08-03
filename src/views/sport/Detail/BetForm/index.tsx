@@ -37,13 +37,20 @@ export interface BetDetails {
   totalSize: number,
   feePerMinute: number,
   liquidationPrice: number
+  selectedTeamOdds: number,
 }
 
-type OutcomeLabel = 'home' | 'away' | 'draw';
+export type OutcomeLabel = 'home' | 'away' | 'draw';
+
+interface Props {
+  matchId: string;
+  odds?: Odds;
+  isDisable?: boolean;
+}
 
 const defaultMultiplierValue = 2;
 
-const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
+const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
   const { client } = useSmartWallets();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
@@ -54,6 +61,7 @@ const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
     totalSize: 0,
     feePerMinute: 0,
     liquidationPrice: 0,
+    selectedTeamOdds: 0,
   });
 
   const {
@@ -90,7 +98,12 @@ const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
       const selectedTeam = Outcome[outcome].toLowerCase() as OutcomeLabel;
       const liquidationPrice = odds ? getLiquidationThreshold(odds[selectedTeam], multiplier) : 0;
 
-      setBetDetails({ totalSize, feePerMinute, liquidationPrice });
+      setBetDetails({
+        totalSize,
+        feePerMinute,
+        liquidationPrice,
+        selectedTeamOdds: odds ? odds[selectedTeam] : 0,
+      });
     }
   }, [amount, multiplier, outcome, odds]);
 
@@ -176,13 +189,15 @@ const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
 
     dispatch(
       openDialog({
+        dialogProps: { className: '!pt-6', closeButtonClassName: '!top-[23px]' },
         content: (
           <PlaceBet
-            entryPrice='0.6'
-            liquidationPrice={betDetails.liquidationPrice}
-            positionSize={betDetails.totalSize}
-            fee={betDetails.feePerMinute}
             outcome={outcome}
+            multiplier={data.multiplier}
+            fee={betDetails.feePerMinute}
+            positionSize={betDetails.totalSize}
+            entryPrice={betDetails.selectedTeamOdds}
+            liquidationPrice={betDetails.liquidationPrice}
             onConfirm={() => onOpenPosition(data)}
           />
         ),
@@ -200,48 +215,55 @@ const BetForm = ({ matchId, odds }: { matchId: string; odds?: Odds }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Desktop View */}
-      <div
-        className='h-full md:flex hidden flex-col justify-between bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4'>
-        <AmountControls
-          control={control}
-          touchedFields={touchedFields}
-          errors={errors}
-          setValue={setValue}
-          defaultMultiplierValue={defaultMultiplierValue}
-          betDetails={betDetails}
-        />
-        <BetButton disabledButtonLabel='Bet' />
-      </div>
+    <div className='relative'>
+      {isDisable && <div className='absolute inset-0 bg-primary-900/40 z-10 cursor-not-allowed rounded-xl' />}
+      <form onSubmit={handleSubmit(onSubmit)} className='h-full'>
+        {/* Desktop View */}
+        <div
+          className='h-full md:flex hidden flex-col justify-between bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4'>
+          <AmountControls
+            control={control}
+            touchedFields={touchedFields}
+            errors={errors}
+            setValue={setValue}
+            defaultMultiplierValue={defaultMultiplierValue}
+            betDetails={betDetails}
+            isDisable={isDisable}
+          />
+          <BetButton label='Open Position' disabledButtonLabel='Open Position' disabled={isDisable} />
+        </div>
 
-      {/* Mobile View */}
-      <div className='md:hidden block text-white'>
-        <CustomSheet
-          isExpanded={isExpanded}
-          onClose={onCloseDetail}
-          buttonElement={
-            <BetButton
-              size='md'
-              type={isExpanded ? 'submit' : 'button'}
-              disabledButtonLabel='Bet'
-              onClick={onExpandDetail}
-            />
-          }
-        >
-          <div className='flex flex-col gap-4 pt-6 pb-10'>
-            <AmountControls
-              control={control}
-              touchedFields={touchedFields}
-              errors={errors}
-              setValue={setValue}
-              defaultMultiplierValue={defaultMultiplierValue}
-              betDetails={betDetails}
-            />
-          </div>
-        </CustomSheet>
-      </div>
-    </form>
+        {/* Mobile View */}
+        <div className='md:hidden block text-white'>
+          <CustomSheet
+            isExpanded={isExpanded}
+            onClose={onCloseDetail}
+            buttonElement={
+              <BetButton
+                size='md'
+                label='Open Position'
+                type={isExpanded ? 'submit' : 'button'}
+                disabledButtonLabel='Open Position'
+                onClick={onExpandDetail}
+                disabled={isDisable}
+              />
+            }
+          >
+            <div className='flex flex-col gap-4 pt-6 pb-10'>
+              <AmountControls
+                control={control}
+                touchedFields={touchedFields}
+                errors={errors}
+                setValue={setValue}
+                defaultMultiplierValue={defaultMultiplierValue}
+                betDetails={betDetails}
+                isDisable={isDisable}
+              />
+            </div>
+          </CustomSheet>
+        </div>
+      </form>
+    </div>
   );
 };
 

@@ -16,14 +16,13 @@ const DialogRoot = () => {
 
   return (
     <div>
-      <ModalSheet isOpen={open} onClose={handleCloseDialog} className="md:hidden block">
+      <ModalSheet isOpen={open} onClose={handleCloseDialog} className='md:hidden block'>
         {content}
       </ModalSheet>
       <Dialog
         {...dialogProps}
         open={open}
         onOpenChange={handleCloseDialog}
-        className="md:block hidden"
       >
         {content}
       </Dialog>
