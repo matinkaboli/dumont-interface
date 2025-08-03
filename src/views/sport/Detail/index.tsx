@@ -1,9 +1,10 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'next/navigation';
+import { usePrivy } from '@privy-io/react-auth';
 
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { AppDispatch } from '@/redux/store';
@@ -22,12 +23,14 @@ import ActivityTab from './ActivityTab';
 const darkLayoutStyle = 'bg-secondary-900 border-[1.5px] border-neutral-700 rounded-lg';
 
 const Detail = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const [formattedOdds, setFormattedOdds] = useState<[]>([]);
+  const { ready } = usePrivy();
   const { id } = useParams<{ id: string }>();
+  const dispatch = useDispatch<AppDispatch>();
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
   const { match, loading: matchLoading } = useTypedSelector((state) => state.match.main);
-  const { loading: oddsLoading } = useTypedSelector((state) => state.match.odds);
+  const fetchedRef = useRef(false);
+  const [formattedOdds, setFormattedOdds] = useState<[]>([]);
+  const [oddsLoading, setOddsLoading] = useState<boolean>(false);
 
   const teams = [
     { name: 'homeTeam', label: match?.homeTeam.name || '' },
@@ -36,7 +39,11 @@ const Detail = () => {
   ];
 
   useEffect(() => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+
     const fetchData = async () => {
+      setOddsLoading(true);
       const matchRes = await dispatch(getMatch(id)) as { payload: Match };
       if (!matchRes?.payload) return;
 
@@ -55,6 +62,7 @@ const Detail = () => {
           awayTeam: odds.away,
           draw: odds.draw,
         }));
+        setOddsLoading(false);
         setFormattedOdds(formatted);
       }
     };
@@ -62,7 +70,7 @@ const Detail = () => {
     fetchData();
   }, [dispatch, id]);
 
-  if (isConnecting || matchLoading || oddsLoading) {
+  if (isConnecting || matchLoading || oddsLoading || !ready) {
     return (
       <div className='min-h-[50vh] flex-center'>
         <Loading />
