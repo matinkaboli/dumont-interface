@@ -37,15 +37,15 @@ const Detail = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const matchRes = await dispatch(getMatch(id));
+      const matchRes = await dispatch(getMatch(id)) as { payload: Match };
       if (!matchRes?.payload) return;
 
-      // const start = Math.floor((+new Date(matchRes.createdAt)) / 1000).toString();
-      // const end = Math.floor(Date.now() / 1000).toString();
+      const start = Math.floor((+new Date(matchRes.payload.createdAt)) / 1000).toString();
+      const end = Math.floor(Date.now() / 1000).toString();
       const oddsRes = await dispatch(getOdds({
-        id: '5',
-        start: '1753693000',
-        end: '1753699000',
+        id,
+        start,
+        end,
       }));
 
       if (oddsRes?.payload) {
