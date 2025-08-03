@@ -384,6 +384,24 @@
   },
   {
     "type": "function",
+    "name": "liquidatePosition",
+    "inputs": [
+      {
+        "name": "_positionId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_timestamp",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "manageClosePosition",
     "inputs": [
       {
@@ -643,7 +661,7 @@
       {
         "name": "_timestamp",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       }
     ],
@@ -687,13 +705,13 @@
       {
         "name": "_positionId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       },
       {
         "name": "_timestamp",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       }
     ],
@@ -706,13 +724,13 @@
       {
         "name": "_positionId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       },
       {
         "name": "_timestamp",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       }
     ],
@@ -731,7 +749,20 @@
       {
         "name": "_positionId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PositionLiquidated",
+    "inputs": [
+      {
+        "name": "_positionId",
+        "type": "uint256",
+        "indexed": true,
         "internalType": "uint256"
       }
     ],
@@ -744,13 +775,13 @@
       {
         "name": "_positionId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       },
       {
         "name": "_timestamp",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       }
     ],
@@ -925,6 +956,17 @@
   {
     "type": "error",
     "name": "PositionIsNotPendingClose",
+    "inputs": [
+      {
+        "name": "_positionId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PositionNotEligibleForLiquidation",
     "inputs": [
       {
         "name": "_positionId",

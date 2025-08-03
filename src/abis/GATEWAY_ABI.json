@@ -182,15 +182,15 @@
     "name": "GatewayCardClaimed",
     "inputs": [
       {
-        "name": "_gameId",
+        "name": "_faroId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       },
       {
         "name": "_index",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       }
     ],
@@ -201,7 +201,7 @@
     "name": "GatewayCardGuessed",
     "inputs": [
       {
-        "name": "_gameId",
+        "name": "_faroId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
@@ -220,7 +220,7 @@
     "name": "GatewayFaroCreated",
     "inputs": [
       {
-        "name": "_gameId",
+        "name": "_faroId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
@@ -245,7 +245,7 @@
     "name": "GatewayFreeRevealRequested",
     "inputs": [
       {
-        "name": "_gameId",
+        "name": "_faroId",
         "type": "uint256",
         "indexed": true,
         "internalType": "uint256"
@@ -266,19 +266,19 @@
       {
         "name": "_matchId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       },
       {
         "name": "_positionId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       },
       {
         "name": "_player",
         "type": "address",
-        "indexed": false,
+        "indexed": true,
         "internalType": "address"
       }
     ],
@@ -291,19 +291,19 @@
       {
         "name": "_matchId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       },
       {
         "name": "_positionId",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       },
       {
         "name": "_player",
         "type": "address",
-        "indexed": false,
+        "indexed": true,
         "internalType": "address"
       }
     ],
