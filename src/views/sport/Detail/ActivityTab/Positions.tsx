@@ -149,9 +149,9 @@ const Positions = () => {
       <TableHeader>
         <TableRow className='uppercase text-neutral-400 text-xs font-medium'>
           <TableHead>Team</TableHead>
-          <TableHead>Size</TableHead>
-          <TableHead>Entry Price</TableHead>
-          <TableHead>Liquidation Price</TableHead>
+          <TableHead>Position Size</TableHead>
+          <TableHead>Entry Odds</TableHead>
+          <TableHead>Liquidation Threshold</TableHead>
           <TableHead>Charged Fee</TableHead>
           <TableHead>PNL</TableHead>
           <TableHead />
