@@ -41,8 +41,8 @@ const PlaceBet = ({ outcome, entryPrice, liquidationPrice, positionSize, fee, mu
         </div>
       ),
     },
-    { label: 'Entry price', value: `${entryPrice}%` },
-    { label: 'Liquidation price', value: `${formatDecimal({ amount: liquidationPrice, decimalPlaces: 2 })}%` },
+    { label: 'Entry Odds', value: `${entryPrice}%` },
+    { label: 'Liquidation Threshold', value: `${formatDecimal({ amount: liquidationPrice, decimalPlaces: 2 })}%` },
     { label: 'Position size', value: `$${formatDecimal({ amount: positionSize, decimalPlaces: 2 })}` },
     { label: 'Fee per minute', value: `$${formatDecimal({ amount: fee, decimalPlaces: 2 })}` },
   ];
@@ -63,7 +63,7 @@ const PlaceBet = ({ outcome, entryPrice, liquidationPrice, positionSize, fee, mu
       </ul>
 
       <Button fullWidth size='md' radius='lg' className='mt-10' onClick={onConfirm}>
-        Bet
+        Open Position
       </Button>
     </>
   );

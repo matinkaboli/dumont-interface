@@ -105,7 +105,7 @@ const AmountControls = (
   const details = [
     {
       id: '1',
-      label: 'Total size',
+      label: 'Position Size',
       value: `$${formatDecimal({ amount: betDetails.totalSize, decimalPlaces: 2 })}`,
     },
     {
@@ -115,7 +115,7 @@ const AmountControls = (
     },
     {
       id: '3',
-      label: 'Liquidation price',
+      label: 'Liquidation Threshold',
       value: `${formatDecimal({ amount: betDetails.liquidationPrice, decimalPlaces: 2 })}%`,
     },
   ];
