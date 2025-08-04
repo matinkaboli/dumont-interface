@@ -10,7 +10,7 @@ import ProgressBar from '@/views/sport/_components/ProgressBar';
 const Match = ({ match }: {
   match: Match;
 }) => {
-  const { matchId, homeTeam, awayTeam, league, latestOdds, start, isPrematch, isEnded, score } = match;
+  const { matchId, homeTeam, awayTeam, league, latestOdds, startTime, isPrematch, isEnded, score } = match;
 
   return (
     <Link
@@ -25,7 +25,7 @@ const Match = ({ match }: {
           </div>
         ) : (
           <div className='text-neutral-100 text-xs text-center mt-0.5'>
-            {dayjs(start).format('DD MMM - HH:mm')}
+            {dayjs(startTime).format('DD MMM - HH:mm')}
           </div>
         )
       }

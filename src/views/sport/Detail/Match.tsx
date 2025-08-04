@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Match = ({ match, className }: Props) => {
-  const { homeTeam, awayTeam, latestOdds, start, league, isEnded, isBettingClosed, isPrematch, score } = match;
+  const { homeTeam, awayTeam, latestOdds, league, isEnded, startTime, isPrematch, score } = match;
 
   return (
     <div className={className}>
@@ -40,7 +40,7 @@ const Match = ({ match, className }: Props) => {
             <span className='inline-flex flex-col gap-0.5 md:px-11 px-2'>
               <span className='text-center text-xs text-neutral-400'>Match time</span>
               <span className='text-center text-sm text-neutral-100 font-medium'>
-                {dayjs(start).format('DD MMM - HH:mm')}
+                {dayjs(startTime).format('DD MMM - HH:mm')}
               </span>
             </span>
           )
