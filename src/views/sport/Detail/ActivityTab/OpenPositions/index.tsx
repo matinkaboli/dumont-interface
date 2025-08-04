@@ -23,10 +23,11 @@ import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
-import ClosePosition from '@/views/sport/Detail/ActivityTab/ClosePosition';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
-const positions = [
+import ClosePosition from './ClosePosition';
+
+const index = [
   {
     id: '1',
     team: 'Real Madrid',
@@ -62,7 +63,7 @@ const positions = [
   },
 ];
 
-const Positions = () => {
+const OpenPositions = () => {
   const { client } = useSmartWallets();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
@@ -160,17 +161,17 @@ const Positions = () => {
     <Table className='text-white'>
       <TableHeader>
         <TableRow className='uppercase text-neutral-400 text-xs font-medium'>
-          <TableHead>Team</TableHead>
-          <TableHead>Position Size</TableHead>
-          <TableHead>Entry Odds</TableHead>
-          <TableHead>Liquidation Threshold</TableHead>
-          <TableHead>Charged Fee</TableHead>
+          <TableHead>Outcome</TableHead>
+          <TableHead>Size</TableHead>
+          <TableHead>Entry%</TableHead>
+          <TableHead>Liquid%</TableHead>
+          <TableHead>Fee</TableHead>
           <TableHead>PNL</TableHead>
           <TableHead />
         </TableRow>
       </TableHeader>
       <TableBody>
-        {positions.map(
+        {index.map(
           ({ id, team, logo, size, entryPrice, liquidationPrice, chargedFee, pnl, leverage }) => (
             <TableRow key={id}>
               <TableCell className='flex items-center gap-2 pr-6'>
@@ -211,4 +212,4 @@ const Positions = () => {
   );
 };
 
-export default Positions;
+export default OpenPositions;
