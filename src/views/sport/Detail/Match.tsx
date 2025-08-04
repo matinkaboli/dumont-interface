@@ -34,7 +34,7 @@ const Match = ({ match, className }: Props) => {
           <Image width={0} height={0} className='h-8 w-auto' sizes='100vw' src={homeTeam.logo} alt={homeTeam.logo} />
         </span>
 
-        {!isPrematch && !isEnded ?
+        {!isPrematch ?
           (<div className='font-bold text-xl text-neutral-100 mx-12'>{score.replace(':', ' - ')}</div>) :
           (
             <span className='inline-flex flex-col gap-0.5 md:px-11 px-2'>
@@ -52,7 +52,7 @@ const Match = ({ match, className }: Props) => {
         </span>
       </h1>
 
-      {isEnded || isBettingClosed ?
+      {isEnded ?
         (<div className='bg-primary-800 text-white w-fit px-6 py-1.5 font-bold text-base mx-auto mt-6 rounded-full'>
           The match has ended
         </div>) :
