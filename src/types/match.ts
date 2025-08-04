@@ -4,6 +4,7 @@ export interface Match {
   homeTeam: Team;
   awayTeam: Team;
   start: number;
+  startTime: Date;
   eventId: string;
   matchId: number;
   contractAddress: string;
