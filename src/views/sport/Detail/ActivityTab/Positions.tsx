@@ -1,12 +1,22 @@
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { encodeFunctionData } from 'viem';
 import { useEffect, useState } from 'react';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components';
-import { openDialog } from '@/redux/features/dialogSlice';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  ToastContent,
+  ToastWrapper,
+} from '@/components';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
@@ -80,14 +90,16 @@ const Positions = () => {
 
   useEffect(() => {
     if (isConfirmed) {
-      dispatch(
-        openDialog({
-          content: (
-            <AnimatedDialogContent key='close'>
-              <div>Successfully</div>
-            </AnimatedDialogContent>
-          ),
-        }),
+      dispatch(closeDialog());
+      toast(
+        <ToastWrapper>
+          <ToastContent
+            variant='neutral'
+            title='Position closed.'
+            description='Your profit/loss has been settled.'
+          />
+        </ToastWrapper>,
+        { position: 'bottom-right', toastId: 'closed' },
       );
     }
   }, [isConfirmed]);
