@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { Match } from '@/types/match';
 
 import ProgressBar from '@/views/sport/_components/ProgressBar';
+import { PulsingCircle } from '@/components';
 
 interface Props {
   match: Match;
@@ -11,13 +12,20 @@ interface Props {
 }
 
 const Match = ({ match, className }: Props) => {
-  const { homeTeam, awayTeam, latestOdds, start, league, isEnded, isBettingClosed } = match;
+  const { homeTeam, awayTeam, latestOdds, start, league, isEnded, isBettingClosed, isPrematch, score } = match;
 
   return (
     <div className={className}>
       <div className='flex gap-1 items-center text-xs text-center text-neutral-400 w-fit mx-auto'>
         <Image width={0} height={0} className='h-5 w-auto' sizes='100vw' src={league.logo} alt={league.name} />
         {league.name}
+        {!isPrematch && !isEnded && (
+          <>
+            <div className='bg-neutral-600 block h-3 w-[1px] mx-2' />
+            <PulsingCircle size='sm' className='mr-0.5' />
+            <div>34:22</div>
+          </>
+        )}
       </div>
 
       <h1 className='flex items-center mt-2 whitespace-nowrap w-fit mx-auto'>
@@ -26,12 +34,17 @@ const Match = ({ match, className }: Props) => {
           <Image width={0} height={0} className='h-8 w-auto' sizes='100vw' src={homeTeam.logo} alt={homeTeam.logo} />
         </span>
 
-        <span className='inline-flex flex-col gap-0.5 md:px-11 px-2'>
-          <span className='text-center text-xs text-neutral-400'>Match time</span>
-          <span className='text-center text-sm text-neutral-100 font-medium'>
-            {dayjs(start).format('DD MMM - HH:mm')}
-          </span>
-        </span>
+        {!isPrematch && !isEnded ?
+          (<div className='font-bold text-xl text-neutral-100 mx-12'>{score.replace(':', ' - ')}</div>) :
+          (
+            <span className='inline-flex flex-col gap-0.5 md:px-11 px-2'>
+              <span className='text-center text-xs text-neutral-400'>Match time</span>
+              <span className='text-center text-sm text-neutral-100 font-medium'>
+                {dayjs(start).format('DD MMM - HH:mm')}
+              </span>
+            </span>
+          )
+        }
 
         <span className='inline-flex items-center md:text-md text-sm text-white font-bold md:gap-3 gap-1.5'>
           <Image width={0} height={0} className='h-8 w-auto' sizes='100vw' src={awayTeam.logo} alt={awayTeam.name} />
