@@ -31,9 +31,10 @@ const Detail = () => {
   const { match, loading: matchLoading, isRefetching } = useTypedSelector((state) => state.match.main);
 
   const [formattedOdds, setFormattedOdds] = useState<[]>([]);
-  const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [initialLoadDone, setInitialLoadDone] = useState<boolean>(false);
   const [oddsLoading, setOddsLoading] = useState<boolean>(false);
 
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const hasFetched = useRef(false);
 
   const teams = [
@@ -48,10 +49,20 @@ const Detail = () => {
 
     fetchMatch();
 
-    const interval = setInterval(fetchMatch, 5000);
+    intervalRef.current = setInterval(() => {
+      if (match?.isEnded || match?.isPrematch) {
+        if (intervalRef.current) clearInterval(intervalRef.current);
 
-    return () => clearInterval(interval);
-  }, [dispatch, id]);
+        return;
+      }
+
+      fetchMatch();
+    }, 5000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [dispatch, id, match?.isEnded, match?.isPrematch]);
 
   const fetchMatch = async () => {
     setOddsLoading(true);
