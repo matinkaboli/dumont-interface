@@ -23,14 +23,18 @@ import ActivityTab from './ActivityTab';
 const darkLayoutStyle = 'bg-secondary-900 border-[1.5px] border-neutral-700 rounded-lg';
 
 const Detail = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const { ready } = usePrivy();
   const { id } = useParams<{ id: string }>();
-  const dispatch = useDispatch<AppDispatch>();
+
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { match, loading: matchLoading } = useTypedSelector((state) => state.match.main);
-  const fetchedRef = useRef(false);
+  const { match, loading: matchLoading, isRefetching } = useTypedSelector((state) => state.match.main);
+
   const [formattedOdds, setFormattedOdds] = useState<[]>([]);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
   const [oddsLoading, setOddsLoading] = useState<boolean>(false);
+
+  const hasFetched = useRef(false);
 
   const teams = [
     { name: 'homeTeam', label: match?.homeTeam.name || '' },
@@ -39,38 +43,47 @@ const Detail = () => {
   ];
 
   useEffect(() => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
+    if (hasFetched.current) return;
+    hasFetched.current = true;
 
-    const fetchData = async () => {
-      setOddsLoading(true);
-      const matchRes = await dispatch(getMatch(id)) as { payload: Match };
-      if (!matchRes?.payload) return;
+    fetchMatch();
 
-      const start = Math.floor((+new Date(matchRes.payload.createdAt)) / 1000).toString();
-      const end = Math.floor(Date.now() / 1000).toString();
-      const oddsRes = await dispatch(getOdds({
-        id,
-        start,
-        end,
-      }));
+    const interval = setInterval(fetchMatch, 5000);
 
-      if (oddsRes?.payload) {
-        const formatted = oddsRes.payload.map((odds: Odds) => ({
-          time: odds.date,
-          homeTeam: odds.home,
-          awayTeam: odds.away,
-          draw: odds.draw,
-        }));
-        setOddsLoading(false);
-        setFormattedOdds(formatted);
-      }
-    };
-
-    fetchData();
+    return () => clearInterval(interval);
   }, [dispatch, id]);
 
-  if (isConnecting || matchLoading || oddsLoading || !ready) {
+  const fetchMatch = async () => {
+    setOddsLoading(true);
+
+    const matchRes = await dispatch(getMatch(id)) as { payload: Match };
+    if (!matchRes?.payload) return;
+
+    const start = Math.floor((+new Date(matchRes.payload.createdAt)) / 1000).toString();
+    const end = Math.floor(Date.now() / 1000).toString();
+    const oddsRes = await dispatch(getOdds({
+      id,
+      start,
+      end,
+    }));
+
+    if (oddsRes?.payload) {
+      const formatted = oddsRes.payload.map((odds: Odds) => ({
+        time: odds.date,
+        homeTeam: odds.home,
+        awayTeam: odds.away,
+        draw: odds.draw,
+      }));
+      setFormattedOdds(formatted);
+    }
+
+    setOddsLoading(false);
+    if (!initialLoadDone) setInitialLoadDone(true);
+  };
+
+  const isLoading = isConnecting || !ready || (matchLoading && !isRefetching) || (oddsLoading && !initialLoadDone);
+
+  if (isLoading) {
     return (
       <div className='min-h-[50vh] flex-center'>
         <Loading />

@@ -14,13 +14,19 @@ import Match from './Match';
 const GameBoard = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { matches, loading } = useTypedSelector((state) => state.match.main);
+  const { matches, loading, isRefetching } = useTypedSelector((state) => state.match.main);
 
   useEffect(() => {
     dispatch(getMatches());
-  }, []);
 
-  if (loading || isConnecting) {
+    const interval = setInterval(() => {
+      dispatch(getMatches());
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
+  if ((loading && !isRefetching) || isConnecting) {
     return (
       <div className='min-h-[50vh] flex-center'>
         <Loading />

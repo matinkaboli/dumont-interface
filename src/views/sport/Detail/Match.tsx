@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Match = ({ match, className }: Props) => {
-  const { homeTeam, awayTeam, latestOdds, league, isEnded, startTime, isPrematch, score } = match;
+  const { homeTeam, awayTeam, latestOdds, league, isEnded, startTime, isPrematch, score, timer } = match;
 
   return (
     <div className={className}>
@@ -23,7 +23,7 @@ const Match = ({ match, className }: Props) => {
           <>
             <div className='bg-neutral-600 block h-3 w-[1px] mx-2' />
             <PulsingCircle size='sm' className='mr-0.5' />
-            <div>34:22</div>
+            <div>{timer}</div>
           </>
         )}
       </div>

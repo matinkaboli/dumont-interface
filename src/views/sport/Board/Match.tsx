@@ -10,7 +10,7 @@ import ProgressBar from '@/views/sport/_components/ProgressBar';
 const Match = ({ match }: {
   match: Match;
 }) => {
-  const { matchId, homeTeam, awayTeam, league, latestOdds, startTime, isPrematch, isEnded, score } = match;
+  const { matchId, homeTeam, awayTeam, league, latestOdds, startTime, isPrematch, isEnded, score, timer } = match;
 
   return (
     <Link
@@ -21,7 +21,7 @@ const Match = ({ match }: {
         (
           <div className='flex-center mx-auto w-fit gap-1 mt-0.5'>
             <PulsingCircle size='sm' />
-            <span className='text-neutral-100 text-xs'>41:23</span>
+            <span className='text-neutral-100 text-xs'>{timer}</span>
           </div>
         ) : (
           <div className='text-neutral-100 text-xs text-center mt-0.5'>

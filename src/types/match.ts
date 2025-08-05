@@ -16,6 +16,7 @@ export interface Match {
   __v: number;
   latestOdds: Odds;
   score: string;
+  timer: string;
   isBettingClosed: boolean;
 }
 
