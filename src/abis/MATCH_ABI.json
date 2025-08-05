@@ -587,6 +587,11 @@
             "name": "closeRequestedAt",
             "type": "uint256",
             "internalType": "uint256"
+          },
+          {
+            "name": "liquidatedAt",
+            "type": "uint256",
+            "internalType": "uint256"
           }
         ]
       }
