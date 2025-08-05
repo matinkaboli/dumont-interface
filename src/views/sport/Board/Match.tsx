@@ -32,13 +32,13 @@ const Match = ({ match }: {
 
       <h6 className='flex items-center text-sm text-white font-medium mt-3 whitespace-nowrap w-fit mx-auto'>
         <span className='inline-flex items-center gap-2'>
-          {homeTeam.name}
+          {homeTeam.shortName}
           <Image width={0} height={0} className='h-6 w-auto' sizes='100vw' src={homeTeam.logo} alt={homeTeam.name} />
         </span>
         <span className='px-2 text-sm font-bold'>{score.replace(':', ' - ')}</span>
         <span className='inline-flex items-center gap-2'>
           <Image width={0} height={0} className='h-6 w-auto' sizes='100vw' src={awayTeam.logo} alt={awayTeam.name} />
-          {awayTeam.name}
+          {awayTeam.shortName}
         </span>
       </h6>
 
