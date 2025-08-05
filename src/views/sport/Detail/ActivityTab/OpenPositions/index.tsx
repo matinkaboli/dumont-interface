@@ -27,46 +27,11 @@ import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
 import ClosePosition from './ClosePosition';
 
-const index = [
-  {
-    id: '1',
-    team: 'Real Madrid',
-    logo: '/images/teams/real-madrid.svg',
-    size: '$3,000',
-    entryPrice: '0.6',
-    liquidationPrice: '0.5',
-    chargedFee: '$400',
-    pnl: -500,
-    leverage: '10x',
-  },
-  {
-    id: '2',
-    team: 'Barcelona',
-    logo: '/images/teams/barcelona.svg',
-    size: '$2,000',
-    entryPrice: '0.4',
-    liquidationPrice: '0.5',
-    chargedFee: '$300',
-    pnl: 500,
-    leverage: '5x',
-  },
-  {
-    id: '3',
-    team: 'Porto',
-    logo: '/images/teams/porto.svg',
-    size: '$1,500',
-    entryPrice: '0.2',
-    liquidationPrice: '0.3',
-    chargedFee: '$600',
-    pnl: -500,
-    leverage: '8x',
-  },
-];
-
 const OpenPositions = () => {
   const { client } = useSmartWallets();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
+  const { match } = useTypedSelector((state) => state.match.main);
   const [closePositionTx, setClosePositionTx] = useState('');
   const [isClosePositionLoading, setIsClosePositionLoading] = useState<boolean>(false);
 
@@ -157,6 +122,42 @@ const OpenPositions = () => {
     }
   };
 
+  const positions = [
+    {
+      id: '1',
+      team: match?.homeTeam?.name,
+      logo: match?.homeTeam?.logo,
+      size: '$3,000',
+      entryPrice: '0.6',
+      liquidationPrice: '0.5',
+      chargedFee: '$400',
+      pnl: -500,
+      leverage: '10x',
+    },
+    {
+      id: '2',
+      team: match?.awayTeam?.name,
+      logo: match?.awayTeam?.logo,
+      size: '$2,000',
+      entryPrice: '0.4',
+      liquidationPrice: '0.5',
+      chargedFee: '$300',
+      pnl: 500,
+      leverage: '5x',
+    },
+    {
+      id: '3',
+      team: 'Draw',
+      logo: '/images/draw.png',
+      size: '$1,500',
+      entryPrice: '0.2',
+      liquidationPrice: '0.3',
+      chargedFee: '$600',
+      pnl: -500,
+      leverage: '8x',
+    },
+  ];
+
   return (
     <Table className='text-white'>
       <TableHeader>
@@ -171,7 +172,7 @@ const OpenPositions = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {index.map(
+        {positions.map(
           ({ id, team, logo, size, entryPrice, liquidationPrice, chargedFee, pnl, leverage }) => (
             <TableRow key={id}>
               <TableCell className='flex items-center gap-2 pr-6'>
@@ -179,8 +180,8 @@ const OpenPositions = () => {
                   width={24}
                   height={24}
                   className='h-6 w-6 rounded-full'
-                  src={logo}
-                  alt={team}
+                  src={logo ?? '/images/draw.png'}
+                  alt={team ?? ''}
                 />
                 <span className='text-neutral-300 font-medium text-sm'>{team}</span>
                 <span className='bg-neutral-750 rounded-full px-2 py-0.5 text-xs text-white font-medium'>

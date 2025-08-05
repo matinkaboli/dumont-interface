@@ -91,7 +91,7 @@ const AmountControls = (
     {
       value: `${Outcome.Draw}`,
       label: 'Draw',
-      logo: null,
+      logo: '/images/draw.png',
       price: `${match?.latestOdds?.draw ?? 0}%`,
     },
     {
@@ -135,18 +135,14 @@ const AmountControls = (
             {options.map(({ value, label, logo, price }) => (
               <SelectItem key={value} value={value}>
                 <div className='flex items-center gap-1'>
-                  {logo ? (
-                    <Image
-                      width={0}
-                      height={0}
-                      sizes='100vw'
-                      className='h-6 w-auto'
-                      src={logo}
-                      alt={label ?? ''}
-                    />
-                  ) : (
-                    <span className='block w-4 h-0.5 bg-neutral-200' />
-                  )}
+                  <Image
+                    width={0}
+                    height={0}
+                    sizes='100vw'
+                    className='h-6 w-auto'
+                    src={logo ?? '/images/draw.png'}
+                    alt={label ?? ''}
+                  />
                   {label}
                   <div className='text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5'>
                     {price}
