@@ -1,61 +1,37 @@
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { encodeFunctionData } from 'viem';
 import { useEffect, useState } from 'react';
 import { useWaitForTransactionReceipt } from 'wagmi';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components';
-import { openDialog } from '@/redux/features/dialogSlice';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  ToastContent,
+  ToastWrapper,
+} from '@/components';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
-import ClosePosition from '@/views/sport/Detail/ActivityTab/ClosePosition';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
 
-const positions = [
-  {
-    id: '1',
-    team: 'Real Madrid',
-    logo: '/images/teams/real-madrid.svg',
-    size: '$3,000',
-    entryPrice: '0.6',
-    liquidationPrice: '0.5',
-    chargedFee: '$400',
-    pnl: -500,
-    leverage: '10x',
-  },
-  {
-    id: '2',
-    team: 'Barcelona',
-    logo: '/images/teams/barcelona.svg',
-    size: '$2,000',
-    entryPrice: '0.4',
-    liquidationPrice: '0.5',
-    chargedFee: '$300',
-    pnl: 500,
-    leverage: '5x',
-  },
-  {
-    id: '3',
-    team: 'Porto',
-    logo: '/images/teams/porto.svg',
-    size: '$1,500',
-    entryPrice: '0.2',
-    liquidationPrice: '0.3',
-    chargedFee: '$600',
-    pnl: -500,
-    leverage: '8x',
-  },
-];
+import ClosePosition from './ClosePosition';
 
-const Positions = () => {
+const OpenPositions = () => {
   const { client } = useSmartWallets();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
+  const { match } = useTypedSelector((state) => state.match.main);
   const [closePositionTx, setClosePositionTx] = useState('');
   const [isClosePositionLoading, setIsClosePositionLoading] = useState<boolean>(false);
 
@@ -80,14 +56,16 @@ const Positions = () => {
 
   useEffect(() => {
     if (isConfirmed) {
-      dispatch(
-        openDialog({
-          content: (
-            <AnimatedDialogContent key='close'>
-              <div>Successfully</div>
-            </AnimatedDialogContent>
-          ),
-        }),
+      dispatch(closeDialog());
+      toast(
+        <ToastWrapper>
+          <ToastContent
+            variant='neutral'
+            title='Position closed.'
+            description='Your profit/loss has been settled.'
+          />
+        </ToastWrapper>,
+        { position: 'bottom-right', toastId: 'closed' },
       );
     }
   }, [isConfirmed]);
@@ -144,15 +122,51 @@ const Positions = () => {
     }
   };
 
+  const positions = [
+    {
+      id: '1',
+      team: match?.homeTeam?.name,
+      logo: match?.homeTeam?.logo,
+      size: '$3,000',
+      entryPrice: '0.6',
+      liquidationPrice: '0.5',
+      chargedFee: '$400',
+      pnl: -500,
+      leverage: '10x',
+    },
+    {
+      id: '2',
+      team: match?.awayTeam?.name,
+      logo: match?.awayTeam?.logo,
+      size: '$2,000',
+      entryPrice: '0.4',
+      liquidationPrice: '0.5',
+      chargedFee: '$300',
+      pnl: 500,
+      leverage: '5x',
+    },
+    {
+      id: '3',
+      team: 'Draw',
+      logo: '/images/draw.png',
+      size: '$1,500',
+      entryPrice: '0.2',
+      liquidationPrice: '0.3',
+      chargedFee: '$600',
+      pnl: -500,
+      leverage: '8x',
+    },
+  ];
+
   return (
     <Table className='text-white'>
       <TableHeader>
         <TableRow className='uppercase text-neutral-400 text-xs font-medium'>
-          <TableHead>Team</TableHead>
-          <TableHead>Position Size</TableHead>
-          <TableHead>Entry Odds</TableHead>
-          <TableHead>Liquidation Threshold</TableHead>
-          <TableHead>Charged Fee</TableHead>
+          <TableHead>Outcome</TableHead>
+          <TableHead>Size</TableHead>
+          <TableHead>Entry%</TableHead>
+          <TableHead>Liquid%</TableHead>
+          <TableHead>Fee</TableHead>
           <TableHead>PNL</TableHead>
           <TableHead />
         </TableRow>
@@ -166,8 +180,8 @@ const Positions = () => {
                   width={24}
                   height={24}
                   className='h-6 w-6 rounded-full'
-                  src={logo}
-                  alt={team}
+                  src={logo ?? '/images/draw.png'}
+                  alt={team ?? ''}
                 />
                 <span className='text-neutral-300 font-medium text-sm'>{team}</span>
                 <span className='bg-neutral-750 rounded-full px-2 py-0.5 text-xs text-white font-medium'>
@@ -199,4 +213,4 @@ const Positions = () => {
   );
 };
 
-export default Positions;
+export default OpenPositions;

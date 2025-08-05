@@ -9,7 +9,7 @@ const dialogIconVariants = cva('flex-center w-14 h-14 rounded-full mx-auto', {
     variant: {
       default: 'bg-neutral-700',
       success: 'bg-success-100',
-      error: 'bg-error-800',
+      error: 'bg-error-300',
     },
     defaultVariants: {
       variant: 'default',

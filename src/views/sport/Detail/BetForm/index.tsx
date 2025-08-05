@@ -6,9 +6,10 @@ import { useForm } from 'react-hook-form';
 import { encodeFunctionData } from 'viem';
 import { useSmartWallets } from '@privy-io/react-auth/smart-wallets';
 import { useWaitForTransactionReceipt } from 'wagmi';
+import { toast } from 'react-toastify';
 
 import { AppDispatch } from '@/redux/store';
-import { openDialog } from '@/redux/features/dialogSlice';
+import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { Outcome } from '@/constants/static';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import ERC20_ABI from '@/abis/ERC20_ABI.json';
@@ -25,6 +26,7 @@ import { getFeePerMinute, getLiquidationThreshold, getTotalSize } from '@/views/
 
 import AmountControls from './AmountControls';
 import PlaceBet from './PlaceBet';
+import { ToastContent, ToastWrapper } from '@/components';
 
 
 export interface SportFormData {
@@ -124,14 +126,16 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
 
   useEffect(() => {
     if (isConfirmed) {
-      dispatch(
-        openDialog({
-          content: (
-            <AnimatedDialogContent key='close'>
-              <div>Successfully</div>
-            </AnimatedDialogContent>
-          ),
-        }),
+      dispatch(closeDialog());
+      toast(
+        <ToastWrapper>
+          <ToastContent
+            variant='success'
+            title='Position Opened Successfully'
+            description='You’re all set — good luck!'
+          />
+        </ToastWrapper>,
+        { position: 'bottom-right', toastId: 'success' },
       );
     }
   }, [isConfirmed]);

@@ -8,7 +8,7 @@ interface Props {
 const ErrorContent = ({ title, onClick }: Props) => {
   return (
     <>
-      <DialogIcon name="triangle-exclamation" variant="error" />
+      <DialogIcon name="triangle-exclamation" variant="error" color="#000" />
       <DialogTitle className="text-center mt-5">{title}</DialogTitle>
       <DialogDescription className="text-neutral-300 text-base text-center mt-1">
         Please try again later

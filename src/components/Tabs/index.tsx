@@ -10,10 +10,7 @@ const Tabs = TabsPrimitive.Root;
 const TabsList = ({ ref, className, ...props }: ComponentPropsWithRef<typeof TabsPrimitive.List>) => (
   <TabsPrimitive.List
     ref={ref}
-    className={clsx(
-      'inline-flex sm:gap-1 gap-4 items-center justify-center border-b-2 border-primary-800',
-      className,
-    )}
+    className={clsx('inline-flex sm:gap-1 gap-4 items-center justify-center', className)}
     {...props}
   />
 );
@@ -23,13 +20,13 @@ const TabsTrigger = ({ ref, className, children, ...props }: ComponentPropsWithR
   <TabsPrimitive.Trigger
     ref={ref}
     className={clsx(
-      'text-md text-center text-neutral-300 transition ease-in duration-200 sm:min-w-[120px] min-w-max disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-primary-400 [&_.border-active]:data-[state=active]:bg-primary-400 [&_.border-active]:data-[state=inactive]:bg-transparent',
+      'text-md text-center whitespace-nowrap p-3 border rounded-lg text-neutral-300 transition ease-in duration-200 sm:min-w-[120px] min-w-max disabled:pointer-events-none disabled:opacity-50 ' +
+      'data-[state=active]:text-primary-400 data-[state=active]:border-primary-700 data-[state=active]:bg-primary-900 data-[state=inactive]:bg-transparent data-[state=inactive]:border-transparent ',
       className,
     )}
     {...props}
   >
     {children}
-    <div className='h-0.5 bg-neutral-800 border-active mt-1.5 -mb-0.5 rounded-3xl transition ease-in duration-200' />
   </TabsPrimitive.Trigger>
 );
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;

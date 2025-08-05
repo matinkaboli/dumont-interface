@@ -2,23 +2,23 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
 
-import Positions from './Positions';
-import History from './History';
+import OpenPositions from './OpenPositions';
+import ClosedPositions from './ClosedPositions';
 
 const ActivityTab = ({ className = '' }: { className?: string }) => {
   return (
-    <Tabs defaultValue="positions" className={className} onChange={(e) => e.preventDefault()}>
+    <Tabs defaultValue="open" className={className} onChange={(e) => e.preventDefault()}>
       <TabsList className="sm:w-fit w-full">
-        <TabsTrigger value="positions" className="sm:!min-w-[160px] sm:w-auto w-1/2">
-          Active positions
+        <TabsTrigger value="open" className="sm:!min-w-[160px] sm:w-auto w-1/2">
+          Open Positions
         </TabsTrigger>
-        <TabsTrigger value="history" className="sm:w-auto w-1/2">History</TabsTrigger>
+        <TabsTrigger value="closed" className="sm:w-auto w-1/2">Closed Positions</TabsTrigger>
       </TabsList>
-      <TabsContent value="positions">
-        <Positions />
+      <TabsContent value="open">
+        <OpenPositions />
       </TabsContent>
-      <TabsContent value="history">
-        <History />
+      <TabsContent value="closed">
+        <ClosedPositions />
       </TabsContent>
     </Tabs>
   );

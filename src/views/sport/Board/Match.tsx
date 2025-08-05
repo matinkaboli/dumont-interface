@@ -10,7 +10,7 @@ import ProgressBar from '@/views/sport/_components/ProgressBar';
 const Match = ({ match }: {
   match: Match;
 }) => {
-  const { matchId, homeTeam, awayTeam, league, latestOdds, startTime, isPrematch, isEnded, score } = match;
+  const { matchId, homeTeam, awayTeam, league, latestOdds, startTime, isPrematch, isEnded, score, timer } = match;
 
   return (
     <Link
@@ -21,7 +21,7 @@ const Match = ({ match }: {
         (
           <div className='flex-center mx-auto w-fit gap-1 mt-0.5'>
             <PulsingCircle size='sm' />
-            <span className='text-neutral-100 text-xs'>41:23</span>
+            <span className='text-neutral-100 text-xs'>{timer}</span>
           </div>
         ) : (
           <div className='text-neutral-100 text-xs text-center mt-0.5'>
@@ -32,13 +32,13 @@ const Match = ({ match }: {
 
       <h6 className='flex items-center text-sm text-white font-medium mt-3 whitespace-nowrap w-fit mx-auto'>
         <span className='inline-flex items-center gap-2'>
-          {homeTeam.name}
+          {homeTeam.shortName}
           <Image width={0} height={0} className='h-6 w-auto' sizes='100vw' src={homeTeam.logo} alt={homeTeam.name} />
         </span>
         <span className='px-2 text-sm font-bold'>{score.replace(':', ' - ')}</span>
         <span className='inline-flex items-center gap-2'>
           <Image width={0} height={0} className='h-6 w-auto' sizes='100vw' src={awayTeam.logo} alt={awayTeam.name} />
-          {awayTeam.name}
+          {awayTeam.shortName}
         </span>
       </h6>
 

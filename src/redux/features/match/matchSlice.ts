@@ -8,6 +8,7 @@ interface State {
   matches: Match[] | null;
   match: Match | null;
   loading: boolean;
+  isRefetching: boolean;
   error: string | null;
 }
 
@@ -15,6 +16,7 @@ const initialState: State = {
   matches: null,
   match: null,
   loading: false,
+  isRefetching: false,
   error: null,
 };
 
@@ -45,27 +47,41 @@ const matchSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(getMatches.pending, (state) => {
-        state.loading = true;
+        if (state.matches) {
+          state.isRefetching = true;
+        } else {
+          state.loading = true;
+        }
+
         state.error = null;
       })
       .addCase(getMatches.fulfilled, (state, action) => {
         state.loading = false;
+        state.isRefetching = false;
         state.matches = action.payload;
       })
       .addCase(getMatches.rejected, (state, action) => {
         state.loading = false;
+        state.isRefetching = false;
         state.error = (action.payload as string) || 'Failed to fetch details';
       });
     builder.addCase(getMatch.pending, (state) => {
-      state.loading = true;
+      if (state.match) {
+        state.isRefetching = true;
+      } else {
+        state.loading = true;
+      }
+
       state.error = null;
     })
       .addCase(getMatch.fulfilled, (state, action) => {
         state.loading = false;
+        state.isRefetching = false;
         state.match = action.payload;
       })
       .addCase(getMatch.rejected, (state, action) => {
         state.loading = false;
+        state.isRefetching = false;
         state.error = (action.payload as string) || 'Failed to fetch match';
       });
   },

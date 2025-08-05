@@ -2,7 +2,7 @@ import { Ref } from 'react';
 import clsx from 'clsx';
 import { cva, VariantProps } from 'class-variance-authority';
 
-const headerVariants = cva('text-sm font-bold', {
+const headerVariants = cva('text-sm font-bold block pr-4', {
   variants: {
     variant: {
       neutral: 'text-white',
