@@ -9,12 +9,11 @@ const formatDurationFromSeconds = (totalSeconds: number): string => {
   const minutes = durationObj.minutes();
   // const seconds = durationObj.seconds();
 
-  let result = '';
-  if (hours > 0) result += `${hours}`;
-  if (minutes > 0) result += `:${minutes}`;
-  // result += `${seconds}s`;
+  // show hh:mm with leading zeros
+  const paddedHours = String(hours > 0 ? hours : 0).padStart(2, '0');
+  const paddedMinutes = String(minutes).padStart(2, '0');
 
-  return result.trim();
+  return `${paddedHours}:${paddedMinutes}`;
 };
 
 export default formatDurationFromSeconds;
