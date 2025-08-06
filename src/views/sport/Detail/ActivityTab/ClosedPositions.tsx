@@ -1,6 +1,18 @@
 import Image from 'next/image';
 
-import { Icon, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components';
+import {
+  Icon,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components';
 
 const positions = [
   {
@@ -77,9 +89,14 @@ const ClosedPosition = () => {
               <TableCell
                 className={pnl > 0 ? 'text-success-500' : 'text-error-500'}>
                 {pnl > 0 ? `+${pnl}` : (
-                  <div className="flex items-center">
+                  <div className='flex items-center'>
                     <span className='mr-1.5'>{pnl}</span>
-                    <Icon name='fire' />
+                    <TooltipProvider delayDuration={100}>
+                      <Tooltip>
+                        <TooltipTrigger><Icon name='fire' /></TooltipTrigger>
+                        <TooltipContent>Liquidated</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 )}
               </TableCell>
