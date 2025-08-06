@@ -51,7 +51,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   {
     id: 'card',
     label: 'Card',
-    link: Routes.HOME,
+    link: Routes.CARDS,
     targetLink: Routes.CARDS,
     icon: {
       type: 'icon',

@@ -19,7 +19,7 @@ import Board from '@/views/card/_components/Board';
 import CardDeck from '@/views/card/_components/CardDeck';
 import Header from '@/views/card/_components/Header';
 
-const Home = () => {
+const Main = () => {
   const { ready, user } = usePrivy();
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useTypedSelector((state) => state.account);
@@ -61,7 +61,7 @@ const Home = () => {
 
   if (!isEmpty(address)) {
     if (activeRoundId) redirect(`${Routes.CARDS}/${activeRoundId}`);
-    if (!activeRoundId) redirect(Routes.CARDS);
+    // if (!activeRoundId) redirect(Routes.CARDS);
   }
 
   return (
@@ -76,4 +76,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Main;
