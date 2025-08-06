@@ -11,10 +11,11 @@ const Match = ({ match }: {
   match: Match;
 }) => {
   const { matchId, homeTeam, awayTeam, league, latestOdds, startTime, isPrematch, isEnded, score, timer } = match;
+  const matchUrl = `${Routes.SPORTS}/${matchId}`;
 
   return (
     <Link
-      href={`${Routes.SPORTS}/${matchId}`}
+      href={matchUrl}
       className='relative border-[1.5px] border-neutral-700 bg-neutral-800 rounded-lg w-full sm:pt-4 sm:pb-6 sm:px-2 p-3 cursor-pointer'>
       <div className='text-center text-xs text-neutral-400'>Match time</div>
       {!isPrematch && !isEnded ?

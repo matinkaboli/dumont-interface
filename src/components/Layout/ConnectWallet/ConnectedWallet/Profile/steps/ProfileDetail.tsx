@@ -5,9 +5,7 @@ import Image from 'next/image';
 
 import { Button, Icon } from '@/components';
 import truncateString from '@/helpers/truncateString';
-import useAxiosGet from '@/hooks/useAxiosGet';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
-import links from '@/constants/links';
 
 import CopyBox from '../CopyBox';
 import BalanceList from '../BalanceList';
@@ -22,8 +20,6 @@ interface Props {
 
 const ProfileDetail = ({ accountBalance, onCloseDialog, onNextSlide, setProcess }: Props) => {
   const { address } = useTypedSelector((state) => state.account.profile);
-  const { data: referralData } = useAxiosGet<{ id: number }>(`players/${address}/referrals`);
-  const referralLink = referralData ? `${links.APP}/i/${referralData?.id}` : '';
   const { disconnectAsync } = useDisconnect();
   const { logout } = usePrivy();
 
@@ -74,14 +70,6 @@ const ProfileDetail = ({ accountBalance, onCloseDialog, onNextSlide, setProcess 
         <BalanceList accountBalance={accountBalance} />
       </div>
 
-      <div className="flex flex-col gap-2 mt-10">
-        <CopyBox
-          className="justify-between"
-          copyText={referralLink}
-          copyLabel={referralLink}
-          copyIcon={<Icon name="link" />}
-        />
-      </div>
       <Button
         fullWidth
         variant="link"
