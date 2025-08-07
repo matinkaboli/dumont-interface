@@ -7,8 +7,8 @@ import useAxiosGet from '@/hooks/useAxiosGet';
 import { Match, Position, Team } from '@/types/match';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 
-import OpenPositions from './OpenPositions';
 import ClosedPositions from './ClosedPositions';
+import OpenPositions from './OpenPositions';
 
 export interface FormattedPosition {
   id: number;
@@ -24,8 +24,11 @@ export interface FormattedPosition {
   multiplier: number;
 }
 
-const MATCH_ID = 36;
-const WALLET_ADDRESS = '0x9c7f72f1a6BD1aE46A0A7CFE9c2B4F3280aD7773';
+const LoadingState = () => (
+  <div className='flex-center mt-14 mb-10'>
+    <Loading size={32} />
+  </div>
+);
 
 const formatPositions = (positions: Position[], match: Match | null): FormattedPosition[] => {
   if (!positions?.length) return [];
@@ -61,11 +64,13 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
   });
 };
 
-const ActivityTab = ({ className = '' }: { className?: string }) => {
+const ActivityTab = ({ className = '', matchId }: { className?: string, matchId: string }) => {
+  const { address, isConnecting } = useTypedSelector(state => state.account.profile);
   const { data: positions, loading, error } = useAxiosGet<Position[]>(
-    `/matches/${MATCH_ID}/positions/${WALLET_ADDRESS}`,
+    address ? `/matches/${matchId}/positions/${address}` : '',
   );
   const { match } = useTypedSelector((state) => state.match.main);
+  const isLoading = loading || isConnecting;
 
   const { openPositions, closedPositions } = useMemo(() => {
     if (!positions) {
@@ -81,14 +86,6 @@ const ActivityTab = ({ className = '' }: { className?: string }) => {
     };
   }, [positions, match]);
 
-  if (loading) {
-    return (
-      <div className='flex-center mt-14 mb-10'>
-        <Loading size={32} />
-      </div>
-    );
-  }
-
   if (error) return null;
 
   return (
@@ -100,10 +97,10 @@ const ActivityTab = ({ className = '' }: { className?: string }) => {
         <TabsTrigger value='closed' className='sm:w-auto w-1/2'>Closed Positions</TabsTrigger>
       </TabsList>
       <TabsContent value='open' className='mb-32'>
-        <OpenPositions positions={openPositions} />
+        {isLoading ? <LoadingState /> : <OpenPositions positions={openPositions} />}
       </TabsContent>
       <TabsContent value='closed' className='mb-32'>
-        <ClosedPositions positions={closedPositions} />
+        {isLoading ? <LoadingState /> : <ClosedPositions positions={closedPositions} />}
       </TabsContent>
     </Tabs>
   );
