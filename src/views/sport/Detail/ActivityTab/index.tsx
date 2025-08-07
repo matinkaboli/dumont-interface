@@ -79,7 +79,7 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
       isLiquidated,
       multiplier: position.multiplier / 1e3,
       liquid: liquidationThreshold,
-      entry: placedAtOdds[outcomeKey] as number,
+      entry: placedAtOdds ? (placedAtOdds[outcomeKey] as number) : 0,
       fee: decayedAmount ? (Math.floor(position.decayedAmount) / 1e6).toFixed(2) : '0',
       size: (Number(position.amount) / 1e6) * (position.multiplier / 1e3),
       exit: closeRequestedAtOdds ? closeRequestedAtOdds[outcomeKey] : null,
