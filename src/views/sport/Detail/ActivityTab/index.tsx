@@ -68,6 +68,7 @@ const ActivityTab = ({ className = '', matchId }: { className?: string, matchId:
   const { address, isConnecting } = useTypedSelector(state => state.account.profile);
   const { data: positions, loading, error } = useAxiosGet<Position[]>(
     address ? `/matches/${matchId}/positions/${address}` : '',
+    { interval: 2000 },
   );
   const { match } = useTypedSelector((state) => state.match.main);
   const isLoading = loading || isConnecting;
