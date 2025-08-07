@@ -20,18 +20,20 @@ import { closeDialog, openDialog } from '@/redux/features/dialogSlice';
 import { AppDispatch } from '@/redux/store';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import GATEWAY_ABI from '@/abis/GATEWAY_ABI.json';
+import isEmpty from '@/helpers/isEmpty';
 
 import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
+import { FormattedPosition } from '@/views/sport/Detail/ActivityTab';
+import EmptyDataMessage from '@/views/card/Game/ActivityTab/EmptyDataMessage';
 
 import ClosePosition from './ClosePosition';
 
-const OpenPositions = () => {
+const OpenPositions = ({ positions }: { positions: FormattedPosition[] }) => {
   const { client } = useSmartWallets();
   const dispatch = useDispatch<AppDispatch>();
   const { details } = useTypedSelector((state) => state.config);
-  const { match } = useTypedSelector((state) => state.match.main);
   const [closePositionTx, setClosePositionTx] = useState('');
   const [isClosePositionLoading, setIsClosePositionLoading] = useState<boolean>(false);
 
@@ -72,7 +74,7 @@ const OpenPositions = () => {
 
   const onConfirm = (
     { id, size, fee, pnl }:
-    { id: string; size: string, fee: string, pnl: number },
+    { id: number; size: number, fee: string, pnl: number },
   ) => {
     dispatch(
       openDialog({
@@ -122,41 +124,7 @@ const OpenPositions = () => {
     }
   };
 
-  const positions = [
-    {
-      id: '1',
-      team: match?.homeTeam?.name,
-      logo: match?.homeTeam?.logo,
-      size: '$3,000',
-      entryPrice: '0.6',
-      liquidationPrice: '0.5',
-      chargedFee: '$400',
-      pnl: -500,
-      leverage: '10x',
-    },
-    {
-      id: '2',
-      team: match?.awayTeam?.name,
-      logo: match?.awayTeam?.logo,
-      size: '$2,000',
-      entryPrice: '0.4',
-      liquidationPrice: '0.5',
-      chargedFee: '$300',
-      pnl: 500,
-      leverage: '5x',
-    },
-    {
-      id: '3',
-      team: 'Draw',
-      logo: '/images/draw.png',
-      size: '$1,500',
-      entryPrice: '0.2',
-      liquidationPrice: '0.3',
-      chargedFee: '$600',
-      pnl: -500,
-      leverage: '8x',
-    },
-  ];
+  if (isEmpty(positions)) return <EmptyDataMessage message='No open position yet' />;
 
   return (
     <Table className='text-white'>
@@ -172,8 +140,8 @@ const OpenPositions = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {positions.map(
-          ({ id, team, logo, size, entryPrice, liquidationPrice, chargedFee, pnl, leverage }) => (
+        {positions?.map(
+          ({ id, name, logo, size, entry, multiplier, fee, pnl, liquid }) => (
             <TableRow key={id}>
               <TableCell className='flex items-center gap-2 pr-6'>
                 <Image
@@ -181,26 +149,26 @@ const OpenPositions = () => {
                   height={24}
                   className='h-6 w-6 rounded-full'
                   src={logo ?? '/images/draw.png'}
-                  alt={team ?? ''}
+                  alt={name ?? ''}
                 />
-                <span className='text-neutral-300 font-medium text-sm'>{team}</span>
+                <span className='text-neutral-300 font-medium text-sm'>{name}</span>
                 <span className='bg-neutral-750 rounded-full px-2 py-0.5 text-xs text-white font-medium'>
-                  {leverage}
+                  {multiplier}
                 </span>
               </TableCell>
-              <TableCell className='text-neutral-300'>{size}</TableCell>
-              <TableCell className='text-neutral-300'>{entryPrice}</TableCell>
-              <TableCell className='text-neutral-300'>{liquidationPrice}</TableCell>
-              <TableCell className='text-neutral-300'>{chargedFee}</TableCell>
+              <TableCell className='text-neutral-300'>${size}</TableCell>
+              <TableCell className='text-neutral-300'>{entry}%</TableCell>
+              <TableCell className='text-neutral-300'>${liquid}</TableCell>
+              <TableCell className='text-neutral-300'>${fee}</TableCell>
               <TableCell className={pnl > 0 ? 'text-success-600' : 'text-error-500'}>
-                {pnl > 0 ? `+${pnl}` : pnl}
+                {pnl > 0 ? `+$${pnl}` : `$${pnl}`}
               </TableCell>
               <TableCell>
                 <button
                   type='button'
                   className='text-primary-400'
-                  aria-label={`Close position for ${team}`}
-                  onClick={() => onConfirm({ id, size, fee: liquidationPrice, pnl })}
+                  aria-label={`Close position for ${name}`}
+                  onClick={() => onConfirm({ id, size, fee, pnl })}
                 >
                   Close
                 </button>

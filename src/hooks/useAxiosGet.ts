@@ -35,7 +35,7 @@ const useAxiosGet = <T = unknown>(
   };
 
   useEffect(() => {
-    fetchData();
+    if(url) fetchData();
 
     if (interval) {
       const intervalId = setInterval(fetchData, interval);

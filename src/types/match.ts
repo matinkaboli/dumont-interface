@@ -50,3 +50,28 @@ export interface Odds {
   updatedAt: string;
   __v: number;
 }
+
+export interface Position {
+  _id: string;
+  positionId: number;
+  player: string;
+  match: string;
+  amount: string;
+  finalPayout: string;
+  multiplier: number;
+  outcome: string;
+  status: 'Pending' | 'PendingClose' | 'Open' | 'Closed' | 'Finished';
+  isLiquidated: boolean;
+  liquidationThreshold: number;
+  placedAt: number;
+  closeRequestedAt: number;
+  createdAt: string;
+  updatedAt: string;
+  liquidatedAt: string;
+  liquidatedAtOdds: Odds;
+  placedAtOdds: Odds;
+  decayedAmount: number;
+  closeRequestedAtOdds?: number;
+  __v: number;
+}
+

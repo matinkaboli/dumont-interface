@@ -128,7 +128,7 @@ const Detail = () => {
         />
       </div>
 
-      <ActivityTab className='md:mt-16 mt-6' />
+      <ActivityTab matchId={id} className='md:mt-16 mt-6' />
     </>
   );
 };
