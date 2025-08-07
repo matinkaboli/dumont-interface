@@ -26,6 +26,7 @@ const useAxiosGet = <T = unknown>(
   const fetchData = async () => {
     try {
       const response: AxiosResponse<{ result: T }> = await axios.get(url, config);
+
       setData(response.data?.result);
     } catch (err) {
       setError(err as AxiosError);
@@ -35,7 +36,7 @@ const useAxiosGet = <T = unknown>(
   };
 
   useEffect(() => {
-    if(url) fetchData();
+    if (url) fetchData();
 
     if (interval) {
       const intervalId = setInterval(fetchData, interval);

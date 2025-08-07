@@ -24,8 +24,31 @@ export interface FormattedPosition {
   multiplier: number;
 }
 
+const calculatePNL = (position: Position): number => {
+  const amount = parseFloat(position.amount) / 1e6;
+  const finalPayout = parseFloat(position.finalPayout) / 1e6;
+
+  if (position.isLiquidated) {
+    return -amount;
+  }
+
+  if (position.status === 'Closed') {
+    return finalPayout - amount;
+  }
+
+  let remainingValue = 0;
+
+  if (position.remainingValue) {
+    remainingValue = position.remainingValue / 1e6;
+
+    return remainingValue - (Number(position.amount) / 1e6) * (position.multiplier / 1e3);
+  } else {
+    return 0;
+  }
+};
+
 const LoadingState = () => (
-  <div className='flex-center mt-14 mb-10'>
+  <div className="flex-center mt-14 mb-10">
     <Loading size={32} />
   </div>
 );
@@ -40,36 +63,46 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
       liquidationThreshold,
       closeRequestedAtOdds,
       isLiquidated,
-      multiplier,
       outcome,
       decayedAmount,
     } = position;
+
     const outcomeKey = outcome.toLowerCase() as keyof typeof placedAtOdds;
     const teamKey = `${outcome.toLowerCase()}Team` as keyof typeof match;
-    const team = match ? match[teamKey] as Team : null;
+    const team = match ? (match[teamKey] as Team) : null;
 
-    return {
+    const returnObj = {
       id: positionId,
       name: team?.name ?? 'Team',
       logo: team?.logo ?? '',
-      pnl: 0,
+      pnl: calculatePNL(position),
       isLiquidated,
-      multiplier,
+      multiplier: position.multiplier / 1e3,
       liquid: liquidationThreshold,
       entry: placedAtOdds[outcomeKey] as number,
-      fee: decayedAmount ? (Math.floor(position.decayedAmount) / 1e7).toFixed(2) : '0',
-      size: (Number(position.amount) / 1e7) * (position.multiplier / 1e3),
-      exit: closeRequestedAtOdds ? closeRequestedAtOdds[teamKey] : null,
+      fee: decayedAmount ? (Math.floor(position.decayedAmount) / 1e6).toFixed(2) : '0',
+      size: (Number(position.amount) / 1e6) * (position.multiplier / 1e3),
+      exit: closeRequestedAtOdds ? closeRequestedAtOdds[outcomeKey] : null,
     };
+
+    if (position.status == 'Open') {
+    }
+
+    return returnObj;
   });
 };
 
-const ActivityTab = ({ className = '', matchId }: { className?: string, matchId: string }) => {
-  const { address, isConnecting } = useTypedSelector(state => state.account.profile);
-  const { data: positions, loading, error } = useAxiosGet<Position[]>(
-    address ? `/matches/${matchId}/positions/${address}` : '',
-    { interval: 2000 },
-  );
+const ActivityTab = ({ className = '', matchId }: { className?: string; matchId: string }) => {
+  const { address, isConnecting } = useTypedSelector((state) => state.account.profile);
+
+  const {
+    data: positions,
+    loading,
+    error,
+  } = useAxiosGet<Position[]>(`/matches/${matchId}/positions/${address}`, {
+    interval: 2000,
+  });
+
   const { match } = useTypedSelector((state) => state.match.main);
   const isLoading = loading || isConnecting;
 
@@ -78,8 +111,12 @@ const ActivityTab = ({ className = '', matchId }: { className?: string, matchId:
       return { openPositions: [], closedPositions: [] };
     }
 
-    const openRaw = positions.filter((position) => position.status === 'Open');
-    const closedRaw = positions.filter((position) => position.status !== 'Open' && position.status !== 'Pending');
+    const openRaw = positions.filter(
+      (position) => position.status === 'Open' || position.status === 'Pending',
+    );
+    const closedRaw = positions.filter(
+      (position) => position.status !== 'Open' && position.status !== 'Pending',
+    );
 
     return {
       openPositions: formatPositions(openRaw, match),
@@ -90,17 +127,19 @@ const ActivityTab = ({ className = '', matchId }: { className?: string, matchId:
   if (error) return null;
 
   return (
-    <Tabs defaultValue='open' className={className} onChange={(e) => e.preventDefault()}>
-      <TabsList className='sm:w-fit w-full'>
-        <TabsTrigger value='open' className='sm:!min-w-[160px] sm:w-auto w-1/2'>
+    <Tabs defaultValue="open" className={className} onChange={(e) => e.preventDefault()}>
+      <TabsList className="sm:w-fit w-full">
+        <TabsTrigger value="open" className="sm:!min-w-[160px] sm:w-auto w-1/2">
           Open Positions
         </TabsTrigger>
-        <TabsTrigger value='closed' className='sm:w-auto w-1/2'>Closed Positions</TabsTrigger>
+        <TabsTrigger value="closed" className="sm:w-auto w-1/2">
+          Closed Positions
+        </TabsTrigger>
       </TabsList>
-      <TabsContent value='open' className='mb-32'>
+      <TabsContent value="open" className="mb-32">
         {isLoading ? <LoadingState /> : <OpenPositions positions={openPositions} />}
       </TabsContent>
-      <TabsContent value='closed' className='mb-32'>
+      <TabsContent value="closed" className="mb-32">
         {isLoading ? <LoadingState /> : <ClosedPositions positions={closedPositions} />}
       </TabsContent>
     </Tabs>

@@ -71,7 +71,7 @@ export interface Position {
   liquidatedAtOdds: Odds;
   placedAtOdds: Odds;
   decayedAmount: number;
-  closeRequestedAtOdds?: number;
+  remainingValue?: number;
+  closeRequestedAtOdds?: Odds;
   __v: number;
 }
-
