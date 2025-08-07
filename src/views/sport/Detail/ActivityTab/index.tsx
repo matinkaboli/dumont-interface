@@ -75,7 +75,7 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
       id: positionId,
       name: team?.name ?? 'Team',
       logo: team?.logo ?? '',
-      pnl: calculatePNL(position),
+      pnl: calculatePNL(position).toFixed(2),
       isLiquidated,
       multiplier: position.multiplier / 1e3,
       liquid: liquidationThreshold,
