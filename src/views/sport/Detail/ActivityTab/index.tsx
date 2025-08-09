@@ -21,7 +21,7 @@ export interface FormattedPosition {
   entry?: number;
   liquid: number;
   exit: number | null;
-  fee: string;
+  fee: number;
   pnl: number;
   isLiquidated: boolean;
   multiplier: number;
@@ -80,7 +80,7 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
       multiplier: position.multiplier / 1e3,
       liquid: liquidationThreshold,
       entry: placedAtOdds ? (placedAtOdds[outcomeKey] as number) : 0,
-      fee: decayedAmount ? (Math.floor(position.decayedAmount) / 1e6).toFixed(2) : '0',
+      fee: decayedAmount ? (Math.floor(position.decayedAmount) / 1e6) : 0,
       size: (Number(position.amount) / 1e6) * (position.multiplier / 1e3),
       exit: closeRequestedAtOdds ? closeRequestedAtOdds[outcomeKey] as number : null,
     };

@@ -2,7 +2,7 @@ import { Button } from '@/components';
 
 interface Props {
   positionSize: number;
-  fee: string;
+  fee: number;
   pnl: number;
   onClosePosition: () => void;
 }

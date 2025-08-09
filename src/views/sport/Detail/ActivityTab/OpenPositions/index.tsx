@@ -83,7 +83,7 @@ const OpenPositions = ({ positions }: { positions: FormattedPosition[] }) => {
   }: {
     id: number;
     size: number;
-    fee: string;
+    fee: number;
     pnl: number;
   }) => {
     dispatch(
@@ -167,10 +167,10 @@ const OpenPositions = ({ positions }: { positions: FormattedPosition[] }) => {
                 {multiplier}
               </span>
             </TableCell>
-            <TableCell className="text-neutral-300">${size}</TableCell>
-            <TableCell className="text-neutral-300">{entry}%</TableCell>
-            <TableCell className="text-neutral-300">${liquid}</TableCell>
-            <TableCell className="text-neutral-300">${fee}</TableCell>
+            <TableCell className="text-neutral-300">${size.toFixed(2)}</TableCell>
+            <TableCell className="text-neutral-300">{entry?.toFixed(2)}%</TableCell>
+            <TableCell className="text-neutral-300">${liquid.toFixed(2)}</TableCell>
+            <TableCell className="text-neutral-300">${fee.toFixed(2)}</TableCell>
             <TableCell className={pnl > 0 ? 'text-success-600' : 'text-error-500'}>
               {pnl > 0 ? `+$${pnl.toFixed(2)}` : `$${pnl.toFixed(2)}`}
             </TableCell>

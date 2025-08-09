@@ -102,21 +102,22 @@ const AmountControls = (
     },
   ];
 
+  const { totalSize, feePerMinute, liquidationPrice } = betDetails;
   const details = [
     {
       id: '1',
       label: 'Position Size',
-      value: `$${formatDecimal({ amount: betDetails.totalSize, decimalPlaces: 2 })}`,
+      value: totalSize > 0 ? `$${totalSize.toFixed(2)}` : '0.00',
     },
     {
       id: '2',
       label: 'Fee per minute',
-      value: `$${formatDecimal({ amount: betDetails.feePerMinute, decimalPlaces: 2 })}`,
+      value: feePerMinute ? `$${feePerMinute.toFixed(2)}` : '0.00',
     },
     {
       id: '3',
       label: 'Liquidation Threshold',
-      value: `${formatDecimal({ amount: betDetails.liquidationPrice, decimalPlaces: 2 })}%`,
+      value: liquidationPrice ? `${liquidationPrice.toFixed(2)}%` : '0.00',
     },
   ];
 
