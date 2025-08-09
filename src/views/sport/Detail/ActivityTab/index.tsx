@@ -1,11 +1,14 @@
 'use client';
 
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
+import { usePrivy } from '@privy-io/react-auth';
 
 import { Loading, Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
 import useAxiosGet from '@/hooks/useAxiosGet';
 import { Match, Position, Team } from '@/types/match';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+
+import { calculatePNL } from '@/views/sport/Detail/helpers';
 
 import ClosedPositions from './ClosedPositions';
 import OpenPositions from './OpenPositions';
@@ -24,34 +27,31 @@ export interface FormattedPosition {
   multiplier: number;
 }
 
-const calculatePNL = (position: Position): number => {
-  const amount = parseFloat(position.amount) / 1e6;
-  const finalPayout = parseFloat(position.finalPayout) / 1e6;
-
-  if (position.isLiquidated) {
-    return -amount;
-  }
-
-  if (position.status === 'Closed') {
-    return finalPayout - amount;
-  }
-
-  let remainingValue = 0;
-
-  if (position.remainingValue) {
-    remainingValue = position.remainingValue / 1e6;
-
-    return remainingValue - (Number(position.amount) / 1e6) * (position.multiplier / 1e3);
-  } else {
-    return 0;
-  }
+const TabPanel = ({ isLoading, error, isConnected, children }: {
+  isLoading: boolean;
+  error?: unknown;
+  isConnected: boolean;
+  children: ReactNode;
+}) => {
+  if (isLoading) {
+    return (
+      <div className='flex-center mt-14 mb-10'>
+        <Loading size={32} />
+      </div>
+    );
+  } else if (!isConnected) {
+    return (
+      <div className='flex-center mt-14 mb-10 text-white'>
+        Login to see your positions here
+      </div>);
+  } else if (error) {
+    return (
+      <div className='flex-center mt-14 mb-10 text-white'>
+        Something went wrong
+      </div>
+    );
+  } else return <>{children}</>;
 };
-
-const LoadingState = () => (
-  <div className="flex-center mt-14 mb-10">
-    <Loading size={32} />
-  </div>
-);
 
 const formatPositions = (positions: Position[], match: Match | null): FormattedPosition[] => {
   if (!positions?.length) return [];
@@ -71,7 +71,7 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
     const teamKey = `${outcome.toLowerCase()}Team` as keyof typeof match;
     const team = match ? (match[teamKey] as Team) : null;
 
-    const returnObj = {
+    return {
       id: positionId,
       name: team?.name ?? 'Team',
       logo: team?.logo ?? '',
@@ -84,27 +84,23 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
       size: (Number(position.amount) / 1e6) * (position.multiplier / 1e3),
       exit: closeRequestedAtOdds ? closeRequestedAtOdds[outcomeKey] as number : null,
     };
-
-    if (position.status == 'Open') {
-    }
-
-    return returnObj;
   });
 };
 
 const ActivityTab = ({ className = '', matchId }: { className?: string; matchId: string }) => {
-  const { address, isConnecting } = useTypedSelector((state) => state.account.profile);
+  const { address } = useTypedSelector((state) => state.account.profile);
+  const { authenticated } = usePrivy();
 
   const {
     data: positions,
     loading,
     error,
   } = useAxiosGet<Position[]>(`/matches/${matchId}/positions/${address}`, {
+    enabled: authenticated && !!address,
     interval: 2000,
   });
 
   const { match } = useTypedSelector((state) => state.match.main);
-  const isLoading = loading || isConnecting;
 
   const { openPositions, closedPositions } = useMemo(() => {
     if (!positions) {
@@ -124,23 +120,25 @@ const ActivityTab = ({ className = '', matchId }: { className?: string; matchId:
     };
   }, [positions, match]);
 
-  if (error) return null;
-
   return (
-    <Tabs defaultValue="open" className={className} onChange={(e) => e.preventDefault()}>
-      <TabsList className="sm:w-fit w-full">
-        <TabsTrigger value="open" className="sm:!min-w-[160px] sm:w-auto w-1/2">
+    <Tabs defaultValue='open' className={className} onChange={(e) => e.preventDefault()}>
+      <TabsList className='sm:w-fit w-full'>
+        <TabsTrigger value='open' className='sm:!min-w-[160px] sm:w-auto w-1/2'>
           Open Positions
         </TabsTrigger>
-        <TabsTrigger value="closed" className="sm:w-auto w-1/2">
+        <TabsTrigger value='closed' className='sm:w-auto w-1/2'>
           Closed Positions
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="open" className="mb-32">
-        {isLoading ? <LoadingState /> : <OpenPositions positions={openPositions} />}
+      <TabsContent value='open' className='mb-32'>
+        <TabPanel isLoading={loading} isConnected={authenticated} error={error}>
+          <OpenPositions positions={openPositions} />
+        </TabPanel>
       </TabsContent>
-      <TabsContent value="closed" className="mb-32">
-        {isLoading ? <LoadingState /> : <ClosedPositions positions={closedPositions} />}
+      <TabsContent value='closed' className='mb-32'>
+        <TabPanel isLoading={loading} isConnected={authenticated} error={error}>
+          <ClosedPositions positions={closedPositions} />
+        </TabPanel>
       </TabsContent>
     </Tabs>
   );

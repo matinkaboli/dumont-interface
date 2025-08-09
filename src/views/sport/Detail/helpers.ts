@@ -1,3 +1,5 @@
+import { Position } from '@/types/match';
+
 export const getTotalSize = (amount: number, multiplier: number) => amount * multiplier;
 
 export const getFeePerMinute = (totalSize: number) => totalSize / 15;
@@ -33,4 +35,28 @@ export const getMaximumPossibleAmount = (
   );
 
   return maximumPossibleAmount;
+};
+
+
+export const calculatePNL = (position: Position): number => {
+  const amount = parseFloat(position.amount) / 1e6;
+  const finalPayout = parseFloat(position.finalPayout) / 1e6;
+
+  if (position.isLiquidated) {
+    return -amount;
+  }
+
+  if (position.status === 'Closed') {
+    return finalPayout - amount;
+  }
+
+  let remainingValue = 0;
+
+  if (position.remainingValue) {
+    remainingValue = position.remainingValue / 1e6;
+
+    return remainingValue - (Number(position.amount) / 1e6) * (position.multiplier / 1e3);
+  } else {
+    return 0;
+  }
 };

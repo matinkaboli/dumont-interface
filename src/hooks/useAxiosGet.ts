@@ -12,13 +12,14 @@ interface UseAxiosGet<T> {
 interface UseAxiosGetOptions {
   interval?: number;
   config?: AxiosRequestConfig;
+  enabled?: boolean;
 }
 
 const useAxiosGet = <T = unknown>(
   url: string,
   options: UseAxiosGetOptions = {},
 ): UseAxiosGet<T> => {
-  const { interval, config } = options;
+  const { interval, config, enabled = true } = options;
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -36,13 +37,13 @@ const useAxiosGet = <T = unknown>(
   };
 
   useEffect(() => {
-    if (url) fetchData();
+    if (enabled) fetchData();
 
     if (interval) {
       const intervalId = setInterval(fetchData, interval);
       return () => clearInterval(intervalId);
     }
-  }, [url, config]);
+  }, [url, config, enabled]);
 
   const refetch = async () => {
     await fetchData();
