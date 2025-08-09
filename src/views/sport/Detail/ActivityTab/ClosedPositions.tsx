@@ -58,9 +58,9 @@ const ClosedPosition = ({ positions }: { positions: FormattedPosition[] }) => {
               <TableCell className='text-neutral-300'>${fee}</TableCell>
               <TableCell
                 className={pnl > 0 ? 'text-success-500' : 'text-error-500'}>
-                {pnl > 0 ? `+${pnl}` : (
+                {pnl > 0 ? `+${pnl.toFixed(2)}` : (
                   <div className='flex items-center'>
-                    <span className='mr-1.5'>{pnl}</span>
+                    <span className='mr-1.5'>{pnl.toFixed(2)}</span>
                     {isLiquidated && (
                       <TooltipProvider delayDuration={100}>
                         <Tooltip>

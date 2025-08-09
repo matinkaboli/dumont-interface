@@ -75,14 +75,14 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
       id: positionId,
       name: team?.name ?? 'Team',
       logo: team?.logo ?? '',
-      pnl: calculatePNL(position).toFixed(2),
+      pnl: calculatePNL(position),
       isLiquidated,
       multiplier: position.multiplier / 1e3,
       liquid: liquidationThreshold,
       entry: placedAtOdds ? (placedAtOdds[outcomeKey] as number) : 0,
       fee: decayedAmount ? (Math.floor(position.decayedAmount) / 1e6).toFixed(2) : '0',
       size: (Number(position.amount) / 1e6) * (position.multiplier / 1e3),
-      exit: closeRequestedAtOdds ? closeRequestedAtOdds[outcomeKey] : null,
+      exit: closeRequestedAtOdds ? closeRequestedAtOdds[outcomeKey] as number : null,
     };
 
     if (position.status == 'Open') {
