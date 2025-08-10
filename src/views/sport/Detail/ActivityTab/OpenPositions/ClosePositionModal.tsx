@@ -7,11 +7,11 @@ interface Props {
   onClosePosition: () => void;
 }
 
-const ClosePosition = ({ positionSize, fee, pnl, onClosePosition }: Props) => {
+const ClosePositionModal = ({ positionSize, fee, pnl, onClosePosition }: Props) => {
   const details = [
-    { label: 'Position size', value: `${positionSize}` },
-    { label: 'Charged fee', value: `$${fee}` },
-    { label: 'PNL', value: `$${pnl}` },
+    { label: 'Position size', value: `${positionSize.toFixed(2)}` },
+    { label: 'Charged fee', value: `$${fee.toFixed(2)}` },
+    { label: 'PNL', value: `$${pnl.toFixed(2)}` },
   ];
 
   return (
@@ -37,4 +37,4 @@ const ClosePosition = ({ positionSize, fee, pnl, onClosePosition }: Props) => {
   );
 };
 
-export default ClosePosition;
+export default ClosePositionModal;
