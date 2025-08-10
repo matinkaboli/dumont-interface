@@ -24,7 +24,7 @@ const PlaceBet = ({ outcome, entryPrice, liquidationPrice, positionSize, fee, mu
   const details = [
     {
       label: 'Team',
-      render: team && (
+      render: Outcome[outcome] === 'Draw' ? 'Draw' : team && (
         <div className='flex items-center gap-2'>
           <Image
             src={team.logo}

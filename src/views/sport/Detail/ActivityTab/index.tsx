@@ -73,7 +73,7 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
 
     return {
       id: positionId,
-      name: team?.name ?? 'Team',
+      name: outcome === 'Draw' ? 'Draw' : team!.name,
       logo: outcome === 'Draw' ? '/images/draw.png' : team!.logo,
       pnl: calculatePNL(position),
       isLiquidated,
