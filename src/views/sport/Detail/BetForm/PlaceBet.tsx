@@ -1,7 +1,6 @@
 import Image from 'next/image';
 
 import { Button } from '@/components';
-import formatDecimal from '@/helpers/formatDecimal';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import { Outcome } from '@/constants/static';
 import { Team } from '@/types/match';
@@ -41,10 +40,10 @@ const PlaceBet = ({ outcome, entryPrice, liquidationPrice, positionSize, fee, mu
         </div>
       ),
     },
-    { label: 'Entry Odds', value: `${entryPrice}%` },
-    { label: 'Liquidation Threshold', value: `${formatDecimal({ amount: liquidationPrice, decimalPlaces: 2 })}%` },
-    { label: 'Position size', value: `$${formatDecimal({ amount: positionSize, decimalPlaces: 2 })}` },
-    { label: 'Fee per minute', value: `$${formatDecimal({ amount: fee, decimalPlaces: 2 })}` },
+    { label: 'Entry Odds', value: `${entryPrice.toFixed(2)}%` },
+    { label: 'Liquidation Threshold', value: `${liquidationPrice.toFixed(2)}%` },
+    { label: 'Position size', value: `$${positionSize.toFixed(2)}` },
+    { label: 'Fee per minute', value: `$${fee.toFixed(2)}` },
   ];
 
   return (
