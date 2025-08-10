@@ -35,7 +35,6 @@ const Detail = () => {
   const [oddsLoading, setOddsLoading] = useState<boolean>(false);
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const hasFetched = useRef(false);
 
   const teams = [
     { name: 'homeTeam', label: match?.homeTeam.name || '' },
@@ -44,9 +43,6 @@ const Detail = () => {
   ];
 
   useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-
     fetchMatch();
 
     intervalRef.current = setInterval(() => {
@@ -72,11 +68,7 @@ const Detail = () => {
 
     const start = Math.floor((+new Date(matchRes.payload.createdAt)) / 1000).toString();
     const end = Math.floor(Date.now() / 1000).toString();
-    const oddsRes = await dispatch(getOdds({
-      id,
-      start,
-      end,
-    }));
+    const oddsRes = await dispatch(getOdds({ id, start, end }));
 
     if (oddsRes?.payload) {
       const formatted = oddsRes.payload.map((odds: Odds) => ({
