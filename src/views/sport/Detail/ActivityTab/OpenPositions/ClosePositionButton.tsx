@@ -34,7 +34,7 @@ const ClosePositionButton = ({ id, size, fee, pnl, name }: Props) => {
   const [closePositionTx, setClosePositionTx] = useState('');
   const [isClosePositionLoading, setIsClosePositionLoading] = useState<boolean>(false);
 
-  const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  const { isLoading: isWaitTXLoading } = useWaitForTransactionReceipt({
     hash: closePositionTx as `0x${string}`,
   });
 
@@ -52,22 +52,6 @@ const ClosePositionButton = ({ id, size, fee, pnl, name }: Props) => {
       );
     }
   }, [isWaitTXLoading, isClosePositionLoading]);
-
-  useEffect(() => {
-    if (isConfirmed) {
-      dispatch(closeDialog());
-      toast(
-        <ToastWrapper>
-          <ToastContent
-            variant='neutral'
-            title='Position closed.'
-            description='Your profit/loss has been settled.'
-          />
-        </ToastWrapper>,
-        { position: 'bottom-right', toastId: 'closed' },
-      );
-    }
-  }, [isConfirmed]);
 
   const onConfirm = () => {
     dispatch(
@@ -104,7 +88,19 @@ const ClosePositionButton = ({ id, size, fee, pnl, name }: Props) => {
           },
         ],
       });
+
       setClosePositionTx(tx);
+      dispatch(closeDialog());
+      toast(
+        <ToastWrapper>
+          <ToastContent
+            variant='neutral'
+            title='Position closed.'
+            description='Your profit/loss has been settled.'
+          />
+        </ToastWrapper>,
+        { position: 'bottom-right', toastId: 'closed' },
+      );
     } catch (error) {
       dispatch(
         openDialog({
