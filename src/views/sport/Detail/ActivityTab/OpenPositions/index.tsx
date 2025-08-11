@@ -38,12 +38,12 @@ const OpenPositions = ({ positions }: { positions: FormattedPosition[] }) => {
               />
               <span className='text-neutral-300 font-medium text-sm'>{name}</span>
               <span className='bg-neutral-750 rounded-full px-2 py-0.5 text-xs text-white font-medium'>
-                {multiplier}
+                {multiplier}x
               </span>
             </TableCell>
             <TableCell className='text-neutral-300'>${size.toFixed(2)}</TableCell>
             <TableCell className='text-neutral-300'>{entry?.toFixed(2)}%</TableCell>
-            <TableCell className='text-neutral-300'>${liquid.toFixed(2)}</TableCell>
+            <TableCell className='text-neutral-300'>{liquid.toFixed(2)}%</TableCell>
             <TableCell className='text-neutral-300'>${fee.toFixed(2)}</TableCell>
             <TableCell className={pnl > 0 ? 'text-success-600' : 'text-error-500'}>
               {pnl > 0 ? `+$${pnl.toFixed(2)}` : `$${pnl.toFixed(2)}`}
