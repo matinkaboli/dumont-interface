@@ -51,16 +51,16 @@ const ClosedPosition = ({ positions }: { positions: FormattedPosition[] }) => {
                   {multiplier}
                 </span>
               </TableCell>
-              <TableCell className='text-neutral-300'>${size}</TableCell>
-              <TableCell className='text-neutral-300'>{entry}%</TableCell>
-              <TableCell className='text-neutral-300'>{exit ? `${exit}%` : 0}</TableCell>
-              <TableCell className='text-neutral-300'>{liquid}%</TableCell>
-              <TableCell className='text-neutral-300'>${fee}</TableCell>
+              <TableCell className='text-neutral-300'>${size.toFixed(2)}</TableCell>
+              <TableCell className='text-neutral-300'>{entry?.toFixed(2)}%</TableCell>
+              <TableCell className='text-neutral-300'>{exit ? `${exit.toFixed(2)}%` : 0}</TableCell>
+              <TableCell className='text-neutral-300'>{liquid.toFixed(2)}%</TableCell>
+              <TableCell className='text-neutral-300'>${fee.toFixed(2)}</TableCell>
               <TableCell
                 className={pnl > 0 ? 'text-success-500' : 'text-error-500'}>
-                {pnl > 0 ? `+${pnl}` : (
+                {pnl > 0 ? `+${pnl.toFixed(2)}` : (
                   <div className='flex items-center'>
-                    <span className='mr-1.5'>{pnl}</span>
+                    <span className='mr-1.5'>{pnl.toFixed(2)}</span>
                     {isLiquidated && (
                       <TooltipProvider delayDuration={100}>
                         <Tooltip>
