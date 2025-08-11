@@ -15,34 +15,22 @@ interface Props {
   onConfirm: () => void;
 }
 
-const TeamDisplay = ({ team, outcome, multiplier }: { team?: Team, outcome: number, multiplier: number }) => {
-  const baseClass = 'flex items-center gap-2';
-
-  if (Outcome[outcome] === 'Draw') {
-    return (
-      <div className={baseClass}>
-        <Image
-          src='/images/draw.png'
-          alt='Draw'
-          width={24}
-          height={24}
-          className='h-6 w-auto'
-        />
-        <span>Draw</span>
-      </div>
-    );
-  }
+const TeamDisplay = (
+  { team, outcome, multiplier }:
+  { team?: Team, outcome: number, multiplier: number },
+) => {
+  const isDraw = Outcome[outcome] === 'Draw';
 
   return (
-    <div className={baseClass}>
+    <div className='flex items-center gap-2'>
       <Image
-        src={team!.logo}
-        alt={team!.name || 'Team logo'}
+        src={isDraw ? '/images/draw.png' : team!.logo}
+        alt={isDraw ? 'Draw' : team!.name}
         width={24}
         height={24}
         className='h-6 w-auto'
       />
-      <span>{team!.name}</span>
+      <span>{isDraw ? 'Draw' : team!.name}</span>
       <span className='bg-neutral-600 rounded-full px-2 py-0.5 text-xs font-medium text-white'>
         {multiplier}x
       </span>
@@ -58,15 +46,15 @@ const PlaceBet = ({ outcome, entryPrice, liquidationPrice, positionSize, fee, mu
 
   const details = [
     { label: 'Team', render: TeamDisplay({ team, outcome, multiplier }) },
-    { label: 'Entry Odds', value: `${entryPrice.toFixed(2)}%` },
-    { label: 'Liquidation Price', value: `${liquidationPrice.toFixed(2)}%` },
+    { label: 'Entry price', value: `${entryPrice.toFixed(2)}%` },
+    { label: 'Liquidation price', value: `${liquidationPrice.toFixed(2)}%` },
     { label: 'Fee per min', value: `$${fee.toFixed(2)}` },
-    { label: 'Total size', value: `$${positionSize.toFixed(2)}` },
+    { label: 'Position size', value: `$${positionSize.toFixed(2)}` },
   ];
 
   return (
     <>
-      <h3 className='text-base text-white font-medium text-center'>Open Position</h3>
+      <h3 className='text-base text-white font-medium text-center'>Open position</h3>
       <ul className='mt-6'>
         {details.map(({ label, value, render }, index) => (
           <li

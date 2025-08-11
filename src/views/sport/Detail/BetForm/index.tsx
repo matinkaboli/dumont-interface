@@ -234,7 +234,7 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
             betDetails={betDetails}
             isDisable={isDisable}
           />
-          <BetButton label='Open Position' disabledButtonLabel='Open Position' disabled={isDisable} />
+          <BetButton label='Open position' disabledButtonLabel='Open Position' disabled={isDisable} />
         </div>
 
         {/* Mobile View */}
@@ -245,7 +245,7 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
             buttonElement={
               <BetButton
                 size='md'
-                label='Open Position'
+                label='Open position'
                 type={isExpanded ? 'submit' : 'button'}
                 disabledButtonLabel='Open Position'
                 onClick={onExpandDetail}

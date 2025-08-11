@@ -106,7 +106,7 @@ const AmountControls = (
   const details = [
     {
       id: '3',
-      label: 'Liquidation Price',
+      label: 'Liquidation price',
       value: liquidationPrice ? `${liquidationPrice.toFixed(2)}%` : '0.00',
     },
     {
@@ -116,7 +116,7 @@ const AmountControls = (
     },
     {
       id: '1',
-      label: 'Total Size',
+      label: 'Position size',
       value: totalSize > 0 ? `$${totalSize.toFixed(2)}` : '0.00',
     },
   ];
