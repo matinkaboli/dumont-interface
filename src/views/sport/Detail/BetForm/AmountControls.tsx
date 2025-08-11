@@ -86,38 +86,38 @@ const AmountControls = (
       value: `${Outcome.Home}`,
       label: match?.homeTeam.name,
       logo: match?.homeTeam.logo,
-      price: `${match?.latestOdds?.home ?? 0}%`,
+      price: `$${match?.latestOdds?.home ?? 0}`,
     },
     {
       value: `${Outcome.Draw}`,
       label: 'Draw',
       logo: '/images/draw.png',
-      price: `${match?.latestOdds?.draw ?? 0}%`,
+      price: `$${match?.latestOdds?.draw ?? 0}`,
     },
     {
       value: `${Outcome.Away}`,
       label: match?.awayTeam.name,
       logo: match?.awayTeam.logo,
-      price: `${match?.latestOdds?.away ?? 0}%`,
+      price: `$${match?.latestOdds?.away ?? 0}`,
     },
   ];
 
   const { totalSize, feePerMinute, liquidationPrice } = betDetails;
   const details = [
     {
-      id: '1',
-      label: 'Position Size',
-      value: totalSize > 0 ? `$${totalSize.toFixed(2)}` : '0.00',
+      id: '3',
+      label: 'Liquidation Price',
+      value: liquidationPrice ? `${liquidationPrice.toFixed(2)}%` : '0.00',
     },
     {
       id: '2',
-      label: 'Fee per minute',
+      label: 'Fee per min',
       value: feePerMinute ? `$${feePerMinute.toFixed(2)}` : '0.00',
     },
     {
-      id: '3',
-      label: 'Liquidation Threshold',
-      value: liquidationPrice ? `${liquidationPrice.toFixed(2)}%` : '0.00',
+      id: '1',
+      label: 'Total Size',
+      value: totalSize > 0 ? `$${totalSize.toFixed(2)}` : '0.00',
     },
   ];
 
