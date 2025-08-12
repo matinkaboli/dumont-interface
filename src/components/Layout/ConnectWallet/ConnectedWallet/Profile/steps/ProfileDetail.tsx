@@ -44,7 +44,7 @@ const ProfileDetail = ({ accountBalance, onCloseDialog, onNextSlide, setProcess 
   return (
     <div>
       <CopyBox
-        className="w-full mt-8 justify-between"
+        className="rounded-xl w-full mt-8 justify-between"
         copyText={address || ''}
         copyLabel={truncateString(address || '', { leftChars: 6, rightChars: 4 })}
         copyIcon={<Image src="/images/account.svg" width={32} height={32} alt="account" />}
