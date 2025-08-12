@@ -6,11 +6,10 @@ import Image from 'next/image';
 import { Button, Icon } from '@/components';
 import truncateString from '@/helpers/truncateString';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
+import humanizeAmount from '@/helpers/humanizeAmount';
 
 import CopyBox from '../CopyBox';
-import BalanceList from '../BalanceList';
 import { Balance } from '../index';
-import humanizeAmount from '@/helpers/humanizeAmount';
 
 interface Props {
   onCloseDialog: () => void;
