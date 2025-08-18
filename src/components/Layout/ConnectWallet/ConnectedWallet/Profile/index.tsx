@@ -11,6 +11,7 @@ import ProfileDetail from './steps/ProfileDetail';
 import ConfirmSend from './steps/ConfirmSend';
 import Receive from './steps/Receive';
 import Send from './steps/Send';
+import Image from 'next/image';
 
 export type Token = 'USDC' | 'MONT';
 
@@ -61,7 +62,16 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
 
   const renderTitle = () => {
     if (currentIndex === 0) {
-      return 'Profile';
+      return (
+        <Image
+          width={0}
+          height={0}
+          className='h-4 w-auto'
+          sizes='100vw'
+          src='/images/base-logo.svg'
+          alt=''
+        />
+      );
     } else if (process === 'send') {
       if (currentIndex === 1) return 'Send';
       if (currentIndex === 2) return 'Confirm Send';
@@ -73,15 +83,15 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
   return (
     <>
       {!removeSlideTitle ? (
-        <div className="grid grid-cols-3 -mt-[18px]">
+        <div className='grid grid-cols-3 -mt-[18px]'>
           <button
             onClick={prevSlide}
             className={clsx('mr-auto text-white', currentIndex > 0 ? 'visible' : 'invisible')}
           >
-            <Icon name="arrow-left" color="#ADADB6" />
+            <Icon name='arrow-left' color='#ADADB6' />
           </button>
 
-          <h6 className="text-white text-center text-base font-semibold">{renderTitle()}</h6>
+          <h6 className='text-white text-center text-base font-semibold flex-center'>{renderTitle()}</h6>
         </div>
       ) : null}
 
@@ -92,7 +102,7 @@ const Profile = ({ onOpenChange }: { onOpenChange: () => void }) => {
             onCloseDialog={onOpenChange}
             setProcess={setProcess}
             onNextSlide={nextSlide}
-          />
+          ></ProfileDetail>
           <Send balances={accountBalance} onNextSlide={nextSlide} setSendData={setSendData} />
           <ConfirmSend removeSlideTitle={onRemoveSlideTitle} sendData={sendData} />
         </MultiStepCarousel>
