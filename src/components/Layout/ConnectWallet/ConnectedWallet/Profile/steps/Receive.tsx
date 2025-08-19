@@ -13,7 +13,12 @@ const Receive = () => {
 
   return (
     <div>
-      <QRCode value={address || ''} size={192} className='mx-auto mt-8' />
+      <QRCode
+        size={192}
+        value={address || ''}
+        className='mx-auto mt-8'
+        imageSrc='/images/qr-code-base-logo.png'
+      />
 
       <div className='flex flex-col mt-6 !px-6 w-fit mx-auto'>
         <CopyBox

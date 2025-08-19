@@ -18,5 +18,6 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   args: {
     value: 'You just scanned a QR code!',
+    imageSrc: '/images/qr-code-base-logo.png',
   },
 };
