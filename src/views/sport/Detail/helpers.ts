@@ -1,4 +1,4 @@
-const FEE_PER_SECOND = 0.000625;
+export const FEE_PER_SECOND = 0.000625;
 
 import { Position } from '@/types/match';
 

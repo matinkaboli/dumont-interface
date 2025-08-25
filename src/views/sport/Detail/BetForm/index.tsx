@@ -31,6 +31,7 @@ import {
 import AmountControls from './AmountControls';
 import PlaceBet from './PlaceBet';
 import { ToastContent, ToastWrapper } from '@/components';
+import { real } from 'viem/chains';
 
 export interface SportFormData {
   amount: string;
@@ -94,19 +95,19 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
   const outcome = watch('outcome');
 
   useEffect(() => {
-    if (amount && +amount > 0) {
-      const totalSize = getTotalSize(+amount, multiplier);
-      const feePerMinute = getFeePerMinute(+amount, multiplier);
-      const selectedTeam = Outcome[outcome].toLowerCase() as OutcomeLabel;
-      const liquidationPrice = odds ? getLiquidationThreshold(odds[selectedTeam], multiplier) : 0;
+    const realAmount = Number(amount);
 
-      setBetDetails({
-        totalSize,
-        feePerMinute,
-        liquidationPrice,
-        selectedTeamOdds: odds ? odds[selectedTeam] : 0,
-      });
-    }
+    const totalSize = getTotalSize(realAmount, multiplier);
+    const feePerMinute = getFeePerMinute(realAmount, multiplier);
+    const selectedTeam = Outcome[outcome].toLowerCase() as OutcomeLabel;
+    const liquidationPrice = odds ? getLiquidationThreshold(odds[selectedTeam], multiplier) : 0;
+
+    setBetDetails({
+      totalSize,
+      feePerMinute,
+      liquidationPrice,
+      selectedTeamOdds: odds ? odds[selectedTeam] : 0,
+    });
   }, [amount, multiplier, outcome, odds]);
 
   useEffect(() => {

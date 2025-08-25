@@ -109,17 +109,21 @@ const AmountControls = ({
     },
   ];
 
-  const { totalSize, feePerMinute, liquidationPrice } = betDetails;
+  const { totalSize, liquidationPrice, selectedTeamOdds: entryPrice } = betDetails;
+
+  const liquidationPriceText = ((liquidationPrice || 0) / 100).toFixed(2);
+  const entryPriceText = ((entryPrice || 0) / 100).toFixed(2);
+
   const details = [
+    {
+      id: '4',
+      label: 'Entry price',
+      value: entryPrice ? `$${entryPriceText}` : '$0.00',
+    },
     {
       id: '3',
       label: 'Liquidation price',
-      value: liquidationPrice ? `${liquidationPrice.toFixed(2)}%` : '0.00',
-    },
-    {
-      id: '2',
-      label: 'Fee per min',
-      value: feePerMinute ? `$${feePerMinute.toFixed(2)}` : '0.00',
+      value: liquidationPrice ? `$${liquidationPriceText}` : '$0.00',
     },
     {
       id: '1',
