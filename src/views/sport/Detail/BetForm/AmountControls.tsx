@@ -171,6 +171,7 @@ const AmountControls = ({
         />
         <Slider
           defaultValue={[defaultMultiplierValue]}
+          min={1}
           max={30}
           step={1}
           className="my-5"

@@ -22,12 +22,15 @@ import AnimatedDialogContent from '@/views/_components/AnimatedDialogContent';
 import CustomSheet from '@/views/_components/CustomSheet';
 import ErrorContent from '@/views/_components/Dialog/ErrorContent';
 import LoadingContent from '@/views/_components/Dialog/LoadingContent';
-import { getFeePerMinute, getLiquidationThreshold, getTotalSize } from '@/views/sport/Detail/helpers';
+import {
+  getFeePerMinute,
+  getLiquidationThreshold,
+  getTotalSize,
+} from '@/views/sport/Detail/helpers';
 
 import AmountControls from './AmountControls';
 import PlaceBet from './PlaceBet';
 import { ToastContent, ToastWrapper } from '@/components';
-
 
 export interface SportFormData {
   amount: string;
@@ -36,10 +39,10 @@ export interface SportFormData {
 }
 
 export interface BetDetails {
-  totalSize: number,
-  feePerMinute: number,
-  liquidationPrice: number
-  selectedTeamOdds: number,
+  totalSize: number;
+  feePerMinute: number;
+  liquidationPrice: number;
+  selectedTeamOdds: number;
 }
 
 export type OutcomeLabel = 'home' | 'away' | 'draw';
@@ -82,10 +85,7 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
     },
   });
 
-  const {
-    isLoading: isWaitTXLoading,
-    isSuccess: isConfirmed,
-  } = useWaitForTransactionReceipt({
+  const { isLoading: isWaitTXLoading, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash: openPositionTx as `0x${string}`,
   });
 
@@ -96,7 +96,7 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
   useEffect(() => {
     if (amount && +amount > 0) {
       const totalSize = getTotalSize(+amount, multiplier);
-      const feePerMinute = getFeePerMinute(totalSize);
+      const feePerMinute = getFeePerMinute(+amount, multiplier);
       const selectedTeam = Outcome[outcome].toLowerCase() as OutcomeLabel;
       const liquidationPrice = odds ? getLiquidationThreshold(odds[selectedTeam], multiplier) : 0;
 
@@ -115,8 +115,8 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
         openDialog({
           dialogProps: { showCloseButton: false, disableEvents: true },
           content: (
-            <AnimatedDialogContent key='loading'>
-              <LoadingContent title='Waiting for the network' desc='It will take a few seconds' />
+            <AnimatedDialogContent key="loading">
+              <LoadingContent title="Waiting for the network" desc="It will take a few seconds" />
             </AnimatedDialogContent>
           ),
         }),
@@ -130,9 +130,9 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
       toast(
         <ToastWrapper>
           <ToastContent
-            variant='success'
-            title='Position Opened Successfully'
-            description='You’re all set — good luck!'
+            variant="success"
+            title="Position Opened Successfully"
+            description="You’re all set — good luck!"
           />
         </ToastWrapper>,
         { position: 'bottom-right', toastId: 'success' },
@@ -177,8 +177,8 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
       dispatch(
         openDialog({
           content: (
-            <AnimatedDialogContent key='error'>
-              <ErrorContent title='Something went wrong!' />
+            <AnimatedDialogContent key="error">
+              <ErrorContent title="Something went wrong!" />
             </AnimatedDialogContent>
           ),
         }),
@@ -219,12 +219,13 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
   };
 
   return (
-    <div className='relative'>
-      {isDisable && <div className='absolute inset-0 bg-primary-900/40 z-10 cursor-not-allowed rounded-xl' />}
-      <form onSubmit={handleSubmit(onSubmit)} className='h-full'>
+    <div className="relative">
+      {isDisable && (
+        <div className="absolute inset-0 bg-primary-900/40 z-10 cursor-not-allowed rounded-xl" />
+      )}
+      <form onSubmit={handleSubmit(onSubmit)} className="h-full">
         {/* Desktop View */}
-        <div
-          className='h-full md:flex hidden flex-col justify-between bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4'>
+        <div className="h-full md:flex hidden flex-col justify-between bg-primary-900 bordr-[1.5px] border-primary-700 rounded-lg col-span-1 p-4">
           <AmountControls
             control={control}
             touchedFields={touchedFields}
@@ -234,26 +235,30 @@ const BetForm = ({ matchId, odds, isDisable = false }: Props) => {
             betDetails={betDetails}
             isDisable={isDisable}
           />
-          <BetButton label='Open position' disabledButtonLabel='Open Position' disabled={isDisable} />
+          <BetButton
+            label="Open position"
+            disabledButtonLabel="Open Position"
+            disabled={isDisable}
+          />
         </div>
 
         {/* Mobile View */}
-        <div className='md:hidden block text-white'>
+        <div className="md:hidden block text-white">
           <CustomSheet
             isExpanded={isExpanded}
             onClose={onCloseDetail}
             buttonElement={
               <BetButton
-                size='md'
-                label='Open position'
+                size="md"
+                label="Open position"
                 type={isExpanded ? 'submit' : 'button'}
-                disabledButtonLabel='Open Position'
+                disabledButtonLabel="Open Position"
                 onClick={onExpandDetail}
                 disabled={isDisable}
               />
             }
           >
-            <div className='flex flex-col gap-4 pt-6 pb-10'>
+            <div className="flex flex-col gap-4 pt-6 pb-10">
               <AmountControls
                 control={control}
                 touchedFields={touchedFields}

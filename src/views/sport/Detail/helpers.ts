@@ -1,8 +1,20 @@
+const FEE_PER_SECOND = 0.000625;
+
 import { Position } from '@/types/match';
 
 export const getTotalSize = (amount: number, multiplier: number) => amount * multiplier;
 
-export const getFeePerMinute = (totalSize: number) => totalSize / 15;
+export const getFeePerMinute = (principal: number, multiplier: number) => {
+  console.log('fee details');
+  console.log(principal);
+  console.log(multiplier);
+
+  const borrowed = principal * (multiplier - 1);
+
+  const feePerMinute = borrowed * FEE_PER_SECOND * 60;
+
+  return feePerMinute;
+};
 
 export const getLiquidationThreshold = (entryOdds: number, multiplier: number): number => {
   if (multiplier === 0) return 0;
@@ -15,13 +27,15 @@ export const getLiquidationThreshold = (entryOdds: number, multiplier: number): 
   return odds > drop ? (odds - drop) / 100 : 0;
 };
 
-export const getMaximumPossibleAmount = (
-  { currentOdds, multiplier, amount }: {
-    currentOdds: number,
-    multiplier: number,
-    amount: number
-  },
-): number => {
+export const getMaximumPossibleAmount = ({
+  currentOdds,
+  multiplier,
+  amount,
+}: {
+  currentOdds: number;
+  multiplier: number;
+  amount: number;
+}): number => {
   const MAXIMUM_ODDS = 100000; // example value: 100.000%
   const SCALE = 1000; // scale factor (e.g., for 3 decimal precision)
 
@@ -30,13 +44,10 @@ export const getMaximumPossibleAmount = (
 
   const oddsMultipliedToMax = Math.floor((MAXIMUM_ODDS * SCALE) / odds);
   const maximumPossibleRate = Math.floor((oddsMultipliedToMax * m) / SCALE);
-  const maximumPossibleAmount = Math.floor(
-    (maximumPossibleRate * amount) / SCALE,
-  );
+  const maximumPossibleAmount = Math.floor((maximumPossibleRate * amount) / SCALE);
 
   return maximumPossibleAmount;
 };
-
 
 export const calculatePNL = (position: Position): number => {
   const amount = parseFloat(position.amount) / 1e6;
@@ -50,13 +61,18 @@ export const calculatePNL = (position: Position): number => {
     return finalPayout - amount;
   }
 
-  let remainingValue = 0;
+  const placedPositionValue = (amount * position.multiplier) / 1e3;
+  const currentPositionValue = (position.positionValue || 0) / 1e6;
 
-  if (position.remainingValue) {
-    remainingValue = position.remainingValue / 1e6;
+  const pnl = currentPositionValue - placedPositionValue;
 
-    return remainingValue - (Number(position.amount) / 1e6) * (position.multiplier / 1e3);
-  } else {
-    return 0;
+  const equity = amount + pnl - position.decayedAmount / 1e6;
+
+  let returnAmount = -(amount - equity);
+
+  if (equity >= amount) {
+    returnAmount = equity - amount;
   }
+
+  return isNaN(returnAmount) ? 0 : returnAmount;
 };
