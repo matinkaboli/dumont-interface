@@ -27,7 +27,12 @@ export interface FormattedPosition {
   multiplier: number;
 }
 
-const TabPanel = ({ isLoading, error, isConnected, children }: {
+const TabPanel = ({
+  isLoading,
+  error,
+  isConnected,
+  children,
+}: {
   isLoading: boolean;
   error?: unknown;
   isConnected: boolean;
@@ -35,21 +40,16 @@ const TabPanel = ({ isLoading, error, isConnected, children }: {
 }) => {
   if (isLoading) {
     return (
-      <div className='flex-center mt-14 mb-10'>
+      <div className="flex-center mt-14 mb-10">
         <Loading size={32} />
       </div>
     );
   } else if (!isConnected) {
     return (
-      <div className='flex-center mt-14 mb-10 text-white'>
-        Login to see your positions here
-      </div>);
-  } else if (error) {
-    return (
-      <div className='flex-center mt-14 mb-10 text-white'>
-        Something went wrong
-      </div>
+      <div className="flex-center mt-14 mb-10 text-white">Login to see your positions here</div>
     );
+  } else if (error) {
+    return <div className="flex-center mt-14 mb-10 text-white">Something went wrong</div>;
   } else return <>{children}</>;
 };
 
@@ -71,6 +71,14 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
     const teamKey = `${outcome.toLowerCase()}Team` as keyof typeof match;
     const team = match ? (match[teamKey] as Team) : null;
 
+    const liquidationPriceText = (liquidationThreshold || 0) / 100;
+    const entryPriceText = placedAtOdds ? ((placedAtOdds[outcomeKey] as number) || 0) / 100 : 0;
+    const exitPriceText = closeRequestedAtOdds
+      ? ((closeRequestedAtOdds[outcomeKey] as number) || 0) / 100
+      : null;
+
+    const dynamicSize = (position.positionValue || 0) / 1e6;
+
     return {
       id: positionId,
       name: outcome === 'Draw' ? 'Draw' : team!.name,
@@ -78,11 +86,11 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
       pnl: calculatePNL(position),
       isLiquidated,
       multiplier: position.multiplier / 1e3,
-      liquid: liquidationThreshold,
-      entry: placedAtOdds ? (placedAtOdds[outcomeKey] as number) : 0,
-      fee: decayedAmount ? (Math.floor(position.decayedAmount) / 1e6) : 0,
-      size: (Number(position.amount) / 1e6) * (position.multiplier / 1e3),
-      exit: closeRequestedAtOdds ? closeRequestedAtOdds[outcomeKey] as number : null,
+      fee: decayedAmount ? Math.floor(position.decayedAmount) / 1e6 : 0,
+      liquid: liquidationPriceText,
+      entry: entryPriceText,
+      size: dynamicSize,
+      exit: exitPriceText,
     };
   });
 };
@@ -121,21 +129,21 @@ const ActivityTab = ({ className = '', matchId }: { className?: string; matchId:
   }, [positions, match]);
 
   return (
-    <Tabs defaultValue='open' className={className} onChange={(e) => e.preventDefault()}>
-      <TabsList className='sm:w-fit w-full'>
-        <TabsTrigger value='open' className='sm:!min-w-[160px] sm:w-auto w-1/2'>
+    <Tabs defaultValue="open" className={className} onChange={(e) => e.preventDefault()}>
+      <TabsList className="sm:w-fit w-full">
+        <TabsTrigger value="open" className="sm:!min-w-[160px] sm:w-auto w-1/2">
           Open Positions
         </TabsTrigger>
-        <TabsTrigger value='closed' className='sm:w-auto w-1/2'>
+        <TabsTrigger value="closed" className="sm:w-auto w-1/2">
           Closed Positions
         </TabsTrigger>
       </TabsList>
-      <TabsContent value='open' className='mb-32'>
+      <TabsContent value="open" className="mb-32">
         <TabPanel isLoading={loading} isConnected={authenticated} error={error}>
           <OpenPositions positions={openPositions} />
         </TabPanel>
       </TabsContent>
-      <TabsContent value='closed' className='mb-32'>
+      <TabsContent value="closed" className="mb-32">
         <TabPanel isLoading={loading} isConnected={authenticated} error={error}>
           <ClosedPositions positions={closedPositions} />
         </TabPanel>
