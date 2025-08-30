@@ -311,22 +311,6 @@
   },
   {
     "type": "error",
-    "name": "MulticallFailed",
-    "inputs": [
-      {
-        "name": "_target",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "_callData",
-        "type": "bytes",
-        "internalType": "bytes"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "NotInitializing",
     "inputs": []
   }

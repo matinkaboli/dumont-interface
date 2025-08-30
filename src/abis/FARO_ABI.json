@@ -751,11 +751,6 @@
         "name": "_number",
         "type": "uint256",
         "internalType": "uint256"
-      },
-      {
-        "name": "_salt",
-        "type": "bytes32",
-        "internalType": "bytes32"
       }
     ]
   },
