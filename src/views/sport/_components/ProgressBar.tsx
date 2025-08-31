@@ -7,25 +7,49 @@ interface Props {
   bgColor?: string;
   labelClassName?: string;
   roundedFull?: boolean;
+  displayTextOrder?: 'default' | 'reverse';
+  showShortNameInMobile?: boolean;
 }
 
-const ProgressBar = ({
-  name,
-  className,
-  labelClassName,
-  percentage = 100,
-  bgColor = '#3B3A45',
-  roundedFull = false,
-}: Props) => {
+const percentageStyle = 'text-white font-medium';
+
+const ProgressBar = (
+  {
+    name,
+    className,
+    labelClassName,
+    percentage = 100,
+    bgColor = '#3B3A45',
+    roundedFull = false,
+    displayTextOrder = 'default',
+    showShortNameInMobile = true,
+  }: Props) => {
+  const labelPosition = displayTextOrder === 'reverse' ? '-top-5' : '-bottom-5 mt-1';
+
   return (
-    <div className={className} style={{ width: `${percentage}%` }}>
+    <div className={clsx('relative h-5 flex items-center mb-4', className)} style={{ width: `${percentage}%` }}>
+      {/* Progress Fill */}
       <div
-        className={clsx('w-full h-3', roundedFull ? 'rounded-xl' : 'rounded-r-xl')}
         style={{ backgroundColor: bgColor }}
+        className={clsx('w-full h-3', roundedFull ? 'rounded-xl' : 'rounded-r-xl')}
       />
-      <div className={clsx('sm:text-xs text-sm mt-1 whitespace-nowrap', labelClassName)}>
-        <span className="text-white font-medium">{percentage}% </span>
-        <span className="text-neutral-400">{name}</span>
+
+      {/* Label */}
+      <div className={clsx('absolute sm:text-xs text-sm whitespace-nowrap', labelPosition, labelClassName)}>
+        <span className={clsx(showShortNameInMobile ? '' : 'hidden sm:inline', percentageStyle)}>
+          {percentage}%
+        </span>
+        {!showShortNameInMobile &&
+          <span className={clsx('inline sm:hidden', percentageStyle)}>
+            {percentage?.toFixed(0)}%
+          </span>
+        }
+        <span className={clsx(
+          'text-neutral-400 pl-0.5',
+          showShortNameInMobile ? '' : 'sm:inline-block hidden',
+        )}>
+          {name}
+        </span>
       </div>
     </div>
   );
