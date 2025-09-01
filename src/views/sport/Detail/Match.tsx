@@ -5,6 +5,7 @@ import { Match } from '@/types/match';
 
 import ProgressBar from '@/views/sport/_components/ProgressBar';
 import { PulsingCircle } from '@/components';
+import clsx from 'clsx';
 
 interface Props {
   match: Match;
@@ -13,6 +14,7 @@ interface Props {
 
 const Match = ({ match, className }: Props) => {
   const { homeTeam, awayTeam, latestOdds, league, isEnded, startTime, isPrematch, score, timer } = match;
+  const shouldReverseDrawLabel = latestOdds && (latestOdds.home + latestOdds.draw < 30 || latestOdds.away + latestOdds.draw < 30);
 
   return (
     <div className={className}>
@@ -57,19 +59,31 @@ const Match = ({ match, className }: Props) => {
           The match has ended
         </div>) :
         latestOdds && (
-          <div className='max-w-[541px] flex gap-1.5 w-full mx-auto mt-6'>
+          <div className={
+            clsx('max-w-[541px] flex gap-1.5 w-full mx-auto',
+              shouldReverseDrawLabel ? 'mt-10' : 'mt-6')
+          }>
             <ProgressBar
+              roundedFull
               name={homeTeam.shortName}
               percentage={latestOdds.home}
               bgColor='white'
-              roundedFull
+              showShortNameInMobile={false}
               labelClassName='text-center'
             />
-            <ProgressBar name='DRAW' percentage={latestOdds.draw} roundedFull labelClassName='text-center' />
             <ProgressBar
+              roundedFull
+              name='DRAW'
+              percentage={latestOdds.draw}
+              labelClassName='text-center'
+              showShortNameInMobile={false}
+              displayTextOrder={shouldReverseDrawLabel ? 'reverse' : 'default'}
+            />
+            <ProgressBar
+              roundedFull
               name={awayTeam.shortName}
               percentage={latestOdds.away}
-              roundedFull
+              showShortNameInMobile={false}
               labelClassName='text-center'
             />
           </div>)
