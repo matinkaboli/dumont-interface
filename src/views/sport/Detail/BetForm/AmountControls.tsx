@@ -20,6 +20,7 @@ import AmountDetails from '@/views/_components/AmountDetails';
 import { getMaximumPossibleAmount } from '@/views/sport/Detail/helpers';
 
 import { BetDetails, OutcomeLabel, SportFormData } from './index';
+import { useEffect } from 'react';
 
 interface Props {
   control: Control<SportFormData>;
@@ -43,9 +44,12 @@ const AmountControls = ({
   const { match } = useTypedSelector((state) => state.match.main);
   const { balance } = useTypedSelector((state) => state.account);
   const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
-
   const selectedOutcome = control._formValues.outcome;
   const multiplier = control._formValues.multiplier;
+
+  useEffect(() => {
+    setMaxValue();
+  }, [selectedOutcome, multiplier]);
 
   const getCurrentOdds = (): number => {
     if (!match?.latestOdds || selectedOutcome == null) return 0;
@@ -88,6 +92,10 @@ const AmountControls = ({
     setValue('amount', String(maxAllowed), { shouldDirty: true, shouldValidate: true });
   };
 
+  const { totalSize, liquidationPrice, selectedTeamOdds: entryPrice } = betDetails;
+  const liquidationPriceText = ((liquidationPrice || 0) / 100).toFixed(2);
+  const entryPriceText = ((entryPrice || 0) / 100).toFixed(2);
+
   const options = [
     {
       value: `${Outcome.Home}`,
@@ -108,11 +116,6 @@ const AmountControls = ({
       price: `$${((match?.latestOdds?.away ?? 0) / 100).toFixed(2)}`,
     },
   ];
-
-  const { totalSize, liquidationPrice, selectedTeamOdds: entryPrice } = betDetails;
-
-  const liquidationPriceText = ((liquidationPrice || 0) / 100).toFixed(2);
-  const entryPriceText = ((entryPrice || 0) / 100).toFixed(2);
 
   const details = [
     {
