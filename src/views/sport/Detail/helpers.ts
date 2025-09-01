@@ -5,9 +5,6 @@ import { Position } from '@/types/match';
 export const getTotalSize = (amount: number, multiplier: number) => amount * multiplier;
 
 export const getFeePerMinute = (principal: number, multiplier: number) => {
-  console.log('fee details');
-  console.log(principal);
-  console.log(multiplier);
 
   const borrowed = principal * (multiplier - 1);
 
