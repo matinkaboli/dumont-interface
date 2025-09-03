@@ -54,6 +54,9 @@ import GameCard from './svgs/GameCard';
 import GraduationCap from './svgs/GraduationCap';
 import Memo from './svgs/Memo';
 import Fire from './svgs/Fire';
+import ShieldCheck from './svgs/ShieldCheck';
+import Users from './svgs/Users';
+import CircleQuestion from '@/components/Icon/svgs/CircleQuestion';
 
 export interface SvgProps {
   width?: string;
@@ -111,7 +114,10 @@ export type IconName =
   | 'game-card'
   | 'graduation-cap'
   | 'memo'
-  | 'fire';
+  | 'fire'
+  | 'shield-check'
+  | 'users'
+  | 'circle-question';
 
 // Create a map of icon names to their respective ReactElements
 export const iconMap: Record<IconName, ReactElement<any>> = {
@@ -162,4 +168,7 @@ export const iconMap: Record<IconName, ReactElement<any>> = {
   'graduation-cap': <GraduationCap />,
   memo: <Memo />,
   fire: <Fire />,
+  'shield-check': <ShieldCheck />,
+  'users': <Users />,
+  'circle-question': <CircleQuestion />,
 };
