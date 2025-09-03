@@ -12,7 +12,7 @@ const MoreInfo = () => {
           key={item.id}
           href={item.link}
           target="_blank"
-          className="w-full first:pb-6 last:pt-6 block flex-between border-b border-neutral-600 last:border-transparent"
+          className="w-full py-6 first:pt-0 block flex-between border-b border-neutral-600 last:border-transparent"
         >
           <span className="flex items-center gap-1.5 text-white text-base">
             <Icon name={item.icon as IconName} color="#ADADB6" width="17" height="17" />

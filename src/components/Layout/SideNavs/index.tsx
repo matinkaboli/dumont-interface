@@ -73,7 +73,8 @@ const SideNavs = () => {
             >
               <Icon
                 name={item.icon as IconName}
-                className='[&>path]:fill-neutral-400 group-hover:[&>path]:fill-primary-400 transition ease-in-out'
+                color={isLinkActive(item.link) ? '#C319C3' : '#ADADB6'}
+                className='group-hover:[&>path]:fill-primary-400 transition ease-in-out'
               />
             </Link>
           ))}

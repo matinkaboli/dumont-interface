@@ -49,17 +49,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     disabled: false,
   },
   {
-    id: 'card',
-    label: 'Card',
-    link: Routes.CARDS,
-    targetLink: Routes.CARDS,
-    icon: {
-      type: 'icon',
-      name: 'game-card',
-    },
-    disabled: false,
-  },
-  {
     id: 'sport',
     label: 'Sport',
     link: Routes.SPORTS,
@@ -70,9 +59,21 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     },
     disabled: false,
   },
+  {
+    id: 'card',
+    label: 'Card',
+    link: Routes.CARDS,
+    targetLink: Routes.CARDS,
+    icon: {
+      type: 'icon',
+      name: 'game-card',
+    },
+    disabled: false,
+  },
 ];
 
 export const FOOTER_ITEMS: FooterItem[] = [
+  { id: 'faq', link: Routes.FAQ, icon: 'circle-question', label: 'FAQ' },
   { id: 'white-paper', link: links.APP_DOC, icon: 'memo', label: 'Whitepaper' },
   { id: 'twitter', link: links.TWITTER, icon: 'twitter', label: 'Follow on X' },
 ];
