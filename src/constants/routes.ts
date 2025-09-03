@@ -4,6 +4,7 @@ const Routes = {
   CARDS: '/cards',
   MORE_INFO: '/info',
   SPORTS: '/sports',
+  FAQ: '/faq',
 };
 
 export default Routes;
