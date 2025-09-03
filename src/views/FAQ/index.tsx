@@ -1,7 +1,6 @@
-import React from 'react';
 import Image from 'next/image';
 import { IconName } from '@/components/Icon/iconConfig';
-import { Icon } from '@/components';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Icon } from '@/components';
 
 const features = [
   {
@@ -21,6 +20,25 @@ const features = [
     iconSize: { width: '20', height: '20' },
     title: 'Adrenaline rush',
     description: 'Up to 50x on football. More high-octane games coming.',
+  },
+];
+
+const faqs = [
+  {
+    title: 'People most asked question',
+    desc: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
+  },
+  {
+    title: 'People most asked question',
+    desc: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
+  },
+  {
+    title: 'People most asked question',
+    desc: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
+  },
+  {
+    title: 'People most asked question',
+    desc: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
   },
 ];
 
@@ -53,6 +71,14 @@ const FAQ = () => {
         <Image width={0} height={0} className='w-full h-auto mt-8' sizes='100vw' src='/images/faq.png' alt='' />
       </div>
 
+      <Accordion type='single' className='mt-6' collapsible>
+        {faqs.map((faq, index) => (
+          <AccordionItem key={index} value={`item-${index}`}>
+            <AccordionTrigger>{faq.title}</AccordionTrigger>
+            <AccordionContent>{faq.desc}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </>
   );
 };

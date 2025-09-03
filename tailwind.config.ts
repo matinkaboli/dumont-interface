@@ -133,6 +133,28 @@ const config: Config = {
       transitionProperty: {
         height: 'height',
       },
+      keyframes: {
+        'accordion-down': {
+          '0%': {
+            height: '0'
+          },
+          '100%': {
+            height: 'var(--radix-accordion-content-height, var(--bits-accordion-content-height, var(--reka-accordion-content-height, var(--kb-accordion-content-height, auto))))'
+          }
+        },
+        'accordion-up': {
+          '0%': {
+            height: 'var(--radix-accordion-content-height, var(--bits-accordion-content-height, var(--reka-accordion-content-height, var(--kb-accordion-content-height, auto))))'
+          },
+          '100%': {
+            height: '0'
+          }
+        }
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out'
+      }
     },
   },
   plugins: [require('tailwindcss-animate'), backfaceVisibility],
