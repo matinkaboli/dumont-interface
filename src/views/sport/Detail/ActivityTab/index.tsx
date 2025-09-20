@@ -77,7 +77,13 @@ const formatPositions = (positions: Position[], match: Match | null): FormattedP
       ? ((closeRequestedAtOdds[outcomeKey] as number) || 0) / 100
       : null;
 
-    const dynamicSize = (position.positionValue || 0) / 1e6;
+    let dynamicSize = 0;
+
+    if (position.positionValue) {
+      dynamicSize = position.positionValue / 1e6;
+    } else {
+      dynamicSize = ((Number(position.amount) / 1e6) * position.multiplier) / 1e3;
+    }
 
     return {
       id: positionId,
