@@ -68,7 +68,7 @@ const SideNavs = () => {
             <Link
               key={item.id}
               href={item.link}
-              target='_blank'
+              target={item.target}
               className='w-12 h-12 block flex-center group'
             >
               <Icon
