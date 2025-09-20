@@ -1,5 +1,7 @@
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
 import { IconName } from '@/components/Icon/iconConfig';
+import { faqs } from '@/constants/faq';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Icon } from '@/components';
 
 const features = [
@@ -23,29 +25,6 @@ const features = [
     iconSize: { width: '20', height: '20' },
     title: 'Adrenaline rush',
     description: 'Up to 50x on football. More high-octane games coming.',
-  },
-];
-
-const faqs = [
-  {
-    id: '1',
-    title: 'People most asked question',
-    desc: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
-  },
-  {
-    id: '2',
-    title: 'People most asked question',
-    desc: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
-  },
-  {
-    id: '3',
-    title: 'People most asked question',
-    desc: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
-  },
-  {
-    id: '4',
-    title: 'People most asked question',
-    desc: 'We accept major credit cards, including Visa, Mastercard, and American Express. Additionally, we also offer payment through PayPal for added convenience and security.',
   },
 ];
 
@@ -82,7 +61,15 @@ const FAQ = () => {
         {faqs.map((faq) => (
           <AccordionItem key={faq.id} value={`item-${faq.id}`}>
             <AccordionTrigger>{faq.title}</AccordionTrigger>
-            <AccordionContent>{faq.desc}</AccordionContent>
+            <AccordionContent>
+              <ReactMarkdown
+                components={{
+                  ul: ({ node, ...props }) => <ul className='list-disc pl-6' {...props} />,
+                  li: ({ node, ...props }) => <li className='mb-1' {...props} />,
+                }}>
+                {faq.desc}
+              </ReactMarkdown>
+            </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
