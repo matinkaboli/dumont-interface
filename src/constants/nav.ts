@@ -31,6 +31,7 @@ export interface FooterItem {
   link: string;
   icon: IconName;
   label: string;
+  target?: '_self' | '_blank' | '_parent' | '_top';
 }
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
@@ -73,7 +74,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
 ];
 
 export const FOOTER_ITEMS: FooterItem[] = [
-  { id: 'faq', link: Routes.FAQ, icon: 'circle-question', label: 'FAQ' },
-  { id: 'white-paper', link: links.APP_DOC, icon: 'memo', label: 'Whitepaper' },
-  { id: 'twitter', link: links.TWITTER, icon: 'twitter', label: 'Follow on X' },
+  { id: 'faq', link: Routes.FAQ, icon: 'circle-question', label: 'FAQ', target: '_self' },
+  { id: 'white-paper', link: links.APP_DOC, icon: 'memo', label: 'Whitepaper', target: '_blank' },
+  { id: 'twitter', link: links.TWITTER, icon: 'twitter', label: 'Follow on X', target: '_blank' },
 ];
