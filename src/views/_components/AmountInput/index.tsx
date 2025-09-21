@@ -73,9 +73,6 @@ const AmountInput = (
             {...inputProps}
             errors={touchedFields?.amount ? inputErrors : {}}
             onChange={(e) => handleInputChange(e, field.onChange)}
-            onBlur={(e) => {
-              e.target.value = parseFloat(e.target.value).toFixed(3);
-            }}
           />
         )}
       />
