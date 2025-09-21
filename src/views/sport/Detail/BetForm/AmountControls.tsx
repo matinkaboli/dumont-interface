@@ -1,15 +1,7 @@
 import { Control, FieldErrors, UseFormSetValue } from 'react-hook-form';
 import Image from 'next/image';
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Slider,
-} from '@/components';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, Slider } from '@/components';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import formatDecimal from '@/helpers/formatDecimal';
 import { Outcome } from '@/constants/static';
@@ -20,7 +12,6 @@ import AmountDetails from '@/views/_components/AmountDetails';
 import { getMaximumPossibleAmount } from '@/views/sport/Detail/helpers';
 
 import { BetDetails, OutcomeLabel, SportFormData } from './index';
-import { useEffect } from 'react';
 
 interface Props {
   control: Control<SportFormData>;
@@ -30,31 +21,42 @@ interface Props {
   defaultMultiplierValue: number;
   betDetails: BetDetails;
   isDisable?: boolean;
+  trigger: (name?: keyof SportFormData | (keyof SportFormData)[]) => Promise<boolean>;
 }
 
-const AmountControls = ({
-  control,
-  touchedFields,
-  errors,
-  setValue,
-  defaultMultiplierValue,
-  betDetails,
-  isDisable = false,
-}: Props) => {
+const AmountControls = (
+  {
+    control,
+    touchedFields,
+    errors,
+    setValue,
+    trigger,
+    defaultMultiplierValue,
+    betDetails,
+    isDisable = false,
+  }: Props) => {
   const { match } = useTypedSelector((state) => state.match.main);
   const { balance } = useTypedSelector((state) => state.account);
   const { minBetAmount, maxBetAmount } = useTypedSelector((state) => state.faro.bet);
   const selectedOutcome = control._formValues.outcome;
   const multiplier = control._formValues.multiplier;
 
-  useEffect(() => {
-    setMaxValue();
-  }, [selectedOutcome, multiplier]);
-
   const getCurrentOdds = (): number => {
     if (!match?.latestOdds || selectedOutcome == null) return 0;
     const key = Outcome[selectedOutcome].toLowerCase() as OutcomeLabel;
     return match.latestOdds[key] ?? 0;
+  };
+
+  const getMaxValue = () => {
+    const currentOdds = getCurrentOdds();
+    const rate = multiplier * (100 / currentOdds);
+    return ((maxBetAmount / rate) * 99) / 100;
+  };
+
+  const setMaxValue = () => {
+    touchedFields.amount = true;
+    const maxAllowed = getMaxValue();
+    setValue('amount', String(maxAllowed), { shouldDirty: true, shouldValidate: true });
   };
 
   const onValidateInput = (value: any) => {
@@ -68,8 +70,7 @@ const AmountControls = ({
     });
 
     if (maxPossibleAmount > maxBetAmount) {
-      const rate = multiplier * (100 / currentOdds);
-      const maxAllowed = ((maxBetAmount / rate) * 99) / 100;
+      const maxAllowed = getMaxValue();
 
       return `Max bet is $${humanizeAmount(
         formatDecimal({ amount: maxAllowed, decimalPlaces: 2 }),
@@ -81,15 +82,14 @@ const AmountControls = ({
     return true;
   };
 
-  const setMaxValue = () => {
-    touchedFields.amount = true;
+  const onOutcomeChange = (value: string) => {
+    setValue('outcome', +value);
+    trigger('amount');
+  };
 
-    const currentOdds = getCurrentOdds();
-
-    const rate = multiplier * (100 / currentOdds);
-    const maxAllowed = ((maxBetAmount / rate) * 99) / 100;
-
-    setValue('amount', String(maxAllowed), { shouldDirty: true, shouldValidate: true });
+  const onMultiplierChange = (values: number[]) => {
+    setValue('multiplier', values[0]);
+    trigger('amount');
   };
 
   const { totalSize, liquidationPrice, selectedTeamOdds: entryPrice } = betDetails;
@@ -139,27 +139,27 @@ const AmountControls = ({
     <>
       <Select
         defaultValue={`${Outcome.Home}`}
-        onValueChange={(value) => setValue('outcome', +value)}
+        onValueChange={onOutcomeChange}
         disabled={isDisable}
       >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select a option" />
+        <SelectTrigger className='w-full'>
+          <SelectValue placeholder='Select a option' />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             {options.map(({ value, label, logo, price }) => (
               <SelectItem key={value} value={value}>
-                <div className="flex items-center gap-1">
+                <div className='flex items-center gap-1'>
                   <Image
                     width={0}
                     height={0}
-                    sizes="100vw"
-                    className="h-6 w-auto"
+                    sizes='100vw'
+                    className='h-6 w-auto'
                     src={logo ?? '/images/draw.png'}
                     alt={label ?? ''}
                   />
                   {label}
-                  <div className="text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5">
+                  <div className='text-xs text-white font-bold bg-primary-700 rounded-full py-0.5 px-1.5'>
                     {price}
                   </div>
                 </div>
@@ -181,9 +181,9 @@ const AmountControls = ({
           min={1}
           max={30}
           step={1}
-          className="my-5"
+          className='my-5'
           disabled={isDisable}
-          onValueChange={(values) => setValue('multiplier', values[0])}
+          onValueChange={onMultiplierChange}
         />
       </div>
       <AmountDetails details={details} />
