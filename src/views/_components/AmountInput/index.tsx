@@ -48,7 +48,8 @@ const AmountInput = (
 
     const { value } = e.target;
 
-    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+    // allows whole numbers OR numbers with up to 3 decimal places
+    if (value === '' || /^\d+(\.\d{0,3})?$/.test(value)) {
       onChange(value);
     }
   };
