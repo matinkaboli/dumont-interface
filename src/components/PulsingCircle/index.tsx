@@ -13,6 +13,7 @@ const pulsingCircleVariants = cva('rounded-full', {
       success: 'bg-success-600',
       warning: 'bg-warning-600',
       danger: 'bg-error-600',
+      neutral: 'bg-neutral-500',
       custom: '',
     },
   },
@@ -30,7 +31,7 @@ interface PulsingCircleProps extends VariantProps<typeof pulsingCircleVariants> 
 export default function PulsingCircle({ size, color, className, customColor }: PulsingCircleProps) {
   return (
     <div className={className}>
-      <div className="relative flex-center">
+      <div className="relative flex-center ">
         <span
           className={clsx(
             pulsingCircleVariants({ size, color }),

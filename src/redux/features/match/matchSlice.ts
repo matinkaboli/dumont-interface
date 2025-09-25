@@ -20,9 +20,12 @@ const initialState: State = {
   error: null,
 };
 
-export const getMatches = createAsyncThunk('match/getMatches', async (_, { rejectWithValue }) => {
+export const getMatches = createAsyncThunk('match/getMatches', async (
+  { live = true }: { live?: boolean }, { rejectWithValue }) => {
+  const url = live ? 'matches' : 'matches/unlive';
+
   try {
-    const response = await axios.get('matches');
+    const response = await axios.get(url);
     return response.data.result as Match[];
   } catch (error) {
     const axiosError = error as AxiosError;

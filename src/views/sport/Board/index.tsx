@@ -1,30 +1,34 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Loading, PulsingCircle } from '@/components';
+import { Loading } from '@/components';
 import { AppDispatch } from '@/redux/store';
 import { getMatches } from '@/redux/features/match/matchSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
 import Match from './Match';
+import LiveToggleButton from './LiveToggleButton';
 
 const GameBoard = () => {
+  const [isLive, setIsLive] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
   const { matches, loading, isRefetching } = useTypedSelector((state) => state.match.main);
 
   useEffect(() => {
-    dispatch(getMatches());
+    dispatch(getMatches({ live: isLive }));
 
     const interval = setInterval(() => {
-      dispatch(getMatches());
+      dispatch(getMatches({ live: isLive }));
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [dispatch]);
+  }, [isLive]);
+
+  const onToggleLive = () => setIsLive(!isLive);
 
   if ((loading && !isRefetching) || isConnecting) {
     return (
@@ -38,13 +42,7 @@ const GameBoard = () => {
     <>
       <div className='flex-between'>
         <h1 className='sm:text-2xl text-xl font-bold text-white'>Game Board</h1>
-        <button
-          type='button'
-          className='h-7 px-3 bg-neutral-750 flex-center gap-1 font-medium text-sm text-white rounded-full'
-        >
-          <PulsingCircle size='sm' />
-          Live
-        </button>
+        <LiveToggleButton isLive={isLive} onToggle={onToggleLive} />
       </div>
 
       {isEmpty(matches) ?
