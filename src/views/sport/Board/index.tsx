@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { Loading } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import { getMatches } from '@/redux/features/match/matchSlice';
+import { getLiveMatches, getRecordedMatches } from '@/redux/features/match/matchSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
@@ -16,34 +16,32 @@ const POLLING_INTERVAL = 5000;
 
 const GameBoard = () => {
   const [isLive, setIsLive] = useState(true);
-  const [isToggleLoading, setIsToggleLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { matches, loading, isRefetching } = useTypedSelector((state) => state.match.main);
+  const { matches, recordedMatches, loading, isRefetching } = useTypedSelector((state) => state.match.main);
+
+  const fetchMatches = () => {
+    dispatch(getLiveMatches());
+    dispatch(getRecordedMatches());
+  };
 
   useEffect(() => {
-    dispatch(getMatches({ live: isLive })).then(() => {
-      setIsToggleLoading(false);
-    });
+    fetchMatches();
 
-    intervalRef.current = setInterval(() => {
-      dispatch(getMatches({ live: isLive }));
-    }, POLLING_INTERVAL);
+    intervalRef.current = setInterval(() => fetchMatches(), POLLING_INTERVAL);
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isLive]);
+  }, []);
 
-  const onToggleLive = () => {
-    setIsLive((prev) => !prev);
-    setIsToggleLoading(true);
-  };
+  const onToggleLive = () => setIsLive((prev) => !prev);
 
+  const matchesToRender = isLive ? matches : recordedMatches;
   const isInitialLoading = (loading && !isRefetching) || isConnecting;
-  const showMatches = !isEmpty(matches);
+  const showMatches = !isEmpty(matchesToRender);
 
   if (isInitialLoading) {
     return (
@@ -60,19 +58,15 @@ const GameBoard = () => {
         <LiveToggleButton isLive={isLive} onToggle={onToggleLive} />
       </div>
 
-      {isToggleLoading ?
-        (<div className='min-h-[50vh] flex-center'>
-            <Loading />
-          </div>
-        ) : showMatches ?
-          (<div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-3 sm:mt-8 mt-6'>
-            {matches?.map((match) => (
-              <Match key={match.matchId} match={match} />
-            ))}
-          </div>) :
-          (<div className='text-white text-center mx-auto py-20'>
-            There is no match.
-          </div>)
+      {showMatches ?
+        (<div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-3 sm:mt-8 mt-6'>
+          {matchesToRender?.map((match) => (
+            <Match key={match.matchId} match={match} />
+          ))}
+        </div>) :
+        (<div className='text-white text-center mx-auto py-20'>
+          There is no match.
+        </div>)
       }
     </>
   );
