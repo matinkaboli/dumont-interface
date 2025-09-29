@@ -1,32 +1,49 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Loading, PulsingCircle } from '@/components';
+import { Loading } from '@/components';
 import { AppDispatch } from '@/redux/store';
-import { getMatches } from '@/redux/features/match/matchSlice';
+import { getLiveMatches, getRecordedMatches } from '@/redux/features/match/matchSlice';
 import { useTypedSelector } from '@/hooks/useTypedSelector';
 import isEmpty from '@/helpers/isEmpty';
 
 import Match from './Match';
+import LiveToggleButton from './LiveToggleButton';
+
+const POLLING_INTERVAL = 5000;
 
 const GameBoard = () => {
+  const [isLive, setIsLive] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
-  const { matches, loading, isRefetching } = useTypedSelector((state) => state.match.main);
+  const { matches, recordedMatches, loading, isRefetching } = useTypedSelector((state) => state.match.main);
+
+  const fetchMatches = () => {
+    dispatch(getLiveMatches());
+    dispatch(getRecordedMatches());
+  };
 
   useEffect(() => {
-    dispatch(getMatches());
+    fetchMatches();
 
-    const interval = setInterval(() => {
-      dispatch(getMatches());
-    }, 5000);
+    intervalRef.current = setInterval(() => fetchMatches(), POLLING_INTERVAL);
 
-    return () => clearInterval(interval);
-  }, [dispatch]);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
 
-  if ((loading && !isRefetching) || isConnecting) {
+  const onToggleLive = () => setIsLive((prev) => !prev);
+
+  const matchesToRender = isLive ? matches : recordedMatches;
+  const isInitialLoading = (loading && !isRefetching) || isConnecting;
+  const showMatches = !isEmpty(matchesToRender);
+
+  if (isInitialLoading) {
     return (
       <div className='min-h-[50vh] flex-center'>
         <Loading />
@@ -38,23 +55,17 @@ const GameBoard = () => {
     <>
       <div className='flex-between'>
         <h1 className='sm:text-2xl text-xl font-bold text-white'>Game Board</h1>
-        <button
-          type='button'
-          className='h-7 px-3 bg-neutral-750 flex-center gap-1 font-medium text-sm text-white rounded-full'
-        >
-          <PulsingCircle size='sm' />
-          Live
-        </button>
+        <LiveToggleButton isLive={isLive} onToggle={onToggleLive} />
       </div>
 
-      {isEmpty(matches) ?
-        (<div className='text-white text-center mx-auto py-20'>
-          There is no match.
-        </div>) :
+      {showMatches ?
         (<div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:gap-4 gap-3 sm:mt-8 mt-6'>
-          {matches?.map((match) => (
+          {matchesToRender?.map((match) => (
             <Match key={match.matchId} match={match} />
           ))}
+        </div>) :
+        (<div className='text-white text-center mx-auto py-20'>
+          There is no match.
         </div>)
       }
     </>

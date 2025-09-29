@@ -26,7 +26,7 @@ const Match = ({ match }: {
           </div>
         ) : (
           <div className='text-neutral-100 text-xs text-center mt-0.5'>
-            {dayjs(startTime).format('DD MMM - HH:mm')}
+            {isEnded ? 'Full Time': dayjs(startTime).format('DD MMM - HH:mm')}
           </div>
         )
       }
