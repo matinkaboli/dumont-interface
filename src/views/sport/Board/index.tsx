@@ -15,16 +15,16 @@ import LiveToggleButton from './LiveToggleButton';
 const POLLING_INTERVAL = 5000;
 
 const GameBoard = () => {
-  const [isLive, setIsLive] = useState(true);
+  const [isLive, setIsLive] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const { isConnecting } = useTypedSelector((state) => state.account.profile);
   const { matches, recordedMatches, loading, isRefetching } = useTypedSelector((state) => state.match.main);
 
-  const fetchMatches = () => {
-    dispatch(getLiveMatches());
-    dispatch(getRecordedMatches());
+  const fetchMatches = async () => {
+    await dispatch(getRecordedMatches());
+    await dispatch(getLiveMatches());
   };
 
   useEffect(() => {
